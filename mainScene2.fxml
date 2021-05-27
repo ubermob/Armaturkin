@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+  <tabs>
+    <Tab text="Хочу посчитать арматуру">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="calculationButton" layoutX="29.0" layoutY="498.0" mnemonicParsing="false" onAction="#calculate" text="Расчёт">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="upperDragSpace" alignment="CENTER" layoutX="206.0" layoutY="33.0" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: Green; -fx-border-width: 5;" text="upperLabel" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lowerDragSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: Green; -fx-border-width: 5;" text="lowerLabel" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="saveInputFilePathButton" layoutX="423.0" layoutY="498.0" mnemonicParsing="false" onAction="#saveInputFilePath" text="Сохранить пути файлов">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="downloadButton" layoutX="686.0" layoutY="498.0" mnemonicParsing="false" onAction="#download" text="Скачать">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="calculatedLabel" alignment="CENTER" layoutX="355.0" layoutY="463.0" prefHeight="25.0" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Посчитано" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="clearListButton" layoutX="150.0" layoutY="498.0" mnemonicParsing="false" onAction="#clearList" text="Очистить нижний список">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Результаты расчета">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="25.0" layoutY="36.0" prefHeight="500.0" prefWidth="750.0" text="Label" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="Внешний вид">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="saveAppearanceButton" layoutX="347.0" layoutY="467.0" mnemonicParsing="false" onAction="#saveAppearance" text="Сохранить">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Circle fx:id="circle3" fill="#ababab" layoutX="400.0" layoutY="121.0" onMouseClicked="#setBackgroundColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle5" layoutX="600.0" layoutY="122.0" onMouseClicked="#setBackgroundColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle4" fill="#444444" layoutX="500.0" layoutY="121.0" onMouseClicked="#setBackgroundColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle" fill="WHITE" layoutX="200.0" layoutY="120.0" onMouseClicked="#setBackgroundColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle2" fill="#dadada" layoutX="300.0" layoutY="121.0" onMouseClicked="#setBackgroundColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Text fx:id="appearanceText" layoutX="324.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет фона" textAlignment="CENTER" wrappingWidth="140.80337524414062">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="appearanceText2" layoutX="330.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет текста" textAlignment="CENTER" wrappingWidth="140.80337524414062">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Circle fx:id="circle6" fill="WHITE" layoutX="200.0" layoutY="297.0" onMouseClicked="#setTextColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle7" fill="#dadada" layoutX="300.0" layoutY="297.0" onMouseClicked="#setTextColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle8" fill="#ababab" layoutX="400.0" layoutY="297.0" onMouseClicked="#setTextColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle9" fill="#444444" layoutX="500.0" layoutY="297.0" onMouseClicked="#setTextColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle10" layoutX="600.0" layoutY="297.0" onMouseClicked="#setTextColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>
