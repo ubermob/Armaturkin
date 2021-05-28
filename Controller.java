@@ -6,6 +6,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 
 import java.io.*;
@@ -27,6 +28,9 @@ public class Controller {
 	public Button saveInputFilePathButton;
 	public Button downloadButton;
 	public Button clearListButton;
+	public Label notificationLabel;
+	public Polygon notificationArrow;
+	public Button ignoreUpperButton;
 
 	public static void initialize() {
 		// ???
@@ -89,27 +93,36 @@ public class Controller {
         lowerDragSpace.setTextFill(Paint.valueOf(Main.textColor));
         resultLabel.setTextFill(Paint.valueOf(Main.textColor));
         calculatedLabel.setTextFill(Paint.valueOf(Main.textColor));
+        notificationLabel.setTextFill(Paint.valueOf(Main.textColor));
+    }
+
+    public void setResultLabelText(String string) {
+		resultLabel.setText(string);
     }
 
     public void setOpacity() {
 		calculatedLabel.setOpacity(0);
+		notificationLabel.setOpacity(0);
+		notificationArrow.setOpacity(0);
     }
 
     public void calculate(ActionEvent actionEvent) {
 
     }
 
-    public void upperDragDropped(DragEvent dragEvent) throws FileNotFoundException {
+    public void upperDragDropped(DragEvent dragEvent) throws IOException {
 	    List<File> fileList = getDroppedFile(dragEvent);
 	    if (fileList.size() != 1) {
 			setUpperDragSpaceText("Мне нужен только один файл");
 	    } else {
 		    String[] fileName = fileList.get(0).getName().split("\\.");
-		    if (fileName[1].equalsIgnoreCase("xls") || fileName[1].equalsIgnoreCase("xlsx")) {
+		    if (fileName[fileName.length - 1].equalsIgnoreCase("xls") ||
+				    fileName[fileName.length - 1].equalsIgnoreCase("xlsx")) {
 				setUpperDragSpaceText("Файл принят");
 				File file = fileList.get(0);
-				Main.productFileInputStream = new FileInputStream(file);
+				//Main.productFileInputStream = new FileInputStream(file);
 				Main.pathToProductFile = file.getAbsolutePath();
+				Main.loadProduct();
 		    } else {
 			    setUpperDragSpaceText("Это не Excel файл");
 		    }
@@ -167,5 +180,8 @@ public class Controller {
 	}
 
 	public void clearList(ActionEvent actionEvent) {
+	}
+
+	public void ignoreUpper(ActionEvent actionEvent) {
 	}
 }

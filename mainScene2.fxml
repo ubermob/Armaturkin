@@ -5,8 +5,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -57,10 +60,22 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
+                  <Label fx:id="notificationLabel" alignment="TOP_RIGHT" layoutX="77.0" layoutY="22.0" prefHeight="34.0" prefWidth="78.0" text="Label" textAlignment="RIGHT" />
+                  <Polygon fx:id="notificationArrow" fill="DODGERBLUE" layoutX="186.0" layoutY="55.0" points="-10.0, -9.0, 10.0, -9.0, 0.0, -41.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                  <Polygon fill="DODGERBLUE" layoutX="69.0" layoutY="207.0" points="-31.0, 17.0, 47.0, 45.0, 20.0, -40.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <GaussianBlur radius="36.25" />
+                     </effect>
+                  </Polygon>
+                  <Button fx:id="ignoreUpperButton" layoutX="633.0" layoutY="115.0" mnemonicParsing="false" onAction="#ignoreUpper" text="Игнорировать">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Результаты расчета">
+    <Tab text="Информация">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -69,6 +84,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <TextArea layoutX="525.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" />
                </children></AnchorPane>
       </content>
     </Tab>

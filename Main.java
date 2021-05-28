@@ -1,30 +1,41 @@
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main extends Application {
 
     public static Parent root;
-    public static String version = "0.1";
+    public static String version = "0.2";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
     public static String backgroundColor = "#444444";
     public static String textColor = "#000000";
-    public static String pathToProductFile;
+    private static volatile String notificationString = "";
+
+    public volatile static String pathToProductFile;
     public static String pathToCalculatingFile;
     public static String optionalPath;
-    public static FileInputStream productFileInputStream;
+
+    //public volatile static FileInputStream productFileInputStream;
 	public static List<File> inputFileList = new ArrayList<>();
+
+	public volatile static ArrayList<ReinforcementProduct> reinforcementProductArrayList = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,12 +49,18 @@ public class Main extends Application {
         setBackgroundColor();
         pathVerification(controller);
         primaryStage.show();
+	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
+		    controller.setResultLabelText(notificationString);
+	    }));
+	    timeline.setCycleCount(Animation.INDEFINITE);
+	    timeline.play();
     }
 
     private void pathVerification(Controller controller) throws IOException {
-        if (Files.exists(Path.of(pathToProductFile))) {
-	        controller.setUpperDragSpaceText("Я использую предыдущий файл\nНо ты можешь обновить его");
-	        productFileInputStream = new FileInputStream(pathToProductFile);
+    	Path path = Path.of(pathToProductFile);
+        if (Files.exists(path)) {
+	        controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() + "»\nНо ты можешь обновить его");
+	        loadProduct();
         } else {
 	        controller.setUpperDragSpaceText("Я не нашёл файл с изделиями");
         }
@@ -68,6 +85,18 @@ public class Main extends Application {
 			Files.createFile(Path.of(programRootPath, configFileName));
 			saveConfig();
 		}
+    }
+
+    static void loadProduct() throws IOException {
+	    //productFileInputStream = new FileInputStream(pathToProductFile);
+	    //productFileInputStream.close();
+	    ProductFileWorker productFileWorker = new ProductFileWorker(pathToProductFile, reinforcementProductArrayList);
+	    Thread productFileWorkerThread = new Thread(productFileWorker);
+	    productFileWorkerThread.start();
+    }
+
+    public static void addNotification(String string) {
+    	notificationString = notificationString + string + "\n";
     }
 
     static void saveConfig() throws IOException {

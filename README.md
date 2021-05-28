@@ -1,2 +1,2 @@
 # Armaturkin
-Proprietary soft for GOST order renforcement concrete documentation
+Proprietary soft for GOST renforcement concrete documentation
