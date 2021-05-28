@@ -10,8 +10,6 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +29,7 @@ public class Controller {
 	public Label notificationLabel;
 	public Polygon notificationArrow;
 	public Button ignoreUpperButton;
+	public Button clearResultLabelButton;
 
 	public static void initialize() {
 		// ???
@@ -106,6 +105,11 @@ public class Controller {
 		notificationArrow.setOpacity(0);
     }
 
+    public void setNotificationOpacity(int i) {
+	    notificationLabel.setOpacity(i);
+	    notificationArrow.setOpacity(i);
+    }
+
     public void calculate(ActionEvent actionEvent) {
 
     }
@@ -120,7 +124,6 @@ public class Controller {
 				    fileName[fileName.length - 1].equalsIgnoreCase("xlsx")) {
 				setUpperDragSpaceText("Файл принят");
 				File file = fileList.get(0);
-				//Main.productFileInputStream = new FileInputStream(file);
 				Main.pathToProductFile = file.getAbsolutePath();
 				Main.loadProduct();
 		    } else {
@@ -183,5 +186,9 @@ public class Controller {
 	}
 
 	public void ignoreUpper(ActionEvent actionEvent) {
+	}
+
+	public void clearResultLabel(ActionEvent actionEvent) {
+		Main.clearNotification();
 	}
 }

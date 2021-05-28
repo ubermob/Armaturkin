@@ -9,14 +9,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main extends Application {
 
@@ -32,7 +29,6 @@ public class Main extends Application {
     public static String pathToCalculatingFile;
     public static String optionalPath;
 
-    //public volatile static FileInputStream productFileInputStream;
 	public static List<File> inputFileList = new ArrayList<>();
 
 	public volatile static ArrayList<ReinforcementProduct> reinforcementProductArrayList = new ArrayList<>();
@@ -51,12 +47,18 @@ public class Main extends Application {
         primaryStage.show();
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
+		    if (notificationString.length() > 0) {
+		    	controller.setNotificationOpacity(1);
+		    }
+		    if (notificationString.length() == 0) {
+			    controller.setNotificationOpacity(0);
+		    }
 	    }));
 	    timeline.setCycleCount(Animation.INDEFINITE);
 	    timeline.play();
     }
 
-    private void pathVerification(Controller controller) throws IOException {
+    private void pathVerification(Controller controller) {
     	Path path = Path.of(pathToProductFile);
         if (Files.exists(path)) {
 	        controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() + "»\nНо ты можешь обновить его");
@@ -87,9 +89,7 @@ public class Main extends Application {
 		}
     }
 
-    static void loadProduct() throws IOException {
-	    //productFileInputStream = new FileInputStream(pathToProductFile);
-	    //productFileInputStream.close();
+    static void loadProduct() {
 	    ProductFileWorker productFileWorker = new ProductFileWorker(pathToProductFile, reinforcementProductArrayList);
 	    Thread productFileWorkerThread = new Thread(productFileWorker);
 	    productFileWorkerThread.start();
@@ -97,6 +97,10 @@ public class Main extends Application {
 
     public static void addNotification(String string) {
     	notificationString = notificationString + string + "\n";
+    }
+
+    public static void clearNotification() {
+    	notificationString = "";
     }
 
     static void saveConfig() throws IOException {

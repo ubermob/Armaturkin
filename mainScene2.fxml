@@ -60,7 +60,10 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="notificationLabel" alignment="TOP_RIGHT" layoutX="77.0" layoutY="22.0" prefHeight="34.0" prefWidth="78.0" text="Label" textAlignment="RIGHT" />
+                  <Label fx:id="notificationLabel" alignment="TOP_RIGHT" layoutX="50.0" layoutY="22.0" prefHeight="34.0" prefWidth="120.0" text="Посмотри сюда" textAlignment="RIGHT">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                   <Polygon fx:id="notificationArrow" fill="DODGERBLUE" layoutX="186.0" layoutY="55.0" points="-10.0, -9.0, 10.0, -9.0, 0.0, -41.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                   <Polygon fill="DODGERBLUE" layoutX="69.0" layoutY="207.0" points="-31.0, 17.0, 47.0, 45.0, 20.0, -40.0" stroke="TRANSPARENT" strokeType="INSIDE">
                      <effect>
@@ -79,12 +82,17 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="25.0" layoutY="36.0" prefHeight="500.0" prefWidth="750.0" text="Label" textAlignment="CENTER">
+                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="549.0" prefWidth="779.0" text="Label">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextArea layoutX="525.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" />
+                  <Button fx:id="clearResultLabelButton" layoutX="691.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearResultLabel" text="Очистить">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
       </content>
     </Tab>
