@@ -5,23 +5,22 @@ import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.*;
 
-public class ProductFileWorker implements Runnable {
+public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 
 	private final String path;
-	private final ArrayList<ReinforcementProduct> reinforcementProductArrayList; // Do change final to volatile?
+	private final ArrayList<ReinforcementProduct> reinforcementProductArrayList;
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
 	private int rowInt;
-	private ArrayList<Integer> positionList = new ArrayList<>();
-	private int diameter;
+	private final ArrayList<Integer> positionList = new ArrayList<>();
 	private int diameterArrayIndex;
 	private boolean diameterMatch;
 	private int length;
 
 	public ProductFileWorker(String path, ArrayList<ReinforcementProduct> reinforcementProductArrayList) {
-		this.reinforcementProductArrayList = reinforcementProductArrayList;
 		this.path = path;
+		this.reinforcementProductArrayList = reinforcementProductArrayList;
 	}
 
 	@Override
@@ -34,34 +33,29 @@ public class ProductFileWorker implements Runnable {
 		sheet = workbook.getSheetAt(0);
 		rowInt = 2;
 		while (!isCellEmpty(sheet.getRow(rowInt).getCell(0))) {
-			row = sheet.getRow(rowInt);
-			new ReinforcementProduct(
-					checkPosition(parseInt(row.getCell(0))),
-					checkDiameter(parseInt(row.getCell(2))),
-					checkRFClass(row.getCell(3).getStringCellValue()),
-					checkMaxLength(parseInt(row.getCell(4))),
-					checkMass(row.getCell(5).getNumericCellValue())
-			);
-			System.out.println(getClass() + ": " + rowInt);
+			readRow();
 			rowInt++;
 		}
-		Main.addNotification("☻ Прочитано до " + rowInt);
+		System.out.println(getClass() + ": Thread complete");
+		Main.addNotification("☻ Список изделий прочитан до строки с номером: " + rowInt + " (включительно)");
 	}
 
-	boolean isCellEmpty(Cell cell) {
-		// https://stackoverflow.com/questions/15764417/how-to-check-if-an-excel-cell-is-empty-using-apache-poi/15779444
-		if (cell == null) {
-			return true;
-		}
-		if (cell.getCellType() == CellType.BLANK) {
-			return true;
-		}
-		return false;
+	void readRow() {
+		row = sheet.getRow(rowInt);
+		reinforcementProductArrayList.add(new ReinforcementProduct(
+				checkPosition(parseIntFromNumber(row.getCell(0))),
+				checkDiameter(parseIntFromNumber(row.getCell(2))),
+				checkRFClass(row.getCell(3).getStringCellValue()),
+				checkMaxLength(parseIntFromNumber(row.getCell(4))),
+				checkMass(row.getCell(5).getNumericCellValue())
+		));
+		System.out.println(getClass() + ": [rowInt: " + rowInt + "]");
+		System.out.println(reinforcementProductArrayList.get(reinforcementProductArrayList.size() - 1).toString());
 	}
 
 	int checkPosition(int position) {
 		if (positionList.contains(position)) {
-			Main.addNotification("В строчке " + (rowInt + 1) + " продублированна позиция: " + position);
+			Main.addNotification("В строке " + (rowInt + 1) + " продублированна позиция: " + position);
 		}
 		positionList.add(position);
 		return  position;
@@ -76,8 +70,7 @@ public class ProductFileWorker implements Runnable {
 				return diameter;
 			}
 		}
-		Main.addNotification("В строчке " + (rowInt + 1) + " диаметр равен: " + diameter);
-		this.diameter = diameter;
+		Main.addNotification("В строке " + (rowInt + 1) + " диаметр равен: " + diameter);
 		return diameter;
 	}
 
@@ -107,13 +100,13 @@ public class ProductFileWorker implements Runnable {
 				return RFClass.A600;
 			}
 		}
-		Main.addNotification("В строчке " + (rowInt + 1) + " класс арматуры: " + string);
+		Main.addNotification("В строке " + (rowInt + 1) + " класс арматуры: " + string);
 		return RFClass.MISS_VALUE;
 	}
 
 	int checkMaxLength(int length) {
 		if (length > Pattern.maxProductionLength) {
-			Main.addNotification("В строчке " + (rowInt + 1) + " длина изделия: " + length);
+			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия: " + length);
 		}
 		this.length = length;
 		return length;
@@ -128,14 +121,9 @@ public class ProductFileWorker implements Runnable {
 			boolean match2 = mass2 - mass < 0.01 || mass2 - mass < -0.01;
 			boolean match3 = mass2 - mass < 0.01 || mass3 - mass < -0.01;
 			if (!match1 && !match2 && !match3) {
-				Main.addNotification("В строчке " + (rowInt + 1) + " масса изделия: " + mass + ". Я думаю, должно быть: " + mass1);
-				//Main.addNotification("Log: " + mass1 + "\n" + mass2 + "\n" + mass3);
+				Main.addNotification("В строке " + (rowInt + 1) + " масса изделия: " + mass + ". Я думаю, должно быть: " + mass1);
 			}
 		}
 		return mass;
-	}
-
-	int parseInt(Cell cell) {
-		return (int) Math.round(cell.getNumericCellValue());
 	}
 }

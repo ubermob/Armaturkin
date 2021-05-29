@@ -64,7 +64,12 @@
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
                   <Polygon fx:id="notificationArrow" fill="DODGERBLUE" layoutX="186.0" layoutY="55.0" points="-10.0, -9.0, 10.0, -9.0, 0.0, -41.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                  <Button fx:id="ignoreUpperButton" layoutX="633.0" layoutY="115.0" mnemonicParsing="false" onAction="#ignoreUpper" text="Игнорировать">
+                  <Button fx:id="clearUpperDropSpaceButton" layoutX="612.0" layoutY="115.0" mnemonicParsing="false" onAction="#clearUpperDropSpace" text="Очистить DropSpace">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="LowerDropSpaceButton" layoutX="612.0" layoutY="334.0" mnemonicParsing="false" onAction="#clearLowerDropSpace" text="Очистить DropSpace">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -78,7 +83,7 @@
                <children>
                   <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="549.0" prefWidth="779.0" text="Label">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
                   <TextArea layoutX="525.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" />
@@ -106,12 +111,12 @@
                   <Circle fx:id="circle2" fill="#dadada" layoutX="300.0" layoutY="121.0" onMouseClicked="#setBackgroundColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
                   <Text fx:id="appearanceText" layoutX="324.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет фона" textAlignment="CENTER" wrappingWidth="140.80337524414062">
                      <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Text>
                   <Text fx:id="appearanceText2" layoutX="330.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет текста" textAlignment="CENTER" wrappingWidth="140.80337524414062">
                      <font>
-                        <Font size="20.0" />
+                        <Font name="System Bold" size="20.0" />
                      </font>
                   </Text>
                   <Circle fx:id="circle6" fill="WHITE" layoutX="200.0" layoutY="297.0" onMouseClicked="#setTextColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />

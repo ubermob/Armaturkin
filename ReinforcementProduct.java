@@ -13,4 +13,33 @@ public class ReinforcementProduct {
 		this.length = length;
 		this.mass = mass;
 	}
+
+	@Override
+	public String toString() {
+		return getClass() + ": [position: " + position + "]," +
+				"[diameter: " + diameter + "]," +
+				"[RFClass: " + rfClass + "]," +
+				"[length: " + length + "]," +
+				"[mass: " + mass + "]";
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public int getDiameter() {
+		return diameter;
+	}
+
+	public RFClass getRfClass() {
+		return rfClass;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public double getMass() {
+		return mass;
+	}
 }

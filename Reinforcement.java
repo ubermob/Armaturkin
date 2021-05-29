@@ -1,41 +1,35 @@
 public class Reinforcement {
 
-    int summary;
-    int diameter;
-    int length;
-    int position;
-    RFClass rfClass;
-    double mass;
+	private final int position;
+	private final int diameter;
+	private final RFClass rfClass;
+	private final int length;
+	private final int number;
+	private final double mass;
+	private final boolean linear;
 
-    public Reinforcement(int summary, int diameter, int length, int position, RFClass rfClass, double mass) {
-        this.summary = summary;
-        this.diameter = diameter;
-        this.length = length;
-        this.position = position;
-        this.rfClass = rfClass;
-        this.mass = mass;
-    }
+	public Reinforcement(int position, int diameter, RFClass rfClass, int length, double mass) {
+		this.position = position;
+		this.diameter = diameter;
+		this.rfClass = rfClass;
+		this.length = length;
+		number = 1;
+		this.mass = mass;
+		linear = true;
+	}
 
-    public String toString(RFClass rfClass) {
-        switch (rfClass) {
-            case A240 -> {
-                return "А240";// Output russian letters
-            }
-            case A400 -> {
-                return "А400";
-            }
-            case A500 -> {
-                return "А500";
-            }
-            case A500S -> {
-                return "А500С";
-            }
-            case A600 -> {
-                return "А600";
-            }
-            default -> {
-                return "-";
-            }
-        }
-    }
+	public Reinforcement(int position, int diameter, RFClass rfClass, int length, int number, double mass) {
+		this.position = position;
+		this.diameter = diameter;
+		this.rfClass = rfClass;
+		this.length = length;
+		this.number = number;
+		this.mass = mass;
+		linear = false;
+	}
+
+	@Override
+	public String toString() {
+		return "";
+	}
 }

@@ -26,12 +26,13 @@ public class Main extends Application {
     private static volatile String notificationString = "";
 
     public volatile static String pathToProductFile;
-    public static String pathToCalculatingFile;
+    public volatile static String pathToCalculatingFile;
     public static String optionalPath;
 
 	public static List<File> inputFileList = new ArrayList<>();
 
 	public volatile static ArrayList<ReinforcementProduct> reinforcementProductArrayList = new ArrayList<>();
+	public volatile static ArrayList<Reinforcement> reinforcement = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -77,9 +78,17 @@ public class Main extends Application {
     }
 
     static void loadProduct() {
+    	reinforcementProductArrayList.clear();
 	    ProductFileWorker productFileWorker = new ProductFileWorker(pathToProductFile, reinforcementProductArrayList);
 	    Thread productFileWorkerThread = new Thread(productFileWorker);
 	    productFileWorkerThread.start();
+    }
+
+    static void loadCalculatingFile() {
+    	reinforcement.clear();
+		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(pathToCalculatingFile, reinforcement);
+		Thread calculatingFileWorkerThread = new Thread(calculatingFileWorker);
+		calculatingFileWorkerThread.start();
     }
 
     public static void addNotification(String string) {
@@ -95,13 +104,13 @@ public class Main extends Application {
 			List<String> load = Reader.read(programRootPath + configFileName);
 			backgroundColor = load.get(0);
 			textColor = load.get(1);
-			if (!load.get(2).equalsIgnoreCase("null")) {
+			if (!load.get(2).equals("null")) {
 				pathToProductFile = load.get(2);
 			}
-			if (!load.get(3).equalsIgnoreCase("null")) {
+			if (!load.get(3).equals("null")) {
 				pathToCalculatingFile = load.get(3);
 			}
-			if (!load.get(4).equalsIgnoreCase("null")) {
+			if (!load.get(4).equals("null")) {
 				optionalPath = load.get(4);
 			}
 		}
@@ -112,12 +121,13 @@ public class Main extends Application {
 	}
 
     static void saveConfig() throws IOException {
-    	String [] configList = new String[5];
-	    configList[0] = backgroundColor;
-	    configList[1] = textColor;
-	    configList[2] = pathToProductFile;
-	    configList[3] = pathToCalculatingFile;
-	    configList[4] = optionalPath;
+    	String [] configList = {
+			    backgroundColor,
+			    textColor,
+			    pathToProductFile,
+			    pathToCalculatingFile,
+			    optionalPath
+	    };
 	    Writer.write(programRootPath + configFileName, configList);
     }
 

@@ -30,6 +30,8 @@ public class Controller {
 	public Polygon notificationArrow;
 	public Button ignoreUpperButton;
 	public Button clearResultLabelButton;
+	public Button LowerDropSpaceButton;
+	public Button clearUpperDropSpaceButton;
 
 	public static void initialize() {
 		// ???
@@ -122,10 +124,7 @@ public class Controller {
     }
 
     public void lowerDragDropped(DragEvent dragEvent) {
-	    List<File> fileList = getDroppedFile(dragEvent);
-	    for (int i = 0; i < fileList.size(); i++) {
-
-	    }
+	    dragDropped(dragEvent, 1);
     }
 
     public void lowerDragOver(DragEvent dragEvent) {
@@ -165,6 +164,7 @@ public class Controller {
 			    }
 			    if (i == 1) {
 			    	Main.pathToCalculatingFile = file.getAbsolutePath();
+			    	Main.loadCalculatingFile();
 			    }
 		    } else {
 		    	if (i == 0) {
@@ -218,5 +218,15 @@ public class Controller {
 
 	public void clearResultLabel(ActionEvent actionEvent) {
 		Main.clearNotification();
+	}
+
+	public void clearUpperDropSpace(ActionEvent actionEvent) {
+		Main.pathToProductFile = null;
+		Main.reinforcementProductArrayList.clear();
+	}
+
+	public void clearLowerDropSpace(ActionEvent actionEvent) {
+		Main.pathToCalculatingFile = null;
+		Main.reinforcement.clear();
 	}
 }
