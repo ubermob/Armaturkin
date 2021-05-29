@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
@@ -65,11 +64,6 @@
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
                   <Polygon fx:id="notificationArrow" fill="DODGERBLUE" layoutX="186.0" layoutY="55.0" points="-10.0, -9.0, 10.0, -9.0, 0.0, -41.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                  <Polygon fill="DODGERBLUE" layoutX="69.0" layoutY="207.0" points="-31.0, 17.0, 47.0, 45.0, 20.0, -40.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                     <effect>
-                        <GaussianBlur radius="36.25" />
-                     </effect>
-                  </Polygon>
                   <Button fx:id="ignoreUpperButton" layoutX="633.0" layoutY="115.0" mnemonicParsing="false" onAction="#ignoreUpper" text="Игнорировать">
                      <font>
                         <Font name="System Bold" size="16.0" />

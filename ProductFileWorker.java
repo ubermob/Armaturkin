@@ -42,7 +42,7 @@ public class ProductFileWorker implements Runnable {
 					checkMaxLength(parseInt(row.getCell(4))),
 					checkMass(row.getCell(5).getNumericCellValue())
 			);
-			System.out.println(rowInt);
+			System.out.println(getClass() + ": " + rowInt);
 			rowInt++;
 		}
 		Main.addNotification("☻ Прочитано до " + rowInt);

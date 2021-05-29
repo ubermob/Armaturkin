@@ -111,44 +111,70 @@ public class Controller {
     }
 
     public void calculate(ActionEvent actionEvent) {
-
     }
 
     public void upperDragDropped(DragEvent dragEvent) throws IOException {
-	    List<File> fileList = getDroppedFile(dragEvent);
-	    if (fileList.size() != 1) {
-			setUpperDragSpaceText("Мне нужен только один файл");
-	    } else {
-		    String[] fileName = fileList.get(0).getName().split("\\.");
-		    if (fileName[fileName.length - 1].equalsIgnoreCase("xls") ||
-				    fileName[fileName.length - 1].equalsIgnoreCase("xlsx")) {
-				setUpperDragSpaceText("Файл принят");
-				File file = fileList.get(0);
-				Main.pathToProductFile = file.getAbsolutePath();
-				Main.loadProduct();
-		    } else {
-			    setUpperDragSpaceText("Это не Excel файл");
-		    }
-	    }
+	    dragDropped(dragEvent, 0);
     }
 
     public void upperDragOver(DragEvent dragEvent) {
-        DragOver(dragEvent);
+        dragOver(dragEvent);
     }
 
     public void lowerDragDropped(DragEvent dragEvent) {
 	    List<File> fileList = getDroppedFile(dragEvent);
+	    for (int i = 0; i < fileList.size(); i++) {
+
+	    }
     }
 
     public void lowerDragOver(DragEvent dragEvent) {
-        DragOver(dragEvent);
+		dragOver(dragEvent);
     }
 
-    public void DragOver(DragEvent dragEvent) {
+    public void dragOver(DragEvent dragEvent) {
         if (dragEvent.getDragboard().hasFiles()) {
             dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
         }
         dragEvent.consume();
+    }
+
+    public void dragDropped(DragEvent dragEvent, int i) {
+	    List<File> fileList = getDroppedFile(dragEvent);
+	    if (fileList.size() != 1) {
+	    	if (i == 0) {
+			    setUpperDragSpaceText("Мне нужен только один файл");
+		    }
+	    	if (i == 1) {
+	    		setLowerDragSpaceText("Мне нужен только один файл");
+		    }
+	    } else {
+		    String[] fileName = fileList.get(0).getName().split("\\.");
+		    if (fileName[fileName.length - 1].equalsIgnoreCase("xls") ||
+				    fileName[fileName.length - 1].equalsIgnoreCase("xlsx")) {
+			    if (i == 0) {
+				    setUpperDragSpaceText("Файл принят");
+			    }
+			    if (i == 1) {
+				    setLowerDragSpaceText("Файл принят");
+			    }
+			    File file = fileList.get(0);
+			    if (i == 0) {
+				    Main.pathToProductFile = file.getAbsolutePath();
+				    Main.loadProduct();
+			    }
+			    if (i == 1) {
+			    	Main.pathToCalculatingFile = file.getAbsolutePath();
+			    }
+		    } else {
+		    	if (i == 0) {
+				    setUpperDragSpaceText("Это не Excel файл");
+			    }
+		    	if (i == 1) {
+				    setLowerDragSpaceText("Это не Excel файл");
+			    }
+		    }
+	    }
     }
 
     public List<File> getDroppedFile(DragEvent dragEvent) {
@@ -171,15 +197,17 @@ public class Controller {
     }
 
     public void setUpperDragSpaceText(String string) {
-        upperDragSpace.setText(string);
+		upperDragSpace.setText(string);
+    }
+
+    public void setLowerDragSpaceText(String string) {
+		lowerDragSpace.setText(string);
     }
 
 	public void saveInputFilePath(ActionEvent actionEvent) {
-
 	}
 
 	public void download(ActionEvent actionEvent) {
-
 	}
 
 	public void clearList(ActionEvent actionEvent) {

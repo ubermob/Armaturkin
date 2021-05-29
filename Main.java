@@ -22,7 +22,7 @@ public class Main extends Application {
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
     public static String backgroundColor = "#444444";
-    public static String textColor = "#000000";
+    public static String textColor = "#ffffff";
     private static volatile String notificationString = "";
 
     public volatile static String pathToProductFile;
@@ -43,6 +43,8 @@ public class Main extends Application {
         primaryStage.setTitle("Арматуркин" + " ver " + version);
         primaryStage.setScene(new Scene(root));
         setBackgroundColor();
+        controller.setUpperDragSpaceText("Перетащи сюда список изделий");
+	    controller.setLowerDragSpaceText("Перетащи сюда файл,\nкоторый надо посчитать");
         pathVerification(controller);
         primaryStage.show();
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
@@ -59,34 +61,19 @@ public class Main extends Application {
     }
 
     private void pathVerification(Controller controller) {
-    	Path path = Path.of(pathToProductFile);
-        if (Files.exists(path)) {
-	        controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() + "»\nНо ты можешь обновить его");
-	        loadProduct();
-        } else {
-	        controller.setUpperDragSpaceText("Я не нашёл файл с изделиями");
-        }
+    	if (pathToProductFile != null) {
+		    Path path = Path.of(pathToProductFile);
+		    if (Files.exists(path)) {
+			    controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() + "»\nНо ты можешь обновить его");
+			    loadProduct();
+		    }
+	    }
     }
 
     public static void main(String[] args) throws IOException {
         loadConfig();
         launch(args);
         saveConfig();
-    }
-
-    static void loadConfig() throws IOException {
-		if (Files.exists(Path.of(programRootPath, configFileName))) {
-			List<String> load = Reader.read(programRootPath + configFileName);
-			backgroundColor = load.get(0);
-			textColor = load.get(1);
-			pathToProductFile = load.get(2);
-			pathToCalculatingFile = load.get(3);
-			optionalPath = load.get(4);
-		}
-		if (Files.notExists(Path.of(programRootPath, configFileName))) {
-			Files.createFile(Path.of(programRootPath, configFileName));
-			saveConfig();
-		}
     }
 
     static void loadProduct() {
@@ -103,6 +90,27 @@ public class Main extends Application {
     	notificationString = "";
     }
 
+	static void loadConfig() throws IOException {
+		if (Files.exists(Path.of(programRootPath, configFileName))) {
+			List<String> load = Reader.read(programRootPath + configFileName);
+			backgroundColor = load.get(0);
+			textColor = load.get(1);
+			if (!load.get(2).equalsIgnoreCase("null")) {
+				pathToProductFile = load.get(2);
+			}
+			if (!load.get(3).equalsIgnoreCase("null")) {
+				pathToCalculatingFile = load.get(3);
+			}
+			if (!load.get(4).equalsIgnoreCase("null")) {
+				optionalPath = load.get(4);
+			}
+		}
+		if (Files.notExists(Path.of(programRootPath, configFileName))) {
+			Files.createFile(Path.of(programRootPath, configFileName));
+			saveConfig();
+		}
+	}
+
     static void saveConfig() throws IOException {
     	String [] configList = new String[5];
 	    configList[0] = backgroundColor;
@@ -114,6 +122,6 @@ public class Main extends Application {
     }
 
 	static void setBackgroundColor() {
-		root.setStyle("-fx-background-color: " + backgroundColor + ";");
-	}
+    	root.setStyle("-fx-background-color: " + backgroundColor + ";");
+    }
 }
