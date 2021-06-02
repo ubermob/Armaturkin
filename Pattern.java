@@ -50,4 +50,31 @@ public class Pattern {
 	static double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853 ,4.834, 6.313, 7.990, 9.865};
 	static double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85 ,4.83, 6.31, 7.99, 9.87}; // implements math rules
 	static double[] mass2Digit2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86 ,4.84, 6.32, 8.00, 9.86}; // alternative version
+	static int[] reservedPosition = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+	static int[] reservedDiameter = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14};
+
+	static int getReservedPositionIndex(int position) {
+		for (int i = 0; i < reservedPosition.length; i++) {
+			if (position == reservedPosition[i]) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	static RFClass getReservedRFClass(int reservedPosition) {
+		if (reservedPosition <= 13) {
+			return RFClass.A500S;
+		}
+		return RFClass.A240;
+	}
+
+	static boolean contains (int[] pattern, int value) {
+		for (int i : pattern) {
+			if (i == value) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

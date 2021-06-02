@@ -227,6 +227,6 @@ public class Controller {
 
 	public void clearLowerDropSpace(ActionEvent actionEvent) {
 		Main.pathToCalculatingFile = null;
-		Main.reinforcement.clear();
+		Main.reinforcementArrayList.clear();
 	}
 }

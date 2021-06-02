@@ -32,7 +32,7 @@ public class Main extends Application {
 	public static List<File> inputFileList = new ArrayList<>();
 
 	public volatile static ArrayList<ReinforcementProduct> reinforcementProductArrayList = new ArrayList<>();
-	public volatile static ArrayList<Reinforcement> reinforcement = new ArrayList<>();
+	public volatile static ArrayList<Reinforcement> reinforcementArrayList = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -72,9 +72,10 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-        loadConfig();
+    	checkDirectory();
+        loadConfigFile();
         launch(args);
-        saveConfig();
+        saveConfigFile();
     }
 
     static void loadProduct() {
@@ -85,8 +86,8 @@ public class Main extends Application {
     }
 
     static void loadCalculatingFile() {
-    	reinforcement.clear();
-		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(pathToCalculatingFile, reinforcement);
+    	reinforcementArrayList.clear();
+		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(pathToCalculatingFile, reinforcementArrayList);
 		Thread calculatingFileWorkerThread = new Thread(calculatingFileWorker);
 		calculatingFileWorkerThread.start();
     }
@@ -99,7 +100,13 @@ public class Main extends Application {
     	notificationString = "";
     }
 
-	static void loadConfig() throws IOException {
+    static void checkDirectory() throws IOException {
+    	if (Files.notExists(Path.of(programRootPath))) {
+    		Files.createDirectory(Path.of(programRootPath));
+	    }
+    }
+
+	static void loadConfigFile() throws IOException {
 		if (Files.exists(Path.of(programRootPath, configFileName))) {
 			List<String> load = Reader.read(programRootPath + configFileName);
 			backgroundColor = load.get(0);
@@ -116,11 +123,11 @@ public class Main extends Application {
 		}
 		if (Files.notExists(Path.of(programRootPath, configFileName))) {
 			Files.createFile(Path.of(programRootPath, configFileName));
-			saveConfig();
+			saveConfigFile();
 		}
 	}
 
-    static void saveConfig() throws IOException {
+    static void saveConfigFile() throws IOException {
     	String [] configList = {
 			    backgroundColor,
 			    textColor,

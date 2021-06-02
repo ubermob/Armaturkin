@@ -8,11 +8,12 @@ import org.apache.poi.ss.usermodel.*;
 public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
 	private final String path;
-	private final ArrayList<Reinforcement> reinforcement;
+	private final ArrayList<Reinforcement> reinforcementArrayList;
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
 	private int rowInt;
+	private final ArrayList<Integer> positionList = new ArrayList<>();
 
 	private int majorNumberColumn = -1;
 	private int majorNumber;
@@ -25,9 +26,9 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private int positionColumn = -1;
 	private int position;
 
-	public CalculatingFileWorker(String path, ArrayList<Reinforcement> reinforcement) {
+	public CalculatingFileWorker(String path, ArrayList<Reinforcement> reinforcementArrayList) {
 		this.path = path;
-		this.reinforcement = reinforcement;
+		this.reinforcementArrayList = reinforcementArrayList;
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		Main.addNotification("☻ Файл с армированием прочитан до строки с номером: " + rowInt + " (включительно)");
 	}
 
-	void readRow() {
+	private void readRow() {
 		row = sheet.getRow(rowInt);
 		majorNumber = parseIntFromNumber(row.getCell(majorNumberColumn));
 		diameter = parseIntFromString(row.getCell(diameterColumn));
@@ -62,10 +63,37 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		System.out.println(getClass() + ": [rowInt: " + rowInt + "]");
 		System.out.printf(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]\n",
 				position, diameter, length, majorNumber, minorNumber);
+		buildList();
 		// toString from ArrayList
 	}
 
-	boolean tableHeadVerification() {
+	private void buildList() {
+		if (positionList.contains(position)) {
+			editPosition();
+		} else {
+			insertPosition();
+		}
+	}
+
+	private void editPosition() {
+
+	}
+
+	private void insertPosition() {
+		positionList.add(position);
+		int reservedPositionIndex = Pattern.getReservedPositionIndex(position);
+		if (reservedPositionIndex != -1) {
+			// Linear reinforcement
+			Reinforcement sample = new Reinforcement(position,
+					Pattern.reservedDiameter[reservedPositionIndex],
+					Pattern.getReservedRFClass(reservedPositionIndex),
+					//length,
+					// need mass
+			);
+		}
+	}
+
+	private boolean tableHeadVerification() {
 		int column = 0;
 		row = sheet.getRow(0);
 		while (!isCellEmpty(row.getCell(column))) {
@@ -91,11 +119,11 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		return majorNumberColumn != -1 && diameterColumn != -1 && lengthColumn != -1 && minorNumberColumn != -1 && positionColumn != -1;
 	}
 
-	boolean equals(int column, String pattern) {
+	private boolean equals(int column, String pattern) {
 		return row.getCell(column).getStringCellValue().equalsIgnoreCase(pattern);
 	}
 
-	void tableHeadNotValid() {
+	private void tableHeadNotValid() {
 		String string = "";
 		if (majorNumberColumn == -1) {
 			string = "majorNumber";

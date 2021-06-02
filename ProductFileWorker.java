@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.*;
 
-public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
+public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
 	private final String path;
 	private final ArrayList<ReinforcementProduct> reinforcementProductArrayList;
@@ -32,7 +32,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 		}
 		sheet = workbook.getSheetAt(0);
 		rowInt = 2;
-		while (!isCellEmpty(sheet.getRow(rowInt).getCell(0))) {
+		while (!isRowEmpty(sheet.getRow(rowInt)) && !isCellEmpty(sheet.getRow(rowInt).getCell(0))) {
 			readRow();
 			rowInt++;
 		}
@@ -40,7 +40,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 		Main.addNotification("☻ Список изделий прочитан до строки с номером: " + rowInt + " (включительно)");
 	}
 
-	void readRow() {
+	private void readRow() {
 		row = sheet.getRow(rowInt);
 		reinforcementProductArrayList.add(new ReinforcementProduct(
 				checkPosition(parseIntFromNumber(row.getCell(0))),
@@ -53,15 +53,18 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 		System.out.println(reinforcementProductArrayList.get(reinforcementProductArrayList.size() - 1).toString());
 	}
 
-	int checkPosition(int position) {
+	private int checkPosition(int position) {
 		if (positionList.contains(position)) {
 			Main.addNotification("В строке " + (rowInt + 1) + " продублированна позиция: " + position);
+		}
+		if (Pattern.contains(Pattern.reservedPosition, position)) {
+			Main.addNotification("В строке " + (rowInt + 1) + " позиция из зарезервированного списка: " + position);
 		}
 		positionList.add(position);
 		return  position;
 	}
 
-	int checkDiameter(int diameter) {
+	private int checkDiameter(int diameter) {
 		diameterMatch = false;
 		for (int i = 0; i < Pattern.diameter.length; i++) {
 			if (diameter == Pattern.diameter[i]) {
@@ -74,7 +77,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 		return diameter;
 	}
 
-	RFClass checkRFClass(String string) {
+	private RFClass checkRFClass(String string) {
 		for (int i = 0; i < Pattern.rfClass500S.length; i++) {
 			if (string.equalsIgnoreCase(Pattern.rfClass500S[i])) {
 				return RFClass.A500S;
@@ -104,7 +107,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 		return RFClass.MISS_VALUE;
 	}
 
-	int checkMaxLength(int length) {
+	private int checkMaxLength(int length) {
 		if (length > Pattern.maxProductionLength) {
 			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия: " + length);
 		}
@@ -112,7 +115,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, ParseInt {
 		return length;
 	}
 
-	double checkMass(double mass) {
+	private double checkMass(double mass) {
 		if (diameterMatch) {
 			double mass1 = length / 1000.0 * Pattern.mass3Digit[diameterArrayIndex];
 			double mass2 = length / 1000.0 * Pattern.mass2Digit1[diameterArrayIndex];
