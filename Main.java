@@ -7,12 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.apache.poi.ss.formula.ThreeDEval;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Main extends Application {
@@ -29,10 +29,8 @@ public class Main extends Application {
     public volatile static String pathToCalculatingFile;
     public static String optionalPath;
 
-	public static List<File> inputFileList = new ArrayList<>();
-
-	public volatile static ArrayList<ReinforcementProduct> reinforcementProductArrayList = new ArrayList<>();
-	public volatile static ArrayList<Reinforcement> reinforcementArrayList = new ArrayList<>();
+	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
+	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,7 +39,7 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.setTextColor();
         controller.setOpacity();
-        primaryStage.setTitle("Арматуркин" + " ver " + version);
+        primaryStage.setTitle("Арматуркин ver " + version);
         primaryStage.setScene(new Scene(root));
         setBackgroundColor();
         controller.setUpperDragSpaceText("Перетащи сюда список изделий");
@@ -73,23 +71,41 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
     	checkDirectory();
+    	if (args[0].equals("-writelog")) {
+    		Log.enable();
+	    }
         loadConfigFile();
         launch(args);
         saveConfigFile();
+        Log.saveLog();
     }
 
     static void loadProduct() {
-    	reinforcementProductArrayList.clear();
-	    ProductFileWorker productFileWorker = new ProductFileWorker(pathToProductFile, reinforcementProductArrayList);
+    	reinforcementProductHashMap.clear();
+	    ProductFileWorker productFileWorker = new ProductFileWorker(pathToProductFile, reinforcementProductHashMap);
 	    Thread productFileWorkerThread = new Thread(productFileWorker);
 	    productFileWorkerThread.start();
     }
 
     static void loadCalculatingFile() {
-    	reinforcementArrayList.clear();
-		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(pathToCalculatingFile, reinforcementArrayList);
+    	reinforcementHashMap.clear();
+		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(pathToCalculatingFile,
+				reinforcementHashMap,
+				reinforcementProductHashMap
+		);
 		Thread calculatingFileWorkerThread = new Thread(calculatingFileWorker);
 		calculatingFileWorkerThread.start();
+    }
+
+    static void downloadCalculatedFile() {
+    	if (!reinforcementHashMap.isEmpty() && !reinforcementProductHashMap.isEmpty()) {
+    		FileWorker fileWorker = new FileWorker(pathToCalculatingFile,
+				    reinforcementHashMap,
+				    reinforcementProductHashMap
+		    );
+    		Thread fileWorkerThread = new Thread(fileWorker);
+    		fileWorkerThread.start();
+	    }
     }
 
     public static void addNotification(String string) {

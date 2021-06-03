@@ -12,7 +12,11 @@ public class Writer {
 	    for (int i = 0; i < inputList.length; i++) {
 		    list.add(i, inputList[i]);
 	    }
-	    Files.write(Path.of(path), list);
-    	list.clear();
+	    write(path, list);
+	    list.clear();
+    }
+
+    public static void write(String path, ArrayList<String> inputList) throws IOException {
+	    Files.write(Path.of(path), inputList);
     }
 }

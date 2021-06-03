@@ -1,19 +1,20 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.HashMap;
 
 import org.apache.poi.ss.usermodel.*;
 
 public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
 	private final String path;
-	private final ArrayList<Reinforcement> reinforcementArrayList;
+	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
+	private final HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
 	private int rowInt;
-	private final ArrayList<Integer> positionList = new ArrayList<>();
 
 	private int majorNumberColumn = -1;
 	private int majorNumber;
@@ -26,9 +27,11 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private int positionColumn = -1;
 	private int position;
 
-	public CalculatingFileWorker(String path, ArrayList<Reinforcement> reinforcementArrayList) {
+	public CalculatingFileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
+	                             HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap) {
 		this.path = path;
-		this.reinforcementArrayList = reinforcementArrayList;
+		this.reinforcementHashMap = reinforcementHashMap;
+		this.reinforcementProductHashMap = reinforcementProductHashMap;
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		} else {
 			tableHeadNotValid();
 		}
-		System.out.println(getClass() + ": Thread complete");
+		Log.add(getClass() + ": Thread complete");
 		Main.addNotification("☻ Файл с армированием прочитан до строки с номером: " + rowInt + " (включительно)");
 	}
 
@@ -60,15 +63,17 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		minorNumber = parseIntFromString(row.getCell(minorNumberColumn));
 		position = parseIntFromString(row.getCell(positionColumn));
 
-		System.out.println(getClass() + ": [rowInt: " + rowInt + "]");
-		System.out.printf(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]\n",
+		Log.add(getClass() + ": [rowInt: " + rowInt + "]");
+		Formatter formatter = new Formatter();
+		formatter.format(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]",
 				position, diameter, length, majorNumber, minorNumber);
-		buildList();
-		// toString from ArrayList
+		Log.add(formatter.toString());
+		buildMap();
+		Log.add(reinforcementHashMap.get(position).toString());
 	}
 
-	private void buildList() {
-		if (positionList.contains(position)) {
+	private void buildMap() {
+		if (reinforcementHashMap.containsKey(position)) {
 			editPosition();
 		} else {
 			insertPosition();
@@ -76,20 +81,101 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void editPosition() {
-
+		int reservedPositionIndex = Pattern.getReservedPositionIndex(position);
+		int number = majorNumber * minorNumber;
+		if (reservedPositionIndex != -1) {
+			// Linear reinforcement
+			compareDiameter(reservedPositionIndex);
+			compareMaxLength();
+			Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
+			Reinforcement currentReinforcement = getReinforcement(true, number);
+			reinforcementHashMap.put(position, new Reinforcement(currentReinforcement.getPosition(),
+					currentReinforcement.getDiameter(),
+					currentReinforcement.getRfClass(),
+					calculatedReinforcement.getLength() + currentReinforcement.getLength(),
+					calculatedReinforcement.getMass() + currentReinforcement.getMass()
+			));
+		} else {
+			// Reinforcement product
+			compareDiameter();
+			compareMaxLength();
+			compareLength();
+			Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
+			Reinforcement currentReinforcement = getReinforcement(false, number);
+			reinforcementHashMap.put(position, new Reinforcement(currentReinforcement.getPosition(),
+					currentReinforcement.getDiameter(),
+					currentReinforcement.getRfClass(),
+					currentReinforcement.getLength(),
+					calculatedReinforcement.getNumber() + currentReinforcement.getNumber(),
+					currentReinforcement.getMass()
+			));
+		}
 	}
 
 	private void insertPosition() {
-		positionList.add(position);
 		int reservedPositionIndex = Pattern.getReservedPositionIndex(position);
+		int number = majorNumber * minorNumber;
 		if (reservedPositionIndex != -1) {
 			// Linear reinforcement
-			Reinforcement sample = new Reinforcement(position,
-					Pattern.reservedDiameter[reservedPositionIndex],
-					Pattern.getReservedRFClass(reservedPositionIndex),
-					//length,
-					// need mass
+			compareDiameter(reservedPositionIndex);
+			compareMaxLength();
+			reinforcementHashMap.put(position, getReinforcement(true, number));
+		} else if (reinforcementProductHashMap.containsKey(position)) {
+			// Reinforcement product
+			compareDiameter();
+			compareMaxLength();
+			compareLength();
+			reinforcementHashMap.put(position, getReinforcement(false, number));
+		} else {
+			Main.addNotification("Позиция: " + position + " отсутствует в списке изделий");
+		}
+	}
+
+	private Reinforcement getReinforcement(boolean isLinear, int number) {
+		if (isLinear) {
+			return new Reinforcement(position,
+					diameter,
+					Pattern.getReservedRFClass(position),
+					length * number,
+					Pattern.getMass(diameter) * length * number / 1000
 			);
+		}
+		return new Reinforcement(position,
+				diameter,
+				reinforcementProductHashMap.get(position).getRfClass(),
+				length,
+				number,
+				reinforcementProductHashMap.get(position).getMass()
+		);
+	}
+
+	private void compareDiameter(int reservedPositionIndex) {
+		int productDiameter = Pattern.reservedDiameter[reservedPositionIndex];
+		if (diameter != productDiameter) {
+			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает диаметр: " + diameter +
+					" (в зарезервированных позициях: " + productDiameter + ")");
+		}
+	}
+
+	private void compareDiameter() {
+		int productDiameter = reinforcementProductHashMap.get(position).getDiameter();
+		if (diameter != productDiameter) {
+			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает диаметр: " + diameter +
+					" (в списке изделий: " + productDiameter + ")");
+		}
+	}
+
+	private void compareMaxLength() {
+		if (length > Pattern.maxLength) {
+			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия/стержня: " + length);
+		}
+	}
+
+	private void compareLength() {
+		int productLength = reinforcementProductHashMap.get(position).getLength();
+		if (length != productLength) {
+			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает длина: " + length +
+					" (в списке изделий : " + productLength + ")");
 		}
 	}
 
@@ -114,8 +200,10 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			}
 			column++;
 		}
-		System.out.printf(getClass() + " table head: [majorNumberColumn: %d],[diameterColumn: %d],[lengthColumn: %d],[minorNumberColumn: %d],[positionColumn: %d]\n",
+		Formatter formatter = new Formatter();
+		formatter.format(getClass() + " table head: [majorNumberColumn: %d],[diameterColumn: %d],[lengthColumn: %d],[minorNumberColumn: %d],[positionColumn: %d]",
 				majorNumberColumn, diameterColumn, lengthColumn, minorNumberColumn, positionColumn);
+		Log.add(formatter.toString());
 		return majorNumberColumn != -1 && diameterColumn != -1 && lengthColumn != -1 && minorNumberColumn != -1 && positionColumn != -1;
 	}
 

@@ -1,6 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -20,22 +21,18 @@ public class Controller {
     public Label upperDragSpace;
     public Label lowerDragSpace;
     public Label resultLabel;
-	public Label calculatedLabel;
-	public Button saveAppearanceButton;
 	public Button calculationButton;
-	public Button saveInputFilePathButton;
 	public Button downloadButton;
-	public Button clearListButton;
 	public Label notificationLabel;
 	public Polygon notificationArrow;
-	public Button ignoreUpperButton;
 	public Button clearResultLabelButton;
 	public Button LowerDropSpaceButton;
 	public Button clearUpperDropSpaceButton;
+	public TextField downloadFileTableHead;
 
-	public static void initialize() {
+	/*public static void initialize() {
 		// ???
-    }
+    }*/
 
     public void setBackgroundColor1(MouseEvent mouseEvent) {
         Main.backgroundColor = "#ffffff";
@@ -93,7 +90,6 @@ public class Controller {
         upperDragSpace.setTextFill(Paint.valueOf(Main.textColor));
         lowerDragSpace.setTextFill(Paint.valueOf(Main.textColor));
         resultLabel.setTextFill(Paint.valueOf(Main.textColor));
-        calculatedLabel.setTextFill(Paint.valueOf(Main.textColor));
         notificationLabel.setTextFill(Paint.valueOf(Main.textColor));
     }
 
@@ -102,7 +98,6 @@ public class Controller {
     }
 
     public void setOpacity() {
-		calculatedLabel.setOpacity(0);
 		notificationLabel.setOpacity(0);
 		notificationArrow.setOpacity(0);
     }
@@ -113,9 +108,12 @@ public class Controller {
     }
 
     public void calculate(ActionEvent actionEvent) {
+    	// Test
+	    System.out.println("test calculate button");
+	    System.out.println(downloadFileTableHead.getText());
     }
 
-    public void upperDragDropped(DragEvent dragEvent) throws IOException {
+    public void upperDragDropped(DragEvent dragEvent) {
 	    dragDropped(dragEvent, 0);
     }
 
@@ -186,16 +184,6 @@ public class Controller {
         return fileList;
     }
 
-    public void saveAppearance(ActionEvent actionEvent) throws IOException {
-        /*Writer.list.clear();
-        Writer.list.add(Main.backgroundColor);
-        Writer.list.add(Main.textColor);
-        Writer.list.add(Main.pathToProductList);
-        Writer.list.add(Main.pathToCalculatingFile);
-        Writer.list.add(Main.optionalPath);
-        Writer.write();*/
-    }
-
     public void setUpperDragSpaceText(String string) {
 		upperDragSpace.setText(string);
     }
@@ -204,16 +192,8 @@ public class Controller {
 		lowerDragSpace.setText(string);
     }
 
-	public void saveInputFilePath(ActionEvent actionEvent) {
-	}
-
 	public void download(ActionEvent actionEvent) {
-	}
-
-	public void clearList(ActionEvent actionEvent) {
-	}
-
-	public void ignoreUpper(ActionEvent actionEvent) {
+		Main.downloadCalculatedFile();
 	}
 
 	public void clearResultLabel(ActionEvent actionEvent) {
@@ -222,11 +202,11 @@ public class Controller {
 
 	public void clearUpperDropSpace(ActionEvent actionEvent) {
 		Main.pathToProductFile = null;
-		Main.reinforcementProductArrayList.clear();
+		Main.reinforcementProductHashMap.clear();
 	}
 
 	public void clearLowerDropSpace(ActionEvent actionEvent) {
 		Main.pathToCalculatingFile = null;
-		Main.reinforcementArrayList.clear();
+		Main.reinforcementHashMap.clear();
 	}
 }

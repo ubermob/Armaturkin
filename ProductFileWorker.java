@@ -1,26 +1,25 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.poi.ss.usermodel.*;
 
 public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
 	private final String path;
-	private final ArrayList<ReinforcementProduct> reinforcementProductArrayList;
+	private final HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
 	private int rowInt;
-	private final ArrayList<Integer> positionList = new ArrayList<>();
 	private int diameterArrayIndex;
 	private boolean diameterMatch;
 	private int length;
 
-	public ProductFileWorker(String path, ArrayList<ReinforcementProduct> reinforcementProductArrayList) {
+	public ProductFileWorker(String path, HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap) {
 		this.path = path;
-		this.reinforcementProductArrayList = reinforcementProductArrayList;
+		this.reinforcementProductHashMap = reinforcementProductHashMap;
 	}
 
 	@Override
@@ -36,32 +35,27 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowInt++;
 		}
-		System.out.println(getClass() + ": Thread complete");
+		Log.add(getClass() + ": Thread complete");
 		Main.addNotification("☻ Список изделий прочитан до строки с номером: " + rowInt + " (включительно)");
 	}
 
 	private void readRow() {
 		row = sheet.getRow(rowInt);
-		reinforcementProductArrayList.add(new ReinforcementProduct(
-				checkPosition(parseIntFromNumber(row.getCell(0))),
-				checkDiameter(parseIntFromNumber(row.getCell(2))),
-				checkRFClass(row.getCell(3).getStringCellValue()),
-				checkMaxLength(parseIntFromNumber(row.getCell(4))),
-				checkMass(row.getCell(5).getNumericCellValue())
-		));
-		System.out.println(getClass() + ": [rowInt: " + rowInt + "]");
-		System.out.println(reinforcementProductArrayList.get(reinforcementProductArrayList.size() - 1).toString());
-	}
-
-	private int checkPosition(int position) {
-		if (positionList.contains(position)) {
+		int position = parseIntFromNumber(row.getCell(0));
+		if (reinforcementProductHashMap.containsKey(position)) {
 			Main.addNotification("В строке " + (rowInt + 1) + " продублированна позиция: " + position);
 		}
 		if (Pattern.contains(Pattern.reservedPosition, position)) {
 			Main.addNotification("В строке " + (rowInt + 1) + " позиция из зарезервированного списка: " + position);
 		}
-		positionList.add(position);
-		return  position;
+		reinforcementProductHashMap.put(position, new ReinforcementProduct(position,
+				checkDiameter(parseIntFromNumber(row.getCell(2))),
+				checkRFClass(row.getCell(3).getStringCellValue()),
+				checkMaxLength(parseIntFromNumber(row.getCell(4))),
+				checkMass(row.getCell(5).getNumericCellValue())
+		));
+		Log.add(getClass() + ": [rowInt: " + rowInt + "]");
+		Log.add(reinforcementProductHashMap.get(position).toString());
 	}
 
 	private int checkDiameter(int diameter) {
@@ -108,7 +102,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private int checkMaxLength(int length) {
-		if (length > Pattern.maxProductionLength) {
+		if (length > Pattern.maxLength) {
 			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия: " + length);
 		}
 		this.length = length;

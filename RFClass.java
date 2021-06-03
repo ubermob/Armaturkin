@@ -4,5 +4,9 @@ public enum RFClass {
 	A500,
 	A500S,
 	A600,
-	MISS_VALUE
+	MISS_VALUE;
+
+	static String toString(RFClass rfClass) {
+		return "";
+	}
 }

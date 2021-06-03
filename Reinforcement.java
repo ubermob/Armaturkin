@@ -30,6 +30,40 @@ public class Reinforcement {
 
 	@Override
 	public String toString() {
-		return "";
+		return getClass() + ": [position: " + position + "]," +
+				"[diameter: " + diameter + "]," +
+				"[RFClass: " + rfClass + "]," +
+				"[length: " + length + "]," +
+				"[number: " + number + "]," +
+				"[mass: " + mass +  "]," +
+				"[linear: " + linear + "]";
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public int getDiameter() {
+		return diameter;
+	}
+
+	public RFClass getRfClass() {
+		return rfClass;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public double getMass() {
+		return mass;
+	}
+
+	public boolean isLinear() {
+		return linear;
 	}
 }

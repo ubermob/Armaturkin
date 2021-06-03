@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Polygon?>
@@ -39,22 +39,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="saveInputFilePathButton" layoutX="423.0" layoutY="498.0" mnemonicParsing="false" onAction="#saveInputFilePath" text="Сохранить пути файлов">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
                   <Button fx:id="downloadButton" layoutX="686.0" layoutY="498.0" mnemonicParsing="false" onAction="#download" text="Скачать">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="calculatedLabel" alignment="CENTER" layoutX="355.0" layoutY="463.0" prefHeight="25.0" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Посчитано" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="clearListButton" layoutX="150.0" layoutY="498.0" mnemonicParsing="false" onAction="#clearList" text="Очистить нижний список">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -64,16 +49,17 @@
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
                   <Polygon fx:id="notificationArrow" fill="DODGERBLUE" layoutX="186.0" layoutY="55.0" points="-10.0, -9.0, 10.0, -9.0, 0.0, -41.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                  <Button fx:id="clearUpperDropSpaceButton" layoutX="612.0" layoutY="115.0" mnemonicParsing="false" onAction="#clearUpperDropSpace" text="Очистить DropSpace">
+                  <Button fx:id="clearUpperDropSpaceButton" layoutX="647.0" layoutY="103.0" mnemonicParsing="false" onAction="#clearUpperDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;DropSpace" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="LowerDropSpaceButton" layoutX="612.0" layoutY="334.0" mnemonicParsing="false" onAction="#clearLowerDropSpace" text="Очистить DropSpace">
+                  <Button fx:id="LowerDropSpaceButton" layoutX="647.0" layoutY="322.0" mnemonicParsing="false" onAction="#clearLowerDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;DropSpace" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
+                  <TextField fx:id="downloadFileTableHead" layoutX="206.0" layoutY="504.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -86,7 +72,6 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextArea layoutX="525.0" layoutY="286.0" prefHeight="200.0" prefWidth="200.0" />
                   <Button fx:id="clearResultLabelButton" layoutX="691.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearResultLabel" text="Очистить">
                      <font>
                         <Font name="System Bold" size="16.0" />
@@ -99,11 +84,6 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="saveAppearanceButton" layoutX="347.0" layoutY="467.0" mnemonicParsing="false" onAction="#saveAppearance" text="Сохранить">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
                   <Circle fx:id="circle3" fill="#ababab" layoutX="400.0" layoutY="121.0" onMouseClicked="#setBackgroundColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
                   <Circle fx:id="circle5" layoutX="600.0" layoutY="122.0" onMouseClicked="#setBackgroundColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
                   <Circle fx:id="circle4" fill="#444444" layoutX="500.0" layoutY="121.0" onMouseClicked="#setBackgroundColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
