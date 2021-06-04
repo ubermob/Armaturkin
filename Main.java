@@ -22,6 +22,8 @@ public class Main extends Application {
     public static String version = "0.2";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
+    public static String logFileName = "log.txt";
+	public static String notificationFileName = "notification.txt";
     public static String backgroundColor = "#444444";
     public static String textColor = "#ffffff";
     private static volatile String notificationString = "";
@@ -41,6 +43,7 @@ public class Main extends Application {
         controller.setTextColor();
         controller.setOpacity();
         primaryStage.setTitle("Арматуркин ver " + version);
+        Log.add(primaryStage.getTitle());
         primaryStage.setScene(new Scene(root));
         setBackgroundColor();
         controller.setupInfoLabel();
@@ -104,16 +107,23 @@ public class Main extends Application {
     	if (!reinforcementHashMap.isEmpty() && !reinforcementProductHashMap.isEmpty()) {
     		FileWorker fileWorker = new FileWorker(pathToCalculatingFile,
 				    reinforcementHashMap,
+				    controller.getBackgroundReinforcement(),
 				    controller.getDownloadFileTableHead(),
-				    controller.getBackgroundReinforcement()
+				    controller.getDownloadFileName()
 		    );
     		Thread fileWorkerThread = new Thread(fileWorker);
     		fileWorkerThread.start();
 	    }
     }
 
+    static void downloadNotification() throws IOException {
+    	String[] string = new String[1];
+    	string[0] = notificationString;
+    	Writer.write(programRootPath + notificationFileName, string);
+    }
+
     public static void addNotification(String string) {
-    	notificationString = notificationString + string + "\n";
+    	notificationString += string + "\n";
     }
 
     public static void clearNotification() {

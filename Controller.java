@@ -31,8 +31,10 @@ public class Controller {
 	public TextField backgroundReinforcement;
 	public Label infoLabel;
 	public Button infoButton;
+	public TextField downloadFileName;
+	public Button downloadResultLabelButton;
 
-    public void setBackgroundColor1(MouseEvent mouseEvent) {
+	public void setBackgroundColor1(MouseEvent mouseEvent) {
         Main.backgroundColor = "#ffffff";
         Main.setBackgroundColor();
     }
@@ -223,5 +225,13 @@ public class Controller {
 
 	public String getBackgroundReinforcement() {
     	return backgroundReinforcement.getText();
+	}
+
+	public String getDownloadFileName() {
+		return downloadFileName.getText();
+	}
+
+	public void downloadResultLabel(ActionEvent actionEvent) throws IOException {
+		Main.downloadNotification();
 	}
 }

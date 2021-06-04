@@ -7,28 +7,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
 import java.util.HashMap;
 
 public class FileWorker implements Runnable {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
-	private final String downloadFileTableHead;
 	private final String backgroundReinforcement;
+	private final String downloadFileTableHead;
+	private String fileName;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
 	private XSSFRow row;
 	private XSSFCell cell;
-	private CellStyle cellStyle;
-	private XSSFFont font;
 	private int rowInt;
+	private CellStyleRepository cellStyleRepository;
 
 	FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
-	           String downloadFileTableHead, String backgroundReinforcement) {
+	           String backgroundReinforcement, String downloadFileTableHead, String fileName) {
 		this.path = path;
 		this.reinforcementHashMap = reinforcementHashMap;
-		this.downloadFileTableHead = downloadFileTableHead;
 		this.backgroundReinforcement = backgroundReinforcement;
+		this.downloadFileTableHead = downloadFileTableHead;
+		this.fileName = fileName;
 	}
 
 	@Override
@@ -37,8 +39,12 @@ public class FileWorker implements Runnable {
 		addBackgroundReinforcement();
 		fillTable();
 
-		LocalDateTime localDateTime = LocalDateTime.now();
-		String fileName = localDateTime.format(DateTimeFormatter.ofPattern("HH-mm-ss dd-MM-yyyy")) + ".xlsx";
+		if (fileName.length() == 0) {
+			LocalDateTime localDateTime = LocalDateTime.now();
+			fileName = localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss")) + ".xlsx";
+		} else {
+			fileName += ".xlsx";
+		}
 		String parentPath = Path.of(path).getParent().toString();
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
 			workbook.write(outputStream);
@@ -49,18 +55,23 @@ public class FileWorker implements Runnable {
 
 	private void fillTable() {
 		rowInt = 4;
-		for (int i = 1; i <= Pattern.maxPosition; i++) {
+		for (int i = 1; i <= StandardsRepository.maxPosition; i++) {
 			if (reinforcementHashMap.containsKey(i)) {
 				Reinforcement reinforcement = reinforcementHashMap.get(i);
 				row = sheet.createRow(rowInt);
 				row.setHeight((short) 675);
 				for (int j = 0; j < 8; j++) {
 					cell = row.createCell(j);
-					cell.setCellStyle(cellStyle);
+					cell.setCellStyle(cellStyleRepository.getCellStyle(reinforcement.getDiameter()));
 				}
-				font.setColor(new XSSFColor(Pattern.getRgb(reinforcement.getDiameter()), null));
-				cellStyle.setFont(font);
-
+				cell = row.getCell(5);
+				cell.setCellStyle(cellStyleRepository.getCellStyleWithFormat(
+						reinforcement.getDiameter(), workbook.createDataFormat().getFormat("0.00")
+				));
+				cell = row.getCell(7);
+				cell.setCellStyle(cellStyleRepository.getCellStyleWithFormat(
+						reinforcement.getDiameter(), workbook.createDataFormat().getFormat("0.0")
+				));
 				if (reinforcement.isLinear()) {
 					cell = row.getCell(0);
 					cell.setCellValue(reinforcement.getPosition());
@@ -72,11 +83,16 @@ public class FileWorker implements Runnable {
 					cell.setCellValue("-");
 					cell = row.getCell(5);
 					cell.setCellValue(reinforcement.getLength() / 1000.0);
-					//CellStyle cs = workbook.createCellStyle();
 					cell = row.getCell(6);
 					cell.setCellValue("-");
 					cell = row.getCell(7);
 					cell.setCellValue(reinforcement.getMass());
+					Formatter formatter = new Formatter();
+					formatter.format(getClass() + "write excel row: [%d],[%d %s],[-],[-],[%f],[-],[%f]",
+							reinforcement.getPosition(), reinforcement.getDiameter(), RFClass.toString(reinforcement.getRfClass()), reinforcement.getLength() / 1000.0,
+							reinforcement.getMass()
+					);
+					Log.add(formatter.toString());
 				}
 				if (!reinforcement.isLinear()) {
 					cell = row.getCell(0);
@@ -88,11 +104,21 @@ public class FileWorker implements Runnable {
 					cell = row.getCell(4);
 					cell.setCellValue(reinforcement.getNumber());
 					cell = row.getCell(5);
-					cell.setCellValue(reinforcement.getLength() * reinforcement.getNumber() * 1.0);
+					cell.setCellValue(reinforcement.getLength() * reinforcement.getNumber() / 1000.0);
 					cell = row.getCell(6);
 					cell.setCellValue(reinforcement.getMass());
+					cell.setCellStyle(cellStyleRepository.getCellStyleWithFormat(
+							reinforcement.getDiameter(), workbook.createDataFormat().getFormat("0.00")
+					));
 					cell = row.getCell(7);
 					cell.setCellValue(reinforcement.getMass() * reinforcement.getNumber());
+					Formatter formatter = new Formatter();
+					formatter.format(getClass() + "write excel row: [%d],[%d %s],[%d],[%d],[%f],[%f],[%f]",
+							reinforcement.getPosition(), reinforcement.getDiameter(), RFClass.toString(reinforcement.getRfClass()), reinforcement.getLength(),
+							reinforcement.getNumber(), reinforcement.getLength() * reinforcement.getNumber() / 1000.0, reinforcement.getMass(),
+							reinforcement.getMass() * reinforcement.getNumber()
+					);
+					Log.add(formatter.toString());
 				}
 				rowInt++;
 			}
@@ -117,21 +143,21 @@ public class FileWorker implements Runnable {
 					Log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
 							",[length: " + length + "],[lengthInt: " + lengthInt + "]"
 					);
-					int reservedDiameterIndex = Pattern.getReservedDiameterIndex(diameter);
+					int reservedDiameterIndex = StandardsRepository.getReservedDiameterIndex(diameter);
 					if (reservedDiameterIndex == -1) {
 						Log.add(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
 						Main.addNotification("Указанного диаметра: " + diameter +
 								" нет в зарезервированном списке диаметров (class Pattern)"
 						);
 					} else {
-						int position = Pattern.reservedPosition[reservedDiameterIndex];
+						int position = StandardsRepository.reservedPosition[reservedDiameterIndex];
 						if (reinforcementHashMap.containsKey(position)) {
 							Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
 							Reinforcement currentReinforcement = new Reinforcement(position,
 									diameter,
-									Pattern.getReservedRFClass(position),
+									StandardsRepository.getReservedRFClass(position),
 									lengthInt,
-									Pattern.getMass(diameter) * lengthInt / 1000
+									StandardsRepository.getMass(diameter) * lengthInt / 1000
 							);
 							reinforcementHashMap.put(position, new Reinforcement(position,
 									currentReinforcement.getDiameter(),
@@ -142,9 +168,9 @@ public class FileWorker implements Runnable {
 						} else {
 							reinforcementHashMap.put(position, new Reinforcement(position,
 									diameter,
-									Pattern.getReservedRFClass(position),
+									StandardsRepository.getReservedRFClass(position),
 									lengthInt,
-									Pattern.getMass(diameter) * lengthInt / 1000
+									StandardsRepository.getMass(diameter) * lengthInt / 1000
 							));
 						}
 						Log.add(reinforcementHashMap.get(position).toString());
@@ -156,19 +182,8 @@ public class FileWorker implements Runnable {
 
 	private void buildTableHead() {
 		workbook = new XSSFWorkbook();
+		cellStyleRepository = new CellStyleRepository(workbook);
 		sheet = workbook.createSheet("Лист1");
-		cellStyle = workbook.createCellStyle();
-		cellStyle.setAlignment(HorizontalAlignment.CENTER);
-		cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-		BorderStyle borderStyle = BorderStyle.THIN;
-		cellStyle.setBorderTop(borderStyle);
-		cellStyle.setBorderBottom(borderStyle);
-		cellStyle.setBorderLeft(borderStyle);
-		cellStyle.setBorderRight(borderStyle);
-		font = workbook.createFont();
-		font.setFontName("CS Standart");
-		font.setFontHeight((short) 170); // 8.5 * 20
-		cellStyle.setFont(font);
 
 		sheet.setColumnWidth(0, 1792); // Width values read from sample
 		sheet.setColumnWidth(1, 4827);
@@ -181,12 +196,14 @@ public class FileWorker implements Runnable {
 
 		row = sheet.createRow(0);
 		row.setHeight((short) 450);
+		//sheet.addMergedRegion(CellRangeAddress.valueOf("A1:H1"));//
 		cell = row.createCell(0);
 		cell.setCellValue(downloadFileTableHead);
-		font.setFontHeight((short) 140); // 7 * 20
+		cell.setCellStyle(cellStyleRepository.getHeadTableNameCellStyle());
 		sheet.addMergedRegion(CellRangeAddress.valueOf("A1:H1"));
-		cell.setCellStyle(cellStyle);
 
+		CellStyle cellStyle = cellStyleRepository.getHeadTableCellStyle();
+		CellStyle cellStyleWithTextWrap = cellStyleRepository.getHeadTableCellStyleWithTextWrap();
 		row = sheet.createRow(1);
 		row.setHeight((short) 450);
 		cell = row.createCell(0);
@@ -197,13 +214,13 @@ public class FileWorker implements Runnable {
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(2);
 		cell.setCellValue("Диаметр, класс ар-ры");
-		cell.setCellStyle(cellStyle);
+		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(3);
 		cell.setCellValue("Длина эл-та,мм");
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(4);
 		cell.setCellValue("Кол-во,шт.");
-		cell.setCellStyle(cellStyle);
+		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(5);
 		cell.setCellValue("Общ.длинамп");
 		cell.setCellStyle(cellStyle);
@@ -215,10 +232,10 @@ public class FileWorker implements Runnable {
 		row.setHeight((short) 450);
 		cell = row.createCell(6);
 		cell.setCellValue("Одного элемента");
-		cell.setCellStyle(cellStyle);
+		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(7);
 		cell.setCellValue("Всех элементов");
-		cell.setCellStyle(cellStyle);
+		cell.setCellStyle(cellStyleWithTextWrap);
 		sheet.addMergedRegion(CellRangeAddress.valueOf("A2:A3"));
 		sheet.addMergedRegion(CellRangeAddress.valueOf("B2:B3"));
 		sheet.addMergedRegion(CellRangeAddress.valueOf("C2:C3"));

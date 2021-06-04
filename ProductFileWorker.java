@@ -45,7 +45,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		if (reinforcementProductHashMap.containsKey(position)) {
 			Main.addNotification("В строке " + (rowInt + 1) + " продублированна позиция: " + position);
 		}
-		if (Pattern.contains(Pattern.reservedPosition, position)) {
+		if (StandardsRepository.contains(StandardsRepository.reservedPosition, position)) {
 			Main.addNotification("В строке " + (rowInt + 1) + " позиция из зарезервированного списка: " + position);
 		}
 		reinforcementProductHashMap.put(position, new ReinforcementProduct(position,
@@ -60,8 +60,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	private int checkDiameter(int diameter) {
 		diameterMatch = false;
-		for (int i = 0; i < Pattern.diameter.length; i++) {
-			if (diameter == Pattern.diameter[i]) {
+		for (int i = 0; i < StandardsRepository.diameter.length; i++) {
+			if (diameter == StandardsRepository.diameter[i]) {
 				diameterMatch = true;
 				diameterArrayIndex = i;
 				return diameter;
@@ -72,28 +72,28 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private RFClass checkRFClass(String string) {
-		for (int i = 0; i < Pattern.rfClass500S.length; i++) {
-			if (string.equalsIgnoreCase(Pattern.rfClass500S[i])) {
+		for (int i = 0; i < StandardsRepository.rfClass500S.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass500S[i])) {
 				return RFClass.A500S;
 			}
 		}
-		for (int i = 0; i < Pattern.rfClass240.length; i++) {
-			if (string.equalsIgnoreCase(Pattern.rfClass240[i])) {
+		for (int i = 0; i < StandardsRepository.rfClass240.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass240[i])) {
 				return RFClass.A240;
 			}
 		}
-		for (int i = 0; i < Pattern.rfClass500.length; i++) {
-			if (string.equalsIgnoreCase(Pattern.rfClass500[i])) {
+		for (int i = 0; i < StandardsRepository.rfClass500.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass500[i])) {
 				return RFClass.A500;
 			}
 		}
-		for (int i = 0; i < Pattern.rfClass400.length; i++) {
-			if (string.equalsIgnoreCase(Pattern.rfClass400[i])) {
+		for (int i = 0; i < StandardsRepository.rfClass400.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass400[i])) {
 				return RFClass.A400;
 			}
 		}
-		for (int i = 0; i < Pattern.rfClass600.length; i++) {
-			if (string.equalsIgnoreCase(Pattern.rfClass600[i])) {
+		for (int i = 0; i < StandardsRepository.rfClass600.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass600[i])) {
 				return RFClass.A600;
 			}
 		}
@@ -102,7 +102,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private int checkMaxLength(int length) {
-		if (length > Pattern.maxLength) {
+		if (length > StandardsRepository.maxLength) {
 			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия: " + length);
 		}
 		this.length = length;
@@ -111,9 +111,9 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	private double checkMass(double mass) {
 		if (diameterMatch) {
-			double mass1 = length / 1000.0 * Pattern.mass3Digit[diameterArrayIndex];
-			double mass2 = length / 1000.0 * Pattern.mass2Digit1[diameterArrayIndex];
-			double mass3 = length / 1000.0 * Pattern.mass2Digit2[diameterArrayIndex];
+			double mass1 = length / 1000.0 * StandardsRepository.mass3Digit[diameterArrayIndex];
+			double mass2 = length / 1000.0 * StandardsRepository.mass2Digit1[diameterArrayIndex];
+			double mass3 = length / 1000.0 * StandardsRepository.mass2Digit2[diameterArrayIndex];
 			boolean match1 = mass1 - mass < 0.01 || mass1 - mass < -0.01;
 			boolean match2 = mass2 - mass < 0.01 || mass2 - mass < -0.01;
 			boolean match3 = mass2 - mass < 0.01 || mass3 - mass < -0.01;

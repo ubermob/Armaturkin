@@ -1,4 +1,4 @@
-public class Pattern {
+public class StandardsRepository {
 
 	static int[] diameter = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40};
 	static String[] rfClass240 = {
@@ -57,20 +57,20 @@ public class Pattern {
 	static int[] reservedDiameter = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14};
 
 	static byte[][] rgb = {
-			{(byte) 255}, {(byte) 0}, {(byte) 255}, // d6
-			{(byte) 127}, {(byte) 127}, {(byte) 0}, // d8
-			{(byte) 127}, {(byte) 102}, {(byte) 204}, // d10
-			{(byte) 255}, {(byte) 127}, {(byte) 0}, // d12
-			{(byte) 223}, {(byte) 127}, {(byte) 255}, // d14
-			{(byte) 0}, {(byte) 191}, {(byte) 255}, // d16
-			{(byte) 204}, {(byte) 0}, {(byte) 204}, // d18
-			{(byte) 38}, {(byte) 153}, {(byte) 0}, // d20
-			{(byte) 255}, {(byte) 0}, {(byte) 0}, // d22
-			{(byte) 0}, {(byte) 0}, {(byte) 0}, // d25
-			{(byte) 127}, {(byte) 0}, {(byte) 0}, // d28
-			{(byte) 102}, {(byte) 153}, {(byte) 204}, // d32
-			{(byte) 153}, {(byte) 153}, {(byte) 0}, // d36
-			{(byte) 0}, {(byte) 127}, {(byte) 63}, // d40
+			{(byte) 255, (byte) 0, (byte) 255}, // d6
+			{(byte) 127, (byte) 127, (byte) 0}, // d8
+			{(byte) 127, (byte) 102, (byte) 204}, // d10
+			{(byte) 255, (byte) 127, (byte) 0}, // d12
+			{(byte) 223, (byte) 127, (byte) 255}, // d14
+			{(byte) 0, (byte) 191, (byte) 255}, // d16
+			{(byte) 204, (byte) 0, (byte) 204}, // d18
+			{(byte) 38, (byte) 153, (byte) 0}, // d20
+			{(byte) 255, (byte) 0, (byte) 0}, // d22
+			{(byte) 0, (byte) 0, (byte) 0}, // d25
+			{(byte) 127, (byte) 0, (byte) 0}, // d28
+			{(byte) 102, (byte) 153, (byte) 204}, // d32
+			{(byte) 153, (byte) 153, (byte) 0}, // d36
+			{(byte) 0, (byte) 127, (byte) 63}, // d40
 	};
 
 	static int getReservedPositionIndex(int position) {
@@ -99,8 +99,8 @@ public class Pattern {
 	}
 
 	static double getMass(int diameter) {
-		for (int i = 0; i < Pattern.diameter.length; i++) {
-			if (diameter == Pattern.diameter[i]) {
+		for (int i = 0; i < StandardsRepository.diameter.length; i++) {
+			if (diameter == StandardsRepository.diameter[i]) {
 				return mass3Digit[i];
 			}
 		}
@@ -117,8 +117,8 @@ public class Pattern {
 	}
 
 	static byte[] getRgb(int diameter) {
-		for (int i = 0; i < Pattern.diameter.length; i++) {
-			if (diameter == Pattern.diameter[i]) {
+		for (int i = 0; i < StandardsRepository.diameter.length; i++) {
+			if (diameter == StandardsRepository.diameter[i]) {
 				return rgb[i];
 			}
 		}

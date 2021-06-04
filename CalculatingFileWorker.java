@@ -81,7 +81,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void editPosition() {
-		int reservedPositionIndex = Pattern.getReservedPositionIndex(position);
+		int reservedPositionIndex = StandardsRepository.getReservedPositionIndex(position);
 		int number = majorNumber * minorNumber;
 		if (reservedPositionIndex != -1) {
 			// Linear reinforcement
@@ -113,7 +113,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void insertPosition() {
-		int reservedPositionIndex = Pattern.getReservedPositionIndex(position);
+		int reservedPositionIndex = StandardsRepository.getReservedPositionIndex(position);
 		int number = majorNumber * minorNumber;
 		if (reservedPositionIndex != -1) {
 			// Linear reinforcement
@@ -135,9 +135,9 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		if (isLinear) {
 			return new Reinforcement(position,
 					diameter,
-					Pattern.getReservedRFClass(position),
+					StandardsRepository.getReservedRFClass(position),
 					length * number,
-					Pattern.getMass(diameter) * length * number / 1000
+					StandardsRepository.getMass(diameter) * length * number / 1000
 			);
 		}
 		return new Reinforcement(position,
@@ -150,7 +150,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void compareDiameter(int reservedPositionIndex) {
-		int productDiameter = Pattern.reservedDiameter[reservedPositionIndex];
+		int productDiameter = StandardsRepository.reservedDiameter[reservedPositionIndex];
 		if (diameter != productDiameter) {
 			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает диаметр: " + diameter +
 					" (в зарезервированных позициях: " + productDiameter + ")");
@@ -166,7 +166,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void compareMaxLength() {
-		if (length > Pattern.maxLength) {
+		if (length > StandardsRepository.maxLength) {
 			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия/стержня: " + length);
 		}
 	}

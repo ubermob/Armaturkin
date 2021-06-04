@@ -20,7 +20,7 @@ public class Log {
 
 	public static void saveLog() throws IOException {
 		if (writeLog) {
-			Writer.write(Main.programRootPath + "log.txt", log);
+			Writer.write(Main.programRootPath + Main.logFileName, log);
 		}
 	}
 }
