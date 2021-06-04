@@ -18,6 +18,7 @@ import java.util.List;
 public class Main extends Application {
 
     public static Parent root;
+    public static Controller controller;
     public static String version = "0.2";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
@@ -36,7 +37,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mainScene2.fxml"));
         root = loader.load();
-        Controller controller = loader.getController();
+        controller = loader.getController();
         controller.setTextColor();
         controller.setOpacity();
         primaryStage.setTitle("Арматуркин ver " + version);
@@ -64,7 +65,8 @@ public class Main extends Application {
     	if (pathToProductFile != null) {
 		    Path path = Path.of(pathToProductFile);
 		    if (Files.exists(path)) {
-			    controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() + "»\nНо ты можешь обновить его");
+			    controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() +
+					    "»\nНо ты можешь обновить его");
 			    loadProduct();
 		    }
 	    }
@@ -102,7 +104,8 @@ public class Main extends Application {
     	if (!reinforcementHashMap.isEmpty() && !reinforcementProductHashMap.isEmpty()) {
     		FileWorker fileWorker = new FileWorker(pathToCalculatingFile,
 				    reinforcementHashMap,
-				    reinforcementProductHashMap
+				    controller.getDownloadFileTableHead(),
+				    controller.getBackgroundReinforcement()
 		    );
     		Thread fileWorkerThread = new Thread(fileWorker);
     		fileWorkerThread.start();

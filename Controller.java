@@ -216,4 +216,12 @@ public class Controller {
     	infoLabel.setOpacity(0);
     	infoLabel.setMouseTransparent(true);
 	}
+
+	public String getDownloadFileTableHead() {
+		return downloadFileTableHead.getText();
+	}
+
+	public String getBackgroundReinforcement() {
+    	return backgroundReinforcement.getText();
+	}
 }

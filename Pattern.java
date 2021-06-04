@@ -46,7 +46,8 @@ public class Pattern {
 			"a600", // English letter
 			"a 600" // English letter
 	};
-	static int maxLength = 11700;
+	static int maxLength = 11_700;
+	static int maxPosition = 3_000;
 
 	static double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853 ,4.834, 6.313, 7.990, 9.865};
 	static double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85 ,4.83, 6.31, 7.99, 9.87}; // implements math rules
@@ -55,13 +56,39 @@ public class Pattern {
 	static int[] reservedPosition = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
 	static int[] reservedDiameter = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14};
 
+	static byte[][] rgb = {
+			{(byte) 255}, {(byte) 0}, {(byte) 255}, // d6
+			{(byte) 127}, {(byte) 127}, {(byte) 0}, // d8
+			{(byte) 127}, {(byte) 102}, {(byte) 204}, // d10
+			{(byte) 255}, {(byte) 127}, {(byte) 0}, // d12
+			{(byte) 223}, {(byte) 127}, {(byte) 255}, // d14
+			{(byte) 0}, {(byte) 191}, {(byte) 255}, // d16
+			{(byte) 204}, {(byte) 0}, {(byte) 204}, // d18
+			{(byte) 38}, {(byte) 153}, {(byte) 0}, // d20
+			{(byte) 255}, {(byte) 0}, {(byte) 0}, // d22
+			{(byte) 0}, {(byte) 0}, {(byte) 0}, // d25
+			{(byte) 127}, {(byte) 0}, {(byte) 0}, // d28
+			{(byte) 102}, {(byte) 153}, {(byte) 204}, // d32
+			{(byte) 153}, {(byte) 153}, {(byte) 0}, // d36
+			{(byte) 0}, {(byte) 127}, {(byte) 63}, // d40
+	};
+
 	static int getReservedPositionIndex(int position) {
 		for (int i = 0; i < reservedPosition.length; i++) {
 			if (position == reservedPosition[i]) {
 				return i;
 			}
 		}
-		return -1;
+		return -1; // Do not contains
+	}
+
+	static int getReservedDiameterIndex(int diameter) {
+		for (int i = 0; i < reservedDiameter.length; i++) {
+			if (diameter == reservedDiameter[i]) {
+				return i;
+			}
+		}
+		return -1; // Do not contains
 	}
 
 	static RFClass getReservedRFClass(int reservedPosition) {
@@ -87,5 +114,14 @@ public class Pattern {
 			}
 		}
 		return false;
+	}
+
+	static byte[] getRgb(int diameter) {
+		for (int i = 0; i < Pattern.diameter.length; i++) {
+			if (diameter == Pattern.diameter[i]) {
+				return rgb[i];
+			}
+		}
+		return rgb[9]; // Black color
 	}
 }
