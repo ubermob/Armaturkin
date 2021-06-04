@@ -21,7 +21,6 @@ public class Controller {
     public Label upperDragSpace;
     public Label lowerDragSpace;
     public Label resultLabel;
-	public Button calculationButton;
 	public Button downloadButton;
 	public Label notificationLabel;
 	public Polygon notificationArrow;
@@ -29,10 +28,9 @@ public class Controller {
 	public Button LowerDropSpaceButton;
 	public Button clearUpperDropSpaceButton;
 	public TextField downloadFileTableHead;
-
-	/*public static void initialize() {
-		// ???
-    }*/
+	public TextField backgroundReinforcement;
+	public Label infoLabel;
+	public Button infoButton;
 
     public void setBackgroundColor1(MouseEvent mouseEvent) {
         Main.backgroundColor = "#ffffff";
@@ -105,12 +103,6 @@ public class Controller {
     public void setNotificationOpacity(int i) {
 	    notificationLabel.setOpacity(i);
 	    notificationArrow.setOpacity(i);
-    }
-
-    public void calculate(ActionEvent actionEvent) {
-    	// Test
-	    System.out.println("test calculate button");
-	    System.out.println(downloadFileTableHead.getText());
     }
 
     public void upperDragDropped(DragEvent dragEvent) {
@@ -192,7 +184,7 @@ public class Controller {
 		lowerDragSpace.setText(string);
     }
 
-	public void download(ActionEvent actionEvent) {
+	public void downloadFile(ActionEvent actionEvent) {
 		Main.downloadCalculatedFile();
 	}
 
@@ -208,5 +200,20 @@ public class Controller {
 	public void clearLowerDropSpace(ActionEvent actionEvent) {
 		Main.pathToCalculatingFile = null;
 		Main.reinforcementHashMap.clear();
+	}
+
+	public void showInfo(ActionEvent actionEvent) {
+    	double d = infoLabel.getOpacity();
+    	if (d == 0.0) {
+    		infoLabel.setOpacity(1);
+	    }
+    	if (d == 1.0) {
+    		infoLabel.setOpacity(0);
+	    }
+	}
+
+	public void setupInfoLabel() {
+    	infoLabel.setOpacity(0);
+    	infoLabel.setMouseTransparent(true);
 	}
 }

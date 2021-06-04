@@ -42,6 +42,7 @@ public class Main extends Application {
         primaryStage.setTitle("Арматуркин ver " + version);
         primaryStage.setScene(new Scene(root));
         setBackgroundColor();
+        controller.setupInfoLabel();
         controller.setUpperDragSpaceText("Перетащи сюда список изделий");
 	    controller.setLowerDragSpaceText("Перетащи сюда файл,\nкоторый надо посчитать");
         pathVerification(controller);

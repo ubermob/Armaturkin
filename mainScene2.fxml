@@ -18,7 +18,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="calculationButton" layoutX="29.0" layoutY="498.0" mnemonicParsing="false" onAction="#calculate" text="Расчёт">
+                  <Button fx:id="infoButton" layoutX="77.0" layoutY="498.0" mnemonicParsing="false" onAction="#showInfo" text="Инфо">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="downloadButton" layoutX="686.0" layoutY="498.0" mnemonicParsing="false" onAction="#download" text="Скачать">
+                  <Button fx:id="downloadButton" layoutX="661.0" layoutY="498.0" mnemonicParsing="false" onAction="#downloadFile" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -59,7 +59,13 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="downloadFileTableHead" layoutX="206.0" layoutY="504.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы" />
+                  <TextField fx:id="downloadFileTableHead" layoutX="206.0" layoutY="523.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
+                  <TextField fx:id="backgroundReinforcement" layoutX="206.0" layoutY="486.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите фоновую арматуру (по-умолчанию фон не будет посчитан)" />
+                  <Label fx:id="infoLabel" alignment="CENTER" layoutX="27.0" layoutY="141.0" prefHeight="333.0" prefWidth="523.0" style="-fx-background-color: BLACK; -fx-border-color: BLUE; -fx-border-width: 5; -fx-border-radius: 20; -fx-background-radius: 25;" text="Шаблон ввода для фоновой арматуры:&#10;диаметр(мм)-общая длина(м, десятичный разделитель - точка)&#10;Примеры:&#10;10-145 (диаметр 10 мм, длина 145 м)&#10;12-178.5 (диаметр 12 мм, длина 178,5 м)&#10;10-70.8-14-96.85 (диаметр 10 мм, длина 70,8 м&#10;и диаметр 14 мм, длина 96,85 м)" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
       </content>
     </Tab>

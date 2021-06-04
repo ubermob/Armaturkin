@@ -7,6 +7,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class FileWorker implements Runnable {
@@ -33,8 +38,12 @@ public class FileWorker implements Runnable {
 		row.createCell(0).setCellValue("hello");
 		row.createCell(1).setCellValue(1);
 		row.createCell(2).setCellValue(String.valueOf(2));
-		try (FileOutputStream fileOutputStream = new FileOutputStream("J:\\write.xlsx")) {
-			workbook.write(fileOutputStream);
+
+		LocalDateTime localDateTime = LocalDateTime.now();
+		String fileName = localDateTime.format(DateTimeFormatter.ofPattern("HH-mm-ss dd-MM-yyyy")) + ".xlsx";
+		String parentPath = Path.of(Main.pathToCalculatingFile).getParent().toString();
+		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
+			workbook.write(outputStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
