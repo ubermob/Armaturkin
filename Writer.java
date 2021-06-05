@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,5 +20,15 @@ public class Writer {
 
     public static void write(String path, ArrayList<String> inputList) throws IOException {
 	    Files.write(Path.of(path), inputList);
+    }
+
+    public static void write(String path, ArrayList<String> inputList, int bufferSize) throws IOException {
+	    FileWriter fileWriter = new FileWriter(path);
+	    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter, bufferSize);
+	    for (int i = 0; i < inputList.size(); i++) {
+		    bufferedWriter.write(inputList.get(i));
+		    bufferedWriter.newLine();
+	    }
+	    bufferedWriter.close();
     }
 }

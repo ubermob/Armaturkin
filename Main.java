@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.apache.poi.ss.formula.ThreeDEval;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -48,9 +48,11 @@ public class FileWorker implements Runnable {
 		String parentPath = Path.of(path).getParent().toString();
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
 			workbook.write(outputStream);
+			Log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + parentPath + "\"");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Log.add(getClass() + ": Tread complete");
 	}
 
 	private void fillTable() {
