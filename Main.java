@@ -18,7 +18,7 @@ public class Main extends Application {
 
     public static Parent root;
     public static Controller controller;
-    public static String version = "0.3";
+    public static String version = "0.3.1";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
     public static String logFileName = "log.txt";
@@ -75,10 +75,9 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
     	checkDirectory();
-    	/*if (args[0].equals("-writelog")) {
+    	if (args[0].equals("-writelog")) {
     		Log.enable();
-	    }*/
-    	Log.enable();
+	    }
     	try {
 		    loadConfigFile();
 	    } catch (Exception e) {
