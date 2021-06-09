@@ -4,10 +4,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.*;
@@ -15,96 +16,210 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-	
-    public Text appearanceText;
-    public Text appearanceText2;
-    public Label upperDragSpace;
-    public Label lowerDragSpace;
-    public Label resultLabel;
-	public Button downloadButton;
+
+	Label[] labelArray;
+	Label[] labelArray2;
+	public Label upperDragSpace;
+	public Label lowerDragSpace;
+	public Label resultLabel;
 	public Label notificationLabel;
-	public Polygon notificationArrow;
+	public Label notificationLabel2;
+	public Label infoLabel;
+	public Label specificationDragSpace1;
+	public Label specificationDragSpace2;
+	public Label specificationDragSpace3;
+	public Label specificationDragSpace5;
+	public Label specificationDragSpace7;
+	public Label specificationDragSpace4;
+	public Label specificationDragSpace6;
+	public Label specificationDragSpace8;
+	Button[] buttonArray;
+	Button[] buttonArray2;
+	public Button downloadFileButton;
 	public Button clearResultLabelButton;
-	public Button LowerDropSpaceButton;
+	public Button lowerDropSpaceButton;
 	public Button clearUpperDropSpaceButton;
+	public Button infoButton;
+	public Button downloadResultLabelButton;
+	public Button downloadSpecificationFileButton;
+	public Button clearSpecificationDropSpaceButton0;
+	public Button clearSpecificationDropSpaceButton1;
+	public Button clearSpecificationDropSpaceButton2;
+	public Button clearSpecificationDropSpaceButton3;
+	public Button clearSpecificationDropSpaceButton4;
+	public Button clearSpecificationDropSpaceButton5;
+	public Button clearSpecificationDropSpaceButton6;
+	public Button clearSpecificationDropSpaceButton7;
+	public Button clearSpecificationDropSpaceButton8;
+	public Button boldTextButton;
 	public TextField downloadFileTableHead;
 	public TextField backgroundReinforcement;
-	public Label infoLabel;
-	public Button infoButton;
 	public TextField downloadFileName;
-	public Button downloadResultLabelButton;
+	public TextField downloadSpecificationFileName;
+	Text[] textArray;
+	public Text appearanceText1;
+    public Text appearanceText2;
+	public Text appearanceText3;
+	public Circle circle1;
+	public Circle circle2;
+	public Circle circle3;
+	public Circle circle4;
+	public Circle circle5;
+	public Circle circleBorderColor1;
+	public Circle circleBorderColor2;
+	public Circle circleBorderColor3;
+	public Circle circleBorderColor4;
+	public Circle circleBorderColor5;
+	Border border;
 
-	public void setBackgroundColor1(MouseEvent mouseEvent) {
-        Main.backgroundColor = "#ffffff";
+	public void setBackgroundColor1() {
+		Main.backgroundColor = getColorHexCode(circle1.getFill());
         Main.setBackgroundColor();
     }
 
-    public void setBackgroundColor2(MouseEvent mouseEvent) {
-        Main.backgroundColor = "#dadada";
+    public void setBackgroundColor2() {
+	    Main.backgroundColor = getColorHexCode(circle2.getFill());
         Main.setBackgroundColor();
     }
 
-    public void setBackgroundColor3(MouseEvent mouseEvent) {
-        Main.backgroundColor = "#ababab";
+    public void setBackgroundColor3() {
+	    Main.backgroundColor = getColorHexCode(circle3.getFill());
         Main.setBackgroundColor();
     }
 
-    public void setBackgroundColor4(MouseEvent mouseEvent) {
-        Main.backgroundColor = "#444444";
+    public void setBackgroundColor4() {
+	    Main.backgroundColor = getColorHexCode(circle4.getFill());
         Main.setBackgroundColor();
     }
 
-    public void setBackgroundColor5(MouseEvent mouseEvent) {
-        Main.backgroundColor = "#000000";
+    public void setBackgroundColor5() {
+	    Main.backgroundColor = getColorHexCode(circle5.getFill());
         Main.setBackgroundColor();
     }
 
-    public void setTextColor1(MouseEvent mouseEvent) {
-        Main.textColor = "#ffffff";
+    public void setTextColor1() {
+        Main.textColor = getColorHexCode(circle1.getFill());
         setTextColor();
     }
 
-    public void setTextColor2(MouseEvent mouseEvent) {
-        Main.textColor = "#dadada";
+    public void setTextColor2() {
+        Main.textColor = getColorHexCode(circle2.getFill());
         setTextColor();
     }
 
-    public void setTextColor3(MouseEvent mouseEvent) {
-        Main.textColor = "#ababab";
+    public void setTextColor3() {
+        Main.textColor = getColorHexCode(circle3.getFill());
         setTextColor();
     }
 
-    public void setTextColor4(MouseEvent mouseEvent) {
-        Main.textColor = "#444444";
+    public void setTextColor4() {
+        Main.textColor = getColorHexCode(circle4.getFill());
         setTextColor();
     }
 
-    public void setTextColor5(MouseEvent mouseEvent) {
-        Main.textColor = "#000000";
+    public void setTextColor5() {
+        Main.textColor = getColorHexCode(circle5.getFill());
         setTextColor();
     }
 
-    public void setTextColor() {
-        appearanceText.setFill(Paint.valueOf(Main.textColor));
-        appearanceText2.setFill(Paint.valueOf(Main.textColor));
-        upperDragSpace.setTextFill(Paint.valueOf(Main.textColor));
-        lowerDragSpace.setTextFill(Paint.valueOf(Main.textColor));
-        resultLabel.setTextFill(Paint.valueOf(Main.textColor));
-        notificationLabel.setTextFill(Paint.valueOf(Main.textColor));
+    public void groupAppearanceVariables() {
+		labelArray = new Label[]{
+				upperDragSpace,
+				lowerDragSpace,
+				resultLabel,
+				notificationLabel,
+				notificationLabel2,
+				infoLabel,
+				specificationDragSpace1,
+				specificationDragSpace2,
+				specificationDragSpace3,
+				specificationDragSpace4,
+				specificationDragSpace5,
+				specificationDragSpace6,
+				specificationDragSpace7,
+				specificationDragSpace8
+		};
+	    labelArray2 = new Label[]{
+			    upperDragSpace,
+			    lowerDragSpace,
+			    specificationDragSpace1,
+			    specificationDragSpace2,
+			    specificationDragSpace3,
+			    specificationDragSpace4,
+			    specificationDragSpace5,
+			    specificationDragSpace6,
+			    specificationDragSpace7,
+			    specificationDragSpace8
+	    };
+		buttonArray = new Button[]{
+				downloadFileButton,
+				clearResultLabelButton,
+				lowerDropSpaceButton,
+				clearUpperDropSpaceButton,
+				infoButton,
+				downloadResultLabelButton,
+				downloadSpecificationFileButton,
+				clearSpecificationDropSpaceButton0,
+				clearSpecificationDropSpaceButton1,
+				clearSpecificationDropSpaceButton2,
+				clearSpecificationDropSpaceButton3,
+				clearSpecificationDropSpaceButton4,
+				clearSpecificationDropSpaceButton5,
+				clearSpecificationDropSpaceButton6,
+				clearSpecificationDropSpaceButton7,
+				clearSpecificationDropSpaceButton8,
+				boldTextButton
+		};
+		buttonArray2 = new Button[]{
+				downloadFileButton,
+				clearResultLabelButton,
+				lowerDropSpaceButton,
+				clearUpperDropSpaceButton,
+				infoButton,
+				downloadResultLabelButton,
+				downloadSpecificationFileButton,
+				clearSpecificationDropSpaceButton0,
+				boldTextButton
+		};
+		textArray = new Text[]{
+				appearanceText1,
+				appearanceText2,
+				appearanceText3
+		};
+    }
+
+	String getColorHexCode(Paint paint) {
+		return "#" + paint.toString().substring(2, 8);
+	}
+
+    void setTextColor() {
+	    for (Text text :
+			    textArray) {
+		    text.setFill(Paint.valueOf(Main.textColor));
+	    }
+	    for (Label label :
+			    labelArray) {
+		    label.setTextFill(Paint.valueOf(Main.textColor));
+	    }
+    }
+    
+    void setBorderColor() {
+		border = new Border(new BorderStroke(Paint.valueOf(Main.borderColor), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
+		//Border saveBorder = resultLabel.getBorder();
+	    for (Label label :
+			    labelArray2) {
+	    	label.setBorder(border);
+	    }
+	    //resultLabel.setBorder(saveBorder);
     }
 
     public void setResultLabelText(String string) {
 		resultLabel.setText(string);
     }
 
-    public void setOpacity() {
-		notificationLabel.setOpacity(0);
-		notificationArrow.setOpacity(0);
-    }
-
     public void setNotificationOpacity(int i) {
 	    notificationLabel.setOpacity(i);
-	    notificationArrow.setOpacity(i);
+	    notificationLabel2.setOpacity(i);
     }
 
     public void upperDragDropped(DragEvent dragEvent) {
@@ -186,25 +301,25 @@ public class Controller {
 		lowerDragSpace.setText(string);
     }
 
-	public void downloadFile(ActionEvent actionEvent) {
+	public void downloadFile() {
 		Main.downloadCalculatedFile();
 	}
 
-	public void clearResultLabel(ActionEvent actionEvent) {
+	public void clearResultLabel() {
 		Main.clearNotification();
 	}
 
-	public void clearUpperDropSpace(ActionEvent actionEvent) {
+	public void clearUpperDropSpace() {
 		Main.pathToProductFile = null;
 		Main.reinforcementProductHashMap.clear();
 	}
 
-	public void clearLowerDropSpace(ActionEvent actionEvent) {
+	public void clearLowerDropSpace() {
 		Main.pathToCalculatingFile = null;
 		Main.reinforcementHashMap.clear();
 	}
 
-	public void showInfo(ActionEvent actionEvent) {
+	public void toggleInfoLabelOpacity() {
     	double d = infoLabel.getOpacity();
     	if (d == 0.0) {
     		infoLabel.setOpacity(1);
@@ -231,7 +346,105 @@ public class Controller {
 		return downloadFileName.getText();
 	}
 
-	public void downloadResultLabel(ActionEvent actionEvent) throws IOException {
+	public void downloadResultLabel() throws IOException {
 		Main.downloadNotification();
+	}
+
+	public void visitNotificationTab() {
+		setNotificationOpacity(0);
+	}
+
+	public void specificationDragDropped(DragEvent dragEvent) {
+	}
+
+	public void specificationDragOver(DragEvent dragEvent) {
+	}
+
+	public void downloadSpecificationFile(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace0(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace1(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace2(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace3(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace4(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace5(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace6(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace7(ActionEvent actionEvent) {
+	}
+
+	public void clearSpecificationDropSpace8(ActionEvent actionEvent) {
+	}
+
+	public void setBorderColor1() {
+		Main.borderColor = getColorHexCode(circleBorderColor1.getFill());
+		setBorderColor();
+	}
+
+	public void setBorderColor2() {
+		Main.borderColor = getColorHexCode(circleBorderColor2.getFill());
+		setBorderColor();
+	}
+
+	public void setBorderColor3() {
+		Main.borderColor = getColorHexCode(circleBorderColor3.getFill());
+		setBorderColor();
+	}
+
+	public void setBorderColor4() {
+		Main.borderColor = getColorHexCode(circleBorderColor4.getFill());
+		setBorderColor();
+	}
+
+	public void setBorderColor5() {
+		Main.borderColor = getColorHexCode(circleBorderColor5.getFill());
+		setBorderColor();
+	}
+
+	public void toggleBoldText(ActionEvent actionEvent) {
+		Main.boldText = !Main.boldText;
+		setFont();
+	}
+
+	void setFont() {
+		if (Main.boldText) {
+			String font = "System Bold";
+			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
+		}
+		if (!Main.boldText) {
+			String font = "System";
+			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
+		}
+	}
+
+	void setFont(Font font1, Font font2, Font font3) {
+		for (Label label :
+				labelArray) {
+			label.setFont(font3);
+		}
+		notificationLabel.setFont(font1);
+		notificationLabel2.setFont(font1);
+		for (Button button :
+				buttonArray2) {
+			button.setFont(font2);
+		}
+		for (Text text :
+				textArray) {
+			text.setFont(font3);
+		}
 	}
 }

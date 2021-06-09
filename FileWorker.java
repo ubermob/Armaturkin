@@ -53,6 +53,7 @@ public class FileWorker implements Runnable {
 			e.printStackTrace();
 		}
 		Log.add(getClass() + ": Tread complete");
+		Main.addNotification("☻ Файл «" + fileName + "» посчитан и загружен");
 	}
 
 	private void fillTable() {

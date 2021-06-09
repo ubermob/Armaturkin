@@ -8,22 +8,21 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <tabs>
-    <Tab text="Хочу посчитать арматуру">
+    <Tab text="Хочу посчитать спецификацию">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="infoButton" layoutX="77.0" layoutY="498.0" mnemonicParsing="false" onAction="#showInfo" prefHeight="35.0" prefWidth="67.0" text="Инфо">
+                  <Button fx:id="infoButton" layoutX="77.0" layoutY="498.0" mnemonicParsing="false" onAction="#toggleInfoLabelOpacity" prefHeight="35.0" prefWidth="67.0" text="Инфо">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="upperDragSpace" alignment="CENTER" layoutX="206.0" layoutY="33.0" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: Green; -fx-border-width: 5;" text="upperLabel" textAlignment="CENTER">
+                  <Label fx:id="upperDragSpace" alignment="CENTER" layoutX="206.0" layoutY="33.0" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" text="upperLabel" textAlignment="CENTER" wrapText="true">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -31,7 +30,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lowerDragSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: Green; -fx-border-width: 5;" text="lowerLabel" textAlignment="CENTER">
+                  <Label fx:id="lowerDragSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" text="lowerLabel" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -39,22 +38,21 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="downloadButton" layoutX="653.0" layoutY="498.0" mnemonicParsing="false" onAction="#downloadFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadFileButton" layoutX="653.0" layoutY="498.0" mnemonicParsing="false" onAction="#downloadFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="notificationLabel" alignment="TOP_RIGHT" layoutX="50.0" layoutY="22.0" prefHeight="34.0" prefWidth="120.0" text="Посмотри сюда" textAlignment="RIGHT">
+                  <Label fx:id="notificationLabel" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="84.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
-                  <Polygon fx:id="notificationArrow" fill="DODGERBLUE" layoutX="186.0" layoutY="55.0" points="-10.0, -9.0, 10.0, -9.0, 0.0, -41.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                  <Button fx:id="clearUpperDropSpaceButton" layoutX="647.0" layoutY="103.0" mnemonicParsing="false" onAction="#clearUpperDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;DropSpace" textAlignment="CENTER">
+                  <Button fx:id="clearUpperDropSpaceButton" layoutX="647.0" layoutY="103.0" mnemonicParsing="false" onAction="#clearUpperDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;Drop Space" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="LowerDropSpaceButton" layoutX="647.0" layoutY="322.0" mnemonicParsing="false" onAction="#clearLowerDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;DropSpace" textAlignment="CENTER">
+                  <Button fx:id="lowerDropSpaceButton" layoutX="647.0" layoutY="322.0" mnemonicParsing="false" onAction="#clearLowerDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;Drop Space" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -70,21 +68,21 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Информация">
+    <Tab onSelectionChanged="#visitNotificationTab" text="Информация">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="549.0" prefWidth="779.0" text="Label">
+                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="500.0" prefWidth="780.0" text="Label">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearResultLabelButton" layoutX="686.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearResultLabel" prefHeight="35.0" prefWidth="100.0" text="Очистить">
+                  <Button fx:id="clearResultLabelButton" layoutX="573.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearResultLabel" prefHeight="35.0" prefWidth="100.0" text="Очистить">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="downloadResultLabelButton" layoutX="686.0" layoutY="76.0" mnemonicParsing="false" onAction="#downloadResultLabel" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadResultLabelButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadResultLabel" prefHeight="35.0" prefWidth="100.0" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -92,30 +90,173 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Внешний вид">
+      <Tab text="Хочу посчитать сводную ведомость">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Circle fx:id="circle3" fill="#ababab" layoutX="400.0" layoutY="121.0" onMouseClicked="#setBackgroundColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle5" layoutX="600.0" layoutY="122.0" onMouseClicked="#setBackgroundColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle4" fill="#444444" layoutX="500.0" layoutY="121.0" onMouseClicked="#setBackgroundColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle" fill="WHITE" layoutX="200.0" layoutY="120.0" onMouseClicked="#setBackgroundColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle2" fill="#dadada" layoutX="300.0" layoutY="121.0" onMouseClicked="#setBackgroundColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Text fx:id="appearanceText" layoutX="324.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет фона" textAlignment="CENTER" wrappingWidth="140.80337524414062">
+                  <Label fx:id="specificationDragSpace1" alignment="CENTER" layoutX="10.0" layoutY="32.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel1" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="clearSpecificationDropSpaceButton0" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace0" prefHeight="27.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="downloadSpecificationFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSpecificationFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="downloadSpecificationFileName" layoutX="200.0" layoutY="526.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                  <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="84.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace2" alignment="CENTER" layoutX="405.0" layoutY="32.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel2" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace3" alignment="CENTER" layoutX="10.0" layoutY="152.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel3" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace5" alignment="CENTER" layoutX="10.0" layoutY="272.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel5" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace7" alignment="CENTER" layoutX="10.0" layoutY="392.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel7" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace4" alignment="CENTER" layoutX="405.0" layoutY="152.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel4" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace6" alignment="CENTER" layoutX="405.0" layoutY="272.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel6" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="specificationDragSpace8" alignment="CENTER" layoutX="405.0" layoutY="392.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel8" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="clearSpecificationDropSpaceButton1" layoutX="353.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace1" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton3" layoutX="353.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace3" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton2" layoutX="748.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace2" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton5" layoutX="353.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace5" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton7" layoutX="353.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace7" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton4" layoutX="748.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace4" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton6" layoutX="748.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace6" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearSpecificationDropSpaceButton8" layoutX="748.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace8" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Внешний вид">
+        <content>
+          <AnchorPane layoutY="287.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Circle fx:id="circle3" fill="#ababab" layoutX="400.0" layoutY="110.0" onMouseClicked="#setBackgroundColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle5" layoutX="600.0" layoutY="110.0" onMouseClicked="#setBackgroundColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle4" fill="#444444" layoutX="500.0" layoutY="110.0" onMouseClicked="#setBackgroundColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle1" fill="WHITE" layoutX="200.0" layoutY="110.0" onMouseClicked="#setBackgroundColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle2" fill="#dadada" layoutX="300.0" layoutY="110.0" onMouseClicked="#setBackgroundColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Text fx:id="appearanceText1" layoutX="324.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет фона" textAlignment="CENTER" wrappingWidth="140.80337524414062">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Text>
-                  <Text fx:id="appearanceText2" layoutX="330.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет текста" textAlignment="CENTER" wrappingWidth="140.80337524414062">
+                  <Text fx:id="appearanceText2" layoutX="330.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет текста" textAlignment="CENTER" wrappingWidth="140.80337524414062">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Text>
-                  <Circle fx:id="circle6" fill="WHITE" layoutX="200.0" layoutY="297.0" onMouseClicked="#setTextColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle7" fill="#dadada" layoutX="300.0" layoutY="297.0" onMouseClicked="#setTextColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle8" fill="#ababab" layoutX="400.0" layoutY="297.0" onMouseClicked="#setTextColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle9" fill="#444444" layoutX="500.0" layoutY="297.0" onMouseClicked="#setTextColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle10" layoutX="600.0" layoutY="297.0" onMouseClicked="#setTextColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle6" fill="WHITE" layoutX="200.0" layoutY="260.0" onMouseClicked="#setTextColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle7" fill="#dadada" layoutX="300.0" layoutY="260.0" onMouseClicked="#setTextColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle8" fill="#ababab" layoutX="400.0" layoutY="260.0" onMouseClicked="#setTextColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle9" fill="#444444" layoutX="500.0" layoutY="260.0" onMouseClicked="#setTextColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circle10" layoutX="600.0" layoutY="260.0" onMouseClicked="#setTextColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                  <Circle fx:id="circleBorderColor1" fill="MAROON" layoutX="200.0" layoutY="410.0" onMouseClicked="#setBorderColor1" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Circle fx:id="circleBorderColor3" fill="GREEN" layoutX="400.0" layoutY="410.0" onMouseClicked="#setBorderColor3" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Text fx:id="appearanceText3" layoutX="246.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет Drop Space границы" textAlignment="CENTER" wrappingWidth="308.8033752441406">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Circle fx:id="circleBorderColor2" fill="NAVY" layoutX="300.0" layoutY="410.0" onMouseClicked="#setBorderColor2" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Circle fx:id="circleBorderColor4" fill="#808080" layoutX="500.0" layoutY="410.0" onMouseClicked="#setBorderColor4" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Circle fx:id="circleBorderColor5" fill="BISQUE" layoutX="600.0" layoutY="410.0" onMouseClicked="#setBorderColor5" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Button fx:id="boldTextButton" layoutX="330.0" layoutY="480.0" mnemonicParsing="false" onAction="#toggleBoldText" prefHeight="37.0" prefWidth="140.0" text="Жирный текст">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
         </content>

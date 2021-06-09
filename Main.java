@@ -18,13 +18,15 @@ public class Main extends Application {
 
     public static Parent root;
     public static Controller controller;
-    public static String version = "0.2";
+    public static String version = "0.3";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
     public static String logFileName = "log.txt";
 	public static String notificationFileName = "notification.txt";
     public static String backgroundColor = "#444444";
     public static String textColor = "#ffffff";
+    public static String borderColor = "#008000";
+    public static boolean boldText = true;
     private static volatile String notificationString = "";
 
     public volatile static String pathToProductFile;
@@ -39,8 +41,11 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("mainScene2.fxml"));
         root = loader.load();
         controller = loader.getController();
+        controller.groupAppearanceVariables();
         controller.setTextColor();
-        controller.setOpacity();
+        controller.setFont();
+        controller.setNotificationOpacity(0);
+	    controller.setBorderColor();
         primaryStage.setTitle("Арматуркин ver " + version);
         Log.add(primaryStage.getTitle());
         primaryStage.setScene(new Scene(root));
@@ -48,22 +53,16 @@ public class Main extends Application {
         controller.setupInfoLabel();
         controller.setUpperDragSpaceText("Перетащи сюда список изделий");
 	    controller.setLowerDragSpaceText("Перетащи сюда файл,\nкоторый надо посчитать");
-        pathVerification(controller);
+        pathVerification();
         primaryStage.show();
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
-		    if (notificationString.length() > 0) {
-		    	controller.setNotificationOpacity(1);
-		    }
-		    if (notificationString.length() == 0) {
-			    controller.setNotificationOpacity(0);
-		    }
 	    }));
 	    timeline.setCycleCount(Animation.INDEFINITE);
 	    timeline.play();
     }
 
-    private void pathVerification(Controller controller) {
+    private void pathVerification() {
     	if (pathToProductFile != null) {
 		    Path path = Path.of(pathToProductFile);
 		    if (Files.exists(path)) {
@@ -76,10 +75,15 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
     	checkDirectory();
-    	if (args[0].equals("-writelog")) {
+    	/*if (args[0].equals("-writelog")) {
     		Log.enable();
+	    }*/
+    	Log.enable();
+    	try {
+		    loadConfigFile();
+	    } catch (Exception e) {
+    		e.printStackTrace();
 	    }
-        loadConfigFile();
         launch(args);
         saveConfigFile();
         Log.saveLog();
@@ -123,6 +127,7 @@ public class Main extends Application {
 
     public static void addNotification(String string) {
     	notificationString += string + "\n";
+    	controller.setNotificationOpacity(1);
     }
 
     public static void clearNotification() {
@@ -149,6 +154,8 @@ public class Main extends Application {
 			if (!load.get(4).equals("null")) {
 				optionalPath = load.get(4);
 			}
+			borderColor = load.get(5);
+			boldText = Boolean.parseBoolean(load.get(6));
 		}
 		if (Files.notExists(Path.of(programRootPath, configFileName))) {
 			Files.createFile(Path.of(programRootPath, configFileName));
@@ -162,7 +169,9 @@ public class Main extends Application {
 			    textColor,
 			    pathToProductFile,
 			    pathToCalculatingFile,
-			    optionalPath
+			    optionalPath,
+			    borderColor,
+			    String.valueOf(boldText)
 	    };
 	    Writer.write(programRootPath + configFileName, configList);
     }
