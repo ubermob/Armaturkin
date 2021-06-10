@@ -21,7 +21,7 @@ public class Main extends Application {
 
     public static Parent root;
     public static Controller controller;
-    public static String version = "0.3.2";
+    public static String version = "0.3.3";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
     public static String logFileName = "log.txt";

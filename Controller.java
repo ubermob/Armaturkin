@@ -436,6 +436,7 @@ public class Controller {
 				labelArray) {
 			label.setFont(font3);
 		}
+		infoLabel.setFont(font2);
 		notificationLabel.setFont(font1);
 		notificationLabel2.setFont(font1);
 		for (Button button :

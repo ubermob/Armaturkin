@@ -35,6 +35,7 @@ public class FileWorker implements Runnable {
 
 	@Override
 	public void run() {
+		Log.add(getClass() + ": Thread start");
 		buildTableHead();
 		addBackgroundReinforcement();
 		fillTable();
