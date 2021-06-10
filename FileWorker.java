@@ -50,7 +50,7 @@ public class FileWorker implements Runnable {
 			workbook.write(outputStream);
 			Log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + parentPath + "\"");
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.add(e);
 		}
 		Log.add(getClass() + ": Tread complete");
 		Main.addNotification("☻ Файл «" + fileName + "» посчитан и загружен");

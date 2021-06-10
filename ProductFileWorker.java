@@ -27,7 +27,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.add(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		rowInt = 2;

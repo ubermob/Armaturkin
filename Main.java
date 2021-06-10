@@ -9,8 +9,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,11 +21,12 @@ public class Main extends Application {
 
     public static Parent root;
     public static Controller controller;
-    public static String version = "0.3.1";
+    public static String version = "0.3.2";
     public static String programRootPath = "C:\\Armaturkin\\";
     public static String configFileName = "config.txt";
     public static String logFileName = "log.txt";
 	public static String notificationFileName = "notification.txt";
+	public static String logStorageDirectory = "Log storage";
     public static String backgroundColor = "#444444";
     public static String textColor = "#ffffff";
     public static String borderColor = "#008000";
@@ -47,7 +51,7 @@ public class Main extends Application {
         controller.setNotificationOpacity(0);
 	    controller.setBorderColor();
         primaryStage.setTitle("Арматуркин ver " + version);
-        Log.add(primaryStage.getTitle());
+        Log.add(primaryStage.getTitle() + " " + getDateTime() + " " + getHostName());
         primaryStage.setScene(new Scene(root));
         setBackgroundColor();
         controller.setupInfoLabel();
@@ -75,13 +79,15 @@ public class Main extends Application {
 
     public static void main(String[] args) throws IOException {
     	checkDirectory();
-    	if (args[0].equals("-writelog")) {
-    		Log.enable();
+    	try {
+		    parseArgs(args);
+	    } catch (ArrayIndexOutOfBoundsException e) {
+		    Log.add(e);
 	    }
     	try {
 		    loadConfigFile();
 	    } catch (Exception e) {
-    		e.printStackTrace();
+		    Log.add(e);
 	    }
         launch(args);
         saveConfigFile();
@@ -124,6 +130,27 @@ public class Main extends Application {
     	Writer.write(programRootPath + notificationFileName, string);
     }
 
+    static void parseArgs(String[] args) {
+    	String[] argCommand = {"-writeLog", "-logStorageLimit"};
+	    for (String arg : args) {
+		    if (arg.equals(argCommand[0])) {
+			    Log.enable();
+			    Log.add(argCommand[0]);
+		    }
+	    }
+	    for (String arg : args) {
+		    if (logStorageLimitCondition(arg, argCommand[1])) {
+		    	int value = Integer.parseInt(args[1].split("=")[1]);
+			    Log.setLogStorageLimit(value);
+			    Log.add(argCommand[1] + " " + value);
+		    }
+	    }
+    }
+
+    static boolean logStorageLimitCondition(String arg, String argCommand) {
+    	return arg.length() >= argCommand.length() && arg.startsWith(argCommand);
+    }
+
     public static void addNotification(String string) {
     	notificationString += string + "\n";
     	controller.setNotificationOpacity(1);
@@ -136,6 +163,9 @@ public class Main extends Application {
     static void checkDirectory() throws IOException {
     	if (Files.notExists(Path.of(programRootPath))) {
     		Files.createDirectory(Path.of(programRootPath));
+	    }
+    	if (Files.notExists(Path.of(programRootPath, logStorageDirectory))) {
+    		Files.createDirectory(Path.of(programRootPath, logStorageDirectory));
 	    }
     }
 
@@ -173,6 +203,20 @@ public class Main extends Application {
 			    String.valueOf(boldText)
 	    };
 	    Writer.write(programRootPath + configFileName, configList);
+    }
+
+    static String getHostName() {
+    	try {
+    		return "System name: " + InetAddress.getLocalHost().getHostName();
+	    } catch (Exception e) {
+		    Log.add(e);
+    		return "";
+	    }
+    }
+
+    static String getDateTime() {
+	    LocalDateTime localDateTime = LocalDateTime.now();
+	    return localDateTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy HH-mm-ss"));
     }
 
 	static void setBackgroundColor() {

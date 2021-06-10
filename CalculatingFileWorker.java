@@ -39,7 +39,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.add(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		if (tableHeadVerification()) {
