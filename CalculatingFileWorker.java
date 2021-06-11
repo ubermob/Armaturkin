@@ -37,9 +37,9 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	@Override
 	public void run() {
 		Log.add(getClass() + ": Thread start");
+		Log.add(getClass() + " work with file: " + path);
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
-			Log.add(getClass() + " work with file: " + path);
 		} catch (IOException e) {
 			Log.add(e);
 		}

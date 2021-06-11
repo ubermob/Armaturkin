@@ -42,7 +42,7 @@ public class FileWorker implements Runnable {
 
 		if (fileName.length() == 0) {
 			LocalDateTime localDateTime = LocalDateTime.now();
-			fileName = localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss")) + ".xlsx";
+			fileName = localDateTime.format(DateTimeFormatter.ofPattern(Main.properties.getProperty("dateTimePattern2"))) + ".xlsx";
 		} else {
 			fileName += ".xlsx";
 		}

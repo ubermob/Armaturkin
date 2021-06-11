@@ -3,8 +3,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -12,51 +10,50 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Controller {
 
-	Label[] labelArray;
-	Label[] labelArray2;
-	public Label upperDragSpace;
-	public Label lowerDragSpace;
+	private Label[] allLabels;
+	private Label[] borderModifiedLabels;
+	private LabelWrapper[] allSummaryLabelWrappers;
+	public Label upperDropSpace;
+	public Label lowerDropSpace;
 	public Label resultLabel;
 	public Label notificationLabel;
 	public Label notificationLabel2;
 	public Label infoLabel;
-	public Label specificationDragSpace1;
-	public Label specificationDragSpace2;
-	public Label specificationDragSpace3;
-	public Label specificationDragSpace5;
-	public Label specificationDragSpace7;
-	public Label specificationDragSpace4;
-	public Label specificationDragSpace6;
-	public Label specificationDragSpace8;
-	Button[] buttonArray;
-	Button[] buttonArray2;
+	public Label summaryDropSpace1;
+	public Label summaryDropSpace2;
+	public Label summaryDropSpace3;
+	public Label summaryDropSpace4;
+	public Label summaryDropSpace5;
+	public Label summaryDropSpace6;
+	public Label summaryDropSpace7;
+	public Label summaryDropSpace8;
+	Button[] allButtons;
+	Button[] boldTextModifiedButtons;
 	public Button downloadFileButton;
 	public Button clearResultLabelButton;
 	public Button lowerDropSpaceButton;
 	public Button clearUpperDropSpaceButton;
 	public Button infoButton;
 	public Button downloadResultLabelButton;
-	public Button downloadSpecificationFileButton;
-	public Button clearSpecificationDropSpaceButton0;
-	public Button clearSpecificationDropSpaceButton1;
-	public Button clearSpecificationDropSpaceButton2;
-	public Button clearSpecificationDropSpaceButton3;
-	public Button clearSpecificationDropSpaceButton4;
-	public Button clearSpecificationDropSpaceButton5;
-	public Button clearSpecificationDropSpaceButton6;
-	public Button clearSpecificationDropSpaceButton7;
-	public Button clearSpecificationDropSpaceButton8;
+	public Button downloadSummaryFileButton;
+	public Button clearAllSummaryDropSpaceButton;
+	public Button clearSummaryDropSpaceButton1;
+	public Button clearSummaryDropSpaceButton2;
+	public Button clearSummaryDropSpaceButton3;
+	public Button clearSummaryDropSpaceButton4;
+	public Button clearSummaryDropSpaceButton5;
+	public Button clearSummaryDropSpaceButton6;
+	public Button clearSummaryDropSpaceButton7;
+	public Button clearSummaryDropSpaceButton8;
 	public Button boldTextButton;
 	public TextField downloadFileTableHead;
 	public TextField backgroundReinforcement;
 	public TextField downloadFileName;
-	public TextField downloadSpecificationFileName;
-	Text[] textArray;
+	public TextField downloadSummaryFileName;
+	Text[] allTexts;
 	public Text appearanceText1;
     public Text appearanceText2;
 	public Text appearanceText3;
@@ -72,30 +69,56 @@ public class Controller {
 	public Circle circleBorderColor5;
 	Border border;
 
+	public void startSetup() {
+		groupAppearanceVariables();
+		setBackgroundColor();
+		setTextColor();
+		setFont();
+		setNotificationOpacity(0);
+		setBorderColor();
+		setupInfoLabel();
+		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
+		setLowerDropSpaceText(Main.properties.getProperty("lowerLabelDefaultText"));
+
+		String secondLine = Main.properties.getProperty("summaryLabelDefaultSecondLine");
+		setSummaryDropSpaceText(1, Main.properties.getProperty("summaryLabelDefaultFirstLine1").formatted(secondLine));
+		setSummaryDropSpaceText(2, Main.properties.getProperty("summaryLabelDefaultFirstLine2").formatted(secondLine));
+		setSummaryDropSpaceText(3, Main.properties.getProperty("summaryLabelDefaultFirstLine3").formatted(secondLine));
+		setSummaryDropSpaceText(4, Main.properties.getProperty("summaryLabelDefaultFirstLine4").formatted(secondLine));
+		setSummaryDropSpaceText(5, Main.properties.getProperty("summaryLabelDefaultFirstLine5").formatted(secondLine));
+		setSummaryDropSpaceText(6, Main.properties.getProperty("summaryLabelDefaultFirstLine6").formatted(secondLine));
+		setSummaryDropSpaceText(7, Main.properties.getProperty("summaryLabelDefaultFirstLine7").formatted(secondLine));
+		setSummaryDropSpaceText(8, Main.properties.getProperty("summaryLabelDefaultFirstLine8").formatted(secondLine));
+	}
+
 	public void setBackgroundColor1() {
 		Main.backgroundColor = getColorHexCode(circle1.getFill());
-        Main.setBackgroundColor();
+        setBackgroundColor();
     }
 
     public void setBackgroundColor2() {
 	    Main.backgroundColor = getColorHexCode(circle2.getFill());
-        Main.setBackgroundColor();
+        setBackgroundColor();
     }
 
     public void setBackgroundColor3() {
 	    Main.backgroundColor = getColorHexCode(circle3.getFill());
-        Main.setBackgroundColor();
+        setBackgroundColor();
     }
 
     public void setBackgroundColor4() {
 	    Main.backgroundColor = getColorHexCode(circle4.getFill());
-        Main.setBackgroundColor();
+        setBackgroundColor();
     }
 
     public void setBackgroundColor5() {
 	    Main.backgroundColor = getColorHexCode(circle5.getFill());
-        Main.setBackgroundColor();
+        setBackgroundColor();
     }
+
+	void setBackgroundColor() {
+		Main.root.setStyle("-fx-background-color: " + Main.backgroundColor + ";");
+	}
 
     public void setTextColor1() {
         Main.textColor = getColorHexCode(circle1.getFill());
@@ -123,69 +146,83 @@ public class Controller {
     }
 
     public void groupAppearanceVariables() {
-		labelArray = new Label[]{
-				upperDragSpace,
-				lowerDragSpace,
+		allLabels = new Label[]{
+				upperDropSpace,
+				lowerDropSpace,
 				resultLabel,
 				notificationLabel,
 				notificationLabel2,
 				infoLabel,
-				specificationDragSpace1,
-				specificationDragSpace2,
-				specificationDragSpace3,
-				specificationDragSpace4,
-				specificationDragSpace5,
-				specificationDragSpace6,
-				specificationDragSpace7,
-				specificationDragSpace8
+				summaryDropSpace1,
+				summaryDropSpace2,
+				summaryDropSpace3,
+				summaryDropSpace4,
+				summaryDropSpace5,
+				summaryDropSpace6,
+				summaryDropSpace7,
+				summaryDropSpace8
 		};
-	    labelArray2 = new Label[]{
-			    upperDragSpace,
-			    lowerDragSpace,
-			    specificationDragSpace1,
-			    specificationDragSpace2,
-			    specificationDragSpace3,
-			    specificationDragSpace4,
-			    specificationDragSpace5,
-			    specificationDragSpace6,
-			    specificationDragSpace7,
-			    specificationDragSpace8
+	    borderModifiedLabels = new Label[]{
+			    upperDropSpace,
+			    lowerDropSpace,
+			    summaryDropSpace1,
+			    summaryDropSpace2,
+			    summaryDropSpace3,
+			    summaryDropSpace4,
+			    summaryDropSpace5,
+			    summaryDropSpace6,
+			    summaryDropSpace7,
+			    summaryDropSpace8
 	    };
-		buttonArray = new Button[]{
+	    allSummaryLabelWrappers = new LabelWrapper[]{
+			    new LabelWrapper(summaryDropSpace1),
+			    new LabelWrapper(summaryDropSpace2),
+			    new LabelWrapper(summaryDropSpace3),
+			    new LabelWrapper(summaryDropSpace4),
+			    new LabelWrapper(summaryDropSpace5),
+			    new LabelWrapper(summaryDropSpace6),
+			    new LabelWrapper(summaryDropSpace7),
+			    new LabelWrapper(summaryDropSpace8)
+	    };
+	    allButtons = new Button[]{
 				downloadFileButton,
 				clearResultLabelButton,
 				lowerDropSpaceButton,
 				clearUpperDropSpaceButton,
 				infoButton,
 				downloadResultLabelButton,
-				downloadSpecificationFileButton,
-				clearSpecificationDropSpaceButton0,
-				clearSpecificationDropSpaceButton1,
-				clearSpecificationDropSpaceButton2,
-				clearSpecificationDropSpaceButton3,
-				clearSpecificationDropSpaceButton4,
-				clearSpecificationDropSpaceButton5,
-				clearSpecificationDropSpaceButton6,
-				clearSpecificationDropSpaceButton7,
-				clearSpecificationDropSpaceButton8,
+				downloadSummaryFileButton,
+				clearAllSummaryDropSpaceButton,
+				clearSummaryDropSpaceButton1,
+				clearSummaryDropSpaceButton2,
+				clearSummaryDropSpaceButton3,
+				clearSummaryDropSpaceButton4,
+				clearSummaryDropSpaceButton5,
+				clearSummaryDropSpaceButton6,
+				clearSummaryDropSpaceButton7,
+				clearSummaryDropSpaceButton8,
 				boldTextButton
 		};
-		buttonArray2 = new Button[]{
+		boldTextModifiedButtons = new Button[]{
 				downloadFileButton,
 				clearResultLabelButton,
 				lowerDropSpaceButton,
 				clearUpperDropSpaceButton,
 				infoButton,
 				downloadResultLabelButton,
-				downloadSpecificationFileButton,
-				clearSpecificationDropSpaceButton0,
+				downloadSummaryFileButton,
+				clearAllSummaryDropSpaceButton,
 				boldTextButton
 		};
-		textArray = new Text[]{
+		allTexts = new Text[]{
 				appearanceText1,
 				appearanceText2,
 				appearanceText3
 		};
+    }
+
+    public LabelWrapper getSummaryLabelWrapper(int i) {
+		return allSummaryLabelWrappers[i - 1];
     }
 
 	String getColorHexCode(Paint paint) {
@@ -193,24 +230,19 @@ public class Controller {
 	}
 
     void setTextColor() {
-	    for (Text text :
-			    textArray) {
+	    for (Text text : allTexts) {
 		    text.setFill(Paint.valueOf(Main.textColor));
 	    }
-	    for (Label label :
-			    labelArray) {
+	    for (Label label : allLabels) {
 		    label.setTextFill(Paint.valueOf(Main.textColor));
 	    }
     }
     
     void setBorderColor() {
 		border = new Border(new BorderStroke(Paint.valueOf(Main.borderColor), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
-		//Border saveBorder = resultLabel.getBorder();
-	    for (Label label :
-			    labelArray2) {
+	    for (Label label : borderModifiedLabels) {
 	    	label.setBorder(border);
 	    }
-	    //resultLabel.setBorder(saveBorder);
     }
 
     public void setResultLabelText(String string) {
@@ -223,82 +255,35 @@ public class Controller {
     }
 
     public void upperDragDropped(DragEvent dragEvent) {
-	    dragDropped(dragEvent, 0);
+	    DropWorker.dragDropped(dragEvent, 0, this);
     }
 
     public void upperDragOver(DragEvent dragEvent) {
-        dragOver(dragEvent);
+	    DropWorker.dragOver(dragEvent);
     }
 
     public void lowerDragDropped(DragEvent dragEvent) {
-	    dragDropped(dragEvent, 1);
+	    DropWorker.dragDropped(dragEvent, 1, this);
     }
 
     public void lowerDragOver(DragEvent dragEvent) {
-		dragOver(dragEvent);
+	    DropWorker.dragOver(dragEvent);
     }
 
-    public void dragOver(DragEvent dragEvent) {
-        if (dragEvent.getDragboard().hasFiles()) {
-            dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-        }
-        dragEvent.consume();
+    public void setUpperDropSpaceText(String string) {
+		upperDropSpace.setText(string);
     }
 
-    public void dragDropped(DragEvent dragEvent, int i) {
-	    List<File> fileList = getDroppedFile(dragEvent);
-	    if (fileList.size() != 1) {
-	    	if (i == 0) {
-			    setUpperDragSpaceText("Мне нужен только один файл");
-		    }
-	    	if (i == 1) {
-	    		setLowerDragSpaceText("Мне нужен только один файл");
-		    }
-	    } else {
-		    String[] fileName = fileList.get(0).getName().split("\\.");
-		    if (fileName[fileName.length - 1].equalsIgnoreCase("xls") ||
-				    fileName[fileName.length - 1].equalsIgnoreCase("xlsx")) {
-			    if (i == 0) {
-				    setUpperDragSpaceText("Файл принят");
-			    }
-			    if (i == 1) {
-				    setLowerDragSpaceText("Файл принят");
-			    }
-			    File file = fileList.get(0);
-			    if (i == 0) {
-				    Main.pathToProductFile = file.getAbsolutePath();
-				    Main.loadProduct();
-			    }
-			    if (i == 1) {
-			    	Main.pathToCalculatingFile = file.getAbsolutePath();
-			    	Main.loadCalculatingFile();
-			    }
-		    } else {
-		    	if (i == 0) {
-				    setUpperDragSpaceText("Это не Excel файл");
-			    }
-		    	if (i == 1) {
-				    setLowerDragSpaceText("Это не Excel файл");
-			    }
-		    }
-	    }
+    public Label getUpperDropSpaceLabel() {
+		return upperDropSpace;
     }
 
-    public List<File> getDroppedFile(DragEvent dragEvent) {
-        Dragboard db = dragEvent.getDragboard();
-        List<File> fileList = new ArrayList<>();
-        if (db.hasFiles()) {
-            fileList = db.getFiles();
-        }
-        return fileList;
-    }
+	public Label getLowerDropSpaceLabel() {
+		return lowerDropSpace;
+	}
 
-    public void setUpperDragSpaceText(String string) {
-		upperDragSpace.setText(string);
-    }
-
-    public void setLowerDragSpaceText(String string) {
-		lowerDragSpace.setText(string);
+    public void setLowerDropSpaceText(String string) {
+		lowerDropSpace.setText(string);
     }
 
 	public void downloadFile() {
@@ -312,11 +297,13 @@ public class Controller {
 	public void clearUpperDropSpace() {
 		Main.pathToProductFile = null;
 		Main.reinforcementProductHashMap.clear();
+		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
 	}
 
 	public void clearLowerDropSpace() {
 		Main.pathToCalculatingFile = null;
 		Main.reinforcementHashMap.clear();
+		setLowerDropSpaceText(Main.properties.getProperty("lowerLabelDefaultText"));
 	}
 
 	public void toggleInfoLabelOpacity() {
@@ -354,40 +341,75 @@ public class Controller {
 		setNotificationOpacity(0);
 	}
 
-	public void specificationDragDropped(DragEvent dragEvent) {
+	public void setSummaryDropSpaceText(int i, String string) {
+		getSummaryLabelWrapper(i).getLabel().setText(string);
+		getSummaryLabelWrapper(i).setDefaultText(string);
 	}
 
-	public void specificationDragOver(DragEvent dragEvent) {
+	public void summaryDragDropped1(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 1, this);
 	}
 
-	public void downloadSpecificationFile(ActionEvent actionEvent) {
+	public void summaryDragOver(DragEvent dragEvent) {
+		DropWorker.dragOver(dragEvent);
 	}
 
-	public void clearSpecificationDropSpace0(ActionEvent actionEvent) {
+	public void summaryDragDropped2(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 2, this);
 	}
 
-	public void clearSpecificationDropSpace1(ActionEvent actionEvent) {
+	public void summaryDragDropped3(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 3, this);
 	}
 
-	public void clearSpecificationDropSpace2(ActionEvent actionEvent) {
+	public void summaryDragDropped4(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 4, this);
 	}
 
-	public void clearSpecificationDropSpace3(ActionEvent actionEvent) {
+	public void summaryDragDropped5(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 5, this);
 	}
 
-	public void clearSpecificationDropSpace4(ActionEvent actionEvent) {
+	public void summaryDragDropped6(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 6, this);
 	}
 
-	public void clearSpecificationDropSpace5(ActionEvent actionEvent) {
+	public void summaryDragDropped7(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 7, this);
 	}
 
-	public void clearSpecificationDropSpace6(ActionEvent actionEvent) {
+	public void summaryDragDropped8(DragEvent dragEvent) {
+		DropWorker.dragDroppedSummary(dragEvent, 8, this);
 	}
 
-	public void clearSpecificationDropSpace7(ActionEvent actionEvent) {
+	public void downloadSummaryFile(ActionEvent actionEvent) {
 	}
 
-	public void clearSpecificationDropSpace8(ActionEvent actionEvent) {
+	public void clearAllSummaryDropSpace(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace1(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace2(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace3(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace4(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace5(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace6(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace7(ActionEvent actionEvent) {
+	}
+
+	public void clearSummaryDropSpace8(ActionEvent actionEvent) {
 	}
 
 	public void setBorderColor1() {
@@ -415,7 +437,7 @@ public class Controller {
 		setBorderColor();
 	}
 
-	public void toggleBoldText(ActionEvent actionEvent) {
+	public void toggleBoldText() {
 		Main.boldText = !Main.boldText;
 		setFont();
 	}
@@ -432,19 +454,16 @@ public class Controller {
 	}
 
 	void setFont(Font font1, Font font2, Font font3) {
-		for (Label label :
-				labelArray) {
+		for (Label label : allLabels) {
 			label.setFont(font3);
 		}
 		infoLabel.setFont(font2);
 		notificationLabel.setFont(font1);
 		notificationLabel2.setFont(font1);
-		for (Button button :
-				buttonArray2) {
+		for (Button button : boldTextModifiedButtons) {
 			button.setFont(font2);
 		}
-		for (Text text :
-				textArray) {
+		for (Text text : allTexts) {
 			text.setFont(font3);
 		}
 	}

@@ -14,7 +14,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private Row row;
 	private int rowInt;
 	private int diameterArrayIndex;
-	private boolean diameterMatch;
+	private boolean realDiameter;
 	private int length;
 
 	public ProductFileWorker(String path, HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap) {
@@ -25,9 +25,9 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	@Override
 	public void run() {
 		Log.add(getClass() + ": Thread start");
+		Log.add(getClass() + " work with file: " + path);
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
-			Log.add(getClass() + " work with file: " + path);
 		} catch (IOException e) {
 			Log.add(e);
 		}
@@ -38,7 +38,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			rowInt++;
 		}
 		Log.add(getClass() + ": Thread complete");
-		Main.addNotification("☻ Список изделий прочитан до строки с номером: " + rowInt + " (включительно)");
+		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead1").formatted(rowInt));
 	}
 
 	private void readRow() {
@@ -61,10 +61,10 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private int checkDiameter(int diameter) {
-		diameterMatch = false;
+		realDiameter = false;
 		for (int i = 0; i < StandardsRepository.diameter.length; i++) {
 			if (diameter == StandardsRepository.diameter[i]) {
-				diameterMatch = true;
+				realDiameter = true;
 				diameterArrayIndex = i;
 				return diameter;
 			}
@@ -112,13 +112,13 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private double checkMass(double mass) {
-		if (diameterMatch) {
+		if (realDiameter) {
 			double mass1 = length / 1000.0 * StandardsRepository.mass3Digit[diameterArrayIndex];
 			double mass2 = length / 1000.0 * StandardsRepository.mass2Digit1[diameterArrayIndex];
 			double mass3 = length / 1000.0 * StandardsRepository.mass2Digit2[diameterArrayIndex];
-			boolean match1 = mass1 - mass < 0.01 || mass1 - mass < -0.01;
-			boolean match2 = mass2 - mass < 0.01 || mass2 - mass < -0.01;
-			boolean match3 = mass2 - mass < 0.01 || mass3 - mass < -0.01;
+			boolean match1 = Math.abs(mass1 - mass) < 0.01;
+			boolean match2 = Math.abs(mass2 - mass) < 0.01;
+			boolean match3 = Math.abs(mass3 - mass) < 0.01;
 			if (!match1 && !match2 && !match3) {
 				Main.addNotification("В строке " + (rowInt + 1) + " масса изделия: " + mass + ". Я думаю, должно быть: " + mass1);
 			}

@@ -22,7 +22,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="upperDragSpace" alignment="CENTER" layoutX="206.0" layoutY="33.0" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" text="upperLabel" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="upperDropSpace" alignment="CENTER" layoutX="206.0" layoutY="33.0" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" text="upperLabel" textAlignment="CENTER" wrapText="true">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -30,7 +30,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lowerDragSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" text="lowerLabel" textAlignment="CENTER">
+                  <Label fx:id="lowerDropSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" text="lowerLabel" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -72,7 +72,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="500.0" prefWidth="780.0" text="Label">
+                  <Label fx:id="resultLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="500.0" prefWidth="780.0" text="Label" wrapText="true">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -94,7 +94,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="specificationDragSpace1" alignment="CENTER" layoutX="10.0" layoutY="32.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel1" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace1" alignment="CENTER" layoutX="10.0" layoutY="32.0" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel1" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -102,23 +102,23 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearSpecificationDropSpaceButton0" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace0" prefHeight="27.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
+                  <Button fx:id="clearAllSummaryDropSpaceButton" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="27.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="downloadSpecificationFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSpecificationFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadSummaryFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="downloadSpecificationFileName" layoutX="200.0" layoutY="526.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                  <TextField fx:id="downloadSummaryFileName" layoutX="200.0" layoutY="526.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
                   <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="84.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace2" alignment="CENTER" layoutX="405.0" layoutY="32.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel2" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace2" alignment="CENTER" layoutX="405.0" layoutY="32.0" onDragDropped="#summaryDragDropped2" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel2" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -126,7 +126,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace3" alignment="CENTER" layoutX="10.0" layoutY="152.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel3" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace3" alignment="CENTER" layoutX="10.0" layoutY="152.0" onDragDropped="#summaryDragDropped3" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel3" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -134,7 +134,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace5" alignment="CENTER" layoutX="10.0" layoutY="272.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel5" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace5" alignment="CENTER" layoutX="10.0" layoutY="272.0" onDragDropped="#summaryDragDropped5" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel5" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -142,7 +142,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace7" alignment="CENTER" layoutX="10.0" layoutY="392.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel7" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace7" alignment="CENTER" layoutX="10.0" layoutY="392.0" onDragDropped="#summaryDragDropped7" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel7" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -150,7 +150,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace4" alignment="CENTER" layoutX="405.0" layoutY="152.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel4" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace4" alignment="CENTER" layoutX="405.0" layoutY="152.0" onDragDropped="#summaryDragDropped4" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel4" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -158,7 +158,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace6" alignment="CENTER" layoutX="405.0" layoutY="272.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel6" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace6" alignment="CENTER" layoutX="405.0" layoutY="272.0" onDragDropped="#summaryDragDropped6" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel6" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -166,7 +166,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="specificationDragSpace8" alignment="CENTER" layoutX="405.0" layoutY="392.0" onDragDropped="#specificationDragDropped" onDragOver="#specificationDragOver" prefHeight="115.0" prefWidth="385.0" text="specificationLabel8" textAlignment="CENTER">
+                  <Label fx:id="summaryDropSpace8" alignment="CENTER" layoutX="405.0" layoutY="392.0" onDragDropped="#summaryDragDropped8" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" text="summaryLabel8" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -174,42 +174,42 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearSpecificationDropSpaceButton1" layoutX="353.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace1" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton1" layoutX="353.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace1" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton3" layoutX="353.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace3" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton3" layoutX="353.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace3" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton2" layoutX="748.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace2" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton2" layoutX="748.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace2" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton5" layoutX="353.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace5" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton5" layoutX="353.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace5" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton7" layoutX="353.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace7" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton7" layoutX="353.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace7" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton4" layoutX="748.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace4" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton4" layoutX="748.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace4" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton6" layoutX="748.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace6" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton6" layoutX="748.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace6" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSpecificationDropSpaceButton8" layoutX="748.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSpecificationDropSpace8" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton8" layoutX="748.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace8" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

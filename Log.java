@@ -45,8 +45,10 @@ public class Log {
 	public static void saveLog() throws IOException {
 		clearStorage(Path.of(Main.programRootPath, Main.logStorageDirectory));
 		try {
-			Files.copy(Path.of(Main.programRootPath, Main.logFileName), Path.of(Main.programRootPath,
-					Main.logStorageDirectory, "log" + (currentLogStorage + 1) + ".txt"));
+			Files.copy(Path.of(Main.programRootPath, Main.logFileName),
+					Path.of(Main.programRootPath, Main.logStorageDirectory,
+							Main.properties.getProperty("numberedLogFileName").formatted(currentLogStorage + 1))
+			);
 		} catch (Exception e) {
 			Log.add(e);
 		}
@@ -77,7 +79,10 @@ public class Log {
 			int fileNumber = 1;
 			for (int i = deleteNumber; i < pathArray.length; i++) {
 				try {
-					Files.move(pathArray[i], Path.of(Main.programRootPath, Main.logStorageDirectory, "log" + fileNumber + ".txt"));
+					Files.move(pathArray[i],
+							Path.of(Main.programRootPath, Main.logStorageDirectory,
+									Main.properties.getProperty("numberedLogFileName").formatted(fileNumber))
+					);
 				} catch (Exception e) {
 					Log.add(e);
 				}
@@ -85,7 +90,6 @@ public class Log {
 			}
 			currentLogStorage = logStorageLimit - 1;
 		}
-
 	}
 
 	private static int parseFileName(String fileName) {

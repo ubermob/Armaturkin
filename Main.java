@@ -16,47 +16,43 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class Main extends Application {
 
-    public static Parent root;
+	public static String version = "0.4";
+	public static Properties properties;
+	public static Parent root;
     public static Controller controller;
-    public static String version = "0.3.3";
-    public static String programRootPath = "C:\\Armaturkin\\";
-    public static String configFileName = "config.txt";
-    public static String logFileName = "log.txt";
-	public static String notificationFileName = "notification.txt";
-	public static String logStorageDirectory = "Log storage";
-    public static String backgroundColor = "#444444";
-    public static String textColor = "#ffffff";
-    public static String borderColor = "#008000";
-    public static boolean boldText = true;
+    public static String programRootPath;
+    public static String configFileName;
+    public static String logFileName;
+	public static String notificationFileName;
+	public static String logStorageDirectory;
+    public static String backgroundColor;
+    public static String textColor;
+    public static String borderColor;
+    public static boolean boldText;
+    private static Character diskLetter;
     private static volatile String notificationString = "";
 
     public volatile static String pathToProductFile;
     public volatile static String pathToCalculatingFile;
     public static String optionalPath;
+	public static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
 
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainScene2.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(properties.getProperty("mainScene")));
         root = loader.load();
         controller = loader.getController();
-        controller.groupAppearanceVariables();
-        controller.setTextColor();
-        controller.setFont();
-        controller.setNotificationOpacity(0);
-	    controller.setBorderColor();
-        primaryStage.setTitle("Арматуркин ver " + version);
+        controller.startSetup();
+        primaryStage.setTitle(properties.getProperty("applicationName") + " ver " + version);
         Log.add(primaryStage.getTitle() + " " + getDateTime() + " " + getHostName());
         primaryStage.setScene(new Scene(root));
-        setBackgroundColor();
-        controller.setupInfoLabel();
-        controller.setUpperDragSpaceText("Перетащи сюда список изделий");
-	    controller.setLowerDragSpaceText("Перетащи сюда файл,\nкоторый надо посчитать");
         pathVerification();
         primaryStage.show();
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
@@ -70,20 +66,23 @@ public class Main extends Application {
     	if (pathToProductFile != null) {
 		    Path path = Path.of(pathToProductFile);
 		    if (Files.exists(path)) {
-			    controller.setUpperDragSpaceText("Я использую предыдущий файл\n«" + path.getFileName() +
-					    "»\nНо ты можешь обновить его");
+			    controller.setUpperDropSpaceText(
+			    		properties.getProperty("upperLabelTextWithFile").formatted(path.getFileName().toString())
+			    );
 			    loadProduct();
 		    }
 	    }
     }
 
     public static void main(String[] args) throws IOException {
-    	checkDirectory();
-    	try {
+	    try {
 		    parseArgs(args);
 	    } catch (ArrayIndexOutOfBoundsException e) {
 		    Log.add(e);
 	    }
+	    loadProperties();
+	    readBasicFieldsFromProperties();
+    	checkDirectory();
     	try {
 		    loadConfigFile();
 	    } catch (Exception e) {
@@ -131,23 +130,30 @@ public class Main extends Application {
     }
 
     static void parseArgs(String[] args) {
-    	String[] argCommand = {"-writeLog", "-logStorageLimit"};
+    	String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk"};
 	    for (String arg : args) {
 		    if (arg.equals(argCommand[0])) {
 			    Log.enable();
 			    Log.add(argCommand[0]);
 		    }
-	    }
-	    for (String arg : args) {
-		    if (logStorageLimitCondition(arg, argCommand[1])) {
-		    	int value = Integer.parseInt(args[1].split("=")[1]);
+		    if (isMatchCommands(arg, argCommand[1])) {
+			    int value = Integer.parseInt(arg.split("=")[1]);
 			    Log.setLogStorageLimit(value);
 			    Log.add(argCommand[1] + " " + value);
+		    }
+		    if (isMatchCommands(arg, argCommand[2])) {
+		    	char diskLetter = arg.split("=")[1].charAt(0);
+		    	char letterC = 'C';
+		    	char letterZ = 'Z';
+		    	if (letterC <= diskLetter && diskLetter <= letterZ) {
+		    		Main.diskLetter = diskLetter;
+				    Log.add(argCommand[2] + " " + Main.diskLetter);
+			    }
 		    }
 	    }
     }
 
-    static boolean logStorageLimitCondition(String arg, String argCommand) {
+    static boolean isMatchCommands(String arg, String argCommand) {
     	return arg.length() >= argCommand.length() && arg.startsWith(argCommand);
     }
 
@@ -161,6 +167,9 @@ public class Main extends Application {
     }
 
     static void checkDirectory() throws IOException {
+    	if (diskLetter != null) {
+    		Main.programRootPath = diskLetter + Main.programRootPath.substring(1);
+	    }
     	if (Files.notExists(Path.of(programRootPath))) {
     		Files.createDirectory(Path.of(programRootPath));
 	    }
@@ -205,6 +214,27 @@ public class Main extends Application {
 	    Writer.write(programRootPath + configFileName, configList);
     }
 
+    static void loadProperties() {
+    	properties = new Properties();
+    	try {
+		    properties.loadFromXML(Files.newInputStream(Path.of("resources\\properties.xml")));
+	    } catch (Exception e) {
+    		Log.add(e);
+	    }
+    }
+
+    static void readBasicFieldsFromProperties() throws IOException {
+    	programRootPath = properties.getProperty("programRootPath");
+    	configFileName = properties.getProperty("configFileName");
+    	logFileName = properties.getProperty("logFileName");
+	    notificationFileName = properties.getProperty("notificationFileName");
+	    logStorageDirectory = properties.getProperty("logStorageDirectory");
+	    backgroundColor = properties.getProperty("backgroundColor");
+	    textColor = properties.getProperty("textColor");
+	    borderColor = properties.getProperty("borderColor");
+	    boldText = Boolean.parseBoolean(properties.getProperty("boldText"));
+    }
+
     static String getHostName() {
     	try {
     		return "System name: " + InetAddress.getLocalHost().getHostName();
@@ -216,10 +246,6 @@ public class Main extends Application {
 
     static String getDateTime() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
-	    return localDateTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy HH-mm-ss"));
-    }
-
-	static void setBackgroundColor() {
-    	root.setStyle("-fx-background-color: " + backgroundColor + ";");
+	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("dateTimePattern1")));
     }
 }
