@@ -223,7 +223,7 @@ public class Main extends Application {
 	    }
     }
 
-    static void readBasicFieldsFromProperties() throws IOException {
+    static void readBasicFieldsFromProperties() {
     	programRootPath = properties.getProperty("programRootPath");
     	configFileName = properties.getProperty("configFileName");
     	logFileName = properties.getProperty("logFileName");

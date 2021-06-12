@@ -25,10 +25,12 @@ public class DropWorker {
 				File file = fileList.get(0);
 				if (i == 0) {
 					Main.pathToProductFile = file.getAbsolutePath();
+					Log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted1").formatted(DropWorker.class, Main.pathToProductFile));
 					Main.loadProduct();
 				}
 				if (i == 1) {
 					Main.pathToCalculatingFile = file.getAbsolutePath();
+					Log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted2").formatted(DropWorker.class, Main.pathToCalculatingFile));
 					Main.loadCalculatingFile();
 				}
 			} else {
@@ -52,7 +54,7 @@ public class DropWorker {
 			Main.summaryPaths.put(i, verifiedFileList);
 		}
 		for (String string : verifiedFileList) {
-			Log.add(DropWorker.class + " accepted " + string);
+			Log.add(Main.properties.getProperty("dropWorkerSummaryDropSpaceFileAccepted").formatted(DropWorker.class, i, string));
 		}
 		labelWrapper.setText(labelWrapper.getDefaultText() + "\n" +
 				Main.properties.getProperty("summaryLabelDefaultThirdLine").formatted(Main.summaryPaths.get(i).size())

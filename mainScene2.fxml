@@ -30,7 +30,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lowerDropSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" text="lowerLabel" textAlignment="CENTER">
+                  <Label fx:id="lowerDropSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" text="lowerLabel" textAlignment="CENTER" wrapText="true">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

@@ -24,8 +24,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	@Override
 	public void run() {
-		Log.add(getClass() + ": Thread start");
-		Log.add(getClass() + " work with file: " + path);
+		Log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		Log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
@@ -37,30 +37,40 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowInt++;
 		}
-		Log.add(getClass() + ": Thread complete");
+		Log.add(Main.properties.getProperty("threadComplete").formatted(getClass()));
 		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead1").formatted(rowInt));
 	}
 
 	private void readRow() {
 		row = sheet.getRow(rowInt);
 		int position = parseIntFromNumber(row.getCell(0));
-		if (reinforcementProductHashMap.containsKey(position)) {
-			Main.addNotification("В строке " + (rowInt + 1) + " продублированна позиция: " + position);
-		}
-		if (StandardsRepository.contains(StandardsRepository.reservedPosition, position)) {
-			Main.addNotification("В строке " + (rowInt + 1) + " позиция из зарезервированного списка: " + position);
-		}
+		checkPosition(position);
 		reinforcementProductHashMap.put(position, new ReinforcementProduct(position,
-				checkDiameter(parseIntFromNumber(row.getCell(2))),
-				checkRFClass(row.getCell(3).getStringCellValue()),
-				checkMaxLength(parseIntFromNumber(row.getCell(4))),
-				checkMass(row.getCell(5).getNumericCellValue())
+				writeAndCheckDiameter(parseIntFromNumber(row.getCell(2))),
+				writeAndCheckRFClass(row.getCell(3).getStringCellValue()),
+				writeAndCheckMaxLength(parseIntFromNumber(row.getCell(4))),
+				writeAndCheckMass(row.getCell(5).getNumericCellValue())
 		));
-		Log.add(getClass() + ": [rowInt: " + rowInt + "]");
+		Log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
 		Log.add(reinforcementProductHashMap.get(position).toString());
 	}
 
-	private int checkDiameter(int diameter) {
+	private void checkPosition(int position) {
+		if (reinforcementProductHashMap.containsKey(position)) {
+			Main.addNotification(Main.properties.getProperty("positionNotification1").formatted((rowInt + 1), position));
+		}
+		if (StandardsRepository.contains(StandardsRepository.reservedPosition, position)) {
+			Main.addNotification(Main.properties.getProperty("positionNotification2").formatted((rowInt + 1), position));
+		}
+		if (position <= 0) {
+			Main.addNotification(Main.properties.getProperty("positionNotification3").formatted((rowInt + 1), position));
+		}
+		if (position > StandardsRepository.maxPosition) {
+			Main.addNotification(Main.properties.getProperty("positionNotification4").formatted((rowInt + 1), position));
+		}
+	}
+
+	private int writeAndCheckDiameter(int diameter) {
 		realDiameter = false;
 		for (int i = 0; i < StandardsRepository.diameter.length; i++) {
 			if (diameter == StandardsRepository.diameter[i]) {
@@ -69,11 +79,11 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 				return diameter;
 			}
 		}
-		Main.addNotification("В строке " + (rowInt + 1) + " диаметр равен: " + diameter);
+		Main.addNotification(Main.properties.getProperty("diameterNotification").formatted((rowInt + 1), diameter));
 		return diameter;
 	}
 
-	private RFClass checkRFClass(String string) {
+	private RFClass writeAndCheckRFClass(String string) {
 		for (int i = 0; i < StandardsRepository.rfClass500S.length; i++) {
 			if (string.equalsIgnoreCase(StandardsRepository.rfClass500S[i])) {
 				return RFClass.A500S;
@@ -99,19 +109,19 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 				return RFClass.A600;
 			}
 		}
-		Main.addNotification("В строке " + (rowInt + 1) + " класс арматуры: " + string);
+		Main.addNotification(Main.properties.getProperty("rfClassNotification").formatted((rowInt + 1), string));
 		return RFClass.MISS_VALUE;
 	}
 
-	private int checkMaxLength(int length) {
-		if (length > StandardsRepository.maxLength) {
-			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия: " + length);
+	private int writeAndCheckMaxLength(int length) {
+		if (length > StandardsRepository.maxLength || length <= 0) {
+			Main.addNotification(Main.properties.getProperty("lengthNotification").formatted((rowInt + 1), length));
 		}
 		this.length = length;
 		return length;
 	}
 
-	private double checkMass(double mass) {
+	private double writeAndCheckMass(double mass) {
 		if (realDiameter) {
 			double mass1 = length / 1000.0 * StandardsRepository.mass3Digit[diameterArrayIndex];
 			double mass2 = length / 1000.0 * StandardsRepository.mass2Digit1[diameterArrayIndex];
@@ -120,7 +130,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			boolean match2 = Math.abs(mass2 - mass) < 0.01;
 			boolean match3 = Math.abs(mass3 - mass) < 0.01;
 			if (!match1 && !match2 && !match3) {
-				Main.addNotification("В строке " + (rowInt + 1) + " масса изделия: " + mass + ". Я думаю, должно быть: " + mass1);
+				Main.addNotification(Main.properties.getProperty("massNotification").formatted((rowInt + 1), mass, mass1));
 			}
 		}
 		return mass;

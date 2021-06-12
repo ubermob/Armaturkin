@@ -36,8 +36,8 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	@Override
 	public void run() {
-		Log.add(getClass() + ": Thread start");
-		Log.add(getClass() + " work with file: " + path);
+		Log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		Log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
@@ -53,8 +53,8 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		} else {
 			tableHeadNotValid();
 		}
-		Log.add(getClass() + ": Thread complete");
-		Main.addNotification("☻ Файл с армированием прочитан до строки с номером: " + rowInt + " (включительно)");
+		Log.add(Main.properties.getProperty("threadComplete").formatted(getClass()));
+		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead2").formatted(rowInt));
 	}
 
 	private void readRow() {
@@ -65,11 +65,12 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		minorNumber = parseIntFromString(row.getCell(minorNumberColumn));
 		position = parseIntFromString(row.getCell(positionColumn));
 
-		Log.add(getClass() + ": [rowInt: " + rowInt + "]");
+		Log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]",
 				position, diameter, length, majorNumber, minorNumber);
 		Log.add(formatter.toString());
+		checkPosition();
 		buildMap();
 		Log.add(reinforcementHashMap.get(position).toString());
 	}
@@ -119,11 +120,13 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		int number = majorNumber * minorNumber;
 		if (reservedPositionIndex != -1) {
 			// Linear reinforcement
+			checkPosition();
 			compareDiameter(reservedPositionIndex);
 			compareMaxLength();
 			reinforcementHashMap.put(position, getReinforcement(true, number));
 		} else if (reinforcementProductHashMap.containsKey(position)) {
 			// Reinforcement product
+			checkPosition();
 			compareDiameter();
 			compareMaxLength();
 			compareLength();
@@ -149,6 +152,15 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 				number,
 				reinforcementProductHashMap.get(position).getMass()
 		);
+	}
+
+	private void checkPosition() {
+		if (position <= 0) {
+			Main.addNotification(Main.properties.getProperty("positionNotification3").formatted((rowInt + 1), position));
+		}
+		if (position > StandardsRepository.maxPosition) {
+			Main.addNotification(Main.properties.getProperty("positionNotification4").formatted((rowInt + 1), position));
+		}
 	}
 
 	private void compareDiameter(int reservedPositionIndex) {

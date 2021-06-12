@@ -382,34 +382,52 @@ public class Controller {
 		DropWorker.dragDroppedSummary(dragEvent, 8, this);
 	}
 
-	public void downloadSummaryFile(ActionEvent actionEvent) {
+	public void downloadSummaryFile() {
 	}
 
-	public void clearAllSummaryDropSpace(ActionEvent actionEvent) {
+	public void clearAllSummaryDropSpace() {
+		for (int i = 1; i < 9; i++) {
+			clearSummaryDropSpace(i);
+		}
 	}
 
-	public void clearSummaryDropSpace1(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace1() {
+		clearSummaryDropSpace(1);
 	}
 
-	public void clearSummaryDropSpace2(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace2() {
+		clearSummaryDropSpace(2);
 	}
 
-	public void clearSummaryDropSpace3(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace3() {
+		clearSummaryDropSpace(3);
 	}
 
-	public void clearSummaryDropSpace4(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace4() {
+		clearSummaryDropSpace(4);
 	}
 
-	public void clearSummaryDropSpace5(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace5() {
+		clearSummaryDropSpace(5);
 	}
 
-	public void clearSummaryDropSpace6(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace6() {
+		clearSummaryDropSpace(6);
 	}
 
-	public void clearSummaryDropSpace7(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace7() {
+		clearSummaryDropSpace(7);
 	}
 
-	public void clearSummaryDropSpace8(ActionEvent actionEvent) {
+	public void clearSummaryDropSpace8() {
+		clearSummaryDropSpace(8);
+	}
+
+	public void clearSummaryDropSpace(int i) {
+		if (Main.summaryPaths.get(i) != null) {
+			Main.summaryPaths.get(i).clear();
+			getSummaryLabelWrapper(i).resetTextToDefault();
+		}
 	}
 
 	public void setBorderColor1() {

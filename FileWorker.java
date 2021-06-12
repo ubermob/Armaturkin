@@ -35,7 +35,7 @@ public class FileWorker implements Runnable {
 
 	@Override
 	public void run() {
-		Log.add(getClass() + ": Thread start");
+		Log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
 		buildTableHead();
 		addBackgroundReinforcement();
 		fillTable();
@@ -50,11 +50,11 @@ public class FileWorker implements Runnable {
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
 			workbook.write(outputStream);
 			Log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + parentPath + "\"");
+			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
 		} catch (Exception e) {
 			Log.add(e);
 		}
-		Log.add(getClass() + ": Tread complete");
-		Main.addNotification("☻ Файл «" + fileName + "» посчитан и загружен");
+		Log.add(Main.properties.getProperty("threadComplete").formatted(getClass()));
 	}
 
 	private void fillTable() {

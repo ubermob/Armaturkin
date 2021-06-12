@@ -24,4 +24,8 @@ public class LabelWrapper {
 	public void setText(String text) {
 		label.setText(text);
 	}
+
+	public void resetTextToDefault() {
+		label.setText(defaultText);
+	}
 }
