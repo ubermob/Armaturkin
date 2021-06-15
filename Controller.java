@@ -48,11 +48,16 @@ public class Controller {
 	public Button clearSummaryDropSpaceButton6;
 	public Button clearSummaryDropSpaceButton7;
 	public Button clearSummaryDropSpaceButton8;
+	public Button checkSummaryDropSpaceButton4;
+	public Button checkSummaryDropSpaceButton6;
+	public Button checkSummaryDropSpaceButton8;
+	public Button checkSummaryDropSpaceButton7;
 	public Button boldTextButton;
-	public TextField downloadFileTableHead;
+	public TextField tableHead;
 	public TextField backgroundReinforcement;
-	public TextField downloadFileName;
-	public TextField downloadSummaryFileName;
+	public TextField fileName;
+	public TextField summaryFileName;
+	public TextField summaryTableHead;
 	Text[] allTexts;
 	public Text appearanceText1;
     public Text appearanceText2;
@@ -201,7 +206,11 @@ public class Controller {
 				clearSummaryDropSpaceButton6,
 				clearSummaryDropSpaceButton7,
 				clearSummaryDropSpaceButton8,
-				boldTextButton
+				checkSummaryDropSpaceButton4,
+			    checkSummaryDropSpaceButton6,
+			    checkSummaryDropSpaceButton7,
+			    checkSummaryDropSpaceButton8,
+			    boldTextButton
 		};
 		boldTextModifiedButtons = new Button[]{
 				downloadFileButton,
@@ -212,6 +221,10 @@ public class Controller {
 				downloadResultLabelButton,
 				downloadSummaryFileButton,
 				clearAllSummaryDropSpaceButton,
+				checkSummaryDropSpaceButton4,
+				checkSummaryDropSpaceButton6,
+				checkSummaryDropSpaceButton7,
+				checkSummaryDropSpaceButton8,
 				boldTextButton
 		};
 		allTexts = new Text[]{
@@ -321,16 +334,24 @@ public class Controller {
     	infoLabel.setMouseTransparent(true);
 	}
 
-	public String getDownloadFileTableHead() {
-		return downloadFileTableHead.getText();
+	public String getTableHead() {
+		return tableHead.getText();
 	}
 
 	public String getBackgroundReinforcement() {
     	return backgroundReinforcement.getText();
 	}
 
-	public String getDownloadFileName() {
-		return downloadFileName.getText();
+	public String getFileName() {
+		return fileName.getText();
+	}
+
+	public String getSummaryFileName() {
+		return summaryTableHead.getText();
+	}
+
+	public String getSummaryTableHead() {
+		return summaryFileName.getText();
 	}
 
 	public void downloadResultLabel() throws IOException {
@@ -383,6 +404,7 @@ public class Controller {
 	}
 
 	public void downloadSummaryFile() {
+		Main.downloadSummaryFile();
 	}
 
 	public void clearAllSummaryDropSpace() {
@@ -427,6 +449,28 @@ public class Controller {
 		if (Main.summaryPaths.get(i) != null) {
 			Main.summaryPaths.get(i).clear();
 			getSummaryLabelWrapper(i).resetTextToDefault();
+		}
+	}
+
+	public void checkSummaryDropSpace4() {
+		checkSummaryDropSpace(4);
+	}
+
+	public void checkSummaryDropSpace6() {
+		checkSummaryDropSpace(6);
+	}
+
+	public void checkSummaryDropSpace7() {
+		checkSummaryDropSpace(7);
+	}
+
+	public void checkSummaryDropSpace8() {
+		checkSummaryDropSpace(8);
+	}
+
+	public void checkSummaryDropSpace(int i) {
+		if (Main.summaryPaths.get(i) != null) {
+			Main.checkSummaryDropSpace(i);
 		}
 	}
 

@@ -5,12 +5,10 @@ import org.apache.poi.xssf.usermodel.*;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Formatter;
 import java.util.HashMap;
 
-public class FileWorker implements Runnable {
+public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
@@ -23,6 +21,7 @@ public class FileWorker implements Runnable {
 	private XSSFCell cell;
 	private int rowInt;
 	private CellStyleRepository cellStyleRepository;
+	private long millis;
 
 	FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
 	           String backgroundReinforcement, String downloadFileTableHead, String fileName) {
@@ -35,26 +34,22 @@ public class FileWorker implements Runnable {
 
 	@Override
 	public void run() {
-		Log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		millis  = getStartTime();
+		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
 		buildTableHead();
 		addBackgroundReinforcement();
 		fillTable();
 
-		if (fileName.length() == 0) {
-			LocalDateTime localDateTime = LocalDateTime.now();
-			fileName = localDateTime.format(DateTimeFormatter.ofPattern(Main.properties.getProperty("dateTimePattern2"))) + ".xlsx";
-		} else {
-			fileName += ".xlsx";
-		}
+		fileName = createFileName(fileName);
 		String parentPath = Path.of(path).getParent().toString();
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
 			workbook.write(outputStream);
-			Log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + parentPath + "\"");
+			Main.log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + parentPath + "\"");
 			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
 		} catch (Exception e) {
-			Log.add(e);
+			Main.log.add(e);
 		}
-		Log.add(Main.properties.getProperty("threadComplete").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	private void fillTable() {
@@ -96,7 +91,7 @@ public class FileWorker implements Runnable {
 							reinforcement.getPosition(), reinforcement.getDiameter(), RFClass.toString(reinforcement.getRfClass()), reinforcement.getLength() / 1000.0,
 							reinforcement.getMass()
 					);
-					Log.add(formatter.toString());
+					Main.log.add(formatter.toString());
 				}
 				if (!reinforcement.isLinear()) {
 					cell = row.getCell(0);
@@ -122,7 +117,7 @@ public class FileWorker implements Runnable {
 							reinforcement.getNumber(), reinforcement.getLength() * reinforcement.getNumber() / 1000.0, reinforcement.getMass(),
 							reinforcement.getMass() * reinforcement.getNumber()
 					);
-					Log.add(formatter.toString());
+					Main.log.add(formatter.toString());
 				}
 				rowInt++;
 			}
@@ -133,7 +128,7 @@ public class FileWorker implements Runnable {
 		if (backgroundReinforcement.length() != 0) {
 			String[] splittedString = backgroundReinforcement.split("-");
 			if (splittedString.length % 2 != 0) {
-				Log.add(getClass() +
+				Main.log.add(getClass() +
 						" can not parse background reinforcement, because [backgroundReinforcement] variable have length is " +
 						splittedString.length
 				);
@@ -144,12 +139,12 @@ public class FileWorker implements Runnable {
 					int diameter = Integer.parseInt(splittedString[i * 2]);
 					double length = Double.parseDouble(splittedString[i * 2 + 1]);
 					int lengthInt = (int) (length * 1000);
-					Log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
+					Main.log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
 							",[length: " + length + "],[lengthInt: " + lengthInt + "]"
 					);
 					int reservedDiameterIndex = StandardsRepository.getReservedDiameterIndex(diameter);
 					if (reservedDiameterIndex == -1) {
-						Log.add(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
+						Main.log.add(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
 						Main.addNotification("Указанного диаметра: " + diameter +
 								" нет в зарезервированном списке диаметров (class Pattern)"
 						);
@@ -177,7 +172,7 @@ public class FileWorker implements Runnable {
 									StandardsRepository.getMass(diameter) * lengthInt / 1000
 							));
 						}
-						Log.add(reinforcementHashMap.get(position).toString());
+						Main.log.add(reinforcementHashMap.get(position).toString());
 					}
 				}
 			}
@@ -255,6 +250,6 @@ public class FileWorker implements Runnable {
 			cell.setCellValue(i + 1);
 			cell.setCellStyle(cellStyle);
 		}
-		Log.add(getClass() + " table head created");
+		Main.log.add(getClass() + " table head created");
 	}
 }

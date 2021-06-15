@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -20,7 +21,7 @@ import java.util.Properties;
 
 public class Main extends Application {
 
-	public static String version = "0.4";
+	public static String version = "0.4.1";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -44,6 +45,8 @@ public class Main extends Application {
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 
+	public static Log log = new Log();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(properties.getProperty("mainScene")));
@@ -51,9 +54,10 @@ public class Main extends Application {
         controller = loader.getController();
         controller.startSetup();
         primaryStage.setTitle(properties.getProperty("applicationName") + " ver " + version);
-        Log.add(primaryStage.getTitle() + " " + getDateTime() + " " + getHostName());
+        log.add(properties.getProperty("applicationMainLine").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
+	    primaryStage.getIcons().add(new Image(Files.newInputStream(Path.of("resources\\Icon.png"))));
         primaryStage.setScene(new Scene(root));
-        pathVerification();
+        preloadUpperDropSpace();
         primaryStage.show();
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
@@ -62,23 +66,11 @@ public class Main extends Application {
 	    timeline.play();
     }
 
-    private void pathVerification() {
-    	if (pathToProductFile != null) {
-		    Path path = Path.of(pathToProductFile);
-		    if (Files.exists(path)) {
-			    controller.setUpperDropSpaceText(
-			    		properties.getProperty("upperLabelTextWithFile").formatted(path.getFileName().toString())
-			    );
-			    loadProduct();
-		    }
-	    }
-    }
-
     public static void main(String[] args) throws IOException {
 	    try {
 		    parseArgs(args);
 	    } catch (ArrayIndexOutOfBoundsException e) {
-		    Log.add(e);
+		    log.add(e);
 	    }
 	    loadProperties();
 	    readBasicFieldsFromProperties();
@@ -86,7 +78,7 @@ public class Main extends Application {
     	try {
 		    loadConfigFile();
 	    } catch (Exception e) {
-		    Log.add(e);
+		    log.add(e);
 	    }
         launch(args);
         saveConfigFile();
@@ -115,11 +107,19 @@ public class Main extends Application {
     		FileWorker fileWorker = new FileWorker(pathToCalculatingFile,
 				    reinforcementHashMap,
 				    controller.getBackgroundReinforcement(),
-				    controller.getDownloadFileTableHead(),
-				    controller.getDownloadFileName()
+				    controller.getTableHead(),
+				    controller.getFileName()
 		    );
     		Thread fileWorkerThread = new Thread(fileWorker);
     		fileWorkerThread.start();
+	    }
+    }
+
+    static void downloadSummaryFile() {
+    	if (!summaryPaths.isEmpty()) {
+    		SummaryHub summaryHub = new SummaryHub(summaryPaths, controller.getSummaryTableHead(), controller.getSummaryFileName());
+    		Thread summaryHubThread = new Thread(summaryHub);
+    		summaryHubThread.start();
 	    }
     }
 
@@ -134,12 +134,12 @@ public class Main extends Application {
 	    for (String arg : args) {
 		    if (arg.equals(argCommand[0])) {
 			    Log.enable();
-			    Log.add(argCommand[0]);
+			    log.add(argCommand[0]);
 		    }
 		    if (isMatchCommands(arg, argCommand[1])) {
 			    int value = Integer.parseInt(arg.split("=")[1]);
 			    Log.setLogStorageLimit(value);
-			    Log.add(argCommand[1] + " " + value);
+			    log.add(argCommand[1] + " " + value);
 		    }
 		    if (isMatchCommands(arg, argCommand[2])) {
 		    	char diskLetter = arg.split("=")[1].charAt(0);
@@ -147,7 +147,7 @@ public class Main extends Application {
 		    	char letterZ = 'Z';
 		    	if (letterC <= diskLetter && diskLetter <= letterZ) {
 		    		Main.diskLetter = diskLetter;
-				    Log.add(argCommand[2] + " " + Main.diskLetter);
+				    log.add(argCommand[2] + " " + Main.diskLetter);
 			    }
 		    }
 	    }
@@ -156,6 +156,18 @@ public class Main extends Application {
     static boolean isMatchCommands(String arg, String argCommand) {
     	return arg.length() >= argCommand.length() && arg.startsWith(argCommand);
     }
+
+	private void preloadUpperDropSpace() {
+		if (pathToProductFile != null) {
+			Path path = Path.of(pathToProductFile);
+			if (Files.exists(path)) {
+				controller.setUpperDropSpaceText(
+						properties.getProperty("upperLabelTextWithFile").formatted(path.getFileName().toString())
+				);
+				loadProduct();
+			}
+		}
+	}
 
     public static void addNotification(String string) {
     	notificationString += string + "\n";
@@ -176,6 +188,10 @@ public class Main extends Application {
     	if (Files.notExists(Path.of(programRootPath, logStorageDirectory))) {
     		Files.createDirectory(Path.of(programRootPath, logStorageDirectory));
 	    }
+    }
+
+    static void checkSummaryDropSpace(int i) {
+    	// work in progress
     }
 
 	static void loadConfigFile() throws IOException {
@@ -217,9 +233,9 @@ public class Main extends Application {
     static void loadProperties() {
     	properties = new Properties();
     	try {
-		    properties.loadFromXML(Files.newInputStream(Path.of("resources\\properties.xml")));
+		    properties.loadFromXML(Files.newInputStream(Path.of("resources\\Properties.xml")));
 	    } catch (Exception e) {
-    		Log.add(e);
+    		log.add(e);
 	    }
     }
 
@@ -237,15 +253,20 @@ public class Main extends Application {
 
     static String getHostName() {
     	try {
-    		return "System name: " + InetAddress.getLocalHost().getHostName();
+    		return InetAddress.getLocalHost().getHostName();
 	    } catch (Exception e) {
-		    Log.add(e);
+		    log.add(e);
     		return "";
 	    }
     }
 
-    static String getDateTime() {
+    static String getDate() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
-	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("dateTimePattern1")));
+	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("datePattern")));
+    }
+
+    static String getTime() {
+	    LocalDateTime localDateTime = LocalDateTime.now();
+	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("timePattern")));
     }
 }

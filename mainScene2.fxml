@@ -17,7 +17,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="infoButton" layoutX="77.0" layoutY="498.0" mnemonicParsing="false" onAction="#toggleInfoLabelOpacity" prefHeight="35.0" prefWidth="67.0" text="Инфо">
+                  <Button fx:id="infoButton" layoutX="77.0" layoutY="498.0" mnemonicParsing="false" onAction="#toggleInfoLabelOpacity" prefHeight="37.0" prefWidth="67.0" text="Инфо">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -38,7 +38,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="downloadFileButton" layoutX="653.0" layoutY="498.0" mnemonicParsing="false" onAction="#downloadFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadFileButton" layoutX="653.0" layoutY="498.0" mnemonicParsing="false" onAction="#downloadFile" prefHeight="37.0" prefWidth="100.0" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -57,14 +57,14 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="downloadFileTableHead" layoutX="206.0" layoutY="498.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
+                  <TextField fx:id="tableHead" layoutX="206.0" layoutY="498.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
                   <TextField fx:id="backgroundReinforcement" layoutX="206.0" layoutY="463.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите фоновую арматуру (по-умолчанию фон не будет посчитан)" />
                   <Label fx:id="infoLabel" alignment="CENTER" layoutX="14.0" layoutY="149.0" prefHeight="303.0" prefWidth="560.0" style="-fx-background-color: BLACK; -fx-border-color: BLUE; -fx-border-width: 5; -fx-border-radius: 20; -fx-background-radius: 25;" text="Шаблон ввода для фоновой арматуры:&#10;диаметр(мм)-общая длина(м, десятичный разделитель - точка)&#10;Примеры:&#10;10-145 (диаметр 10 мм, длина 145 м)&#10;12-178.5 (диаметр 12 мм, длина 178,5 м)&#10;10-70.8-14-96.85 (диаметр 10 мм, длина 70,8 м&#10;и диаметр 14 мм, длина 96,85 м)&#10;&#10;Пример для шапки таблицы:&#10;Спецификация арматуры на перекрытие на отм. +18,200 (лист 4)" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="downloadFileName" layoutX="206.0" layoutY="535.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                  <TextField fx:id="fileName" layoutX="206.0" layoutY="535.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -77,12 +77,12 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearResultLabelButton" layoutX="573.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearResultLabel" prefHeight="35.0" prefWidth="100.0" text="Очистить">
+                  <Button fx:id="clearResultLabelButton" layoutX="573.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearResultLabel" prefHeight="37.0" prefWidth="100.0" text="Очистить">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="downloadResultLabelButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadResultLabel" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadResultLabelButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadResultLabel" prefHeight="37.0" prefWidth="100.0" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -102,17 +102,17 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearAllSummaryDropSpaceButton" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="27.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
+                  <Button fx:id="clearAllSummaryDropSpaceButton" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="downloadSummaryFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="35.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadSummaryFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="100.0" text="Скачать">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="downloadSummaryFileName" layoutX="200.0" layoutY="526.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                  <TextField fx:id="summaryFileName" layoutX="200.0" layoutY="542.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
                   <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="84.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -174,42 +174,63 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearSummaryDropSpaceButton1" layoutX="353.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace1" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton1" layoutX="353.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace1" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton3" layoutX="353.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace3" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton3" layoutX="353.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace3" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton2" layoutX="748.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace2" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton2" layoutX="748.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace2" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton5" layoutX="353.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace5" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton5" layoutX="353.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace5" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton7" layoutX="353.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace7" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton7" layoutX="353.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace7" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton4" layoutX="748.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace4" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton4" layoutX="748.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace4" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton6" layoutX="748.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace6" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton6" layoutX="748.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace6" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton8" layoutX="748.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace8" prefHeight="4.0" prefWidth="8.0" text="🗑" textAlignment="CENTER">
+                  <Button fx:id="clearSummaryDropSpaceButton8" layoutX="748.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace8" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="summaryTableHead" layoutX="200.0" layoutY="511.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
+                  <Button fx:id="checkSummaryDropSpaceButton4" layoutX="412.0" layoutY="222.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace4" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="checkSummaryDropSpaceButton6" layoutX="412.0" layoutY="342.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace6" prefHeight="30.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="checkSummaryDropSpaceButton8" layoutX="412.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace8" prefHeight="23.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="checkSummaryDropSpaceButton7" layoutX="17.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace7" prefHeight="14.0" prefWidth="35.0" text="П" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

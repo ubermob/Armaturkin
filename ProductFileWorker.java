@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.apache.poi.ss.usermodel.*;
 
-public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
+public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, Stopwatch {
 
 	private final String path;
 	private final HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
@@ -16,6 +16,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private int diameterArrayIndex;
 	private boolean realDiameter;
 	private int length;
+	private long millis;
 
 	public ProductFileWorker(String path, HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap) {
 		this.path = path;
@@ -24,12 +25,13 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	@Override
 	public void run() {
-		Log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
-		Log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
+		millis  = getStartTime();
+		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			Log.add(e);
+			Main.log.add(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		rowInt = 2;
@@ -37,8 +39,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowInt++;
 		}
-		Log.add(Main.properties.getProperty("threadComplete").formatted(getClass()));
 		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead1").formatted(rowInt));
+		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	private void readRow() {
@@ -51,8 +53,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 				writeAndCheckMaxLength(parseIntFromNumber(row.getCell(4))),
 				writeAndCheckMass(row.getCell(5).getNumericCellValue())
 		));
-		Log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
-		Log.add(reinforcementProductHashMap.get(position).toString());
+		Main.log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
+		Main.log.add(reinforcementProductHashMap.get(position).toString());
 	}
 
 	private void checkPosition(int position) {
@@ -84,33 +86,11 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private RFClass writeAndCheckRFClass(String string) {
-		for (int i = 0; i < StandardsRepository.rfClass500S.length; i++) {
-			if (string.equalsIgnoreCase(StandardsRepository.rfClass500S[i])) {
-				return RFClass.A500S;
-			}
+		RFClass rfClass = RFClass.parseRFClass(string);
+		if (rfClass == RFClass.MISS_VALUE) {
+			Main.addNotification(Main.properties.getProperty("rfClassNotification").formatted((rowInt + 1), string));
 		}
-		for (int i = 0; i < StandardsRepository.rfClass240.length; i++) {
-			if (string.equalsIgnoreCase(StandardsRepository.rfClass240[i])) {
-				return RFClass.A240;
-			}
-		}
-		for (int i = 0; i < StandardsRepository.rfClass500.length; i++) {
-			if (string.equalsIgnoreCase(StandardsRepository.rfClass500[i])) {
-				return RFClass.A500;
-			}
-		}
-		for (int i = 0; i < StandardsRepository.rfClass400.length; i++) {
-			if (string.equalsIgnoreCase(StandardsRepository.rfClass400[i])) {
-				return RFClass.A400;
-			}
-		}
-		for (int i = 0; i < StandardsRepository.rfClass600.length; i++) {
-			if (string.equalsIgnoreCase(StandardsRepository.rfClass600[i])) {
-				return RFClass.A600;
-			}
-		}
-		Main.addNotification(Main.properties.getProperty("rfClassNotification").formatted((rowInt + 1), string));
-		return RFClass.MISS_VALUE;
+		return rfClass;
 	}
 
 	private int writeAndCheckMaxLength(int length) {

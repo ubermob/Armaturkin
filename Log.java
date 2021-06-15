@@ -9,28 +9,24 @@ import java.util.stream.Collectors;
 
 public class Log {
 
-	private static ArrayList<String> log;
+	private final List<String> log;
+
 	private static boolean writeLog = false;
 	private static int logStorageLimit = 10;
 	private static int currentLogStorage;
 
-	public static void enable() {
-		writeLog = true;
+	public Log() {
 		log = new ArrayList<>();
 	}
 
-	public static void setLogStorageLimit(int limit) {
-		logStorageLimit = limit;
-	}
-
-	public static void add(String string) {
+	public void add(String string) {
 		if (writeLog) {
 			log.add(string);
 		}
 		System.out.println(string);
 	}
 
-	public static void add(Exception exception) {
+	public void add(Exception exception) {
 		// https://stackoverflow.com/questions/10120709/difference-between-printstacktrace-and-tostring
 		if (writeLog) {
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -42,6 +38,27 @@ public class Log {
 		exception.printStackTrace();
 	}
 
+	public void merge(Log log) {
+		if (writeLog) {
+			ArrayList<String> list = log.getList();
+			for (String string : list) {
+				this.log.add(string);
+			}
+		}
+	}
+
+	public ArrayList<String> getList() {
+		return (ArrayList<String>) log;
+	}
+	// S T A T I C
+	public static void enable() {
+		writeLog = true;
+	}
+
+	public static void setLogStorageLimit(int limit) {
+		logStorageLimit = limit;
+	}
+
 	public static void saveLog() throws IOException {
 		clearStorage(Path.of(Main.programRootPath, Main.logStorageDirectory));
 		try {
@@ -50,10 +67,10 @@ public class Log {
 							Main.properties.getProperty("numberedLogFileName").formatted(currentLogStorage + 1))
 			);
 		} catch (Exception e) {
-			Log.add(e);
+			Main.log.add(e);
 		}
 		if (writeLog) {
-			Writer.write(Main.programRootPath + Main.logFileName, log, 1024 * 1024);
+			Writer.write(Main.programRootPath + Main.logFileName, Main.log.getList(), 1024 * 1024);
 		}
 	}
 
@@ -73,7 +90,7 @@ public class Log {
 				try {
 					Files.delete(pathArray[i]);
 				} catch (Exception e) {
-					Log.add(e);
+					Main.log.add(e);
 				}
 			}
 			int fileNumber = 1;
@@ -84,7 +101,7 @@ public class Log {
 									Main.properties.getProperty("numberedLogFileName").formatted(fileNumber))
 					);
 				} catch (Exception e) {
-					Log.add(e);
+					Main.log.add(e);
 				}
 				fileNumber++;
 			}
@@ -96,7 +113,7 @@ public class Log {
 		try {
 			return Integer.parseInt(fileName.split("log")[1].split("\\.txt")[0]);
 		} catch (Exception e) {
-			Log.add(e);
+			Main.log.add(e);
 			return -1;
 		}
 	}

@@ -23,10 +23,6 @@ public class ReinforcementProduct {
 				"[mass: " + mass + "]";
 	}
 
-	public int getPosition() {
-		return position;
-	}
-
 	public int getDiameter() {
 		return diameter;
 	}

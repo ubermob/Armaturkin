@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.apache.poi.ss.usermodel.*;
 
-public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
+public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, Stopwatch {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
@@ -15,6 +15,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private Sheet sheet;
 	private Row row;
 	private int rowInt;
+	private long millis;
 
 	private int majorNumberColumn = -1;
 	private int majorNumber;
@@ -36,12 +37,13 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	@Override
 	public void run() {
-		Log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
-		Log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
+		millis  = getStartTime();
+		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			Log.add(e);
+			Main.log.add(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		if (tableHeadVerification()) {
@@ -51,10 +53,10 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 				rowInt++;
 			}
 		} else {
-			tableHeadNotValid();
+			tableHeadDontValid();
 		}
-		Log.add(Main.properties.getProperty("threadComplete").formatted(getClass()));
 		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead2").formatted(rowInt));
+		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	private void readRow() {
@@ -65,14 +67,14 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		minorNumber = parseIntFromString(row.getCell(minorNumberColumn));
 		position = parseIntFromString(row.getCell(positionColumn));
 
-		Log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
+		Main.log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]",
 				position, diameter, length, majorNumber, minorNumber);
-		Log.add(formatter.toString());
+		Main.log.add(formatter.toString());
 		checkPosition();
 		buildMap();
-		Log.add(reinforcementHashMap.get(position).toString());
+		Main.log.add(reinforcementHashMap.get(position).toString());
 	}
 
 	private void buildMap() {
@@ -217,7 +219,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " table head: [majorNumberColumn: %d],[diameterColumn: %d],[lengthColumn: %d],[minorNumberColumn: %d],[positionColumn: %d]",
 				majorNumberColumn, diameterColumn, lengthColumn, minorNumberColumn, positionColumn);
-		Log.add(formatter.toString());
+		Main.log.add(formatter.toString());
 		return majorNumberColumn != -1 && diameterColumn != -1 && lengthColumn != -1 && minorNumberColumn != -1 && positionColumn != -1;
 	}
 
@@ -225,7 +227,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		return row.getCell(column).getStringCellValue().equalsIgnoreCase(pattern);
 	}
 
-	private void tableHeadNotValid() {
+	private void tableHeadDontValid() {
 		String string = "";
 		if (majorNumberColumn == -1) {
 			string = "majorNumber";

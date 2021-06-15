@@ -7,21 +7,54 @@ public enum RFClass {
 	MISS_VALUE;
 
 	static String toString(RFClass rfClass) {
-		if (rfClass == A240) {
-			return "А240"; // Russian letter
+		return switch (rfClass) {
+			case A240 -> "А240"; // Russian letter
+			case A400 -> "А400"; // Russian letter
+			case A500 -> "А500"; // Russian letter
+			case A500S -> "А500С"; // Russian letter
+			case A600 -> "А600"; // Russian letter
+			default -> "???";
+		};
+	}
+
+	static synchronized int getIntegerValue(RFClass rfClass) {
+		return switch (rfClass) {
+			case A240 -> 50;
+			case A400 -> 100;
+			case A500 -> 150;
+			case A500S -> 200;
+			case A600 -> 250;
+			default -> 0;
+		};
+	}
+
+	static synchronized RFClass parseRFClass(String string) {
+		//Sorted by often use
+		for (int i = 0; i < StandardsRepository.rfClass500S.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass500S[i])) {
+				return A500S;
+			}
 		}
-		if (rfClass == A400) {
-			return "А400"; // Russian letter
+		for (int i = 0; i < StandardsRepository.rfClass240.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass240[i])) {
+				return A240;
+			}
 		}
-		if (rfClass == A500) {
-			return "А500"; // Russian letter
+		for (int i = 0; i < StandardsRepository.rfClass500.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass500[i])) {
+				return A500;
+			}
 		}
-		if (rfClass == A500S) {
-			return "А500С"; // Russian letter
+		for (int i = 0; i < StandardsRepository.rfClass400.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass400[i])) {
+				return A400;
+			}
 		}
-		if (rfClass == A600) {
-			return "А600"; // Russian letter
+		for (int i = 0; i < StandardsRepository.rfClass600.length; i++) {
+			if (string.equalsIgnoreCase(StandardsRepository.rfClass600[i])) {
+				return A600;
+			}
 		}
-		return "???";
+		return MISS_VALUE;
 	}
 }
