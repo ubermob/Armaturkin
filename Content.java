@@ -124,4 +124,29 @@ public class Content {
 		}
 		return result.substring(0, (result.length() - 1));
 	}
+
+	public int getHeight() {
+		return table.length;
+	}
+
+	public Double getCell(int height, int width) {
+		return table[height][width];
+	}
+
+	public Double[] getFinallyVerticalSummaryMass() {
+		Double[] result = new Double[table.length + 1];
+		MassSummator mass = new MassSummator();
+		for (int i = 0; i < table.length; i++) {
+			for (int j = 0; j < table[0].length; j++) {
+				mass.add(table[i][j]);
+			}
+			result[i] = mass.getValue();
+			mass.reset();
+		}
+		for (int i = 0; i < result.length - 1; i++) {
+			mass.add(result[i]);
+		}
+		result[result.length - 1] = mass.getValue();
+		return result;
+	}
 }

@@ -1,4 +1,3 @@
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -347,11 +346,11 @@ public class Controller {
 	}
 
 	public String getSummaryFileName() {
-		return summaryTableHead.getText();
+		return summaryFileName.getText();
 	}
 
 	public String getSummaryTableHead() {
-		return summaryFileName.getText();
+		return summaryTableHead.getText();
 	}
 
 	public void downloadResultLabel() throws IOException {

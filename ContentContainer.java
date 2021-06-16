@@ -29,4 +29,38 @@ public class ContentContainer {
 	public void compress() {
 		content.compress(contentHead, contentRow);
 	}
+
+	public boolean[] getHeadBlockFullness() {
+		return contentHead.getBlockFullness();
+	}
+
+	public String[] getRowStrings() {
+		return contentRow.getRowStrings();
+	}
+
+	public SummaryBlock getBlock(int i) {
+		RFClass rfClass = contentHead.getRFClass(i);
+		int[] diameters = contentHead.getDiameters(rfClass);
+		int bodyWidth = diameters.length;
+		int[] indexes = contentHead.getIndexes(rfClass);
+		int bodyHeight = content.getHeight();
+		Double[][] blockBody = new Double[bodyHeight][bodyWidth];
+		for (int j = 0; j < indexes.length; j++) {
+			for (int k = 0; k < bodyHeight; k++) {
+				blockBody[k][j] = content.getCell(k, indexes[j]);
+			}
+		}
+		SummaryBlock summaryBlock = new SummaryBlock(
+				blockBody,
+				diameters,
+				rfClass,
+				bodyWidth,
+				bodyHeight
+		);
+		return summaryBlock;
+	}
+
+	public Double[] getFinallyVerticalSummaryMass() {
+		return content.getFinallyVerticalSummaryMass();
+	}
 }

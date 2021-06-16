@@ -21,7 +21,7 @@ import java.util.Properties;
 
 public class Main extends Application {
 
-	public static String version = "0.4.1";
+	public static String version = "0.4.2";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
