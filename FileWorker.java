@@ -44,7 +44,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		String parentPath = Path.of(path).getParent().toString();
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
 			workbook.write(outputStream);
-			Main.log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + parentPath + "\"");
+			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, parentPath));
 			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
 		} catch (Exception e) {
 			Main.log.add(e);

@@ -12,6 +12,7 @@ import java.io.*;
 
 public class Controller {
 
+	public Text settingsText2;
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
@@ -527,5 +528,9 @@ public class Controller {
 		for (Text text : allTexts) {
 			text.setFont(font3);
 		}
+	}
+
+	void setR() {
+		settingsText2.setText("15");
 	}
 }

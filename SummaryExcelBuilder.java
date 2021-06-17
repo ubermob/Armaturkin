@@ -9,13 +9,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 public class SummaryExcelBuilder implements Runnable, Stopwatch {
 
 	private final ContentContainer contentContainer;
-	private final String tableHead;
+	private final String path;
 	private final String fileName;
+	private final String tableHead;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
 	private XSSFRow row;
@@ -25,19 +25,17 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 	private int rowInt = baseRowInt;
 	private long millis;
 
-	public SummaryExcelBuilder(ContentContainer contentContainer, String tableHead, String fileName) {
+	public SummaryExcelBuilder(ContentContainer contentContainer, String path, String fileName, String tableHead) {
 		this.contentContainer = contentContainer;
-		this.tableHead = tableHead;
+		this.path = path;
 		this.fileName = fileName;
+		this.tableHead = tableHead;
 	}
 
 	@Override
 	public void run() {
 		millis = getStartTime();
 		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
-		// work in progress
-		//System.out.println(Arrays.toString(contentContainer.getHeadBlockFullness()));////////////////////
-		//System.out.println(Arrays.toString(contentContainer.getRowStrings()));///////////////////////////
 		initWorkbook();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
 		String[] rowStrings = contentContainer.getRowStrings();
@@ -53,16 +51,14 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 		buildFinallyVerticalSummaryMass();
 		buildUpperHead();
 		buildLeftRows(rowStrings);
-		//////
-		String path = "J:\\ARMATURKIN DOWNLOAD\\";
-		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
+		String parentPath = Path.of(path).getParent().toString();
+		try (OutputStream outputStream = Files.newOutputStream(Path.of(parentPath, fileName))) {
 			workbook.write(outputStream);
-			Main.log.add(getClass() + ": file \"" + fileName + "\" downloaded to \"" + path + "\"");
+			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, parentPath));
 			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
 		} catch (Exception e) {
 			Main.log.add(e);
 		}
-		// work in progress
 		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
 	}
 

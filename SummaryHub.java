@@ -5,17 +5,19 @@ import java.util.List;
 public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 
 	private final HashMap<Integer, List<String>> summaryPaths;
-	private final String tableHead;
+	private final String path;
 	private String fileName;
+	private final String tableHead;
 	private volatile HashMap<Integer, HashMap<Integer, ReinforcementLiteInfo>> targetHashMap;
 	private List<Log> summaryLog;
 	private ContentContainer contentContainer;
 	private long millis;
 
-	public SummaryHub(HashMap<Integer, List<String>> summaryPaths, String tableHead, String fileName) {
+	public SummaryHub(HashMap<Integer, List<String>> summaryPaths, String path, String fileName, String tableHead) {
 		this.summaryPaths = summaryPaths;
-		this.tableHead = tableHead;
+		this.path = path;
 		this.fileName = fileName;
+		this.tableHead = tableHead;
 		targetHashMap = new HashMap<>();
 		summaryLog = new ArrayList<>();
 	}
@@ -43,6 +45,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 				}
 			} else {
 				// Run raw
+				// work in progress
 			}
 		}
 		for (Thread[] threadArray : allThreads) {
@@ -57,7 +60,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 			}
 		}
 		mergeLog();
-		buildExcel();
+		runExcel();
 		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
 	}
 
@@ -67,9 +70,9 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 		}
 	}
 
-	void buildExcel() {
+	void runExcel() {
 		buildContent();
-		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(contentContainer, tableHead, createFileName(fileName));
+		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(contentContainer, path, createFileName(fileName), tableHead);
 		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);
 		summaryExcelBuilderThread.start();
 	}

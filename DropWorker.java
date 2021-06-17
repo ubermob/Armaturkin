@@ -48,6 +48,9 @@ public class DropWorker {
 				verifiedFileList.add(x.getAbsolutePath());
 			}
 		});
+		if (Main.summaryPaths.isEmpty() && !verifiedFileList.isEmpty()) {
+			Main.optionalPath = verifiedFileList.get(0);
+		}
 		if (Main.summaryPaths.containsKey(i)) {
 			Main.summaryPaths.get(i).addAll(verifiedFileList);
 		} else {
