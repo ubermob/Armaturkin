@@ -21,7 +21,7 @@ import java.util.Properties;
 
 public class Main extends Application {
 
-	public static String version = "0.4.3";
+	public static String version = "0.4.4";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -49,12 +49,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(properties.getProperty("mainScene")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(properties.getProperty("main_scene")));
         root = loader.load();
         controller = loader.getController();
         controller.startSetup();
-        primaryStage.setTitle(properties.getProperty("applicationName") + " ver " + version);
-        log.add(properties.getProperty("applicationMainLine").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
+        primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
+        log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
 	    primaryStage.getIcons().add(new Image(Files.newInputStream(Path.of("resources\\Icon.png"))));
         primaryStage.setScene(new Scene(root));
         preloadUpperDropSpace();
