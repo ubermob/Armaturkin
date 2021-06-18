@@ -8,13 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker, RowEmptyChecker, RHashCode, FileNameHashCode {
+public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker, RowEmptyChecker, RHashCode, FileHashCode {
 
 	private final String path;
 	private final HashMap<Integer, ReinforcementLiteInfo> hashMap;
 	private final int labelID;
 	private final Log log;
-	private String fileNameHashCode;
+	private String fileHashCode;
 	private Workbook workbook;
 	private Sheet sheet;
 	private int rowInt = 4;
@@ -32,8 +32,8 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 	@Override
 	public void run() {
 		millis = getStartTime();
-		fileNameHashCode = getFileNameHashCode(path);
-		log.add(Main.properties.getProperty("summaryThreadStart").formatted(getClass(), labelID, path, fileNameHashCode));
+		fileHashCode = getFileHashCode(path);
+		log.add(Main.properties.getProperty("summaryThreadStart").formatted(getClass(), labelID, path, fileHashCode));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 			sheet = workbook.getSheetAt(0);
@@ -46,7 +46,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 			readRow();
 			rowInt++;
 		}
-		log.add(Main.properties.getProperty("summaryThreadComplete").formatted(getClass(), getStopwatch(millis), labelID, path,fileNameHashCode));
+		log.add(Main.properties.getProperty("summaryThreadComplete").formatted(getClass(), getStopwatch(millis), labelID, path, fileHashCode));
 	}
 
 	void readRow() {
@@ -62,7 +62,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 			hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
 		}
 		log.add(Main.properties.getProperty("summaryThreadReadRow").formatted(
-				getClass(), labelID, fileNameHashCode, rowInt, hashMap.get(hashCode).toString())
+				getClass(), labelID, fileHashCode, rowInt, hashMap.get(hashCode).toString())
 		);
 	}
 }
