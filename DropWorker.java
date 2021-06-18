@@ -22,7 +22,7 @@ public class DropWorker {
 		if (fileList.size() != 1) {
 			label.setText(Main.properties.getProperty("dropWorkerNotification1"));
 		} else {
-			if (isExcelFile(fileList.get(0).getName())) {
+			if (isExcelFile(fileList.get(0).getName()) && fileList.get(0).isFile()) {
 				label.setText(Main.properties.getProperty("dropWorkerFileAccepted"));
 				File file = fileList.get(0);
 				if (i == 0) {
@@ -50,24 +50,26 @@ public class DropWorker {
 		List<File> wildFileList = getDroppedFile(dragEvent);
 		final List<String> verifiedFileList = new ArrayList<>();
 		wildFileList.forEach(x -> {
-			if(isExcelFile(x.getName())) {
+			if(isExcelFile(x.getName()) && x.isFile()) {
 				verifiedFileList.add(x.getAbsolutePath());
 			}
 		});
-		if (Main.summaryPaths.isEmpty() && !verifiedFileList.isEmpty()) {
-			Main.config.setPathToSummaryCalculatingFile(verifiedFileList.get(0));
+		if (!verifiedFileList.isEmpty()) {
+			if (Main.summaryPaths.isEmpty()) {
+				Main.config.setPathToSummaryCalculatingFile(verifiedFileList.get(0));
+			}
+			if (Main.summaryPaths.containsKey(i)) {
+				Main.summaryPaths.get(i).addAll(verifiedFileList);
+			} else {
+				Main.summaryPaths.put(i, verifiedFileList);
+			}
+			for (String string : verifiedFileList) {
+				Main.log.add(Main.properties.getProperty("dropWorkerSummaryDropSpaceFileAccepted").formatted(DropWorker.class, i, string));
+			}
+			labelWrapper.setText(labelWrapper.getDefaultText() + "\n" +
+					Main.properties.getProperty("summaryLabelDefaultThirdLine").formatted(Main.summaryPaths.get(i).size())
+			);
 		}
-		if (Main.summaryPaths.containsKey(i)) {
-			Main.summaryPaths.get(i).addAll(verifiedFileList);
-		} else {
-			Main.summaryPaths.put(i, verifiedFileList);
-		}
-		for (String string : verifiedFileList) {
-			Main.log.add(Main.properties.getProperty("dropWorkerSummaryDropSpaceFileAccepted").formatted(DropWorker.class, i, string));
-		}
-		labelWrapper.setText(labelWrapper.getDefaultText() + "\n" +
-				Main.properties.getProperty("summaryLabelDefaultThirdLine").formatted(Main.summaryPaths.get(i).size())
-		);
 	}
 
 	static void favoriteDragDropped(DragEvent dragEvent, Controller controller) {
@@ -76,7 +78,7 @@ public class DropWorker {
 		if (fileList.size() != 1) {
 			label.setText(Main.properties.getProperty("drop_worker_favorite_notification1"));
 		} else {
-			if (!Files.isDirectory(Path.of(fileList.get(0).getAbsolutePath()))) {
+			if (!fileList.get(0).isDirectory()) {
 				label.setText(Main.properties.getProperty("drop_worker_favorite_notification2"));
 			} else {
 				Main.config.setFavoritePath(fileList.get(0).getAbsolutePath());
@@ -102,8 +104,6 @@ public class DropWorker {
 	}
 
 	static boolean isExcelFile(String fileName) {
-		String[] fileNameArray = fileName.split("\\.");
-		return fileNameArray[fileNameArray.length - 1].equalsIgnoreCase("xls") ||
-				fileNameArray[fileNameArray.length - 1].equalsIgnoreCase("xlsx");
+		return fileName.endsWith(".xls") || fileName.endsWith(".xlsx");
 	}
 }
