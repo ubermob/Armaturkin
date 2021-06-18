@@ -1,4 +1,5 @@
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
@@ -12,7 +13,6 @@ import java.io.*;
 
 public class Controller {
 
-	public Text settingsText2;
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
@@ -30,7 +30,7 @@ public class Controller {
 	public Label summaryDropSpace6;
 	public Label summaryDropSpace7;
 	public Label summaryDropSpace8;
-	Button[] allButtons;
+	public Label favoriteDropSpace;
 	Button[] boldTextModifiedButtons;
 	public Button downloadFileButton;
 	public Button clearResultLabelButton;
@@ -53,15 +53,31 @@ public class Controller {
 	public Button checkSummaryDropSpaceButton8;
 	public Button checkSummaryDropSpaceButton7;
 	public Button boldTextButton;
+	public Button deleteLogs;
+	public Button deleteNotifications;
+	public Button forgotFavorite;
 	public TextField tableHead;
 	public TextField backgroundReinforcement;
 	public TextField fileName;
 	public TextField summaryFileName;
 	public TextField summaryTableHead;
+	public TextField logLimit;
+	public TextField notificationLimit;
 	Text[] allTexts;
 	public Text appearanceText1;
     public Text appearanceText2;
 	public Text appearanceText3;
+	public Text settingsText1;
+	public Text settingsText2;
+	TextWrapper settingsTextWrapper2;
+	public Text settingsText3;
+	TextWrapper settingsTextWrapper3;
+	public Text settingsText4;
+	public Text settingsText5;
+	TextWrapper settingsTextWrapper5;
+	public Text settingsText6;
+	TextWrapper settingsTextWrapper6;
+	public Text settingsText7;
 	public Circle circle1;
 	public Circle circle2;
 	public Circle circle3;
@@ -73,6 +89,9 @@ public class Controller {
 	public Circle circleBorderColor4;
 	public Circle circleBorderColor5;
 	Border border;
+	public CheckBox logCheckBox;
+	public CheckBox notificationCheckBox;
+	public CheckBox autoParseProductListCheckBox;
 
 	public void startSetup() {
 		groupAppearanceVariables();
@@ -94,63 +113,16 @@ public class Controller {
 		setSummaryDropSpaceText(6, Main.properties.getProperty("summaryLabelDefaultFirstLine6").formatted(secondLine));
 		setSummaryDropSpaceText(7, Main.properties.getProperty("summaryLabelDefaultFirstLine7").formatted(secondLine));
 		setSummaryDropSpaceText(8, Main.properties.getProperty("summaryLabelDefaultFirstLine8").formatted(secondLine));
+
+		setFavoriteDropSpaceText(Main.properties.getProperty("favorite_is_off"));
+
+		settingsTextWrapper2 = new TextWrapper(settingsText2);
+		settingsTextWrapper3 = new TextWrapper(settingsText3);
+		settingsTextWrapper5 = new TextWrapper(settingsText5);
+		settingsTextWrapper6 = new TextWrapper(settingsText6);
 	}
 
-	public void setBackgroundColor1() {
-		Main.backgroundColor = getColorHexCode(circle1.getFill());
-        setBackgroundColor();
-    }
-
-    public void setBackgroundColor2() {
-	    Main.backgroundColor = getColorHexCode(circle2.getFill());
-        setBackgroundColor();
-    }
-
-    public void setBackgroundColor3() {
-	    Main.backgroundColor = getColorHexCode(circle3.getFill());
-        setBackgroundColor();
-    }
-
-    public void setBackgroundColor4() {
-	    Main.backgroundColor = getColorHexCode(circle4.getFill());
-        setBackgroundColor();
-    }
-
-    public void setBackgroundColor5() {
-	    Main.backgroundColor = getColorHexCode(circle5.getFill());
-        setBackgroundColor();
-    }
-
-	void setBackgroundColor() {
-		Main.root.setStyle("-fx-background-color: " + Main.backgroundColor + ";");
-	}
-
-    public void setTextColor1() {
-        Main.textColor = getColorHexCode(circle1.getFill());
-        setTextColor();
-    }
-
-    public void setTextColor2() {
-        Main.textColor = getColorHexCode(circle2.getFill());
-        setTextColor();
-    }
-
-    public void setTextColor3() {
-        Main.textColor = getColorHexCode(circle3.getFill());
-        setTextColor();
-    }
-
-    public void setTextColor4() {
-        Main.textColor = getColorHexCode(circle4.getFill());
-        setTextColor();
-    }
-
-    public void setTextColor5() {
-        Main.textColor = getColorHexCode(circle5.getFill());
-        setTextColor();
-    }
-
-    public void groupAppearanceVariables() {
+	public void groupAppearanceVariables() {
 		allLabels = new Label[]{
 				upperDropSpace,
 				lowerDropSpace,
@@ -165,52 +137,31 @@ public class Controller {
 				summaryDropSpace5,
 				summaryDropSpace6,
 				summaryDropSpace7,
-				summaryDropSpace8
+				summaryDropSpace8,
+				favoriteDropSpace
 		};
-	    borderModifiedLabels = new Label[]{
-			    upperDropSpace,
-			    lowerDropSpace,
-			    summaryDropSpace1,
-			    summaryDropSpace2,
-			    summaryDropSpace3,
-			    summaryDropSpace4,
-			    summaryDropSpace5,
-			    summaryDropSpace6,
-			    summaryDropSpace7,
-			    summaryDropSpace8
-	    };
-	    allSummaryLabelWrappers = new LabelWrapper[]{
-			    new LabelWrapper(summaryDropSpace1),
-			    new LabelWrapper(summaryDropSpace2),
-			    new LabelWrapper(summaryDropSpace3),
-			    new LabelWrapper(summaryDropSpace4),
-			    new LabelWrapper(summaryDropSpace5),
-			    new LabelWrapper(summaryDropSpace6),
-			    new LabelWrapper(summaryDropSpace7),
-			    new LabelWrapper(summaryDropSpace8)
-	    };
-	    allButtons = new Button[]{
-				downloadFileButton,
-				clearResultLabelButton,
-				lowerDropSpaceButton,
-				clearUpperDropSpaceButton,
-				infoButton,
-				downloadResultLabelButton,
-				downloadSummaryFileButton,
-				clearAllSummaryDropSpaceButton,
-				clearSummaryDropSpaceButton1,
-				clearSummaryDropSpaceButton2,
-				clearSummaryDropSpaceButton3,
-				clearSummaryDropSpaceButton4,
-				clearSummaryDropSpaceButton5,
-				clearSummaryDropSpaceButton6,
-				clearSummaryDropSpaceButton7,
-				clearSummaryDropSpaceButton8,
-				checkSummaryDropSpaceButton4,
-			    checkSummaryDropSpaceButton6,
-			    checkSummaryDropSpaceButton7,
-			    checkSummaryDropSpaceButton8,
-			    boldTextButton
+		borderModifiedLabels = new Label[]{
+				upperDropSpace,
+				lowerDropSpace,
+				summaryDropSpace1,
+				summaryDropSpace2,
+				summaryDropSpace3,
+				summaryDropSpace4,
+				summaryDropSpace5,
+				summaryDropSpace6,
+				summaryDropSpace7,
+				summaryDropSpace8,
+				favoriteDropSpace
+		};
+		allSummaryLabelWrappers = new LabelWrapper[]{
+				new LabelWrapper(summaryDropSpace1),
+				new LabelWrapper(summaryDropSpace2),
+				new LabelWrapper(summaryDropSpace3),
+				new LabelWrapper(summaryDropSpace4),
+				new LabelWrapper(summaryDropSpace5),
+				new LabelWrapper(summaryDropSpace6),
+				new LabelWrapper(summaryDropSpace7),
+				new LabelWrapper(summaryDropSpace8)
 		};
 		boldTextModifiedButtons = new Button[]{
 				downloadFileButton,
@@ -225,13 +176,77 @@ public class Controller {
 				checkSummaryDropSpaceButton6,
 				checkSummaryDropSpaceButton7,
 				checkSummaryDropSpaceButton8,
-				boldTextButton
+				boldTextButton,
+				deleteLogs,
+				deleteNotifications,
+				forgotFavorite
 		};
 		allTexts = new Text[]{
 				appearanceText1,
 				appearanceText2,
-				appearanceText3
+				appearanceText3,
+				settingsText1,
+				settingsText2,
+				settingsText3,
+				settingsText4,
+				settingsText5,
+				settingsText6,
+				settingsText7
 		};
+	}
+
+	public void setBackgroundColor1() {
+		Main.config.setBackgroundColor(getColorHexCode(circle1.getFill()));
+        setBackgroundColor();
+    }
+
+    public void setBackgroundColor2() {
+	    Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
+        setBackgroundColor();
+    }
+
+    public void setBackgroundColor3() {
+	    Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
+        setBackgroundColor();
+    }
+
+    public void setBackgroundColor4() {
+	    Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
+        setBackgroundColor();
+    }
+
+    public void setBackgroundColor5() {
+	    Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
+        setBackgroundColor();
+    }
+
+	void setBackgroundColor() {
+		Main.root.setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
+	}
+
+    public void setTextColor1() {
+        Main.config.setTextColor(getColorHexCode(circle1.getFill()));
+        setTextColor();
+    }
+
+    public void setTextColor2() {
+	    Main.config.setTextColor(getColorHexCode(circle2.getFill()));
+        setTextColor();
+    }
+
+    public void setTextColor3() {
+	    Main.config.setTextColor(getColorHexCode(circle3.getFill()));
+        setTextColor();
+    }
+
+    public void setTextColor4() {
+	    Main.config.setTextColor(getColorHexCode(circle4.getFill()));
+        setTextColor();
+    }
+
+    public void setTextColor5() {
+	    Main.config.setTextColor(getColorHexCode(circle5.getFill()));
+        setTextColor();
     }
 
     public LabelWrapper getSummaryLabelWrapper(int i) {
@@ -244,15 +259,15 @@ public class Controller {
 
     void setTextColor() {
 	    for (Text text : allTexts) {
-		    text.setFill(Paint.valueOf(Main.textColor));
+		    text.setFill(Paint.valueOf(Main.config.getTextColor()));
 	    }
 	    for (Label label : allLabels) {
-		    label.setTextFill(Paint.valueOf(Main.textColor));
+		    label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
 	    }
     }
     
     void setBorderColor() {
-		border = new Border(new BorderStroke(Paint.valueOf(Main.borderColor), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
+		border = new Border(new BorderStroke(Paint.valueOf(Main.config.getBorderColor()), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
 	    for (Label label : borderModifiedLabels) {
 	    	label.setBorder(border);
 	    }
@@ -308,13 +323,13 @@ public class Controller {
 	}
 
 	public void clearUpperDropSpace() {
-		Main.pathToProductFile = null;
+		Main.config.setPathToProductFile(null);
 		Main.reinforcementProductHashMap.clear();
 		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
 	}
 
 	public void clearLowerDropSpace() {
-		Main.pathToCalculatingFile = null;
+		Main.config.setPathToCalculatingFile(null);
 		Main.reinforcementHashMap.clear();
 		setLowerDropSpaceText(Main.properties.getProperty("lowerLabelDefaultText"));
 	}
@@ -355,7 +370,7 @@ public class Controller {
 	}
 
 	public void downloadResultLabel() throws IOException {
-		Main.downloadNotification();
+		Main.saveNotification();
 	}
 
 	public void visitNotificationTab() {
@@ -368,7 +383,7 @@ public class Controller {
 	}
 
 	public void summaryDragDropped1(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 1, this);
+		DropWorker.summaryDragDropped(dragEvent, 1, this);
 	}
 
 	public void summaryDragOver(DragEvent dragEvent) {
@@ -376,31 +391,31 @@ public class Controller {
 	}
 
 	public void summaryDragDropped2(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 2, this);
+		DropWorker.summaryDragDropped(dragEvent, 2, this);
 	}
 
 	public void summaryDragDropped3(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 3, this);
+		DropWorker.summaryDragDropped(dragEvent, 3, this);
 	}
 
 	public void summaryDragDropped4(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 4, this);
+		DropWorker.summaryDragDropped(dragEvent, 4, this);
 	}
 
 	public void summaryDragDropped5(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 5, this);
+		DropWorker.summaryDragDropped(dragEvent, 5, this);
 	}
 
 	public void summaryDragDropped6(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 6, this);
+		DropWorker.summaryDragDropped(dragEvent, 6, this);
 	}
 
 	public void summaryDragDropped7(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 7, this);
+		DropWorker.summaryDragDropped(dragEvent, 7, this);
 	}
 
 	public void summaryDragDropped8(DragEvent dragEvent) {
-		DropWorker.dragDroppedSummary(dragEvent, 8, this);
+		DropWorker.summaryDragDropped(dragEvent, 8, this);
 	}
 
 	public void downloadSummaryFile() {
@@ -475,41 +490,41 @@ public class Controller {
 	}
 
 	public void setBorderColor1() {
-		Main.borderColor = getColorHexCode(circleBorderColor1.getFill());
+		Main.config.setBorderColor(getColorHexCode(circleBorderColor1.getFill()));
 		setBorderColor();
 	}
 
 	public void setBorderColor2() {
-		Main.borderColor = getColorHexCode(circleBorderColor2.getFill());
+		Main.config.setBorderColor(getColorHexCode(circleBorderColor2.getFill()));
 		setBorderColor();
 	}
 
 	public void setBorderColor3() {
-		Main.borderColor = getColorHexCode(circleBorderColor3.getFill());
+		Main.config.setBorderColor(getColorHexCode(circleBorderColor3.getFill()));
 		setBorderColor();
 	}
 
 	public void setBorderColor4() {
-		Main.borderColor = getColorHexCode(circleBorderColor4.getFill());
+		Main.config.setBorderColor(getColorHexCode(circleBorderColor4.getFill()));
 		setBorderColor();
 	}
 
 	public void setBorderColor5() {
-		Main.borderColor = getColorHexCode(circleBorderColor5.getFill());
+		Main.config.setBorderColor(getColorHexCode(circleBorderColor5.getFill()));
 		setBorderColor();
 	}
 
 	public void toggleBoldText() {
-		Main.boldText = !Main.boldText;
+		Main.config.toggleBoldText();
 		setFont();
 	}
 
 	void setFont() {
-		if (Main.boldText) {
+		if (Main.config.getBoldText()) {
 			String font = "System Bold";
 			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
 		}
-		if (!Main.boldText) {
+		if (!Main.config.getBoldText()) {
 			String font = "System";
 			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
 		}
@@ -530,7 +545,74 @@ public class Controller {
 		}
 	}
 
-	void setR() {
-		settingsText2.setText("15");
+	void setCheckBox() {
+		logCheckBox.setSelected(Main.config.getWriteLog());
+		notificationCheckBox.setSelected(Main.config.getWriteNotification());
+		autoParseProductListCheckBox.setSelected(Main.config.getAutoParseProductList());
+	}
+
+	public void toggleWriteLog() {
+		Main.config.toggleWriteLog();
+	}
+
+	public void toggleWriteNotification() {
+		Main.config.toggleWriteNotification();
+	}
+
+	public void setText() throws IOException {
+		settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(Main.config.getLogStorageLimit()));
+		settingsTextWrapper3.setText(
+				settingsTextWrapper3.getDefaultText().formatted(
+						StorageCleaner.getStorageSize(Main.programRootPath + Main.logStorageDirectory),
+						StorageCleaner.getSize(Main.programRootPath + Main.logStorageDirectory)
+				)
+		);
+		settingsTextWrapper5.setText(settingsTextWrapper5.getDefaultText().formatted(Main.config.getNotificationStorageLimit()));
+		settingsTextWrapper6.setText(
+				settingsTextWrapper6.getDefaultText().formatted(
+						StorageCleaner.getStorageSize(Main.programRootPath + Main.notificationStorageDirectory),
+						StorageCleaner.getSize(Main.programRootPath + Main.notificationStorageDirectory)
+				)
+		);
+	}
+
+	public void deleteLogs() {
+		Main.deleteStorage(Main.programRootPath + Main.logStorageDirectory);
+	}
+
+	public void deleteNotifications() {
+		Main.deleteStorage(Main.programRootPath + Main.notificationStorageDirectory);
+	}
+
+	public void saveSettings() {
+		Main.parseTextField(0, logLimit.getText());
+		Main.parseTextField(1, notificationLimit.getText());
+		logLimit.clear();
+		notificationLimit.clear();
+	}
+
+	public void forgotFavorite() {
+		Main.config.setFavoritePath(null);
+		setFavoriteDropSpaceText(Main.properties.getProperty("favorite_is_off"));
+	}
+
+	public void favoriteDragOver(DragEvent dragEvent) {
+		DropWorker.dragOver(dragEvent);
+	}
+
+	public void favoriteDragDropped(DragEvent dragEvent) {
+		DropWorker.favoriteDragDropped(dragEvent, this);
+	}
+
+	public Label getFavoriteDropSpaceLabel() {
+		return favoriteDropSpace;
+	}
+
+	public void setFavoriteDropSpaceText(String string) {
+		favoriteDropSpace.setText(string);
+	}
+
+	public void toggleAutoParseProductList() {
+		Main.config.toggleAutoParseProductList();
 	}
 }

@@ -135,7 +135,7 @@ public class Content {
 
 	public Double[] getFinallyVerticalSummaryMass() {
 		Double[] result = new Double[table.length + 1];
-		MassSummator mass = new MassSummator();
+		MassCounter mass = new MassCounter();
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[0].length; j++) {
 				mass.add(table[i][j]);

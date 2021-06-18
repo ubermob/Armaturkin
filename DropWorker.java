@@ -4,6 +4,8 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,17 @@ public class DropWorker {
 				label.setText(Main.properties.getProperty("dropWorkerFileAccepted"));
 				File file = fileList.get(0);
 				if (i == 0) {
-					Main.pathToProductFile = file.getAbsolutePath();
-					Main.log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted1").formatted(DropWorker.class, Main.pathToProductFile));
+					Main.config.setPathToProductFile(file.getAbsolutePath());
+					Main.log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted1").formatted(
+							DropWorker.class, Main.config.getPathToProductFile())
+					);
 					Main.loadProduct();
 				}
 				if (i == 1) {
-					Main.pathToCalculatingFile = file.getAbsolutePath();
-					Main.log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted2").formatted(DropWorker.class, Main.pathToCalculatingFile));
+					Main.config.setPathToCalculatingFile(file.getAbsolutePath());
+					Main.log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted2").formatted(
+							DropWorker.class, Main.config.getPathToCalculatingFile())
+					);
 					Main.loadCalculatingFile();
 				}
 			} else {
@@ -39,7 +45,7 @@ public class DropWorker {
 		}
 	}
 
-	static void dragDroppedSummary(DragEvent dragEvent, int i, Controller controller) {
+	static void summaryDragDropped(DragEvent dragEvent, int i, Controller controller) {
 		LabelWrapper labelWrapper = controller.getSummaryLabelWrapper(i);
 		List<File> wildFileList = getDroppedFile(dragEvent);
 		final List<String> verifiedFileList = new ArrayList<>();
@@ -49,7 +55,7 @@ public class DropWorker {
 			}
 		});
 		if (Main.summaryPaths.isEmpty() && !verifiedFileList.isEmpty()) {
-			Main.optionalPath = verifiedFileList.get(0);
+			Main.config.setPathToSummaryCalculatingFile(verifiedFileList.get(0));
 		}
 		if (Main.summaryPaths.containsKey(i)) {
 			Main.summaryPaths.get(i).addAll(verifiedFileList);
@@ -62,6 +68,21 @@ public class DropWorker {
 		labelWrapper.setText(labelWrapper.getDefaultText() + "\n" +
 				Main.properties.getProperty("summaryLabelDefaultThirdLine").formatted(Main.summaryPaths.get(i).size())
 		);
+	}
+
+	static void favoriteDragDropped(DragEvent dragEvent, Controller controller) {
+		List<File> fileList = getDroppedFile(dragEvent);
+		Label label = controller.getFavoriteDropSpaceLabel();
+		if (fileList.size() != 1) {
+			label.setText(Main.properties.getProperty("drop_worker_favorite_notification1"));
+		} else {
+			if (!Files.isDirectory(Path.of(fileList.get(0).getAbsolutePath()))) {
+				label.setText(Main.properties.getProperty("drop_worker_favorite_notification2"));
+			} else {
+				Main.config.setFavoritePath(fileList.get(0).getAbsolutePath());
+				label.setText(Main.properties.getProperty("favorite_is_on").formatted(Main.config.getFavoritePath()));
+			}
+		}
 	}
 
 	static List<File> getDroppedFile(DragEvent dragEvent) {

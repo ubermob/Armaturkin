@@ -71,7 +71,7 @@ public class SummaryBlock {
 
 	private void calculateMass() {
 		// Calculate horizontal
-		MassSummator mass = new MassSummator();
+		MassCounter mass = new MassCounter();
 		for (int i = 0; i < bodyWidth; i++) {
 			for (int j = 0; j < bodyHeight; j++) {
 				mass.add(blockBody[j][i]);

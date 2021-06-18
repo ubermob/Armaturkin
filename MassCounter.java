@@ -1,4 +1,4 @@
-public class MassSummator {
+public class MassCounter {
 
 	private Double mass = 0.0;
 

@@ -1,9 +1,8 @@
 import javafx.scene.control.Label;
 
-public class LabelWrapper {
+public class LabelWrapper extends DefaultText {
 
 	private final Label label;
-	private String defaultText;
 
 	public LabelWrapper(Label label) {
 		this.label = label;
@@ -14,11 +13,11 @@ public class LabelWrapper {
 	}
 
 	public String getDefaultText() {
-		return defaultText;
+		return super.getDefaultText();
 	}
 
 	public void setDefaultText(String defaultText) {
-		this.defaultText = defaultText;
+		super.setDefaultText(defaultText);
 	}
 
 	public void setText(String text) {
@@ -26,6 +25,6 @@ public class LabelWrapper {
 	}
 
 	public void resetTextToDefault() {
-		label.setText(defaultText);
+		label.setText(super.getDefaultText());
 	}
 }

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -17,7 +18,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="infoButton" layoutX="77.0" layoutY="498.0" mnemonicParsing="false" onAction="#toggleInfoLabelOpacity" prefHeight="37.0" prefWidth="67.0" text="Инфо">
+                  <Button fx:id="infoButton" layoutX="72.0" layoutY="498.0" mnemonicParsing="false" onAction="#toggleInfoLabelOpacity" prefHeight="37.0" prefWidth="67.0" text="Инфо">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -43,7 +44,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="notificationLabel" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="84.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
+                  <Label fx:id="notificationLabel" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
@@ -68,7 +69,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab onSelectionChanged="#visitNotificationTab" text="Информация">
+    <Tab onSelectionChanged="#visitNotificationTab" text="Уведомления">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -113,7 +114,7 @@
                      </font>
                   </Button>
                   <TextField fx:id="summaryFileName" layoutX="200.0" layoutY="542.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
-                  <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="84.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
+                  <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -235,6 +236,77 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab onSelectionChanged="#saveSettings" text="Настройки">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <CheckBox fx:id="logCheckBox" layoutX="33.0" layoutY="316.0" mnemonicParsing="false" onAction="#toggleWriteLog" />
+                  <CheckBox fx:id="notificationCheckBox" layoutX="33.0" layoutY="421.0" mnemonicParsing="false" onAction="#toggleWriteNotification" />
+                  <Text fx:id="settingsText1" layoutX="60.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Сохранять лог" wrappingWidth="180.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="favoriteDropSpace" alignment="CENTER" layoutX="31.0" layoutY="28.0" onDragDropped="#favoriteDragDropped" onDragOver="#favoriteDragOver" prefHeight="213.0" prefWidth="530.0" text="My favorite" textAlignment="CENTER" wrapText="true">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Text fx:id="settingsText4" layoutX="58.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Сохранять уведомления" wrappingWidth="250.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="logLimit" alignment="CENTER" layoutX="33.0" layoutY="347.0" prefHeight="25.0" prefWidth="60.0" promptText="0-5000" />
+                  <Text fx:id="settingsText2" layoutX="109.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число хранимых файлов, сейчас: %d" wrappingWidth="414.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="settingsText3" layoutX="33.0" layoutY="403.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Всего сохранённых логов: %d (%d KB)" wrappingWidth="429.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="deleteLogs" layoutX="627.0" layoutY="376.0" mnemonicParsing="false" onAction="#deleteLogs" prefHeight="37.0" prefWidth="140.0" text="Удалить логи">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="notificationLimit" alignment="CENTER" layoutX="33.0" layoutY="452.0" prefHeight="25.0" prefWidth="60.0" promptText="0-5000" />
+                  <Text fx:id="settingsText5" layoutX="109.0" layoutY="473.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Число хранимых файлов, сейчас: %d" wrappingWidth="494.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="settingsText6" layoutX="33.0" layoutY="508.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Всего сохранённых уведомлений: %d (%d KB)" wrappingWidth="501.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="deleteNotifications" layoutX="570.0" layoutY="481.0" mnemonicParsing="false" onAction="#deleteNotifications" prefHeight="37.0" prefWidth="197.0" text="Удалить уведомления">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="forgotFavorite" layoutX="597.0" layoutY="116.0" mnemonicParsing="false" onAction="#forgotFavorite" prefHeight="37.0" prefWidth="170.0" text="Забыть мою папку">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="settingsText7" layoutX="60.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Автоматически пересчитывать список изделий при запуске приложения" wrappingWidth="733.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <CheckBox fx:id="autoParseProductListCheckBox" layoutX="33.0" layoutY="267.0" mnemonicParsing="false" onAction="#toggleAutoParseProductList" />
                </children>
             </AnchorPane>
         </content>

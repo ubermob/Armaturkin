@@ -18,34 +18,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.4";
+	public static String version = "0.4.5";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
+	public static Configuration config;
     public static String programRootPath;
     public static String configFileName;
     public static String logFileName;
 	public static String notificationFileName;
 	public static String logStorageDirectory;
-    public static String backgroundColor;
-    public static String textColor;
-    public static String borderColor;
-    public static boolean boldText;
+	public static String notificationStorageDirectory;
     private static Character diskLetter;
     private static volatile String notificationString = "";
-
-    public volatile static String pathToProductFile;
-    public volatile static String pathToCalculatingFile;
-    public static String optionalPath;
-	public static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
+	public static Log log = new Log();
 
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
-
-	public static Log log = new Log();
+	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -57,10 +51,17 @@ public class Main extends Application {
         log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
 	    primaryStage.getIcons().add(new Image(Files.newInputStream(Path.of("resources\\Icon.png"))));
         primaryStage.setScene(new Scene(root));
+        checkFavoriteDirectory();
         preloadUpperDropSpace();
         primaryStage.show();
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
+		    controller.setCheckBox();
+		    try {
+			    controller.setText();
+		    } catch (Exception e) {
+		    	Main.log.add(e);
+		    }
 	    }));
 	    timeline.setCycleCount(Animation.INDEFINITE);
 	    timeline.play();
@@ -83,18 +84,19 @@ public class Main extends Application {
         launch(args);
         saveConfigFile();
         Log.saveLog();
+        saveNotification();
     }
 
     static void loadProduct() {
     	reinforcementProductHashMap.clear();
-	    ProductFileWorker productFileWorker = new ProductFileWorker(pathToProductFile, reinforcementProductHashMap);
+	    ProductFileWorker productFileWorker = new ProductFileWorker(config.getPathToProductFile(), reinforcementProductHashMap);
 	    Thread productFileWorkerThread = new Thread(productFileWorker);
 	    productFileWorkerThread.start();
     }
 
     static void loadCalculatingFile() {
     	reinforcementHashMap.clear();
-		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(pathToCalculatingFile,
+		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(config.getPathToCalculatingFile(),
 				reinforcementHashMap,
 				reinforcementProductHashMap
 		);
@@ -104,7 +106,13 @@ public class Main extends Application {
 
     static void downloadCalculatedFile() {
     	if (!reinforcementHashMap.isEmpty() && !reinforcementProductHashMap.isEmpty()) {
-    		FileWorker fileWorker = new FileWorker(pathToCalculatingFile,
+		    String path;
+		    if (config.isFavoritePathNotNull()) {
+			    path = config.getFavoritePath();
+		    } else {
+			    path = Path.of(config.getPathToCalculatingFile()).getParent().toString();
+		    }
+    		FileWorker fileWorker = new FileWorker(path,
 				    reinforcementHashMap,
 				    controller.getBackgroundReinforcement(),
 				    controller.getTableHead(),
@@ -117,16 +125,16 @@ public class Main extends Application {
 
     static void downloadSummaryFile() {
     	if (!summaryPaths.isEmpty()) {
-    		SummaryHub summaryHub = new SummaryHub(summaryPaths, optionalPath, controller.getSummaryFileName(), controller.getSummaryTableHead());
+    		String path;
+    		if (config.isFavoritePathNotNull()) {
+    			path = config.getFavoritePath();
+		    } else {
+			    path = Path.of(config.getPathToSummaryCalculatingFile()).getParent().toString();
+		    }
+    		SummaryHub summaryHub = new SummaryHub(summaryPaths, path, controller.getSummaryFileName(), controller.getSummaryTableHead());
     		Thread summaryHubThread = new Thread(summaryHub);
     		summaryHubThread.start();
 	    }
-    }
-
-    static void downloadNotification() throws IOException {
-    	String[] string = new String[1];
-    	string[0] = notificationString;
-    	Writer.write(programRootPath + notificationFileName, string);
     }
 
     static void parseArgs(String[] args) {
@@ -137,9 +145,9 @@ public class Main extends Application {
 			    log.add(argCommand[0]);
 		    }
 		    if (isMatchCommands(arg, argCommand[1])) {
-			    int value = Integer.parseInt(arg.split("=")[1]);
+			    /*int value = Integer.parseInt(arg.split("=")[1]);
 			    Log.setLogStorageLimit(value);
-			    log.add(argCommand[1] + " " + value);
+			    log.add(argCommand[1] + "=" + value);*/
 		    }
 		    if (isMatchCommands(arg, argCommand[2])) {
 		    	char diskLetter = arg.split("=")[1].charAt(0);
@@ -147,7 +155,7 @@ public class Main extends Application {
 		    	char letterZ = 'Z';
 		    	if (letterC <= diskLetter && diskLetter <= letterZ) {
 		    		Main.diskLetter = diskLetter;
-				    log.add(argCommand[2] + " " + Main.diskLetter);
+				    log.add(argCommand[2] + "=" + Main.diskLetter);
 			    }
 		    }
 	    }
@@ -158,13 +166,42 @@ public class Main extends Application {
     }
 
 	private void preloadUpperDropSpace() {
-		if (pathToProductFile != null) {
-			Path path = Path.of(pathToProductFile);
+		if (config.isPathToProductFileNotNull() && config.getAutoParseProductList()) {
+			Path path = Path.of(config.getPathToProductFile());
 			if (Files.exists(path)) {
 				controller.setUpperDropSpaceText(
 						properties.getProperty("upperLabelTextWithFile").formatted(path.getFileName().toString())
 				);
 				loadProduct();
+			}
+		}
+	}
+
+	private void checkFavoriteDirectory() {
+    	if (config.isFavoritePathNotNull()) {
+    		controller.setFavoriteDropSpaceText(properties.getProperty("favorite_is_on").formatted(config.getFavoritePath()));
+    		if (Files.notExists(Path.of(config.getFavoritePath()))) {
+    			try {
+				    restoreDirectory(config.getFavoritePath());
+				    addNotification(properties.getProperty("favorite_is_restored_1").formatted(config.getFavoritePath()));
+				    Main.log.add(properties.getProperty("favorite_is_restored_2").formatted(getClass()));
+			    } catch (Exception e) {
+				    addNotification(properties.getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
+    				Main.log.add(properties.getProperty("favorite_restore_failed_2").formatted(getClass()));
+    				Main.log.add(e);
+    				controller.setFavoriteDropSpaceText(properties.getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
+			    }
+		    }
+	    }
+	}
+
+	private void restoreDirectory(String string) throws IOException {
+		String[] branch = string.split("\\\\");
+		String path = "";
+		for (String directory : branch) {
+			path += directory + "\\";
+			if (Files.notExists(Path.of(path))) {
+				Files.createDirectory(Path.of(path));
 			}
 		}
 	}
@@ -180,13 +217,16 @@ public class Main extends Application {
 
     static void checkDirectory() throws IOException {
     	if (diskLetter != null) {
-    		Main.programRootPath = diskLetter + Main.programRootPath.substring(1);
+    		programRootPath = diskLetter + programRootPath.substring(1);
 	    }
     	if (Files.notExists(Path.of(programRootPath))) {
     		Files.createDirectory(Path.of(programRootPath));
 	    }
     	if (Files.notExists(Path.of(programRootPath, logStorageDirectory))) {
     		Files.createDirectory(Path.of(programRootPath, logStorageDirectory));
+	    }
+	    if (Files.notExists(Path.of(programRootPath, notificationStorageDirectory))) {
+		    Files.createDirectory(Path.of(programRootPath, notificationStorageDirectory));
 	    }
     }
 
@@ -195,39 +235,11 @@ public class Main extends Application {
     }
 
 	static void loadConfigFile() throws IOException {
-		if (Files.exists(Path.of(programRootPath, configFileName))) {
-			List<String> load = Reader.read(programRootPath + configFileName);
-			backgroundColor = load.get(0);
-			textColor = load.get(1);
-			if (!load.get(2).equals("null")) {
-				pathToProductFile = load.get(2);
-			}
-			if (!load.get(3).equals("null")) {
-				pathToCalculatingFile = load.get(3);
-			}
-			if (!load.get(4).equals("null")) {
-				optionalPath = load.get(4);
-			}
-			borderColor = load.get(5);
-			boldText = Boolean.parseBoolean(load.get(6));
-		}
-		if (Files.notExists(Path.of(programRootPath, configFileName))) {
-			Files.createFile(Path.of(programRootPath, configFileName));
-			saveConfigFile();
-		}
+		config = new Configuration(programRootPath + configFileName);
 	}
 
     static void saveConfigFile() throws IOException {
-    	String [] configList = {
-			    backgroundColor,
-			    textColor,
-			    pathToProductFile,
-			    pathToCalculatingFile,
-			    optionalPath,
-			    borderColor,
-			    String.valueOf(boldText)
-	    };
-	    Writer.write(programRootPath + configFileName, configList);
+	    config.saveConfigFile();
     }
 
     static void loadProperties() {
@@ -239,16 +251,59 @@ public class Main extends Application {
 	    }
     }
 
+    static void saveNotification() throws IOException {
+    	StorageCleaner.clearStorage(Path.of(programRootPath, notificationStorageDirectory));
+    	if (config.getWriteNotification()) {
+		    StorageCleaner.copyFile(
+				    Path.of(programRootPath, notificationFileName),
+				    Path.of(programRootPath, notificationStorageDirectory,
+						    properties.getProperty("numbered_notification_file_name").formatted(
+								    StorageCleaner.getStorageSize(programRootPath + notificationStorageDirectory) + 1)
+				    )
+		    );
+		    String[] string = new String[1];
+		    string[0] = notificationString;
+		    Writer.write(programRootPath + notificationFileName, string);
+	    }
+    }
+
+    static void deleteStorage(String path) {
+    	try {
+		    List<Path> collect = Files.list(Path.of(path)).collect(Collectors.toList());
+		    for (Path file : collect) {
+			    Files.delete(file);
+		    }
+	    } catch (IOException e) {
+    		log.add(e);
+	    }
+    }
+
+	static void parseTextField(int i, String string) {
+    	if (string.length() > 0) {
+		    int parsed;
+		    try {
+			    parsed = Integer.parseInt(string);
+			    if (0 <= parsed && parsed <= 5000) {
+				    if (i == 0) {
+					    config.setLogStorageLimit(parsed);
+				    }
+				    if (i == 1) {
+					    config.setNotificationStorageLimit(parsed);
+				    }
+			    }
+		    } catch (Exception e) {
+			    log.add(e);
+		    }
+	    }
+	}
+
     static void readBasicFieldsFromProperties() {
-    	programRootPath = properties.getProperty("programRootPath");
-    	configFileName = properties.getProperty("configFileName");
-    	logFileName = properties.getProperty("logFileName");
-	    notificationFileName = properties.getProperty("notificationFileName");
-	    logStorageDirectory = properties.getProperty("logStorageDirectory");
-	    backgroundColor = properties.getProperty("backgroundColor");
-	    textColor = properties.getProperty("textColor");
-	    borderColor = properties.getProperty("borderColor");
-	    boldText = Boolean.parseBoolean(properties.getProperty("boldText"));
+    	programRootPath = properties.getProperty("program_root_path");
+    	configFileName = properties.getProperty("config_file_name");
+    	logFileName = properties.getProperty("log_file_name");
+	    notificationFileName = properties.getProperty("notification_file_name");
+	    logStorageDirectory = properties.getProperty("log_storage_directory");
+	    notificationStorageDirectory = properties.getProperty("notification_storage_directory");
     }
 
     static String getHostName() {
@@ -262,11 +317,11 @@ public class Main extends Application {
 
     static String getDate() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
-	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("datePattern")));
+	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("date_pattern")));
     }
 
     static String getTime() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
-	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("timePattern")));
+	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("time_pattern")));
     }
 }
