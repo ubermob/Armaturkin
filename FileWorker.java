@@ -39,7 +39,6 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		buildTableHead();
 		addBackgroundReinforcement();
 		fillTable();
-
 		fileName = createFileName(fileName);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
@@ -194,7 +193,6 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 
 		row = sheet.createRow(0);
 		row.setHeight((short) 450);
-		//sheet.addMergedRegion(CellRangeAddress.valueOf("A1:H1"));//
 		cell = row.createCell(0);
 		cell.setCellValue(downloadFileTableHead);
 		cell.setCellStyle(cellStyleRepository.getHeadTableNameCellStyle());
@@ -225,6 +223,8 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		cell = row.createCell(6);
 		cell.setCellValue("Масса, кг");
 		cell.setCellStyle(cellStyle);
+		cell = row.createCell(7);
+		cell.setCellStyle(cellStyle);
 
 		row = sheet.createRow(2);
 		row.setHeight((short) 450);
@@ -234,6 +234,10 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		cell = row.createCell(7);
 		cell.setCellValue("Всех элементов");
 		cell.setCellStyle(cellStyleWithTextWrap);
+		for (int i = 0; i < 6; i++) {
+			cell = row.createCell(i);
+			cell.setCellStyle(cellStyle);
+		}
 		sheet.addMergedRegion(CellRangeAddress.valueOf("A2:A3"));
 		sheet.addMergedRegion(CellRangeAddress.valueOf("B2:B3"));
 		sheet.addMergedRegion(CellRangeAddress.valueOf("C2:C3"));

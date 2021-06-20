@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.9";
+	public static String version = "0.4.10";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -37,7 +37,6 @@ public class Main extends Application {
     private static Character diskLetter;
     private static volatile String notificationString = "";
 	public static Log log = new Log();
-
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
