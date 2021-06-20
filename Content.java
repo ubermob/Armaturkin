@@ -1,5 +1,4 @@
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,12 +10,14 @@ public class Content {
 
 	public Content() {
 		possibleHash = new ArrayList<>();
-		List<String> possibleHashString;
 		try {
-			possibleHashString = Files.readAllLines(Path.of("resources\\RHashCodeList.txt"));
-			for (String string : possibleHashString) {
-				possibleHash.add(Integer.parseInt(string));
+			InputStream resourceAsStream = this.getClass().getResourceAsStream("/RHashCodeList.txt");
+			InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+			while (bufferedReader.ready()) {
+				possibleHash.add(Integer.parseInt(bufferedReader.readLine()));
 			}
+			bufferedReader.close();
 			table = new Double[8][possibleHash.size()];
 		} catch (Exception e) {
 			Main.log.add(e);

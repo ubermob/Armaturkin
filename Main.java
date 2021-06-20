@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.8";
+	public static String version = "0.4.9";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -49,7 +50,13 @@ public class Main extends Application {
         controller.startSetup();
         primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
         log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
-	    primaryStage.getIcons().add(new Image(Files.newInputStream(Path.of("resources\\Icon.png"))));
+        try {
+	        InputStream resourceAsStream = Main.class.getResourceAsStream("/Icon.png");
+	        primaryStage.getIcons().add(new Image(resourceAsStream));
+	        resourceAsStream.close();
+        } catch (Exception e) {
+        	log.add(e);
+        }
         primaryStage.setScene(new Scene(root));
         checkFavoriteDirectory();
         preloadUpperDropSpace();
@@ -254,7 +261,9 @@ public class Main extends Application {
     static void loadProperties() {
     	properties = new Properties();
     	try {
-		    properties.loadFromXML(Files.newInputStream(Path.of("resources\\Properties.xml")));
+		    InputStream resourceAsStream = Main.class.getResourceAsStream("/Properties.xml");
+		    properties.loadFromXML(resourceAsStream);
+		    resourceAsStream.close();
 	    } catch (Exception e) {
     		log.add(e);
 	    }
