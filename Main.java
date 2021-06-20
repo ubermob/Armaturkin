@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.7";
+	public static String version = "0.4.8";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -57,11 +57,6 @@ public class Main extends Application {
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
 		    controller.setCheckBox();
-		    try {
-			    controller.setText();
-		    } catch (Exception e) {
-		    	Main.log.add(e);
-		    }
 	    }));
 	    timeline.setCycleCount(Animation.INDEFINITE);
 	    timeline.play();
@@ -137,6 +132,24 @@ public class Main extends Application {
 	    }
     }
 
+	static void checkSummaryDropSpace(int i) {
+    	if (!summaryPaths.get(i).isEmpty()) {
+		    SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
+		    Thread[] subThreads = summaryThreadStarter.getSubThreads();
+		    List<Log> logList = summaryThreadStarter.getLogList();
+		    for (Thread thread : subThreads) {
+			    try {
+			    	thread.join();
+			    } catch (Exception e) {
+			    	log.add(e);
+			    }
+		    }
+		    for (Log threadLog : logList) {
+			    log.merge(threadLog);
+		    }
+	    }
+	}
+
     static void parseArgs(String[] args) {
     	String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk"};
 	    for (String arg : args) {
@@ -144,11 +157,11 @@ public class Main extends Application {
 			    Log.enable();
 			    log.add(argCommand[0]);
 		    }
-		    if (isMatchCommands(arg, argCommand[1])) {
-			    /*int value = Integer.parseInt(arg.split("=")[1]);
+		    /*if (isMatchCommands(arg, argCommand[1])) {
+			    int value = Integer.parseInt(arg.split("=")[1]);
 			    Log.setLogStorageLimit(value);
-			    log.add(argCommand[1] + "=" + value);*/
-		    }
+			    log.add(argCommand[1] + "=" + value);
+		    }*/
 		    if (isMatchCommands(arg, argCommand[2])) {
 		    	char diskLetter = arg.split("=")[1].charAt(0);
 		    	char letterC = 'C';
@@ -206,7 +219,7 @@ public class Main extends Application {
 		}
 	}
 
-    public static void addNotification(String string) {
+    public static synchronized void addNotification(String string) {
     	notificationString += string + "\n";
     	controller.setNotificationOpacity(1);
     }
@@ -228,10 +241,6 @@ public class Main extends Application {
 	    if (Files.notExists(Path.of(programRootPath, notificationStorageDirectory))) {
 		    Files.createDirectory(Path.of(programRootPath, notificationStorageDirectory));
 	    }
-    }
-
-    static void checkSummaryDropSpace(int i) {
-    	// work in progress
     }
 
 	static void loadConfigFile() throws IOException {

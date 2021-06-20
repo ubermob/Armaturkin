@@ -53,8 +53,8 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 		buildLeftRows(rowStrings);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
-			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
 			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
+			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
 		} catch (Exception e) {
 			Main.log.add(e);
 		}

@@ -4,7 +4,7 @@ public enum RFClass {
 	A500,
 	A500S,
 	A600,
-	MISS_VALUE;
+	UNKNOWN;
 
 	static String toString(RFClass rfClass) {
 		return switch (rfClass) {
@@ -55,6 +55,6 @@ public enum RFClass {
 				return A600;
 			}
 		}
-		return MISS_VALUE;
+		return UNKNOWN;
 	}
 }

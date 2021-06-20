@@ -576,19 +576,22 @@ public class Controller {
 		);
 	}
 
-	public void deleteLogs() {
+	public void deleteLogs() throws IOException {
 		Main.deleteStorage(Main.programRootPath + Main.logStorageDirectory);
+		setText();
 	}
 
-	public void deleteNotifications() {
+	public void deleteNotifications() throws IOException {
 		Main.deleteStorage(Main.programRootPath + Main.notificationStorageDirectory);
+		setText();
 	}
 
-	public void saveSettings() {
+	public void visitSettingsTab() throws IOException {
 		Main.parseTextField(0, logLimit.getText());
 		Main.parseTextField(1, notificationLimit.getText());
 		logLimit.clear();
 		notificationLimit.clear();
+		setText();
 	}
 
 	public void forgotFavorite() {

@@ -9,6 +9,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	private String fileName;
 	private final String tableHead;
 	private volatile HashMap<Integer, HashMap<Integer, ReinforcementLiteInfo>> targetHashMap;
+	private Thread[][] allThreads;
 	private List<Log> summaryLog;
 	private ContentContainer contentContainer;
 	private long millis;
@@ -26,26 +27,14 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	public void run() {
 		millis = getStartTime();
 		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
-		int[] allowedDropSpaces = {1, 2, 3, 5}; // Work in progress
-		boolean[] rawDropSpaces = {false, false, false, true, false, true, true, true};
-		Thread[][] allThreads = new Thread[8][];
-		for (int i : allowedDropSpaces) {
-			List<String> listOfLabel = summaryPaths.get(i);
-			targetHashMap.put(i, new HashMap<>());
-			if (!rawDropSpaces[i - 1] && summaryPaths.get(i) != null) {
-				// Run pretty
-				Thread[] subThreads = new Thread[listOfLabel.size()];
-				allThreads[i] = subThreads;
-				for (int j = 0; j < subThreads.length; j++) {
-					Log log = new Log();
-					summaryLog.add(log);
-					SummaryFileWorker summaryFileWorker = new SummaryFileWorker(listOfLabel.get(j), targetHashMap.get(i), i, log);
-					subThreads[j] = new Thread(summaryFileWorker);
-					subThreads[j].start();
-				}
-			} else {
-				// Run raw
-				// work in progress
+		allThreads = new Thread[8][];
+		for (int i = 1; i <= 8; i++) {
+			SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
+			if(!summaryThreadStarter.isNullable()) {
+				targetHashMap.put(i, summaryThreadStarter.getHashMap());
+				allThreads[i - 1] = summaryThreadStarter.getSubThreads();
+				List<Log> logList = summaryThreadStarter.getLogList();
+				summaryLog.addAll(logList);
 			}
 		}
 		for (Thread[] threadArray : allThreads) {
@@ -60,7 +49,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 			}
 		}
 		mergeLog();
-		runExcel();
+		buildExcel();
 		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
 	}
 
@@ -70,7 +59,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 		}
 	}
 
-	void runExcel() {
+	void buildExcel() {
 		buildContent();
 		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(contentContainer, path, createFileName(fileName), tableHead);
 		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);
