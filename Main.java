@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.10";
+	public static String version = "0.4.11";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -35,7 +35,7 @@ public class Main extends Application {
 	public static String logStorageDirectory;
 	public static String notificationStorageDirectory;
     private static Character diskLetter;
-    private static volatile String notificationString = "";
+    private volatile static String notificationString = "";
 	public static Log log = new Log();
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
@@ -132,7 +132,11 @@ public class Main extends Application {
 		    } else {
 			    path = Path.of(config.getPathToSummaryCalculatingFile()).getParent().toString();
 		    }
-    		SummaryHub summaryHub = new SummaryHub(summaryPaths, path, controller.getSummaryFileName(), controller.getSummaryTableHead());
+    		String summaryTableHead = controller.getSummaryTableHead();
+    		if (summaryTableHead.equals("")) {
+    			summaryTableHead = properties.getProperty("table_main_header");
+		    }
+    		SummaryHub summaryHub = new SummaryHub(summaryPaths, path, controller.getSummaryFileName(), summaryTableHead);
     		Thread summaryHubThread = new Thread(summaryHub);
     		summaryHubThread.start();
 	    }

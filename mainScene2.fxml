@@ -11,7 +11,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <tabs>
@@ -216,7 +215,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="summaryTableHead" layoutX="200.0" layoutY="511.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
+                  <TextField fx:id="summaryTableHead" layoutX="200.0" layoutY="511.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет стандартное название)" />
                   <Button fx:id="checkSummaryDropSpaceButton4" layoutX="412.0" layoutY="222.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace4" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />

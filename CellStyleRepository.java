@@ -13,7 +13,7 @@ public class CellStyleRepository {
 	private final CellStyle headTableCellStyleWithTextWrap;
 	private CellStyle cellStyle;
 	private XSSFFont font;
-	XSSFWorkbook workbook;
+	private final XSSFWorkbook workbook;
 
 	public CellStyleRepository(XSSFWorkbook workbook) {
 		this.workbook = workbook;
@@ -21,7 +21,6 @@ public class CellStyleRepository {
 		cellStyle = workbook.createCellStyle();
 
 		font = workbook.createFont();
-		font.setFontName("CS Standart");
 		font.setFontHeight((short) 170); // 8.5 * 20
 		cellStyle.setFont(font);
 		cellStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -32,12 +31,10 @@ public class CellStyleRepository {
 
 		headTableNameCellStyle = cellStyle;
 
-		// Build headTableCellStyle
 		cellStyle = workbook.createCellStyle();
 		cellStyle.cloneStyleFrom(headTableNameCellStyle);
 
 		font = workbook.createFont();
-		font.setFontName("CS Standart");
 		font.setFontHeight((short) 142); // 7.1 * 20
 		cellStyle.setFont(font);
 		cellStyle.setBorderTop(borderStyle);
@@ -87,7 +84,6 @@ public class CellStyleRepository {
 		cellStyle.cloneStyleFrom(headTableCellStyle);
 
 		font = workbook.createFont();
-		font.setFontName("CS Standart");
 		font.setFontHeight((short) 142); // 7.1 * 20
 		font.setColor(new XSSFColor(StandardsRepository.getRgb(diameter), null));
 		cellStyle.setFont(font);

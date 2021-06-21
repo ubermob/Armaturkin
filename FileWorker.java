@@ -42,9 +42,10 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		fileName = createFileName(fileName);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
-			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
 			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
+			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
 		} catch (Exception e) {
+			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
 			Main.log.add(e);
 		}
 		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
@@ -203,25 +204,25 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		row = sheet.createRow(1);
 		row.setHeight((short) 450);
 		cell = row.createCell(0);
-		cell.setCellValue("№ поз.");
+		cell.setCellValue(Main.properties.getProperty("column_name_4"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(1);
-		cell.setCellValue("Эскиз");
+		cell.setCellValue(Main.properties.getProperty("column_name_5"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(2);
-		cell.setCellValue("Диаметр, класс ар-ры");
+		cell.setCellValue(Main.properties.getProperty("column_name_6"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(3);
-		cell.setCellValue("Длина эл-та,мм");
+		cell.setCellValue(Main.properties.getProperty("column_name_7"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(4);
-		cell.setCellValue("Кол-во,шт.");
+		cell.setCellValue(Main.properties.getProperty("column_name_8"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(5);
-		cell.setCellValue("Общ.длинамп");
+		cell.setCellValue(Main.properties.getProperty("column_name_9"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(6);
-		cell.setCellValue("Масса, кг");
+		cell.setCellValue(Main.properties.getProperty("column_name_10"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(7);
 		cell.setCellStyle(cellStyle);
@@ -229,10 +230,10 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		row = sheet.createRow(2);
 		row.setHeight((short) 450);
 		cell = row.createCell(6);
-		cell.setCellValue("Одного элемента");
+		cell.setCellValue(Main.properties.getProperty("column_name_11"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(7);
-		cell.setCellValue("Всех элементов");
+		cell.setCellValue(Main.properties.getProperty("column_name_12"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		for (int i = 0; i < 6; i++) {
 			cell = row.createCell(i);
@@ -253,6 +254,5 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 			cell.setCellValue(i + 1);
 			cell.setCellStyle(cellStyle);
 		}
-		Main.log.add(getClass() + " table head created");
 	}
 }
