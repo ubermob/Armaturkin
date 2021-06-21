@@ -19,6 +19,7 @@ public class Configuration {
 	private Integer notificationStorageLimit;
 	private String favoritePath;
 	private Boolean autoParseProductList;
+	private Integer resultLabelFontSize;
 
 	public Configuration(String path) throws IOException {
 		this.path = path;
@@ -52,6 +53,9 @@ public class Configuration {
 					favoritePath = load.get(11);
 				}
 				autoParseProductList = Boolean.parseBoolean(load.get(12));
+				if (!load.get(13).equals("null")) {
+					resultLabelFontSize = Integer.parseInt(load.get(13));
+				}
 			} catch (Exception e) {
 				Main.log.add(e);
 			}
@@ -76,7 +80,8 @@ public class Configuration {
 				String.valueOf(logStorageLimit),
 				String.valueOf(notificationStorageLimit),
 				favoritePath,
-				String.valueOf(autoParseProductList)
+				String.valueOf(autoParseProductList),
+				String.valueOf(resultLabelFontSize)
 		};
 		Writer.write(Main.programRootPath + Main.configFileName, configList);
 	}
@@ -191,6 +196,18 @@ public class Configuration {
 
 	public boolean getAutoParseProductList() {
 		return autoParseProductList;
+	}
+
+	public Integer getResultLabelFontSize() {
+		return resultLabelFontSize;
+	}
+
+	public void setResultLabelFontSize(int resultLabelFontSize) {
+		this.resultLabelFontSize = resultLabelFontSize;
+	}
+
+	public boolean isResultLabelFontSizeNotNull() {
+		return resultLabelFontSize != null;
 	}
 
 	private void defaultValues() {

@@ -56,6 +56,11 @@ public class Controller {
 	public Button deleteLogs;
 	public Button deleteNotifications;
 	public Button forgotFavorite;
+	public Button font12Button;
+	public Button font14Button;
+	public Button font16Button;
+	public Button font18Button;
+	public Button font20Button;
 	public TextField tableHead;
 	public TextField backgroundReinforcement;
 	public TextField fileName;
@@ -98,6 +103,9 @@ public class Controller {
 		setBackgroundColor();
 		setTextColor();
 		setFont();
+		if (Main.config.isResultLabelFontSizeNotNull()) {
+			setResultLabelFont(Main.config.getResultLabelFontSize());
+		}
 		setNotificationOpacity(0);
 		setBorderColor();
 		setupInfoLabel();
@@ -179,7 +187,12 @@ public class Controller {
 				boldTextButton,
 				deleteLogs,
 				deleteNotifications,
-				forgotFavorite
+				forgotFavorite,
+				font12Button,
+				font14Button,
+				font16Button,
+				font18Button,
+				font20Button
 		};
 		allTexts = new Text[]{
 				appearanceText1,
@@ -369,8 +382,12 @@ public class Controller {
 		return summaryTableHead.getText();
 	}
 
-	public void downloadResultLabel() throws IOException {
-		Main.saveNotification();
+	public void downloadResultLabel() {
+		try {
+			Main.saveNotification();
+		} catch (Exception e) {
+			Main.log.add(e);
+		}
 	}
 
 	public void visitNotificationTab() {
@@ -559,34 +576,38 @@ public class Controller {
 		Main.config.toggleWriteNotification();
 	}
 
-	public void setText() throws IOException {
-		settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(Main.config.getLogStorageLimit()));
-		settingsTextWrapper3.setText(
-				settingsTextWrapper3.getDefaultText().formatted(
-						StorageCleaner.getStorageSize(Main.programRootPath + Main.logStorageDirectory),
-						StorageCleaner.getSize(Main.programRootPath + Main.logStorageDirectory)
-				)
-		);
-		settingsTextWrapper5.setText(settingsTextWrapper5.getDefaultText().formatted(Main.config.getNotificationStorageLimit()));
-		settingsTextWrapper6.setText(
-				settingsTextWrapper6.getDefaultText().formatted(
-						StorageCleaner.getStorageSize(Main.programRootPath + Main.notificationStorageDirectory),
-						StorageCleaner.getSize(Main.programRootPath + Main.notificationStorageDirectory)
-				)
-		);
+	public void setText() {
+		try {
+			settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(Main.config.getLogStorageLimit()));
+			settingsTextWrapper3.setText(
+					settingsTextWrapper3.getDefaultText().formatted(
+							StorageCleaner.getStorageSize(Main.programRootPath + Main.logStorageDirectory),
+							new LongWrapper(StorageCleaner.getSize(Main.programRootPath + Main.logStorageDirectory)).toString()
+					)
+			);
+			settingsTextWrapper5.setText(settingsTextWrapper5.getDefaultText().formatted(Main.config.getNotificationStorageLimit()));
+			settingsTextWrapper6.setText(
+					settingsTextWrapper6.getDefaultText().formatted(
+							StorageCleaner.getStorageSize(Main.programRootPath + Main.notificationStorageDirectory),
+							new LongWrapper(StorageCleaner.getSize(Main.programRootPath + Main.notificationStorageDirectory)).toString()
+					)
+			);
+		} catch (Exception e) {
+			Main.log.add(e);
+		}
 	}
 
-	public void deleteLogs() throws IOException {
+	public void deleteLogs() {
 		Main.deleteStorage(Main.programRootPath + Main.logStorageDirectory);
 		setText();
 	}
 
-	public void deleteNotifications() throws IOException {
+	public void deleteNotifications() {
 		Main.deleteStorage(Main.programRootPath + Main.notificationStorageDirectory);
 		setText();
 	}
 
-	public void visitSettingsTab() throws IOException {
+	public void visitSettingsTab() {
 		Main.parseTextField(0, logLimit.getText());
 		Main.parseTextField(1, notificationLimit.getText());
 		logLimit.clear();
@@ -617,5 +638,31 @@ public class Controller {
 
 	public void toggleAutoParseProductList() {
 		Main.config.toggleAutoParseProductList();
+	}
+
+	public void setResultLabelFont12() {
+		setResultLabelFont(12);
+	}
+
+	public void setResultLabelFont14() {
+		setResultLabelFont(14);
+	}
+
+	public void setResultLabelFont16() {
+		setResultLabelFont(16);
+	}
+
+	public void setResultLabelFont18() {
+		setResultLabelFont(18);
+	}
+
+	public void setResultLabelFont20() {
+		setResultLabelFont(20);
+	}
+
+	public void setResultLabelFont(int i) {
+		Font font = new Font(resultLabel.getFont().getName(), i);
+		resultLabel.setFont(font);
+		Main.config.setResultLabelFontSize(i);
 	}
 }
