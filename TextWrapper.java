@@ -9,10 +9,6 @@ public class TextWrapper extends DefaultText {
 		this.text = text;
 	}
 
-	public Text getLabel() {
-		return text;
-	}
-
 	public String getDefaultText() {
 		return super.getDefaultText();
 	}
@@ -23,9 +19,5 @@ public class TextWrapper extends DefaultText {
 
 	public void setText(String text) {
 		this.text.setText(text);
-	}
-
-	public void resetTextToDefault() {
-		text.setText(super.getDefaultText());
 	}
 }

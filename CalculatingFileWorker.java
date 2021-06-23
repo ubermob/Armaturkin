@@ -53,7 +53,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 				rowInt++;
 			}
 		} else {
-			tableHeadDontValid();
+			tableHeadDoNotValid();
 		}
 		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead2").formatted(rowInt));
 		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
@@ -227,7 +227,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		return row.getCell(column).getStringCellValue().equalsIgnoreCase(pattern);
 	}
 
-	private void tableHeadDontValid() {
+	private void tableHeadDoNotValid() {
 		String string = "";
 		if (majorNumberColumn == -1) {
 			string = "majorNumber";

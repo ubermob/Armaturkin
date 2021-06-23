@@ -7,9 +7,6 @@ public interface CellEmptyChecker {
 		if (cell == null) {
 			return true;
 		}
-		if (cell.getCellType() == CellType.BLANK) {
-			return true;
-		}
-		return false;
+		return cell.getCellType() == CellType.BLANK;
 	}
 }

@@ -90,8 +90,8 @@ public class SummaryBlock {
 		}
 		// Calculate block summary mass
 		mass.reset();
-		for (int i = 0; i < verticalSummaryMass.length; i++) {
-			mass.add(verticalSummaryMass[i]);
+		for (Double summaryMass : verticalSummaryMass) {
+			mass.add(summaryMass);
 		}
 		blockSummaryMass = mass.getValue();
 	}

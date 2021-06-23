@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Reader {
 	public static List<String> read(String path) throws IOException {
-		List<String> list = Files.readAllLines(Path.of(path));
-        return list;
+		return Files.readAllLines(Path.of(path));
     }
 }

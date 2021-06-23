@@ -26,8 +26,8 @@ public class Writer {
     public static void write(String path, ArrayList<String> inputList, int bufferSize) throws IOException {
 	    FileWriter fileWriter = new FileWriter(path, StandardCharsets.UTF_8);
 	    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter, bufferSize);
-	    for (int i = 0; i < inputList.size(); i++) {
-		    bufferedWriter.write(inputList.get(i));
+	    for (String s : inputList) {
+		    bufferedWriter.write(s);
 		    bufferedWriter.newLine();
 	    }
 	    bufferedWriter.close();

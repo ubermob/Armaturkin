@@ -50,14 +50,13 @@ public class ContentContainer {
 				blockBody[k][j] = content.getCell(k, indexes[j]);
 			}
 		}
-		SummaryBlock summaryBlock = new SummaryBlock(
+		return new SummaryBlock(
 				blockBody,
 				diameters,
 				rfClass,
 				bodyWidth,
 				bodyHeight
 		);
-		return summaryBlock;
 	}
 
 	public Double[] getFinallyVerticalSummaryMass() {

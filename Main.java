@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.13";
+	public static String version = "0.4.14";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;

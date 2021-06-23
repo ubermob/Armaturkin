@@ -2,7 +2,7 @@ public abstract class DefaultText {
 
 	private String defaultText;
 
-	public DefaultText() {};
+	public DefaultText() {}
 
 	public DefaultText(String string) {
 		defaultText = string;
