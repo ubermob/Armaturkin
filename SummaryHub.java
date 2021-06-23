@@ -6,11 +6,11 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 
 	private final HashMap<Integer, List<String>> summaryPaths;
 	private final String path;
-	private String fileName;
+	private final String fileName;
 	private final String tableHead;
-	private volatile HashMap<Integer, HashMap<Integer, ReinforcementLiteInfo>> targetHashMap;
+	private final HashMap<Integer, HashMap<Integer, ReinforcementLiteInfo>> targetHashMap;
 	private Thread[][] allThreads;
-	private List<Log> summaryLog;
+	private final List<Log> summaryLog;
 	private ContentContainer contentContainer;
 	private long millis;
 
@@ -80,6 +80,12 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 					}
 				}
 			}
+		}
+		if (SummaryRedirectManager.redirectTo != SummaryRedirectManager.DEFAULT_VALUE) {
+			contentContainer.redirect(SummaryRedirectManager.redirectTo);
+			Main.log.add(Main.properties.getProperty("redirect").formatted(getClass(),
+					SummaryRedirectManager.DEFAULT_VALUE, SummaryRedirectManager.redirectTo
+			));
 		}
 		Main.log.add(Main.properties.getProperty("full_content"));
 		Main.log.add(contentContainer.printBorder());

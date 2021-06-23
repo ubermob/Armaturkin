@@ -62,4 +62,8 @@ public class ContentContainer {
 	public Double[] getFinallyVerticalSummaryMass() {
 		return content.getFinallyVerticalSummaryMass();
 	}
+
+	public void redirect(int i) {
+		content.redirect(i);
+	}
 }

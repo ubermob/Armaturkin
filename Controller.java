@@ -3,13 +3,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.io.*;
 
 public class Controller {
 
@@ -97,6 +98,7 @@ public class Controller {
 	public CheckBox logCheckBox;
 	public CheckBox notificationCheckBox;
 	public CheckBox autoParseProductListCheckBox;
+	public Line redirectLine;
 
 	public void startSetup() {
 		groupAppearanceVariables();
@@ -107,6 +109,7 @@ public class Controller {
 			setResultLabelFont(Main.config.getResultLabelFontSize());
 		}
 		setNotificationOpacity(0);
+		setRedirectLineOpacity(0);
 		setBorderColor();
 		setupInfoLabel();
 		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
@@ -664,5 +667,59 @@ public class Controller {
 		Font font = new Font(resultLabel.getFont().getName(), i);
 		resultLabel.setFont(font);
 		Main.config.setResultLabelFontSize(i);
+	}
+
+	public void click1(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(1);
+		}
+	}
+
+	public void click2(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(2);
+		}
+	}
+
+	public void click3(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(3);
+		}
+	}
+
+	public void click4(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(4);
+		}
+	}
+
+	public void click5(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(5);
+		}
+	}
+
+	public void click7(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(7);
+		}
+	}
+
+	public void click8(MouseEvent mouseEvent) {
+		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+			SummaryRedirectManager.setRedirectTo(8);
+		}
+	}
+
+	public Label[] getSummaryLabels() {
+		Label[] labels = new Label[allSummaryLabelWrappers.length];
+		for (int i = 0; i < labels.length; i++) {
+			labels[i] = allSummaryLabelWrappers[i].getLabel();
+		}
+		return labels;
+	}
+
+	public void setRedirectLineOpacity(int i) {
+		redirectLine.setOpacity(i);
 	}
 }

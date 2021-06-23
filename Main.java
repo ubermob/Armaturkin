@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.14";
+	public static String version = "0.4.15";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -134,8 +134,19 @@ public class Main extends Application {
 		    }
     		String summaryTableHead = controller.getSummaryTableHead();
     		if (summaryTableHead.equals("")) {
-    			summaryTableHead = properties.getProperty("table_main_header");
+    			summaryTableHead = properties.getProperty("default_table_main_header");
 		    }
+    		/*if (SummaryRedirectManager.redirectTo != SummaryRedirectManager.DEFAULT_VALUE) {
+			    List<String> from = summaryPaths.get(SummaryRedirectManager.DEFAULT_VALUE);
+			    List<String> to = summaryPaths.get(SummaryRedirectManager.redirectTo);
+			    if (to == null) {
+				    summaryPaths.put(SummaryRedirectManager.redirectTo, from);
+			    } else {
+			    	summaryPaths.get(SummaryRedirectManager.DEFAULT_VALUE).addAll(from);
+			    }
+			    summaryPaths.put(SummaryRedirectManager.DEFAULT_VALUE, null);
+			    log.add(properties.getProperty("redirect").formatted(SummaryRedirectManager.DEFAULT_VALUE, SummaryRedirectManager.redirectTo));
+		    }*/
     		SummaryHub summaryHub = new SummaryHub(summaryPaths, path, controller.getSummaryFileName(), summaryTableHead);
     		Thread summaryHubThread = new Thread(summaryHub);
     		summaryHubThread.start();

@@ -150,4 +150,22 @@ public class Content {
 		result[result.length - 1] = mass.getValue();
 		return result;
 	}
+
+	public void redirect(int i) {
+		int from = SummaryRedirectManager.DEFAULT_VALUE - 1;
+		int to = i - 1;
+		for (int j = 0; j < table[0].length; j++) {
+			if (table[from][j] != null) {
+				try {
+					if (table[to][j] == null) {
+						table[to][j] = 0.0;
+					}
+					table[to][j] += table[from][j];
+					table[from][j] = null;
+				} catch (Exception e) {
+					Main.log.add(e);
+				}
+			}
+		}
+	}
 }
