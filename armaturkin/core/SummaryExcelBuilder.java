@@ -37,7 +37,7 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 	@Override
 	public void run() {
 		millis = getStartTime();
-		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		initWorkbook();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
 		String[] rowStrings = contentContainer.getRowStrings();
@@ -55,13 +55,13 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 		buildLeftRows(rowStrings);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
-			Main.addNotification(Main.properties.getProperty("fileSuccessfullyDownload").formatted(fileName));
+			Main.addNotification(Main.properties.getProperty("file_successfully_download").formatted(fileName));
 			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
 		} catch (Exception e) {
 			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
 			Main.log.add(e);
 		}
-		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	private void buildBlock(int i) {

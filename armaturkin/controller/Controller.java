@@ -124,18 +124,18 @@ public class Controller {
 		setArrowOpacity(0);
 		setBorderColor();
 		setupInfoLabel();
-		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
-		setLowerDropSpaceText(Main.properties.getProperty("lowerLabelDefaultText"));
+		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
+		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
 
-		String secondLine = Main.properties.getProperty("summaryLabelDefaultSecondLine");
-		setSummaryDropSpaceText(1, Main.properties.getProperty("summaryLabelDefaultFirstLine1").formatted(secondLine));
-		setSummaryDropSpaceText(2, Main.properties.getProperty("summaryLabelDefaultFirstLine2").formatted(secondLine));
-		setSummaryDropSpaceText(3, Main.properties.getProperty("summaryLabelDefaultFirstLine3").formatted(secondLine));
-		setSummaryDropSpaceText(4, Main.properties.getProperty("summaryLabelDefaultFirstLine4").formatted(secondLine));
-		setSummaryDropSpaceText(5, Main.properties.getProperty("summaryLabelDefaultFirstLine5").formatted(secondLine));
-		setSummaryDropSpaceText(6, Main.properties.getProperty("summaryLabelDefaultFirstLine6").formatted(secondLine));
-		setSummaryDropSpaceText(7, Main.properties.getProperty("summaryLabelDefaultFirstLine7").formatted(secondLine));
-		setSummaryDropSpaceText(8, Main.properties.getProperty("summaryLabelDefaultFirstLine8").formatted(secondLine));
+		String secondLine = Main.properties.getProperty("summary_label_default_second_line");
+		setSummaryDropSpaceText(1, Main.properties.getProperty("summary_label_default_first_line_1").formatted(secondLine));
+		setSummaryDropSpaceText(2, Main.properties.getProperty("summary_label_default_first_line_2").formatted(secondLine));
+		setSummaryDropSpaceText(3, Main.properties.getProperty("summary_label_default_first_line_3").formatted(secondLine));
+		setSummaryDropSpaceText(4, Main.properties.getProperty("summary_label_default_first_line_4").formatted(secondLine));
+		setSummaryDropSpaceText(5, Main.properties.getProperty("summary_label_default_first_line_5").formatted(secondLine));
+		setSummaryDropSpaceText(6, Main.properties.getProperty("summary_label_default_first_line_6").formatted(secondLine));
+		setSummaryDropSpaceText(7, Main.properties.getProperty("summary_label_default_first_line_7").formatted(secondLine));
+		setSummaryDropSpaceText(8, Main.properties.getProperty("summary_label_default_first_line_8").formatted(secondLine));
 
 		setFavoriteDropSpaceText(Main.properties.getProperty("favorite_is_off"));
 
@@ -145,8 +145,8 @@ public class Controller {
 		settingsTextWrapper6 = new TextWrapper(settingsText6);
 	}
 
-	public void groupAppearanceVariables() {
-		allLabels = new Label[]{
+	private void groupAppearanceVariables() {
+		allLabels = new Label[] {
 				upperDropSpace,
 				lowerDropSpace,
 				resultLabel,
@@ -163,7 +163,7 @@ public class Controller {
 				summaryDropSpace8,
 				favoriteDropSpace
 		};
-		borderModifiedLabels = new Label[]{
+		borderModifiedLabels = new Label[] {
 				upperDropSpace,
 				lowerDropSpace,
 				summaryDropSpace1,
@@ -176,7 +176,7 @@ public class Controller {
 				summaryDropSpace8,
 				favoriteDropSpace
 		};
-		allSummaryLabelWrappers = new LabelWrapper[]{
+		allSummaryLabelWrappers = new LabelWrapper[] {
 				new LabelWrapper(summaryDropSpace1),
 				new LabelWrapper(summaryDropSpace2),
 				new LabelWrapper(summaryDropSpace3),
@@ -186,7 +186,7 @@ public class Controller {
 				new LabelWrapper(summaryDropSpace7),
 				new LabelWrapper(summaryDropSpace8)
 		};
-		boldTextModifiedButtons = new Button[]{
+		boldTextModifiedButtons = new Button[] {
 				downloadFileButton,
 				clearResultLabelButton,
 				lowerDropSpaceButton,
@@ -209,7 +209,7 @@ public class Controller {
 				font18Button,
 				font20Button
 		};
-		allTexts = new Text[]{
+		allTexts = new Text[] {
 				appearanceText1,
 				appearanceText2,
 				appearanceText3,
@@ -353,13 +353,13 @@ public class Controller {
 	public void clearUpperDropSpace() {
 		Main.config.setPathToProductFile(null);
 		Main.reinforcementProductHashMap.clear();
-		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
+		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
 	}
 
 	public void clearLowerDropSpace() {
 		Main.config.setPathToCalculatingFile(null);
 		Main.reinforcementHashMap.clear();
-		setLowerDropSpaceText(Main.properties.getProperty("lowerLabelDefaultText"));
+		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
 	}
 
 	public void toggleInfoLabelOpacity() {

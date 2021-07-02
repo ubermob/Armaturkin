@@ -62,7 +62,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 	public void run() {
 		millis = getStartTime();
 		fileHashCode = getFileHashCode(path);
-		log.add(Main.properties.getProperty("summaryThreadStart").formatted(getClass(), labelID, path, fileHashCode));
+		log.add(Main.properties.getProperty("summary_thread_start").formatted(getClass(), labelID, path, fileHashCode));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 			sheet = workbook.getSheetAt(0);
@@ -91,7 +91,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 			}
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_3").formatted(path, rowInt));
-		log.add(Main.properties.getProperty("summaryThreadComplete").formatted(getClass(), getStopwatch(millis), labelID, path, fileHashCode));
+		log.add(Main.properties.getProperty("summary_thread_complete").formatted(getClass(), getStopwatch(millis), labelID, path, fileHashCode));
 	}
 
 	private void readRow() {
@@ -126,7 +126,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 		} else {
 			hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
 		}
-		log.add(Main.properties.getProperty("summaryThreadReadRow").formatted(
+		log.add(Main.properties.getProperty("summary_thread_read_row").formatted(
 				getClass(), labelID, fileHashCode, rowInt, hashMap.get(hashCode).toString())
 		);
 	}
@@ -139,11 +139,11 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 
 	private void checkPosition() {
 		if (position <= 0) {
-			notification = Main.properties.getProperty("positionNotification3").formatted((rowInt + 1), position);
+			notification = Main.properties.getProperty("position_notification_3").formatted((rowInt + 1), position);
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			notification = Main.properties.getProperty("positionNotification4").formatted((rowInt + 1), position);
+			notification = Main.properties.getProperty("position_notification_4").formatted((rowInt + 1), position);
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
@@ -151,21 +151,21 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 	private void checkDiameter() {
 		checker.checkDiameter();
 		if (!checker.isCorrectDiameter()) {
-			notification = Main.properties.getProperty("diameterNotification").formatted((rowInt + 1), diameter);
+			notification = Main.properties.getProperty("diameter_notification").formatted((rowInt + 1), diameter);
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkRFClass() {
 		if (!checker.isCorrectRFClass()) {
-			notification = Main.properties.getProperty("rfClassNotification").formatted((rowInt + 1), rfClass);
+			notification = Main.properties.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass);
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkSingleLength() {
 		if (!checker.isCorrectLength()) {
-			notification = Main.properties.getProperty("lengthNotification").formatted((rowInt + 1), length);
+			notification = Main.properties.getProperty("length_notification").formatted((rowInt + 1), length);
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
@@ -173,7 +173,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 	private void checkSingleMass() {
 		checker.checkMass(singleMass);
 		if (!checker.isCorrectMass()) {
-			notification = Main.properties.getProperty("massNotification").formatted((rowInt + 1), singleMass, checker.getCorrectMass());
+			notification = Main.properties.getProperty("mass_notification").formatted((rowInt + 1), singleMass, checker.getCorrectMass());
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}

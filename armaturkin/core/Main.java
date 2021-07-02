@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.0";
+	public static String version = "0.5.1";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -103,7 +103,8 @@ public class Main extends Application {
 
     public static void loadCalculatingFile() {
     	reinforcementHashMap.clear();
-		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(config.getPathToCalculatingFile(),
+		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(
+				config.getPathToCalculatingFile(),
 				reinforcementHashMap,
 				reinforcementProductHashMap
 		);
@@ -119,7 +120,8 @@ public class Main extends Application {
 		    } else {
 			    path = Path.of(config.getPathToCalculatingFile()).getParent().toString();
 		    }
-    		FileWorker fileWorker = new FileWorker(path,
+    		FileWorker fileWorker = new FileWorker(
+    				path,
 				    reinforcementHashMap,
 				    controller.getBackgroundReinforcement(),
 				    controller.getTableHead(),
@@ -191,6 +193,7 @@ public class Main extends Application {
 		    	Spammer spammer = new Spammer();
 			    Thread spammerThread = new Thread(spammer);
 			    spammerThread.start();
+			    log.add(argCommand[3]);
 		    }
 	    }
     }
@@ -204,7 +207,7 @@ public class Main extends Application {
 			Path path = Path.of(config.getPathToProductFile());
 			if (Files.exists(path)) {
 				controller.setUpperDropSpaceText(
-						properties.getProperty("upperLabelTextWithFile").formatted(path.getFileName().toString())
+						properties.getProperty("upper_label_text_with_file").formatted(path.getFileName().toString())
 				);
 				loadProduct();
 			}

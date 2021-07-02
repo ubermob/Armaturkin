@@ -36,8 +36,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	@Override
 	public void run() {
 		millis  = getStartTime();
-		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
-		Main.log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
+		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
@@ -49,8 +49,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowInt++;
 		}
-		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead1").formatted(rowInt));
-		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
+		Main.addNotification(Main.properties.getProperty("file_successfully_read_1").formatted(rowInt));
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	private void readRow() {
@@ -67,48 +67,48 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		checkLength();
 		checkMass();
 		reinforcementProductHashMap.put(position, checker.getReinforcementProduct());
-		Main.log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
+		Main.log.add(Main.properties.getProperty("current_row").formatted(getClass(), rowInt));
 		Main.log.add(reinforcementProductHashMap.get(position).toString());
 	}
 
 	private void checkPosition(int position) {
 		if (reinforcementProductHashMap.containsKey(position)) {
-			Main.addNotification(Main.properties.getProperty("positionNotification1").formatted((rowInt + 1), position));
+			Main.addNotification(Main.properties.getProperty("position_notification_1").formatted((rowInt + 1), position));
 		}
 		if (StandardsRepository.contains(StandardsRepository.reservedPosition, position)) {
-			Main.addNotification(Main.properties.getProperty("positionNotification2").formatted((rowInt + 1), position));
+			Main.addNotification(Main.properties.getProperty("position_notification_2").formatted((rowInt + 1), position));
 		}
 		if (position <= 0) {
-			Main.addNotification(Main.properties.getProperty("positionNotification3").formatted((rowInt + 1), position));
+			Main.addNotification(Main.properties.getProperty("position_notification_3").formatted((rowInt + 1), position));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			Main.addNotification(Main.properties.getProperty("positionNotification4").formatted((rowInt + 1), position));
+			Main.addNotification(Main.properties.getProperty("position_notification_4").formatted((rowInt + 1), position));
 		}
 	}
 
 	private void checkDiameter() {
 		checker.checkDiameter();
 		if (!checker.isCorrectDiameter()) {
-			Main.addNotification(Main.properties.getProperty("diameterNotification").formatted((rowInt + 1), diameter));
+			Main.addNotification(Main.properties.getProperty("diameter_notification").formatted((rowInt + 1), diameter));
 		}
 	}
 
 	private void checkRFClass() {
 		if (!checker.isCorrectRFClass()) {
-			Main.addNotification(Main.properties.getProperty("rfClassNotification").formatted((rowInt + 1), rfClass));
+			Main.addNotification(Main.properties.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass));
 		}
 	}
 
 	private void checkLength() {
 		if (!checker.isCorrectLength()) {
-			Main.addNotification(Main.properties.getProperty("lengthNotification").formatted((rowInt + 1), length));
+			Main.addNotification(Main.properties.getProperty("length_notification").formatted((rowInt + 1), length));
 		}
 	}
 
 	private void checkMass() {
 		checker.checkMass(mass);
 		if (!checker.isCorrectMass()) {
-			Main.addNotification(Main.properties.getProperty("massNotification").formatted((rowInt + 1), mass, checker.getCorrectMass()));
+			Main.addNotification(Main.properties.getProperty("mass_notification").formatted((rowInt + 1), mass, checker.getCorrectMass()));
 		}
 	}
 }

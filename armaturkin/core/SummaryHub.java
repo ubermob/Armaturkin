@@ -31,7 +31,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	@Override
 	public void run() {
 		millis = getStartTime();
-		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		allThreads = new Thread[8][];
 		for (int i = 1; i <= 8; i++) {
 			SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
@@ -55,7 +55,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 		}
 		mergeLog();
 		buildExcel();
-		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	void mergeLog() {

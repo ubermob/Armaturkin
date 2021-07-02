@@ -48,8 +48,8 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	@Override
 	public void run() {
 		millis  = getStartTime();
-		Main.log.add(Main.properties.getProperty("threadStart").formatted(getClass()));
-		Main.log.add(Main.properties.getProperty("threadFile").formatted(getClass(), path));
+		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
+		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
@@ -65,8 +65,8 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		} else {
 			tableHeadDoNotValid();
 		}
-		Main.addNotification(Main.properties.getProperty("fileSuccessfullyRead2").formatted(rowInt));
-		Main.log.add(Main.properties.getProperty("threadComplete").formatted(getClass(), getStopwatch(millis)));
+		Main.addNotification(Main.properties.getProperty("file_successfully_read_2").formatted(rowInt));
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
 	}
 
 	private void readRow() {
@@ -77,7 +77,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		minorNumber = parseIntFromString(row.getCell(minorNumberColumn));
 		position = parseIntFromString(row.getCell(positionColumn));
 
-		Main.log.add(Main.properties.getProperty("currentRow").formatted(getClass(), rowInt));
+		Main.log.add(Main.properties.getProperty("current_row").formatted(getClass(), rowInt));
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]",
 				position, diameter, length, majorNumber, minorNumber);
@@ -168,10 +168,10 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	private void checkPosition() {
 		if (position <= 0) {
-			Main.addNotification(Main.properties.getProperty("positionNotification3").formatted((rowInt + 1), position));
+			Main.addNotification(Main.properties.getProperty("position_notification_3").formatted((rowInt + 1), position));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			Main.addNotification(Main.properties.getProperty("positionNotification4").formatted((rowInt + 1), position));
+			Main.addNotification(Main.properties.getProperty("position_notification_4").formatted((rowInt + 1), position));
 		}
 	}
 

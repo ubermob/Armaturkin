@@ -23,27 +23,27 @@ public class DropWorker {
 			label = controller.getLowerDropSpaceLabel();
 		}
 		if (fileList.size() != 1) {
-			label.setText(Main.properties.getProperty("dropWorkerNotification1"));
+			label.setText(Main.properties.getProperty("drop_worker_notification_1"));
 		} else {
 			if (isExcelFile(fileList.get(0).getName()) && fileList.get(0).isFile()) {
-				label.setText(Main.properties.getProperty("dropWorkerFileAccepted"));
+				label.setText(Main.properties.getProperty("drop_worker_file_accepted"));
 				File file = fileList.get(0);
 				if (i == 0) {
 					Main.config.setPathToProductFile(file.getAbsolutePath());
-					Main.log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted1").formatted(
+					Main.log.add(Main.properties.getProperty("drop_worker_drop_space_file_accepted_1").formatted(
 							DropWorker.class, Main.config.getPathToProductFile())
 					);
 					Main.loadProduct();
 				}
 				if (i == 1) {
 					Main.config.setPathToCalculatingFile(file.getAbsolutePath());
-					Main.log.add(Main.properties.getProperty("dropWorkerDropSpaceFileAccepted2").formatted(
+					Main.log.add(Main.properties.getProperty("drop_worker_drop_space_file_accepted_2").formatted(
 							DropWorker.class, Main.config.getPathToCalculatingFile())
 					);
 					Main.loadCalculatingFile();
 				}
 			} else {
-				label.setText(Main.properties.getProperty("dropWorkerNotification2"));
+				label.setText(Main.properties.getProperty("drop_worker_notification_2"));
 			}
 		}
 	}
@@ -67,10 +67,10 @@ public class DropWorker {
 				Main.summaryPaths.put(i, verifiedFileList);
 			}
 			for (String string : verifiedFileList) {
-				Main.log.add(Main.properties.getProperty("dropWorkerSummaryDropSpaceFileAccepted").formatted(DropWorker.class, i, string));
+				Main.log.add(Main.properties.getProperty("drop_worker_summary_drop_space_file_accepted").formatted(DropWorker.class, i, string));
 			}
 			labelWrapper.setText(labelWrapper.getDefaultText() + "\n" +
-					Main.properties.getProperty("summaryLabelDefaultThirdLine").formatted(Main.summaryPaths.get(i).size())
+					Main.properties.getProperty("summary_label_default_third_line").formatted(Main.summaryPaths.get(i).size())
 			);
 		}
 	}
@@ -79,10 +79,10 @@ public class DropWorker {
 		List<File> fileList = getDroppedFile(dragEvent);
 		Label label = controller.getFavoriteDropSpaceLabel();
 		if (fileList.size() != 1) {
-			label.setText(Main.properties.getProperty("drop_worker_favorite_notification1"));
+			label.setText(Main.properties.getProperty("drop_worker_favorite_notification_1"));
 		} else {
 			if (!fileList.get(0).isDirectory()) {
-				label.setText(Main.properties.getProperty("drop_worker_favorite_notification2"));
+				label.setText(Main.properties.getProperty("drop_worker_favorite_notification_2"));
 			} else {
 				Main.config.setFavoritePath(fileList.get(0).getAbsolutePath());
 				label.setText(Main.properties.getProperty("favorite_is_on").formatted(Main.config.getFavoritePath()));
