@@ -186,7 +186,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 	private void buildTableHead() {
 		workbook = new XSSFWorkbook();
 		cellStyleRepository = new CellStyleRepository(workbook);
-		sheet = workbook.createSheet("Лист1");
+		sheet = workbook.createSheet(Main.properties.getProperty("default_list_name"));
 
 		sheet.setColumnWidth(0, 1792); // Width values read from sample
 		sheet.setColumnWidth(1, 4827);

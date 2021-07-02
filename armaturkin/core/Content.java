@@ -13,8 +13,8 @@ public class Content {
 	public Content() {
 		possibleHash = new ArrayList<>();
 		try {
-			InputStream resourceAsStream = this.getClass().getResourceAsStream("/RHashCodeList.txt");
-			InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+			InputStream resource = this.getClass().getResourceAsStream("/RHashCodeList.txt");
+			InputStreamReader inputStreamReader = new InputStreamReader(resource);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			while (bufferedReader.ready()) {
 				possibleHash.add(Integer.parseInt(bufferedReader.readLine()));

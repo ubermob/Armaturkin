@@ -1,6 +1,7 @@
 package armaturkin.core;
 
 public class StandardsRepository {
+	// Class contains organization standards for publish documentation
 
 	static int[] diameter = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40};
 	static String[] rfClass240 = {

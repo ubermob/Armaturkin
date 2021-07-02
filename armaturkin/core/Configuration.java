@@ -213,10 +213,10 @@ public class Configuration {
 	}
 
 	private void defaultValues() {
-		backgroundColor = Main.properties.getProperty("backgroundColor");
-		textColor = Main.properties.getProperty("textColor");
-		borderColor = Main.properties.getProperty("borderColor");
-		boldText = Boolean.parseBoolean(Main.properties.getProperty("boldText"));
+		backgroundColor = Main.properties.getProperty("background_color");
+		textColor = Main.properties.getProperty("text_color");
+		borderColor = Main.properties.getProperty("border_color");
+		boldText = Boolean.parseBoolean(Main.properties.getProperty("bold_text"));
 		writeLog = Boolean.parseBoolean(Main.properties.getProperty("write_log"));
 		writeNotification = Boolean.parseBoolean(Main.properties.getProperty("write_notification"));
 		logStorageLimit = Integer.parseInt(Main.properties.getProperty("log_storage_limit"));

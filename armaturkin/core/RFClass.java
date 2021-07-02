@@ -15,7 +15,7 @@ public enum RFClass {
 			case A500 -> "А500"; // Russian letter
 			case A500S -> "А500С"; // Russian letter
 			case A600 -> "А600"; // Russian letter
-			default -> "???";
+			default -> "UNKNOWN";
 		};
 	}
 

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.17";
+	public static String version = "0.5.0";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -56,9 +56,9 @@ public class Main extends Application {
         primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
         log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
         try {
-	        InputStream resourceAsStream = Main.class.getResourceAsStream("/Icon.png");
-	        primaryStage.getIcons().add(new Image(resourceAsStream));
-	        resourceAsStream.close();
+	        InputStream resource = Main.class.getResourceAsStream("/Icon.png");
+	        primaryStage.getIcons().add(new Image(resource));
+	        resource.close();
         } catch (Exception e) {
         	log.add(e);
         }
@@ -167,7 +167,7 @@ public class Main extends Application {
 	}
 
     static void parseArgs(String[] args) {
-    	String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk"};
+    	String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk", "-helloSpammer"};
 	    for (String arg : args) {
 		    if (arg.equals(argCommand[0])) {
 			    Log.enable();
@@ -186,6 +186,11 @@ public class Main extends Application {
 		    		Main.diskLetter = diskLetter;
 				    log.add(argCommand[2] + "=" + Main.diskLetter);
 			    }
+		    }
+		    if (isMatchCommands(arg, argCommand[3])) {
+		    	Spammer spammer = new Spammer();
+			    Thread spammerThread = new Thread(spammer);
+			    spammerThread.start();
 		    }
 	    }
     }
@@ -270,9 +275,9 @@ public class Main extends Application {
     static void loadProperties() {
     	properties = new Properties();
     	try {
-		    InputStream resourceAsStream = Main.class.getResourceAsStream("/Properties.xml");
-		    properties.loadFromXML(resourceAsStream);
-		    resourceAsStream.close();
+		    InputStream resource = Main.class.getResourceAsStream("/Properties.xml");
+		    properties.loadFromXML(resource);
+		    resource.close();
 	    } catch (Exception e) {
     		log.add(e);
 	    }

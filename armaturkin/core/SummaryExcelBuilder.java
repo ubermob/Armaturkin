@@ -197,6 +197,6 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 
 	private void initWorkbook() {
 		workbook = new XSSFWorkbook();
-		sheet = workbook.createSheet("Лист1");
+		sheet = workbook.createSheet(Main.properties.getProperty("default_list_name"));
 	}
 }
