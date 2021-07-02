@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.4.16";
+	public static String version = "0.4.17";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -49,7 +49,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/" + properties.getProperty("main_scene")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/main_scene.fxml"));
         root = loader.load();
         controller = loader.getController();
         controller.startSetup();

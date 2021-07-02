@@ -127,6 +127,16 @@
                         <GaussianBlur radius="11.5" />
                      </effect>
                   </Line>
+                  <Line fx:id="arrowLine1" endX="159.0" endY="557.0" startX="171.0" startY="522.0" stroke="#4097f5" strokeWidth="7.0">
+                     <effect>
+                        <GaussianBlur radius="11.5" />
+                     </effect>
+                  </Line>
+                  <Line fx:id="arrowLine2" endX="190.0" endY="551.0" startX="175.0" startY="523.0" stroke="#4097f5" strokeWidth="7.0">
+                     <effect>
+                        <GaussianBlur radius="11.5" />
+                     </effect>
+                  </Line>
                   <Label fx:id="summaryDropSpace1" alignment="CENTER" layoutX="10.0" layoutY="32.0" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" text="summaryLabel1" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />

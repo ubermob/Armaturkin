@@ -1,6 +1,9 @@
 package armaturkin.controller;
 
 import armaturkin.core.*;
+import armaturkin.view.Arrow;
+import armaturkin.view.LabelWrapper;
+import armaturkin.view.TextWrapper;
 import armaturkin.workers.DropWorker;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -103,6 +106,9 @@ public class Controller {
 	public CheckBox notificationCheckBox;
 	public CheckBox autoParseProductListCheckBox;
 	public Line redirectLine;
+	public Line arrowLine1;
+	public Line arrowLine2;
+	public Arrow arrow;
 
 	public void startSetup() {
 		groupAppearanceVariables();
@@ -114,6 +120,8 @@ public class Controller {
 		}
 		setNotificationOpacity(0);
 		setRedirectLineOpacity(0);
+		arrow = new Arrow(arrowLine1, arrowLine2);
+		setArrowOpacity(0);
 		setBorderColor();
 		setupInfoLabel();
 		setUpperDropSpaceText(Main.properties.getProperty("upperLabelDefaultText"));
@@ -725,5 +733,9 @@ public class Controller {
 
 	public void setRedirectLineOpacity(int i) {
 		redirectLine.setOpacity(i);
+	}
+
+	public void setArrowOpacity(int i) {
+		arrow.setOpacity(i);
 	}
 }

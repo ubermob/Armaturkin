@@ -1,7 +1,7 @@
 package armaturkin.workers;
 
 import armaturkin.controller.Controller;
-import armaturkin.core.LabelWrapper;
+import armaturkin.view.LabelWrapper;
 import armaturkin.core.Main;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;

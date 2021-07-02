@@ -14,9 +14,11 @@ public class SummaryRedirectManager {
 			redirectTo = i;
 			setLine(i);
 			Main.controller.setRedirectLineOpacity(1);
+			Main.controller.setArrowOpacity(1);
 		} else {
 			redirectTo = DEFAULT_VALUE;
 			Main.controller.setRedirectLineOpacity(0);
+			Main.controller.setArrowOpacity(0);
 		}
 	}
 
@@ -26,5 +28,6 @@ public class SummaryRedirectManager {
 		line.setStartY(labels[5].getLayoutY() + labels[5].getHeight() / 2);
 		line.setEndX(labels[i - 1].getLayoutX() + labels[i - 1].getWidth() / 2);
 		line.setEndY(labels[i - 1].getLayoutY() + labels[i - 1].getHeight() / 2);
+		Main.controller.arrow.refresh(line);
 	}
 }

@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.view;
 
 public abstract class DefaultText {
 

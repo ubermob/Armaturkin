@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.view;
 
 import javafx.scene.control.Label;
 
