@@ -17,7 +17,6 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.1";
+	public static String version = "0.5.2";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -54,7 +53,8 @@ public class Main extends Application {
         controller = loader.getController();
         controller.startSetup();
         primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
-        log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime(), getHostName()));
+        log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
+        log.add(PCInformation.getInformation());
         try {
 	        InputStream resource = Main.class.getResourceAsStream("/Icon.png");
 	        primaryStage.getIcons().add(new Image(resource));
@@ -339,15 +339,6 @@ public class Main extends Application {
 	    notificationFileName = properties.getProperty("notification_file_name");
 	    logStorageDirectory = properties.getProperty("log_storage_directory");
 	    notificationStorageDirectory = properties.getProperty("notification_storage_directory");
-    }
-
-    static String getHostName() {
-    	try {
-    		return InetAddress.getLocalHost().getHostName();
-	    } catch (Exception e) {
-		    log.add(e);
-    		return "";
-	    }
     }
 
     static String getDate() {
