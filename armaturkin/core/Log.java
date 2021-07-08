@@ -16,7 +16,7 @@ public class Log {
 		log = new ArrayList<>();
 	}
 
-	public void add(String string) {
+	public synchronized void add(String string) {
 		log.add(string);
 		System.out.println(string);
 	}

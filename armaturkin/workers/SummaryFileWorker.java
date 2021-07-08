@@ -121,10 +121,12 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 				mass *= majorNumber;
 			}
 		}
-		if (hashMap.containsKey(hashCode)) {
-			hashMap.get(hashCode).addMass(mass);
-		} else {
-			hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
+		synchronized (this) {
+			if (hashMap.containsKey(hashCode)) {
+				hashMap.get(hashCode).addMass(mass);
+			} else {
+				hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
+			}
 		}
 		log.add(Main.properties.getProperty("summary_thread_read_row").formatted(
 				getClass(), labelID, fileHashCode, rowInt, hashMap.get(hashCode).toString())
