@@ -21,6 +21,8 @@ import javafx.scene.text.Text;
 
 public class Controller {
 
+	public HBox ar;
+	public Circle cir;
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
@@ -737,5 +739,11 @@ public class Controller {
 
 	public void setArrowOpacity(int i) {
 		arrow.setOpacity(i);
+	}
+
+	public void addNote(MouseEvent mouseEvent) {
+		ar.setSpacing(20);
+		ar.getChildren().add(new Button("123"));
+		Main.arrr.add("123");
 	}
 }

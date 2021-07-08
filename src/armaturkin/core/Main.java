@@ -8,10 +8,15 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -21,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -28,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.3";
+	public static String version = "0.5.4";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -45,6 +51,7 @@ public class Main extends Application {
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
+	public static List<String> arrr = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,6 +73,14 @@ public class Main extends Application {
         checkFavoriteDirectory();
         preloadUpperDropSpace();
         primaryStage.show();
+	    Button button = new Button();
+	    System.out.println(root.getChildrenUnmodifiable());
+	    ObservableList<Node> paneChildren = ( (Pane) root.getChildrenUnmodifiable().get(0) ).getChildren();
+	    Rectangle r = new Rectangle();
+	    r.setHeight(10);
+	    r.setWidth(20);
+	    paneChildren.add( button );
+	    paneChildren.add(new FXMLLoader(Path.of("D:\\Downloads\\pacman.fxml").toUri().toURL()).load());
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
 		    controller.setCheckBox();

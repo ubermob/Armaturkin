@@ -1,2 +1,6 @@
+.idea/
+out/
+resources/Icon.png
 src/META-INF/
-src/stuff/
+stuff/
+untitled.iml

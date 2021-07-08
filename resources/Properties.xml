@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>
+        \n == &#10;
+        \t == &#09;
+        more: https://www.ascii-code.com/
+    </comment>
+
+    <!--Main-->
+    <entry key="application_name">Арматуркин</entry>
+    <entry key="program_root_path">C:\Armaturkin\</entry>
+    <entry key="config_file_name">config.txt</entry>
+    <entry key="log_file_name">log.txt</entry>
+    <entry key="numbered_log_file_name">log%d.txt</entry>
+    <entry key="notification_file_name">notification.txt</entry>
+    <entry key="numbered_notification_file_name">notification%d.txt</entry>
+    <entry key="log_storage_directory">Log storage</entry>
+    <entry key="notification_storage_directory">Notification storage</entry>
+    <entry key="application_main_line">Application: %s&#10;Date: %s&#10;Time: %s</entry>
+    <entry key="pc_information">User: %s, System name: %s, OS ver: %s, Processors: %d, RAM: %d mb / %d mb (free / total)</entry>
+
+    <!--Default config values-->
+    <entry key="background_color">#444444</entry>
+    <entry key="text_color">#ffffff</entry>
+    <entry key="border_color">#008000</entry>
+    <entry key="bold_text">true</entry>
+    <entry key="write_log">true</entry>
+    <entry key="write_notification">true</entry>
+    <entry key="log_storage_limit">20</entry>
+    <entry key="notification_storage_limit">20</entry>
+    <entry key="auto_parse_product_list">true</entry>
+
+    <!--Default redirect arrow properties-->
+    <entry key="angle_gap">30</entry>
+    <entry key="line_length">40</entry>
+
+    <entry key="upper_label_default_text">Перетащи сюда список изделий</entry>
+    <entry key="lower_label_default_text">Перетащи сюда файл,&#10;который надо посчитать</entry>
+    <entry key="upper_label_text_with_file">Я использую предыдущий файл&#10;«%s»&#10;Но ты можешь обновить его</entry>
+    <entry key="drop_worker_file_accepted">Файл принят</entry>
+    <entry key="drop_worker_notification_1">Мне нужен только один файл</entry>
+    <entry key="drop_worker_notification_2">Это не Excel файл (мне нужен файл с расширением .xls или .xlsx)</entry>
+    <entry key="drop_worker_drop_space_file_accepted_1">%s product list DropSpace accepted file: %s</entry>
+    <entry key="drop_worker_drop_space_file_accepted_2">%s calculating list DropSpace accepted file: %s</entry>
+    <entry key="drop_worker_summary_drop_space_file_accepted">%s [SummaryDropSpaceID: %d] accepted file: %s</entry>
+    <entry key="drop_worker_favorite_notification_1">Мне нужена только одина папка</entry>
+    <entry key="drop_worker_favorite_notification_2">Это не папка</entry>
+    <entry key="favorite_is_on">Твоя папка&#10;«%s»</entry>
+    <entry key="favorite_is_off">Перетащи сюда свою папку&#10;(сюда я буду сохранять Excel файлы)</entry>
+    <entry key="favorite_is_restored_1">Восстановил твою папку «%s», потому что она была удалена.&#10;Если ты хочешь что бы я забыл ее, нажми «Забыть мою папку» в настройках</entry>
+    <entry key="favorite_is_restored_2">%s restored favorite</entry>
+    <entry key="favorite_restore_failed_1">Не могу восстановить или получить доступ к папке «%s».&#10;Советую перепривязать твою папку или удалить её из отслеживания</entry>
+    <entry key="favorite_restore_failed_2">%s restore failed</entry>
+
+    <!--Summary labels and Content rows-->
+    <entry key="summary_label_default_first_line_1">Фундамент&#10;%s</entry>
+    <entry key="summary_label_default_first_line_2">Перекрытия&#10;%s</entry>
+    <entry key="summary_label_default_first_line_3">Покрытие&#10;%s</entry>
+    <entry key="summary_label_default_first_line_4">Балки&#10;%s</entry>
+    <entry key="summary_label_default_first_line_5">Стены&#10;%s</entry>
+    <entry key="summary_label_default_first_line_6">Каркасы&#10;%s</entry>
+    <entry key="summary_label_default_first_line_7">Колонны&#10;%s</entry>
+    <entry key="summary_label_default_first_line_8">Лестницы&#10;%s</entry>
+    <entry key="summary_label_default_second_line">Перетащи сюда файл(ы)</entry>
+    <entry key="summary_label_default_third_line">Файлов: %d</entry>
+    <entry key="content_row">Фундамент-Перекрытия-Покрытие-Балки-Стены-Каркасы-Колонны-Лестницы</entry>
+
+    <entry key="thread_start">%s: Thread start</entry>
+    <entry key="thread_file">%s work with file: %s</entry>
+    <entry key="thread_complete">%s: Thread complete in %d ms</entry>
+    <entry key="current_row">%s: [RowInt: %d]</entry>
+    <entry key="summary_thread_start">&#09;%s: Thread start. [SummaryDropSpace ID: %d], [File: %s], [FileNameHashCode: %s]</entry>
+    <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s]</entry>
+    <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d],[FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
+
+    <entry key="reinforcement_lite_info_to_string">[Diameter: %d], [RFClass: %s], [Mass: %f]</entry>
+    <entry key="target_hash_map">Target Hash Map:</entry>
+    <entry key="summary_drop_space">SummaryDropSpace ID: %d</entry>
+    <entry key="print_target_hash_map">&#09;Hash: %d = %s</entry>
+    <entry key="full_content">Full content:</entry>
+    <entry key="compressed_content">Compressed content:</entry>
+    <entry key="content_head_pretty_string">[%d-%s],</entry>
+
+    <entry key="file_successfully_read_1">☻ Список изделий прочитан до строки с номером: %d (включительно)</entry>
+    <entry key="file_successfully_read_2">☻ Файл с армированием прочитан до строки с номером: %d (включительно)</entry>
+    <entry key="file_successfully_download">☻ Файл «%s» посчитан и загружен</entry>
+    <entry key="file_download">%s: file "%s" download to "%s"</entry>
+    <entry key="excel_creation_exception">Ошибка создания файла «%s»</entry>
+
+    <entry key="position_notification_1">В строке %d продублированна позиция: %d</entry>
+    <entry key="position_notification_2">В строке %d позиция из зарезервированного списка: %d</entry>
+    <entry key="position_notification_3">В строке %d позиция: %d</entry>
+    <entry key="position_notification_4">В строке %d большой номер позиции для меня: %d</entry>
+    <entry key="diameter_notification">В строке %d диаметр равен: %d</entry>
+    <entry key="rf_class_notification">В строке %d класс арматуры: %s</entry>
+    <entry key="length_notification">В строке %d длина изделия: %d</entry>
+    <entry key="mass_notification">В строке %d масса изделия: %f. Я думаю, должно быть: %f</entry>
+
+    <entry key="file_successfully_read_3">☻ Файл «%s» прочитан до строки с номером: %d (включительно)</entry>
+    <entry key="summary_file_name_notification">Файл «%s». %s</entry>
+    <entry key="product_major_number_notification">Файл «%s». Не могу определить число в столбце A (возможно оно отсутствует или отрицательно)</entry>
+    <entry key="length_multiply_notification">Файл «%s». В строке %d общая длина элемента: %f. Я думаю, должно быть: %f</entry>
+    <entry key="mass_multiply_notification">Файл «%s». В строке %d общая масса элемента: %f. Я думаю, должно быть: %f (сначала проверь подсчёт арматуры по позициям)</entry>
+    <entry key="product_mass_multiply_notification">Файл «%s». Масса всего изделия: %f. Я думаю, должно быть: %f</entry>
+
+    <entry key="redirect">%s: redirect %d to %d</entry>
+
+    <!--Summary Excel Builder-->
+    <entry key="default_list_name">Лист1</entry>
+    <entry key="column_name_1">%%C</entry>
+    <entry key="column_name_2">Итого</entry>
+    <entry key="column_name_3">Всего</entry>
+    <entry key="standart_document_name">ГОСТ 34028-2016</entry>
+    <entry key="table_head_1">Изделия арматурные</entry>
+    <entry key="table_head_2">Арматура класса</entry>
+    <entry key="left_string_head">Марка элемента</entry>
+    <entry key="left_string_last">Итого</entry>
+    <entry key="default_table_main_header">Сводная ведомость расхода арматуры, кг</entry>
+    <entry key="column_name_4">№ поз.</entry>
+    <entry key="column_name_5">Эскиз</entry>
+    <entry key="column_name_6">Диаметр,&#10;класс&#10;ар-ры</entry>
+    <entry key="column_name_7">Длина эл-та,&#10;мм</entry>
+    <entry key="column_name_8">Кол-во,&#10;шт.</entry>
+    <entry key="column_name_9">Общ.&#10;длина&#10;мп</entry>
+    <entry key="column_name_10">Масса, кг</entry>
+    <entry key="column_name_11">Одного элемента</entry>
+    <entry key="column_name_12">Всех элементов</entry>
+
+    <!--Date & Time-->
+    <entry key="date_pattern">dd-MMM-yyyy</entry>
+    <entry key="time_pattern">HH:mm:ss</entry>
+    <entry key="date_time_pattern">dd-MM-yyyy HH-mm-ss</entry>
+</properties>
