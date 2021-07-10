@@ -127,6 +127,10 @@
     <entry key="column_name_11">Одного элемента</entry>
     <entry key="column_name_12">Всех элементов</entry>
 
+    <!--Manual Summary Entry-->
+    <entry key="negative_mass">Вы ввели отрицательную массу</entry>
+    <entry key="negative_mass_exception">parsedValue4: %f (less then 0)</entry>
+
     <!--Date & Time-->
     <entry key="date_pattern">dd-MMM-yyyy</entry>
     <entry key="time_pattern">HH:mm:ss</entry>

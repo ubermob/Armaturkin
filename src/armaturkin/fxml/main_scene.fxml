@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -17,7 +18,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="armaturkin.controller.Controller">
   <tabs>
-    <Tab text="Хочу посчитать спецификацию">
+    <Tab text="Посчитать спецификацию">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -47,7 +48,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="notificationLabel" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
+                  <Label fx:id="notificationLabel" alignment="CENTER" layoutX="162.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
@@ -119,7 +120,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Хочу посчитать сводную ведомость">
+      <Tab text="Посчитать сводную ведомость">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -157,7 +158,7 @@
                      </font>
                   </Button>
                   <TextField fx:id="summaryFileName" layoutX="200.0" layoutY="542.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
-                  <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="190.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
+                  <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="162.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -283,6 +284,28 @@
             </AnchorPane>
         </content>
       </Tab>
+      <Tab text="Сводная ведомость, ручной ввод">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <HBox fx:id="MSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                  <Button fx:id="MSummaryAddButton" layoutX="351.0" layoutY="508.0" mnemonicParsing="false" onAction="#addManuallySummaryEntry" text="Добавить">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font></Button>
+                  <TextField fx:id="MSummaryTextField" layoutX="601.0" layoutY="461.0" prefHeight="25.0" prefWidth="185.0" promptText="Масса (Пример: 20 или 77.77)" />
+                  <ChoiceBox fx:id="MSummaryChoiceBox1" layoutX="14.0" layoutY="461.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="MSummaryChoiceBox2" layoutX="224.0" layoutY="461.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="MSummaryChoiceBox3" layoutX="426.0" layoutY="461.0" prefWidth="150.0" />
+                  <Text fx:id="MSummaryEntryText" layoutX="14.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавить ручную позицию в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
       <Tab onSelectionChanged="#visitSettingsTab" text="Настройки">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -393,16 +416,6 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-               </children>
-            </AnchorPane>
-        </content>
-      </Tab>
-      <Tab text="Untitled Tab">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Circle fx:id="cir" fill="DODGERBLUE" layoutX="462.0" layoutY="367.0" onMouseClicked="#addNote" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
-                  <HBox fx:id="ar" layoutX="14.0" layoutY="14.0" prefHeight="100.0" prefWidth="773.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
                </children>
             </AnchorPane>
         </content>

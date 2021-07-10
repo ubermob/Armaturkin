@@ -11,7 +11,7 @@ public class ContentHead {
 	public ContentHead() {
 		list = new ArrayList<>();
 		for (RFClass r : rfClass) {
-			for (int i: StandardsRepository.diameter) {
+			for (int i: StandardsRepository.diameters) {
 				list.add(new ReinforcementLiteInfo(i, r, 0.0));
 			}
 		}

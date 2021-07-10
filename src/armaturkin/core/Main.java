@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.4b";
+	public static String version = "0.5.4";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -45,6 +46,7 @@ public class Main extends Application {
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
+	public static List<ManuallySummaryEntry> manuallySummaryEntries = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -133,7 +135,7 @@ public class Main extends Application {
     }
 
     public static void downloadSummaryFile() {
-    	if (!summaryPaths.isEmpty()) {
+    	if (!summaryPaths.isEmpty() || !manuallySummaryEntries.isEmpty()) {
     		String path;
     		if (config.isFavoritePathNotNull()) {
     			path = config.getFavoritePath();
@@ -144,7 +146,7 @@ public class Main extends Application {
     		if (summaryTableHead.equals("")) {
     			summaryTableHead = properties.getProperty("default_table_main_header");
 		    }
-    		SummaryHub summaryHub = new SummaryHub(summaryPaths, path, controller.getSummaryFileName(), summaryTableHead);
+    		SummaryHub summaryHub = new SummaryHub(summaryPaths, manuallySummaryEntries, path, controller.getSummaryFileName(), summaryTableHead);
     		Thread summaryHubThread = new Thread(summaryHub);
     		summaryHubThread.start();
 	    }

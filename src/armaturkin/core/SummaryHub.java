@@ -10,6 +10,7 @@ import java.util.List;
 public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 
 	private final HashMap<Integer, List<String>> summaryPaths;
+	private final List<ManuallySummaryEntry> manuallySummaryEntries;
 	private final String path;
 	private final String fileName;
 	private final String tableHead;
@@ -19,8 +20,13 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	private ContentContainer contentContainer;
 	private long millis;
 
-	public SummaryHub(HashMap<Integer, List<String>> summaryPaths, String path, String fileName, String tableHead) {
+	public SummaryHub(HashMap<Integer, List<String>> summaryPaths,
+	                  List<ManuallySummaryEntry> manuallySummaryEntries,
+	                  String path,
+	                  String fileName,
+	                  String tableHead) {
 		this.summaryPaths = summaryPaths;
+		this.manuallySummaryEntries = manuallySummaryEntries;
 		this.path = path;
 		this.fileName = fileName;
 		this.tableHead = tableHead;
@@ -74,6 +80,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	void buildContent() {
 		contentContainer = new ContentContainer();
 		Main.log.add(Main.properties.getProperty("target_hash_map"));
+		// Filling auto tab entries
 		for (int i = 1; i < 9; i++) {
 			if (targetHashMap.containsKey(i)) {
 				HashMap<Integer, ReinforcementLiteInfo> subMap = targetHashMap.get(i);
@@ -87,6 +94,11 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 				}
 			}
 		}
+		// Filling manual tab entries
+		for (ManuallySummaryEntry entry : manuallySummaryEntries) {
+			contentContainer.put(entry.getSummaryLabelID(), RHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMass());
+		}
+		// Redirect
 		if (SummaryRedirectManager.redirectTo != SummaryRedirectManager.DEFAULT_VALUE) {
 			contentContainer.redirect(SummaryRedirectManager.redirectTo);
 			Main.log.add(Main.properties.getProperty("redirect").formatted(getClass(),

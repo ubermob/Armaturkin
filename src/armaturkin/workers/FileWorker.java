@@ -153,7 +153,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 								" нет в зарезервированном списке диаметров (class Pattern)"
 						);
 					} else {
-						int position = StandardsRepository.reservedPosition[reservedDiameterIndex];
+						int position = StandardsRepository.reservedPositions[reservedDiameterIndex];
 						if (reinforcementHashMap.containsKey(position)) {
 							Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
 							Reinforcement currentReinforcement = new Reinforcement(position,

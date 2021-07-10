@@ -176,7 +176,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void compareDiameter(int reservedPositionIndex) {
-		int productDiameter = StandardsRepository.reservedDiameter[reservedPositionIndex];
+		int productDiameter = StandardsRepository.reservedDiameters[reservedPositionIndex];
 		if (diameter != productDiameter) {
 			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает диаметр: " + diameter +
 					" (в зарезервированных позициях: " + productDiameter + ")");

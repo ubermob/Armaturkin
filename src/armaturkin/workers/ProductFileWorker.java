@@ -75,7 +75,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		if (reinforcementProductHashMap.containsKey(position)) {
 			Main.addNotification(Main.properties.getProperty("position_notification_1").formatted((rowInt + 1), position));
 		}
-		if (StandardsRepository.contains(StandardsRepository.reservedPosition, position)) {
+		if (StandardsRepository.contains(StandardsRepository.reservedPositions, position)) {
 			Main.addNotification(Main.properties.getProperty("position_notification_2").formatted((rowInt + 1), position));
 		}
 		if (position <= 0) {

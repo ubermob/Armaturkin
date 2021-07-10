@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker, RowEmptyChecker, RHashCode, FileHashCode {
+public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker, RowEmptyChecker, FileHashCode {
 
 	private final String path;
 	private final HashMap<Integer, ReinforcementLiteInfo> hashMap;
@@ -101,7 +101,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 		rfClassString = parsedString[1];
 		rfClass = RFClass.parseRFClass(rfClassString);
 		mass = row.getCell(massColumn).getNumericCellValue();
-		hashCode = getHashCode(diameter, rfClass);
+		hashCode = RHashCode.getHashCode(diameter, rfClass);
 		if (set == SummaryThreadStarter.RAW || set == SummaryThreadStarter.RAW_STAIRWAY) {
 			position = (int) row.getCell(positionColumn).getNumericCellValue();
 			checkPosition();

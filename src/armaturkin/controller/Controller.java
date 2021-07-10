@@ -2,13 +2,12 @@ package armaturkin.controller;
 
 import armaturkin.core.*;
 import armaturkin.view.Arrow;
+import armaturkin.core.ManuallySummaryEntry;
 import armaturkin.view.LabelWrapper;
 import armaturkin.view.TextWrapper;
 import armaturkin.workers.DropWorker;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.collections.FXCollections;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +17,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.util.Arrays;
 
 public class Controller {
 
@@ -69,6 +70,7 @@ public class Controller {
 	public Button font16Button;
 	public Button font18Button;
 	public Button font20Button;
+	public Button MSummaryAddButton;
 	public TextField tableHead;
 	public TextField backgroundReinforcement;
 	public TextField fileName;
@@ -76,6 +78,7 @@ public class Controller {
 	public TextField summaryTableHead;
 	public TextField logLimit;
 	public TextField notificationLimit;
+	public TextField MSummaryTextField;
 	Text[] allTexts;
 	public Text appearanceText1;
     public Text appearanceText2;
@@ -91,6 +94,7 @@ public class Controller {
 	public Text settingsText6;
 	TextWrapper settingsTextWrapper6;
 	public Text settingsText7;
+	public Text MSummaryEntryText;
 	public Circle circle1;
 	public Circle circle2;
 	public Circle circle3;
@@ -109,12 +113,16 @@ public class Controller {
 	public Line arrowLine1;
 	public Line arrowLine2;
 	public Arrow arrow;
+	public HBox MSummaryHBox;
+	public ChoiceBox<String> MSummaryChoiceBox1;
+	public ChoiceBox<Integer> MSummaryChoiceBox2;
+	public ChoiceBox<RFClass> MSummaryChoiceBox3;
 
 	public void startSetup() {
-		groupAppearanceVariables();
-		setBackgroundColor();
-		setTextColor();
-		setFont();
+		groupingAppearanceVariables();
+		setupBackgroundColor();
+		setupTextColor();
+		setupFont();
 		if (Main.config.isResultLabelFontSizeNotNull()) {
 			setResultLabelFont(Main.config.getResultLabelFontSize());
 		}
@@ -122,7 +130,7 @@ public class Controller {
 		setRedirectLineOpacity(0);
 		arrow = new Arrow(arrowLine1, arrowLine2);
 		setArrowOpacity(0);
-		setBorderColor();
+		setupBorderColor();
 		setupInfoLabel();
 		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
 		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
@@ -143,9 +151,11 @@ public class Controller {
 		settingsTextWrapper3 = new TextWrapper(settingsText3);
 		settingsTextWrapper5 = new TextWrapper(settingsText5);
 		settingsTextWrapper6 = new TextWrapper(settingsText6);
+
+		setupMSummaryChoiceBox();
 	}
 
-	private void groupAppearanceVariables() {
+	private void groupingAppearanceVariables() {
 		allLabels = new Label[] {
 				upperDropSpace,
 				lowerDropSpace,
@@ -207,7 +217,8 @@ public class Controller {
 				font14Button,
 				font16Button,
 				font18Button,
-				font20Button
+				font20Button,
+				MSummaryAddButton
 		};
 		allTexts = new Text[] {
 				appearanceText1,
@@ -219,62 +230,63 @@ public class Controller {
 				settingsText4,
 				settingsText5,
 				settingsText6,
-				settingsText7
+				settingsText7,
+				MSummaryEntryText
 		};
 	}
 
 	public void setBackgroundColor1() {
 		Main.config.setBackgroundColor(getColorHexCode(circle1.getFill()));
-        setBackgroundColor();
+        setupBackgroundColor();
     }
 
     public void setBackgroundColor2() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
-        setBackgroundColor();
+        setupBackgroundColor();
     }
 
     public void setBackgroundColor3() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
-        setBackgroundColor();
+        setupBackgroundColor();
     }
 
     public void setBackgroundColor4() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
-        setBackgroundColor();
+        setupBackgroundColor();
     }
 
     public void setBackgroundColor5() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
-        setBackgroundColor();
+        setupBackgroundColor();
     }
 
-	void setBackgroundColor() {
+	void setupBackgroundColor() {
 		Main.root.setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
 	}
 
     public void setTextColor1() {
         Main.config.setTextColor(getColorHexCode(circle1.getFill()));
-        setTextColor();
+        setupTextColor();
     }
 
     public void setTextColor2() {
 	    Main.config.setTextColor(getColorHexCode(circle2.getFill()));
-        setTextColor();
+        setupTextColor();
     }
 
     public void setTextColor3() {
 	    Main.config.setTextColor(getColorHexCode(circle3.getFill()));
-        setTextColor();
+        setupTextColor();
     }
 
     public void setTextColor4() {
 	    Main.config.setTextColor(getColorHexCode(circle4.getFill()));
-        setTextColor();
+        setupTextColor();
     }
 
     public void setTextColor5() {
 	    Main.config.setTextColor(getColorHexCode(circle5.getFill()));
-        setTextColor();
+        setupTextColor();
     }
 
     public LabelWrapper getSummaryLabelWrapper(int i) {
@@ -285,7 +297,7 @@ public class Controller {
 		return "#" + paint.toString().substring(2, 8);
 	}
 
-    void setTextColor() {
+    void setupTextColor() {
 	    for (Text text : allTexts) {
 		    text.setFill(Paint.valueOf(Main.config.getTextColor()));
 	    }
@@ -294,7 +306,7 @@ public class Controller {
 	    }
     }
     
-    void setBorderColor() {
+    void setupBorderColor() {
 		border = new Border(new BorderStroke(Paint.valueOf(Main.config.getBorderColor()), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
 	    for (Label label : borderModifiedLabels) {
 	    	label.setBorder(border);
@@ -523,35 +535,35 @@ public class Controller {
 
 	public void setBorderColor1() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor1.getFill()));
-		setBorderColor();
+		setupBorderColor();
 	}
 
 	public void setBorderColor2() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor2.getFill()));
-		setBorderColor();
+		setupBorderColor();
 	}
 
 	public void setBorderColor3() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor3.getFill()));
-		setBorderColor();
+		setupBorderColor();
 	}
 
 	public void setBorderColor4() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor4.getFill()));
-		setBorderColor();
+		setupBorderColor();
 	}
 
 	public void setBorderColor5() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor5.getFill()));
-		setBorderColor();
+		setupBorderColor();
 	}
 
 	public void toggleBoldText() {
 		Main.config.toggleBoldText();
-		setFont();
+		setupFont();
 	}
 
-	void setFont() {
+	void setupFont() {
 		if (Main.config.getBoldText()) {
 			String font = "System Bold";
 			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
@@ -739,6 +751,28 @@ public class Controller {
 		arrow.setOpacity(i);
 	}
 
-	public void addNote(MouseEvent mouseEvent) {
+	void setupMSummaryChoiceBox() {
+		MSummaryChoiceBox1.setItems(FXCollections.observableArrayList(
+				Arrays.asList(Main.properties.getProperty("content_row").split("-"))
+		));
+		MSummaryChoiceBox1.setValue(Main.properties.getProperty("content_row").split("-")[0]);
+		MSummaryChoiceBox2.setItems(FXCollections.observableList(StandardsRepository.getDiametersAsList()));
+		MSummaryChoiceBox2.setValue(StandardsRepository.diameters[0]);
+		MSummaryChoiceBox3.setItems(FXCollections.observableArrayList(
+				RFClass.A240,
+				RFClass.A400,
+				RFClass.A500,
+				RFClass.A500S,
+				RFClass.A600
+		));
+		MSummaryChoiceBox3.setValue(RFClass.A500S);
+	}
+
+	public void addManuallySummaryEntry() {
+		ManuallySummaryEntry.add(MSummaryChoiceBox1.getValue(),
+				MSummaryChoiceBox2.getValue(),
+				MSummaryChoiceBox3.getValue(),
+				MSummaryTextField.getText()
+		);
 	}
 }
