@@ -94,7 +94,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 				}
 			}
 		}
-		// Filling manual tab entries
+		// Filling manually tab entries
 		for (ManuallySummaryEntry entry : manuallySummaryEntries) {
 			contentContainer.put(entry.getSummaryLabelID(), RHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMass());
 		}

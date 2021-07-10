@@ -74,7 +74,7 @@
     <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s]</entry>
     <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d],[FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
 
-    <entry key="reinforcement_lite_info_to_string">[Diameter: %d], [RFClass: %s], [Mass: %f]</entry>
+    <entry key="reinforcement_lite_info_to_string">[Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
     <entry key="target_hash_map">Target Hash Map:</entry>
     <entry key="summary_drop_space">SummaryDropSpace ID: %d</entry>
     <entry key="print_target_hash_map">&#09;Hash: %d = %s</entry>
@@ -95,14 +95,14 @@
     <entry key="diameter_notification">В строке %d диаметр равен: %d</entry>
     <entry key="rf_class_notification">В строке %d класс арматуры: %s</entry>
     <entry key="length_notification">В строке %d длина изделия: %d</entry>
-    <entry key="mass_notification">В строке %d масса изделия: %f. Я думаю, должно быть: %f</entry>
+    <entry key="mass_notification">В строке %d масса изделия: %.3f. Я думаю, должно быть: %.3f</entry>
 
     <entry key="file_successfully_read_3">☻ Файл «%s» прочитан до строки с номером: %d (включительно)</entry>
     <entry key="summary_file_name_notification">Файл «%s». %s</entry>
     <entry key="product_major_number_notification">Файл «%s». Не могу определить число в столбце A (возможно оно отсутствует или отрицательно)</entry>
-    <entry key="length_multiply_notification">Файл «%s». В строке %d общая длина элемента: %f. Я думаю, должно быть: %f</entry>
-    <entry key="mass_multiply_notification">Файл «%s». В строке %d общая масса элемента: %f. Я думаю, должно быть: %f (сначала проверь подсчёт арматуры по позициям)</entry>
-    <entry key="product_mass_multiply_notification">Файл «%s». Масса всего изделия: %f. Я думаю, должно быть: %f</entry>
+    <entry key="length_multiply_notification">Файл «%s». В строке %d общая длина элемента: %.3f. Я думаю, должно быть: %.3f</entry>
+    <entry key="mass_multiply_notification">Файл «%s». В строке %d общая масса элемента: %.3f. Я думаю, должно быть: %.3f (сначала проверь подсчёт арматуры по позициям)</entry>
+    <entry key="product_mass_multiply_notification">Файл «%s». Масса всего изделия: %.3f. Я думаю, должно быть: %.3f</entry>
 
     <entry key="redirect">%s: redirect %d to %d</entry>
 
@@ -127,9 +127,11 @@
     <entry key="column_name_11">Одного элемента</entry>
     <entry key="column_name_12">Всех элементов</entry>
 
-    <!--Manual Summary Entry-->
-    <entry key="negative_mass">Вы ввели отрицательную массу</entry>
-    <entry key="negative_mass_exception">parsedValue4: %f (less then 0)</entry>
+    <!--Manually Summary Entry-->
+    <entry key="negative_mass_exception">parsedValue4: %.3f (less then 0)</entry>
+    <entry key="manually_summary_entry_label_text">%s&#10;диаметр: %d&#10;%s&#10;масса: %.1f</entry>
+    <entry key="add_manually_summary_entry">%s add entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
+    <entry key="remove_manually_summary_entry">%s remove entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
 
     <!--Date & Time-->
     <entry key="date_pattern">dd-MMM-yyyy</entry>

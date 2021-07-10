@@ -15,10 +15,17 @@ public class ManuallySummaryEntry {
 		try {
 			double mass = Double.parseDouble(massAsString);
 			if (mass <= 0.0) {
-				Main.addNotification(Main.properties.getProperty("negative_mass"));
 				throw new Exception(Main.properties.getProperty("negative_mass_exception").formatted(mass));
 			}
-			Main.manuallySummaryEntries.add(new ManuallySummaryEntry(summaryLabel, diameter, rfClass, mass));
+			ManuallySummaryEntry entry = new ManuallySummaryEntry(summaryLabel, diameter, rfClass, mass);
+			Main.manuallySummaryEntries.add(entry);
+			Main.log.add(Main.properties.getProperty("add_manually_summary_entry").formatted(
+					ManuallySummaryEntry.class,
+					entry.getSummaryLabelID(),
+					entry.getDiameter(),
+					entry.getRfClass(),
+					entry.getMass()
+			));
 		} catch (Exception e) {
 			Main.log.add(e);
 		}
@@ -27,6 +34,13 @@ public class ManuallySummaryEntry {
 	public static void remove(ManuallySummaryEntry entry) {
 		Main.manuallySummaryEntries.remove(entry);
 		Main.controller.MSummaryHBox.getChildren().remove(entry.getLabel());
+		Main.log.add(Main.properties.getProperty("remove_manually_summary_entry").formatted(
+				ManuallySummaryEntry.class,
+				entry.getSummaryLabelID(),
+				entry.getDiameter(),
+				entry.getRfClass(),
+				entry.getMass()
+		));
 	}
 
 	private static int parseSummaryLabel(String summaryLabel) {
@@ -69,7 +83,12 @@ public class ManuallySummaryEntry {
 		label = new Label();
 		label.setPrefWidth(100);
 		label.setPrefHeight(Main.controller.MSummaryHBox.getPrefHeight());
-		label.setText(summaryLabel + "\n" + diameter + "\n" + RFClass.toString(rfClass) + "\n" + mass);
+		label.setText(Main.properties.getProperty("manually_summary_entry_label_text").formatted(
+				summaryLabel,
+				diameter,
+				RFClass.toString(rfClass),
+				mass
+		));
 		label.setBackground(Main.controller.notificationLabel.getBackground());
 		label.setTextAlignment(Main.controller.notificationLabel.getTextAlignment());
 		label.setAlignment(Pos.CENTER);

@@ -5,6 +5,7 @@ import armaturkin.view.Arrow;
 import armaturkin.core.ManuallySummaryEntry;
 import armaturkin.view.LabelWrapper;
 import armaturkin.view.TextWrapper;
+import armaturkin.view.DefaultStage;
 import armaturkin.workers.DropWorker;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -71,6 +72,7 @@ public class Controller {
 	public Button font18Button;
 	public Button font20Button;
 	public Button MSummaryAddButton;
+	public Button restoreWindowSizeButton;
 	public TextField tableHead;
 	public TextField backgroundReinforcement;
 	public TextField fileName;
@@ -218,7 +220,8 @@ public class Controller {
 				font16Button,
 				font18Button,
 				font20Button,
-				MSummaryAddButton
+				MSummaryAddButton,
+				restoreWindowSizeButton
 		};
 		allTexts = new Text[] {
 				appearanceText1,
@@ -774,5 +777,11 @@ public class Controller {
 				MSummaryChoiceBox3.getValue(),
 				MSummaryTextField.getText()
 		);
+	}
+
+	public void restoreWindowSize() {
+		Main.primaryStage.setHeight(DefaultStage.defaultHeight);
+		Main.primaryStage.setWidth(DefaultStage.defaultWidth);
+		//Main.primaryStage.setFullScreen(true);
 	}
 }

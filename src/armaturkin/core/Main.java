@@ -1,6 +1,7 @@
 package armaturkin.core;
 
 import armaturkin.controller.Controller;
+import armaturkin.view.DefaultStage;
 import armaturkin.workers.CalculatingFileWorker;
 import armaturkin.workers.FileWorker;
 import armaturkin.workers.ProductFileWorker;
@@ -29,9 +30,10 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.4";
+	public static String version = "0.5.5";
 	public static Properties properties;
 	public static Parent root;
+	public static Stage primaryStage;
     public static Controller controller;
 	public static Configuration config;
     public static String programRootPath;
@@ -68,6 +70,7 @@ public class Main extends Application {
         checkFavoriteDirectory();
         preloadUpperDropSpace();
         primaryStage.show();
+        doingPrimaryStage(primaryStage);
 	    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 		    controller.setResultLabelText(notificationString);
 		    controller.setCheckBox();
@@ -290,7 +293,7 @@ public class Main extends Application {
 
     public static void saveNotification() throws IOException {
     	StorageCleaner.clearStorage(Path.of(programRootPath, notificationStorageDirectory));
-    	if (config.getWriteNotification()) {
+    	if (config.getWriteNotification() && notificationString.length() > 0) {
 		    StorageCleaner.copyFile(
 				    Path.of(programRootPath, notificationFileName),
 				    Path.of(programRootPath, notificationStorageDirectory,
@@ -341,6 +344,12 @@ public class Main extends Application {
 	    notificationFileName = properties.getProperty("notification_file_name");
 	    logStorageDirectory = properties.getProperty("log_storage_directory");
 	    notificationStorageDirectory = properties.getProperty("notification_storage_directory");
+    }
+
+    static void doingPrimaryStage(Stage stage) {
+	    Main.primaryStage = stage;
+	    DefaultStage.defaultHeight = stage.getHeight();
+	    DefaultStage.defaultWidth = stage.getWidth();
     }
 
     static String getDate() {

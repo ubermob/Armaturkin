@@ -411,7 +411,12 @@
                   <Circle fx:id="circleBorderColor2" fill="NAVY" layoutX="300.0" layoutY="410.0" onMouseClicked="#setBorderColor2" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
                   <Circle fx:id="circleBorderColor4" fill="#808080" layoutX="500.0" layoutY="410.0" onMouseClicked="#setBorderColor4" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
                   <Circle fx:id="circleBorderColor5" fill="BISQUE" layoutX="600.0" layoutY="410.0" onMouseClicked="#setBorderColor5" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Button fx:id="boldTextButton" layoutX="330.0" layoutY="480.0" mnemonicParsing="false" onAction="#toggleBoldText" prefHeight="37.0" prefWidth="140.0" text="Жирный текст">
+                  <Button fx:id="boldTextButton" layoutX="165.0" layoutY="480.0" mnemonicParsing="false" onAction="#toggleBoldText" prefHeight="37.0" prefWidth="140.0" text="Жирный текст">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="restoreWindowSizeButton" layoutX="415.0" layoutY="480.0" mnemonicParsing="false" onAction="#restoreWindowSize" prefHeight="37.0" prefWidth="220.0" text="Исходный размер окна">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
