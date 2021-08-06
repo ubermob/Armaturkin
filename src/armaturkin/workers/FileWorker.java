@@ -3,6 +3,7 @@ package armaturkin.workers;
 import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
 import armaturkin.interfaces.Stopwatch;
+import armaturkin.utils.CellStyleRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;

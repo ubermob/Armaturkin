@@ -1,11 +1,12 @@
-package armaturkin.core;
+package armaturkin.utils;
 
+import armaturkin.core.Main;
 import com.sun.management.OperatingSystemMXBean;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 
-public class PCInformation {
+public class PcInformation {
 	public static String getInformation() {
 		try {
 			return Main.properties.getProperty("pc_information").formatted(

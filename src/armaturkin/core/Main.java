@@ -1,7 +1,9 @@
 package armaturkin.core;
 
 import armaturkin.controller.Controller;
-import armaturkin.view.DefaultStage;
+import armaturkin.utils.PcInformation;
+import armaturkin.utils.Spammer;
+import armaturkin.view.Stages;
 import armaturkin.workers.CalculatingFileWorker;
 import armaturkin.workers.FileWorker;
 import armaturkin.workers.ProductFileWorker;
@@ -22,18 +24,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.5";
+	public static String version = "0.5.6b";
 	public static Properties properties;
 	public static Parent root;
-	public static Stage primaryStage;
     public static Controller controller;
 	public static Configuration config;
     public static String programRootPath;
@@ -58,7 +56,7 @@ public class Main extends Application {
         controller.startSetup();
         primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
         log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
-        log.add(PCInformation.getInformation());
+        log.add(PcInformation.getInformation());
         try {
 	        InputStream resource = Main.class.getResourceAsStream("/Icon.png");
 	        primaryStage.getIcons().add(new Image(resource));
@@ -347,14 +345,14 @@ public class Main extends Application {
     }
 
     static void doingPrimaryStage(Stage stage) {
-	    Main.primaryStage = stage;
-	    DefaultStage.defaultHeight = stage.getHeight();
-	    DefaultStage.defaultWidth = stage.getWidth();
+	    Stages.primary = stage;
+	    Stages.defaultHeight = stage.getHeight();
+	    Stages.defaultWidth = stage.getWidth();
     }
 
     static String getDate() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
-	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("date_pattern")));
+	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("date_pattern"), new Locale("en")));
     }
 
     static String getTime() {

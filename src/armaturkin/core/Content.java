@@ -1,5 +1,7 @@
 package armaturkin.core;
 
+import armaturkin.utils.MassCounter;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +15,7 @@ public class Content {
 	public Content() {
 		possibleHash = new ArrayList<>();
 		try {
-			InputStream resource = this.getClass().getResourceAsStream("/RHashCodeList.txt");
+			InputStream resource = this.getClass().getResourceAsStream("/RfHashCodeList.txt");
 			InputStreamReader inputStreamReader = new InputStreamReader(resource);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			while (bufferedReader.ready()) {

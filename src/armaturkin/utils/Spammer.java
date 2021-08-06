@@ -1,4 +1,6 @@
-package armaturkin.core;
+package armaturkin.utils;
+
+import armaturkin.core.Main;
 
 public class Spammer implements Runnable {
 	@Override

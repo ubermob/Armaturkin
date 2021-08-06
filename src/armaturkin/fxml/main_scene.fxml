@@ -379,7 +379,7 @@
       </Tab>
       <Tab text="Внешний вид">
         <content>
-          <AnchorPane layoutY="287.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane fx:id="testT" layoutY="287.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <Circle fx:id="circle3" fill="#ababab" layoutX="400.0" layoutY="110.0" onMouseClicked="#setBackgroundColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
                   <Circle fx:id="circle5" layoutX="600.0" layoutY="110.0" onMouseClicked="#setBackgroundColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
@@ -421,6 +421,18 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Утилиты">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="showRlmiButton" layoutX="34.0" layoutY="38.0" mnemonicParsing="false" onAction="#showRlmi" text="Таблица погонной массы" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font></Button>
                </children>
             </AnchorPane>
         </content>

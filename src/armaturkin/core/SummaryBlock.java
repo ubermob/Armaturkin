@@ -1,5 +1,7 @@
 package armaturkin.core;
 
+import armaturkin.utils.MassCounter;
+
 import java.util.Arrays;
 
 public class SummaryBlock {

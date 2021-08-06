@@ -2,6 +2,7 @@ package armaturkin.workers;
 
 import armaturkin.core.*;
 import armaturkin.interfaces.*;
+import armaturkin.utils.MassCounter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -101,7 +102,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 		rfClassString = parsedString[1];
 		rfClass = RFClass.parseRFClass(rfClassString);
 		mass = row.getCell(massColumn).getNumericCellValue();
-		hashCode = RHashCode.getHashCode(diameter, rfClass);
+		hashCode = RfHashCode.getHashCode(diameter, rfClass);
 		if (set == SummaryThreadStarter.RAW || set == SummaryThreadStarter.RAW_STAIRWAY) {
 			position = (int) row.getCell(positionColumn).getNumericCellValue();
 			checkPosition();

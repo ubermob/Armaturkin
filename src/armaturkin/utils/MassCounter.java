@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.utils;
 
 public class MassCounter {
 

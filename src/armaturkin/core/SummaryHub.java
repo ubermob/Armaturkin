@@ -85,7 +85,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 			if (targetHashMap.containsKey(i)) {
 				HashMap<Integer, ReinforcementLiteInfo> subMap = targetHashMap.get(i);
 				Main.log.add(Main.properties.getProperty("summary_drop_space").formatted(i));
-				// RHashCodeList.txt
+				// RfHashCodeList.txt
 				for (int j = 0; j < 291; j++) {
 					if (subMap.containsKey(j)) {
 						contentContainer.put(i, j, subMap.get(j).getMass());
@@ -96,7 +96,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 		}
 		// Filling manually tab entries
 		for (ManuallySummaryEntry entry : manuallySummaryEntries) {
-			contentContainer.put(entry.getSummaryLabelID(), RHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMass());
+			contentContainer.put(entry.getSummaryLabelID(), RfHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMass());
 		}
 		// Redirect
 		if (SummaryRedirectManager.redirectTo != SummaryRedirectManager.DEFAULT_VALUE) {

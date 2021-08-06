@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<Label fx:id="infoLabel" alignment="CENTER" prefHeight="392.0" prefWidth="560.0" style="-fx-background-color: BLACK; -fx-border-color: BLUE; -fx-border-width: 5; -fx-border-radius: 20; -fx-background-radius: 25;" text="Шаблон ввода для фоновой арматуры:&#10;диаметр(мм)-общая длина(м, десятичный разделитель - точка)&#10;Примеры:&#10;10-145 (диаметр 10 мм, длина 145 м)&#10;12-178.5 (диаметр 12 мм, длина 178,5 м)&#10;10-70.8-14-96.85 (диаметр 10 мм, длина 70,8 м&#10;и диаметр 14 мм, длина 96,85 м)&#10;&#10;Пример для шапки таблицы:&#10;Спецификация арматуры на перекрытие на отм. +18,200 (лист 4)&#10;&#10;Внимание!&#10;Имя файла не должно содержать следующих символов:&#10;\  /  :  *  ?  &quot;  &lt;  &gt;  |" textAlignment="CENTER" textFill="WHITE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <font>
+      <Font name="System Bold" size="16.0" />
+   </font>
+</Label>

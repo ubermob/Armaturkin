@@ -1,34 +1,48 @@
 package armaturkin.controller;
 
 import armaturkin.core.*;
-import armaturkin.view.Arrow;
-import armaturkin.core.ManuallySummaryEntry;
-import armaturkin.view.LabelWrapper;
-import armaturkin.view.TextWrapper;
-import armaturkin.view.DefaultStage;
+import armaturkin.utils.ReinforcementLinearMassInfo;
+import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
+import java.beans.EventHandler;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class Controller {
 
-	private Label[] allLabels;
-	private Label[] borderModifiedLabels;
-	private LabelWrapper[] allSummaryLabelWrappers;
-	public Label upperDropSpace;
-	public Label lowerDropSpace;
-	public Label resultLabel;
+	public AnchorPane testT;
+	@FXML
+	private Label upperDropSpace;
+	@FXML
+	private Label lowerDropSpace;
+	@FXML
+	private Label resultLabel;
 	public Label notificationLabel;
 	public Label notificationLabel2;
 	public Label infoLabel;
@@ -41,7 +55,6 @@ public class Controller {
 	public Label summaryDropSpace7;
 	public Label summaryDropSpace8;
 	public Label favoriteDropSpace;
-	Button[] boldTextModifiedButtons;
 	public Button downloadFileButton;
 	public Button clearResultLabelButton;
 	public Button lowerDropSpaceButton;
@@ -81,7 +94,6 @@ public class Controller {
 	public TextField logLimit;
 	public TextField notificationLimit;
 	public TextField MSummaryTextField;
-	Text[] allTexts;
 	public Text appearanceText1;
     public Text appearanceText2;
 	public Text appearanceText3;
@@ -107,18 +119,24 @@ public class Controller {
 	public Circle circleBorderColor3;
 	public Circle circleBorderColor4;
 	public Circle circleBorderColor5;
-	Border border;
 	public CheckBox logCheckBox;
 	public CheckBox notificationCheckBox;
 	public CheckBox autoParseProductListCheckBox;
 	public Line redirectLine;
 	public Line arrowLine1;
 	public Line arrowLine2;
-	public Arrow arrow;
 	public HBox MSummaryHBox;
 	public ChoiceBox<String> MSummaryChoiceBox1;
 	public ChoiceBox<Integer> MSummaryChoiceBox2;
 	public ChoiceBox<RFClass> MSummaryChoiceBox3;
+
+	private Label[] allLabels;
+	private Label[] borderModifiedLabels;
+	private LabelWrapper[] allSummaryLabelWrappers;
+	Button[] boldTextModifiedButtons;
+	Text[] allTexts;
+	Border border;
+	public Arrow arrow;
 
 	public void startSetup() {
 		groupingAppearanceVariables();
@@ -780,8 +798,28 @@ public class Controller {
 	}
 
 	public void restoreWindowSize() {
-		Main.primaryStage.setHeight(DefaultStage.defaultHeight);
-		Main.primaryStage.setWidth(DefaultStage.defaultWidth);
+		Stages.primary.setHeight(Stages.defaultHeight);
+		Stages.primary.setWidth(Stages.defaultWidth);
 		//Main.primaryStage.setFullScreen(true);
+	}
+
+	public void showRlmi() {
+		if (Stages.second == null) {
+			Stages.second = new Stage();
+			Label label = new Label(ReinforcementLinearMassInfo.get());
+			label.setBackground(new Background(new BackgroundFill(
+					Color.valueOf(Main.config.getBackgroundColor()),
+					CornerRadii.EMPTY,
+					Insets.EMPTY
+			)));
+			label.setFont(new Font("Consolas", 20));
+			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+			label.setAlignment(Pos.CENTER);
+			Stages.second.setScene(new Scene(label));
+			Stages.second.setTitle("Масса арматуры");
+			Stages.second.initStyle(StageStyle.UTILITY);
+			Stages.primary.setOnCloseRequest(windowEvent -> Stages.second.close());
+		}
+		Stages.second.show();
 	}
 }

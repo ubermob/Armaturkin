@@ -1,5 +1,6 @@
-package armaturkin.core;
+package armaturkin.utils;
 
+import armaturkin.core.StandardsRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
