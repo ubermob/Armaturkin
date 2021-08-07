@@ -5,15 +5,11 @@ import armaturkin.utils.ReinforcementLinearMassInfo;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -27,11 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 
-import java.beans.EventHandler;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 public class Controller {
@@ -44,100 +36,164 @@ public class Controller {
 	private Label lowerDropSpace;
 	@FXML
 	private Label resultLabel;
-	public Label notificationLabel;
-	public Label notificationLabel2;
-	//public Label infoLabel;
-	public Label summaryDropSpace1;
-	public Label summaryDropSpace2;
-	public Label summaryDropSpace3;
-	public Label summaryDropSpace4;
-	public Label summaryDropSpace5;
-	public Label summaryDropSpace6;
-	public Label summaryDropSpace7;
-	public Label summaryDropSpace8;
-	public Label favoriteDropSpace;
-	public Button downloadFileButton;
-	public Button clearResultLabelButton;
-	public Button lowerDropSpaceButton;
-	public Button clearUpperDropSpaceButton;
-	public Button infoButton;
-	public Button downloadResultLabelButton;
-	public Button downloadSummaryFileButton;
-	public Button clearAllSummaryDropSpaceButton;
-	public Button clearSummaryDropSpaceButton1;
-	public Button clearSummaryDropSpaceButton2;
-	public Button clearSummaryDropSpaceButton3;
-	public Button clearSummaryDropSpaceButton4;
-	public Button clearSummaryDropSpaceButton5;
-	public Button clearSummaryDropSpaceButton6;
-	public Button clearSummaryDropSpaceButton7;
-	public Button clearSummaryDropSpaceButton8;
-	public Button checkSummaryDropSpaceButton4;
-	public Button checkSummaryDropSpaceButton6;
-	public Button checkSummaryDropSpaceButton8;
-	public Button checkSummaryDropSpaceButton7;
-	public Button boldTextButton;
-	public Button deleteLogs;
-	public Button deleteNotifications;
-	public Button forgotFavorite;
-	public Button font12Button;
-	public Button font14Button;
-	public Button font16Button;
-	public Button font18Button;
-	public Button font20Button;
-	public Button MSummaryAddButton;
-	public Button restoreWindowSizeButton;
-	public TextField tableHead;
-	public TextField backgroundReinforcement;
-	public TextField fileName;
-	public TextField summaryFileName;
-	public TextField summaryTableHead;
-	public TextField logLimit;
-	public TextField notificationLimit;
-	public TextField MSummaryTextField;
-	public Text appearanceText1;
-    public Text appearanceText2;
-	public Text appearanceText3;
-	public Text settingsText1;
-	public Text settingsText2;
-	TextWrapper settingsTextWrapper2;
-	public Text settingsText3;
-	TextWrapper settingsTextWrapper3;
-	public Text settingsText4;
-	public Text settingsText5;
-	TextWrapper settingsTextWrapper5;
-	public Text settingsText6;
-	TextWrapper settingsTextWrapper6;
-	public Text settingsText7;
-	public Text MSummaryEntryText;
-	public Circle circle1;
-	public Circle circle2;
-	public Circle circle3;
-	public Circle circle4;
-	public Circle circle5;
-	public Circle circleBorderColor1;
-	public Circle circleBorderColor2;
-	public Circle circleBorderColor3;
-	public Circle circleBorderColor4;
-	public Circle circleBorderColor5;
-	public CheckBox logCheckBox;
-	public CheckBox notificationCheckBox;
-	public CheckBox autoParseProductListCheckBox;
-	public Line redirectLine;
-	public Line arrowLine1;
-	public Line arrowLine2;
-	public HBox MSummaryHBox;
-	public ChoiceBox<String> MSummaryChoiceBox1;
-	public ChoiceBox<Integer> MSummaryChoiceBox2;
-	public ChoiceBox<RFClass> MSummaryChoiceBox3;
+	@FXML
+	private Label notificationLabel;
+	@FXML
+	private Label notificationLabel2;
+	@FXML
+	private Label summaryDropSpace1;
+	@FXML
+	private Label summaryDropSpace2;
+	@FXML
+	private Label summaryDropSpace3;
+	@FXML
+	private Label summaryDropSpace4;
+	@FXML
+	private Label summaryDropSpace5;
+	@FXML
+	private Label summaryDropSpace6;
+	@FXML
+	private Label summaryDropSpace7;
+	@FXML
+	private Label summaryDropSpace8;
+	@FXML
+	private Label favoriteDropSpace;
+	@FXML
+	private Button downloadFileButton;
+	@FXML
+	private Button clearResultLabelButton;
+	@FXML
+	private Button lowerDropSpaceButton;
+	@FXML
+	private Button clearUpperDropSpaceButton;
+	@FXML
+	private Button infoButton;
+	@FXML
+	private Button downloadResultLabelButton;
+	@FXML
+	private Button downloadSummaryFileButton;
+	@FXML
+	private Button clearAllSummaryDropSpaceButton;
+	@FXML
+	private Button checkSummaryDropSpaceButton4;
+	@FXML
+	private Button checkSummaryDropSpaceButton6;
+	@FXML
+	private Button checkSummaryDropSpaceButton8;
+	@FXML
+	private Button checkSummaryDropSpaceButton7;
+	@FXML
+	private Button boldTextButton;
+	@FXML
+	private Button deleteLogs;
+	@FXML
+	private Button deleteNotifications;
+	@FXML
+	private Button forgetFavorite;
+	@FXML
+	private Button font12Button;
+	@FXML
+	private Button font14Button;
+	@FXML
+	private Button font16Button;
+	@FXML
+	private Button font18Button;
+	@FXML
+	private Button font20Button;
+	@FXML
+	private Button mSummaryAddButton;
+	@FXML
+	private Button restoreWindowSizeButton;
+	@FXML
+	private Button showRlmiButton;
+	@FXML
+	private TextField tableHead;
+	@FXML
+	private TextField backgroundReinforcement;
+	@FXML
+	private TextField fileName;
+	@FXML
+	private TextField summaryFileName;
+	@FXML
+	private TextField summaryTableHead;
+	@FXML
+	private TextField logLimit;
+	@FXML
+	private TextField notificationLimit;
+	@FXML
+	private TextField mSummaryTextField;
+	@FXML
+	private Text appearanceText1;
+	@FXML
+	private Text appearanceText2;
+	@FXML
+	private Text appearanceText3;
+	@FXML
+	private Text settingsText1;
+	@FXML
+	private Text settingsText2;
+	private TextWrapper settingsTextWrapper2;
+	@FXML
+	private Text settingsText3;
+	private TextWrapper settingsTextWrapper3;
+	@FXML
+	private Text settingsText4;
+	@FXML
+	private Text settingsText5;
+	private TextWrapper settingsTextWrapper5;
+	@FXML
+	private Text settingsText6;
+	private TextWrapper settingsTextWrapper6;
+	@FXML
+	private Text settingsText7;
+	@FXML
+	private Text mSummaryEntryText;
+	@FXML
+	private Circle circle1;
+	@FXML
+	private Circle circle2;
+	@FXML
+	private Circle circle3;
+	@FXML
+	private Circle circle4;
+	@FXML
+	private Circle circle5;
+	@FXML
+	private Circle circleBorderColor1;
+	@FXML
+	private Circle circleBorderColor2;
+	@FXML
+	private Circle circleBorderColor3;
+	@FXML
+	private Circle circleBorderColor4;
+	@FXML
+	private Circle circleBorderColor5;
+	@FXML
+	private CheckBox logCheckBox;
+	@FXML
+	private CheckBox notificationCheckBox;
+	@FXML
+	private CheckBox autoParseProductListCheckBox;
+	@FXML
+	private Line redirectLine;
+	@FXML
+	private Line arrowLine1;
+	@FXML
+	private Line arrowLine2;
+	@FXML
+	private HBox mSummaryHBox;
+	@FXML
+	private ChoiceBox<String> mSummaryChoiceBox1;
+	@FXML
+	private ChoiceBox<Integer> mSummaryChoiceBox2;
+	@FXML
+	private ChoiceBox<RFClass> mSummaryChoiceBox3;
 
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
-	Button[] boldTextModifiedButtons;
-	Text[] allTexts;
-	Border border;
-	public Arrow arrow;
+	private Button[] boldTextModifiedButtons;
+	private Text[] allTexts;
 
 	public void startSetup() {
 		groupingAppearanceVariables();
@@ -149,7 +205,7 @@ public class Controller {
 		}
 		setNotificationOpacity(0);
 		setRedirectLineOpacity(0);
-		arrow = new Arrow(arrowLine1, arrowLine2);
+		AddonViews.arrow = new Arrow(arrowLine1, arrowLine2);
 		setArrowOpacity(0);
 		setupBorderColor();
 		setupInfoLabel();
@@ -233,14 +289,15 @@ public class Controller {
 				boldTextButton,
 				deleteLogs,
 				deleteNotifications,
-				forgotFavorite,
+				forgetFavorite,
 				font12Button,
 				font14Button,
 				font16Button,
 				font18Button,
 				font20Button,
-				MSummaryAddButton,
-				restoreWindowSizeButton
+				mSummaryAddButton,
+				restoreWindowSizeButton,
+				showRlmiButton
 		};
 		allTexts = new Text[] {
 				appearanceText1,
@@ -253,60 +310,70 @@ public class Controller {
 				settingsText5,
 				settingsText6,
 				settingsText7,
-				MSummaryEntryText
+				mSummaryEntryText
 		};
 	}
 
-	public void setBackgroundColor1() {
+	@FXML
+	private void setBackgroundColor1() {
 		Main.config.setBackgroundColor(getColorHexCode(circle1.getFill()));
         setupBackgroundColor();
     }
 
-    public void setBackgroundColor2() {
+	@FXML
+	private void setBackgroundColor2() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
         setupBackgroundColor();
     }
 
-    public void setBackgroundColor3() {
+	@FXML
+	private void setBackgroundColor3() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
         setupBackgroundColor();
     }
 
-    public void setBackgroundColor4() {
+	@FXML
+	private void setBackgroundColor4() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
         setupBackgroundColor();
     }
 
-    public void setBackgroundColor5() {
+	@FXML
+	private void setBackgroundColor5() {
 	    Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
         setupBackgroundColor();
     }
 
-	void setupBackgroundColor() {
+	private void setupBackgroundColor() {
 		Main.root.setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
 	}
 
-    public void setTextColor1() {
+	@FXML
+	private void setTextColor1() {
         Main.config.setTextColor(getColorHexCode(circle1.getFill()));
         setupTextColor();
     }
 
-    public void setTextColor2() {
+	@FXML
+	private void setTextColor2() {
 	    Main.config.setTextColor(getColorHexCode(circle2.getFill()));
         setupTextColor();
     }
 
-    public void setTextColor3() {
+	@FXML
+	private void setTextColor3() {
 	    Main.config.setTextColor(getColorHexCode(circle3.getFill()));
         setupTextColor();
     }
 
-    public void setTextColor4() {
+	@FXML
+	private void setTextColor4() {
 	    Main.config.setTextColor(getColorHexCode(circle4.getFill()));
         setupTextColor();
     }
 
-    public void setTextColor5() {
+	@FXML
+	private void setTextColor5() {
 	    Main.config.setTextColor(getColorHexCode(circle5.getFill()));
         setupTextColor();
     }
@@ -315,11 +382,11 @@ public class Controller {
 		return allSummaryLabelWrappers[i - 1];
     }
 
-	String getColorHexCode(Paint paint) {
+	private String getColorHexCode(Paint paint) {
 		return "#" + paint.toString().substring(2, 8);
 	}
 
-    void setupTextColor() {
+    private void setupTextColor() {
 	    for (Text text : allTexts) {
 		    text.setFill(Paint.valueOf(Main.config.getTextColor()));
 	    }
@@ -328,8 +395,8 @@ public class Controller {
 	    }
     }
     
-    void setupBorderColor() {
-		border = new Border(new BorderStroke(Paint.valueOf(Main.config.getBorderColor()), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
+    private void setupBorderColor() {
+		Border border = new Border(new BorderStroke(Paint.valueOf(Main.config.getBorderColor()), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
 	    for (Label label : borderModifiedLabels) {
 	    	label.setBorder(border);
 	    }
@@ -344,19 +411,23 @@ public class Controller {
 	    notificationLabel2.setOpacity(i);
     }
 
-    public void upperDragDropped(DragEvent dragEvent) {
+	@FXML
+	private void upperDragDropped(DragEvent dragEvent) {
 	    DropWorker.dragDropped(dragEvent, 0, this);
     }
 
-    public void upperDragOver(DragEvent dragEvent) {
+	@FXML
+	private void upperDragOver(DragEvent dragEvent) {
 	    DropWorker.dragOver(dragEvent);
     }
 
-    public void lowerDragDropped(DragEvent dragEvent) {
+	@FXML
+	private void lowerDragDropped(DragEvent dragEvent) {
 	    DropWorker.dragDropped(dragEvent, 1, this);
     }
 
-    public void lowerDragOver(DragEvent dragEvent) {
+	@FXML
+	private void lowerDragOver(DragEvent dragEvent) {
 	    DropWorker.dragOver(dragEvent);
     }
 
@@ -372,31 +443,36 @@ public class Controller {
 		return lowerDropSpace;
 	}
 
-    public void setLowerDropSpaceText(String string) {
+    private void setLowerDropSpaceText(String string) {
 		lowerDropSpace.setText(string);
     }
 
-	public void downloadFile() {
+	@FXML
+	private void downloadFile() {
 		Main.downloadCalculatedFile();
 	}
 
-	public void clearResultLabel() {
+	@FXML
+	private void clearResultLabel() {
 		Main.clearNotification();
 	}
 
-	public void clearUpperDropSpace() {
+	@FXML
+	private void clearUpperDropSpace() {
 		Main.config.setPathToProductFile(null);
 		Main.reinforcementProductHashMap.clear();
 		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
 	}
 
-	public void clearLowerDropSpace() {
+	@FXML
+	private void clearLowerDropSpace() {
 		Main.config.setPathToCalculatingFile(null);
 		Main.reinforcementHashMap.clear();
 		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
 	}
 
-	public void toggleInfoLabelOpacity() {
+	@FXML
+	private void toggleInfoLabelOpacity() {
     	double d = AddonViews.infoLabel.getOpacity();
     	if (d == 0.0) {
 		    AddonViews.infoLabel.setOpacity(1);
@@ -406,7 +482,7 @@ public class Controller {
 	    }
 	}
 
-	public void setupInfoLabel() {
+	private void setupInfoLabel() {
 		AddonViews.infoLabel.setOpacity(0);
 		AddonViews.infoLabel.setMouseTransparent(true);
 	}
@@ -431,7 +507,8 @@ public class Controller {
 		return summaryTableHead.getText();
 	}
 
-	public void downloadResultLabel() {
+	@FXML
+	private void downloadResultLabel() {
 		try {
 			Main.saveNotification();
 		} catch (Exception e) {
@@ -439,153 +516,183 @@ public class Controller {
 		}
 	}
 
-	public void visitNotificationTab() {
+	@FXML
+	private void visitNotificationTab() {
 		setNotificationOpacity(0);
 	}
 
-	public void setSummaryDropSpaceText(int i, String string) {
+	private void setSummaryDropSpaceText(int i, String string) {
 		getSummaryLabelWrapper(i).getLabel().setText(string);
 		getSummaryLabelWrapper(i).setDefaultText(string);
 	}
 
-	public void summaryDragDropped1(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped1(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 1, this);
 	}
 
-	public void summaryDragOver(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragOver(DragEvent dragEvent) {
 		DropWorker.dragOver(dragEvent);
 	}
 
-	public void summaryDragDropped2(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped2(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 2, this);
 	}
 
-	public void summaryDragDropped3(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped3(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 3, this);
 	}
 
-	public void summaryDragDropped4(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped4(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 4, this);
 	}
 
-	public void summaryDragDropped5(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped5(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 5, this);
 	}
 
-	public void summaryDragDropped6(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped6(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 6, this);
 	}
 
-	public void summaryDragDropped7(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped7(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 7, this);
 	}
 
-	public void summaryDragDropped8(DragEvent dragEvent) {
+	@FXML
+	private void summaryDragDropped8(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 8, this);
 	}
 
-	public void downloadSummaryFile() {
+	@FXML
+	private void downloadSummaryFile() {
 		Main.downloadSummaryFile();
 	}
 
-	public void clearAllSummaryDropSpace() {
+	@FXML
+	private void clearAllSummaryDropSpace() {
 		for (int i = 1; i < 9; i++) {
 			clearSummaryDropSpace(i);
 		}
 	}
 
-	public void clearSummaryDropSpace1() {
+	@FXML
+	private void clearSummaryDropSpace1() {
 		clearSummaryDropSpace(1);
 	}
 
-	public void clearSummaryDropSpace2() {
+	@FXML
+	private void clearSummaryDropSpace2() {
 		clearSummaryDropSpace(2);
 	}
 
-	public void clearSummaryDropSpace3() {
+	@FXML
+	private void clearSummaryDropSpace3() {
 		clearSummaryDropSpace(3);
 	}
 
-	public void clearSummaryDropSpace4() {
+	@FXML
+	private void clearSummaryDropSpace4() {
 		clearSummaryDropSpace(4);
 	}
 
-	public void clearSummaryDropSpace5() {
+	@FXML
+	private void clearSummaryDropSpace5() {
 		clearSummaryDropSpace(5);
 	}
 
-	public void clearSummaryDropSpace6() {
+	@FXML
+	private void clearSummaryDropSpace6() {
 		clearSummaryDropSpace(6);
 	}
 
-	public void clearSummaryDropSpace7() {
+	@FXML
+	private void clearSummaryDropSpace7() {
 		clearSummaryDropSpace(7);
 	}
 
-	public void clearSummaryDropSpace8() {
+	@FXML
+	private void clearSummaryDropSpace8() {
 		clearSummaryDropSpace(8);
 	}
 
-	public void clearSummaryDropSpace(int i) {
+	private void clearSummaryDropSpace(int i) {
 		if (Main.summaryPaths.get(i) != null) {
 			Main.summaryPaths.get(i).clear();
 			getSummaryLabelWrapper(i).resetTextToDefault();
 		}
 	}
 
-	public void checkSummaryDropSpace4() {
+	@FXML
+	private void checkSummaryDropSpace4() {
 		checkSummaryDropSpace(4);
 	}
 
-	public void checkSummaryDropSpace6() {
+	@FXML
+	private void checkSummaryDropSpace6() {
 		checkSummaryDropSpace(6);
 	}
 
-	public void checkSummaryDropSpace7() {
+	@FXML
+	private void checkSummaryDropSpace7() {
 		checkSummaryDropSpace(7);
 	}
 
-	public void checkSummaryDropSpace8() {
+	@FXML
+	private void checkSummaryDropSpace8() {
 		checkSummaryDropSpace(8);
 	}
 
-	public void checkSummaryDropSpace(int i) {
+	private void checkSummaryDropSpace(int i) {
 		if (Main.summaryPaths.get(i) != null) {
 			Main.checkSummaryDropSpace(i);
 		}
 	}
 
-	public void setBorderColor1() {
+	@FXML
+	private void setBorderColor1() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor1.getFill()));
 		setupBorderColor();
 	}
 
-	public void setBorderColor2() {
+	@FXML
+	private void setBorderColor2() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor2.getFill()));
 		setupBorderColor();
 	}
 
-	public void setBorderColor3() {
+	@FXML
+	private void setBorderColor3() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor3.getFill()));
 		setupBorderColor();
 	}
 
-	public void setBorderColor4() {
+	@FXML
+	private void setBorderColor4() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor4.getFill()));
 		setupBorderColor();
 	}
 
-	public void setBorderColor5() {
+	@FXML
+	private void setBorderColor5() {
 		Main.config.setBorderColor(getColorHexCode(circleBorderColor5.getFill()));
 		setupBorderColor();
 	}
 
-	public void toggleBoldText() {
+	@FXML
+	private void toggleBoldText() {
 		Main.config.toggleBoldText();
 		setupFont();
 	}
 
-	void setupFont() {
+	private void setupFont() {
 		if (Main.config.getBoldText()) {
 			String font = "System Bold";
 			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
@@ -596,7 +703,7 @@ public class Controller {
 		}
 	}
 
-	void setFont(Font font1, Font font2, Font font3) {
+	private void setFont(Font font1, Font font2, Font font3) {
 		for (Label label : allLabels) {
 			label.setFont(font3);
 		}
@@ -617,15 +724,17 @@ public class Controller {
 		autoParseProductListCheckBox.setSelected(Main.config.getAutoParseProductList());
 	}
 
-	public void toggleWriteLog() {
+	@FXML
+	private void toggleWriteLog() {
 		Main.config.toggleWriteLog();
 	}
 
-	public void toggleWriteNotification() {
+	@FXML
+	private void toggleWriteNotification() {
 		Main.config.toggleWriteNotification();
 	}
 
-	public void setText() {
+	private void setText() {
 		try {
 			settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(Main.config.getLogStorageLimit()));
 			settingsTextWrapper3.setText(
@@ -646,17 +755,20 @@ public class Controller {
 		}
 	}
 
-	public void deleteLogs() {
+	@FXML
+	private void deleteLogs() {
 		Main.deleteStorage(Main.programRootPath + Main.logStorageDirectory);
 		setText();
 	}
 
-	public void deleteNotifications() {
+	@FXML
+	private void deleteNotifications() {
 		Main.deleteStorage(Main.programRootPath + Main.notificationStorageDirectory);
 		setText();
 	}
 
-	public void visitSettingsTab() {
+	@FXML
+	private void visitSettingsTab() {
 		Main.parseTextField(0, logLimit.getText());
 		Main.parseTextField(1, notificationLimit.getText());
 		logLimit.clear();
@@ -664,16 +776,19 @@ public class Controller {
 		setText();
 	}
 
-	public void forgotFavorite() {
+	@FXML
+	private void forgetFavorite() {
 		Main.config.setFavoritePath(null);
 		setFavoriteDropSpaceText(Main.properties.getProperty("favorite_is_off"));
 	}
 
-	public void favoriteDragOver(DragEvent dragEvent) {
+	@FXML
+	private void favoriteDragOver(DragEvent dragEvent) {
 		DropWorker.dragOver(dragEvent);
 	}
 
-	public void favoriteDragDropped(DragEvent dragEvent) {
+	@FXML
+	private void favoriteDragDropped(DragEvent dragEvent) {
 		DropWorker.favoriteDragDropped(dragEvent, this);
 	}
 
@@ -685,73 +800,86 @@ public class Controller {
 		favoriteDropSpace.setText(string);
 	}
 
-	public void toggleAutoParseProductList() {
+	@FXML
+	private void toggleAutoParseProductList() {
 		Main.config.toggleAutoParseProductList();
 	}
 
-	public void setResultLabelFont12() {
+	@FXML
+	private void setResultLabelFont12() {
 		setResultLabelFont(12);
 	}
 
-	public void setResultLabelFont14() {
+	@FXML
+	private void setResultLabelFont14() {
 		setResultLabelFont(14);
 	}
 
-	public void setResultLabelFont16() {
+	@FXML
+	private void setResultLabelFont16() {
 		setResultLabelFont(16);
 	}
 
-	public void setResultLabelFont18() {
+	@FXML
+	private void setResultLabelFont18() {
 		setResultLabelFont(18);
 	}
 
-	public void setResultLabelFont20() {
+	@FXML
+	private void setResultLabelFont20() {
 		setResultLabelFont(20);
 	}
 
-	public void setResultLabelFont(int i) {
+	private void setResultLabelFont(int i) {
 		Font font = new Font(resultLabel.getFont().getName(), i);
 		resultLabel.setFont(font);
 		Main.config.setResultLabelFontSize(i);
 	}
 
-	public void click1(MouseEvent mouseEvent) {
+	@FXML
+	private void click1(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(1);
 		}
 	}
 
-	public void click2(MouseEvent mouseEvent) {
+	@FXML
+	private void click2(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(2);
 		}
 	}
 
-	public void click3(MouseEvent mouseEvent) {
+	@FXML
+	private void click3(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(3);
 		}
 	}
 
-	public void click4(MouseEvent mouseEvent) {
+	@FXML
+	private void click4(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(4);
 		}
 	}
 
-	public void click5(MouseEvent mouseEvent) {
+	@FXML
+	private void click5(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(5);
 		}
 	}
 
-	public void click7(MouseEvent mouseEvent) {
+	@FXML
+	private void click7(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(7);
 		}
 	}
 
-	public void click8(MouseEvent mouseEvent) {
+	@FXML
+	private void click8(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
 			SummaryRedirectManager.setRedirectTo(8);
 		}
@@ -770,38 +898,39 @@ public class Controller {
 	}
 
 	public void setArrowOpacity(int i) {
-		arrow.setOpacity(i);
+		AddonViews.arrow.setOpacity(i);
 	}
 
-	void setupMSummaryChoiceBox() {
-		MSummaryChoiceBox1.setItems(FXCollections.observableArrayList(
+	private void setupMSummaryChoiceBox() {
+		mSummaryChoiceBox1.setItems(FXCollections.observableArrayList(
 				Arrays.asList(Main.properties.getProperty("content_row").split("-"))
 		));
-		MSummaryChoiceBox1.setValue(Main.properties.getProperty("content_row").split("-")[0]);
-		MSummaryChoiceBox2.setItems(FXCollections.observableList(StandardsRepository.getDiametersAsList()));
-		MSummaryChoiceBox2.setValue(StandardsRepository.diameters[0]);
-		MSummaryChoiceBox3.setItems(FXCollections.observableArrayList(
+		mSummaryChoiceBox1.setValue(Main.properties.getProperty("content_row").split("-")[0]);
+		mSummaryChoiceBox2.setItems(FXCollections.observableList(StandardsRepository.getDiametersAsList()));
+		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[0]);
+		mSummaryChoiceBox3.setItems(FXCollections.observableArrayList(
 				RFClass.A240,
 				RFClass.A400,
 				RFClass.A500,
 				RFClass.A500S,
 				RFClass.A600
 		));
-		MSummaryChoiceBox3.setValue(RFClass.A500S);
+		mSummaryChoiceBox3.setValue(RFClass.A500S);
 	}
 
-	public void addManuallySummaryEntry() {
-		ManuallySummaryEntry.add(MSummaryChoiceBox1.getValue(),
-				MSummaryChoiceBox2.getValue(),
-				MSummaryChoiceBox3.getValue(),
-				MSummaryTextField.getText()
+	@FXML
+	private void addManuallySummaryEntry() {
+		ManuallySummaryEntry.add(mSummaryChoiceBox1.getValue(),
+				mSummaryChoiceBox2.getValue(),
+				mSummaryChoiceBox3.getValue(),
+				mSummaryTextField.getText()
 		);
 	}
 
-	public void restoreWindowSize() {
+	@FXML
+	private void restoreWindowSize() {
 		Stages.primary.setHeight(Stages.defaultHeight);
 		Stages.primary.setWidth(Stages.defaultWidth);
-		//Main.primaryStage.setFullScreen(true);
 	}
 
 	@FXML
@@ -827,5 +956,29 @@ public class Controller {
 
 	public void addInfoLabel(Label label) {
 		anchorPane1.getChildren().add(label);
+	}
+
+	public Background getBackgroundSample() {
+		return notificationLabel.getBackground();
+	}
+
+	public TextAlignment getTextAlignmentSample() {
+		return notificationLabel.getTextAlignment();
+	}
+
+	public Line getLine() {
+		return redirectLine;
+	}
+
+	public void mSummaryHBoxAdd(Label label) {
+		mSummaryHBox.getChildren().add(label);
+	}
+
+	public void mSummaryHBoxRemove(Label label) {
+		mSummaryHBox.getChildren().remove(label);
+	}
+
+	public double getMSummaryHBoxPrefHeight() {
+		return mSummaryHBox.getPrefHeight();
 	}
 }

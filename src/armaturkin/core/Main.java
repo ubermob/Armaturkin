@@ -355,6 +355,7 @@ public class Main extends Application {
     private static void doingAddonViews() throws IOException {
 	    AddonViews.infoLabel = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/infoLabel.fxml")).load();
 	    controller.addInfoLabel(AddonViews.infoLabel);
+	    AddonViews.setupInfoLabel();
     }
 
     private static String getDate() {

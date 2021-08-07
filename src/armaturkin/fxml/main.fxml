@@ -283,16 +283,16 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <HBox fx:id="MSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                  <Button fx:id="MSummaryAddButton" layoutX="351.0" layoutY="508.0" mnemonicParsing="false" onAction="#addManuallySummaryEntry" text="Добавить">
+                  <HBox fx:id="mSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                  <Button fx:id="mSummaryAddButton" layoutX="351.0" layoutY="508.0" mnemonicParsing="false" onAction="#addManuallySummaryEntry" text="Добавить">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
-                  <TextField fx:id="MSummaryTextField" layoutX="601.0" layoutY="461.0" prefHeight="25.0" prefWidth="185.0" promptText="Масса (Пример: 20 или 77.77)" />
-                  <ChoiceBox fx:id="MSummaryChoiceBox1" layoutX="14.0" layoutY="461.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="MSummaryChoiceBox2" layoutX="224.0" layoutY="461.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="MSummaryChoiceBox3" layoutX="426.0" layoutY="461.0" prefWidth="150.0" />
-                  <Text fx:id="MSummaryEntryText" layoutX="14.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавить ручную позицию в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
+                  <TextField fx:id="mSummaryTextField" layoutX="601.0" layoutY="461.0" prefHeight="25.0" prefWidth="185.0" promptText="Масса (Пример: 20 или 77.77)" />
+                  <ChoiceBox fx:id="mSummaryChoiceBox1" layoutX="14.0" layoutY="461.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="mSummaryChoiceBox2" layoutX="224.0" layoutY="461.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="mSummaryChoiceBox3" layoutX="426.0" layoutY="461.0" prefWidth="150.0" />
+                  <Text fx:id="mSummaryEntryText" layoutX="14.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавить ручную позицию в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -357,7 +357,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="forgotFavorite" layoutX="597.0" layoutY="116.0" mnemonicParsing="false" onAction="#forgotFavorite" prefHeight="37.0" prefWidth="170.0" text="Забыть мою папку">
+                  <Button fx:id="forgetFavorite" layoutX="597.0" layoutY="116.0" mnemonicParsing="false" onAction="#forgetFavorite" prefHeight="37.0" prefWidth="170.0" text="Забыть мою папку">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

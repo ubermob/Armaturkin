@@ -33,7 +33,7 @@ public class ManuallySummaryEntry {
 
 	public static void remove(ManuallySummaryEntry entry) {
 		Main.manuallySummaryEntries.remove(entry);
-		Main.controller.MSummaryHBox.getChildren().remove(entry.getLabel());
+		Main.controller.mSummaryHBoxRemove(entry.getLabel());
 		Main.log.add(Main.properties.getProperty("remove_manually_summary_entry").formatted(
 				ManuallySummaryEntry.class,
 				entry.getSummaryLabelID(),
@@ -79,18 +79,19 @@ public class ManuallySummaryEntry {
 		return reinforcementLiteInfo.getMass();
 	}
 
+	//TODO: Do create a fxml card?
 	private void buildLabel(String summaryLabel, int diameter, RFClass rfClass, double mass) {
 		label = new Label();
 		label.setPrefWidth(100);
-		label.setPrefHeight(Main.controller.MSummaryHBox.getPrefHeight());
+		label.setPrefHeight(Main.controller.getMSummaryHBoxPrefHeight());
 		label.setText(Main.properties.getProperty("manually_summary_entry_label_text").formatted(
 				summaryLabel,
 				diameter,
 				RFClass.toString(rfClass),
 				mass
 		));
-		label.setBackground(Main.controller.notificationLabel.getBackground());
-		label.setTextAlignment(Main.controller.notificationLabel.getTextAlignment());
+		label.setBackground(Main.controller.getBackgroundSample());
+		label.setTextAlignment(Main.controller.getTextAlignmentSample());
 		label.setAlignment(Pos.CENTER);
 		// https://stackoverflow.com/questions/45306039/how-to-write-lambda-expression-with-eventhandler-javafx
 		label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -98,6 +99,6 @@ public class ManuallySummaryEntry {
 				remove(this);
 			}
 		});
-		Main.controller.MSummaryHBox.getChildren().add(label);
+		Main.controller.mSummaryHBoxAdd(label);
 	}
 }

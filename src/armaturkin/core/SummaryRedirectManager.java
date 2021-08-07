@@ -1,5 +1,6 @@
 package armaturkin.core;
 
+import armaturkin.view.AddonViews;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
 
@@ -23,11 +24,11 @@ public class SummaryRedirectManager {
 	}
 
 	static void setLine(int i) {
-		Line line = Main.controller.redirectLine;
+		Line line = Main.controller.getLine();
 		line.setStartX(labels[5].getLayoutX() + labels[5].getWidth() / 2);
 		line.setStartY(labels[5].getLayoutY() + labels[5].getHeight() / 2);
 		line.setEndX(labels[i - 1].getLayoutX() + labels[i - 1].getWidth() / 2);
 		line.setEndY(labels[i - 1].getLayoutY() + labels[i - 1].getHeight() / 2);
-		Main.controller.arrow.refresh(line);
+		AddonViews.arrow.refresh(line);
 	}
 }
