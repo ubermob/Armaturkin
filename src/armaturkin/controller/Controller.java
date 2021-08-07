@@ -36,7 +36,8 @@ import java.util.Arrays;
 
 public class Controller {
 
-	public AnchorPane testT;
+	@FXML
+	private AnchorPane anchorPane1;
 	@FXML
 	private Label upperDropSpace;
 	@FXML
@@ -45,7 +46,7 @@ public class Controller {
 	private Label resultLabel;
 	public Label notificationLabel;
 	public Label notificationLabel2;
-	public Label infoLabel;
+	//public Label infoLabel;
 	public Label summaryDropSpace1;
 	public Label summaryDropSpace2;
 	public Label summaryDropSpace3;
@@ -182,7 +183,7 @@ public class Controller {
 				resultLabel,
 				notificationLabel,
 				notificationLabel2,
-				infoLabel,
+				AddonViews.infoLabel,
 				summaryDropSpace1,
 				summaryDropSpace2,
 				summaryDropSpace3,
@@ -396,18 +397,18 @@ public class Controller {
 	}
 
 	public void toggleInfoLabelOpacity() {
-    	double d = infoLabel.getOpacity();
+    	double d = AddonViews.infoLabel.getOpacity();
     	if (d == 0.0) {
-    		infoLabel.setOpacity(1);
+		    AddonViews.infoLabel.setOpacity(1);
 	    }
     	if (d == 1.0) {
-    		infoLabel.setOpacity(0);
+		    AddonViews.infoLabel.setOpacity(0);
 	    }
 	}
 
 	public void setupInfoLabel() {
-    	infoLabel.setOpacity(0);
-    	infoLabel.setMouseTransparent(true);
+		AddonViews.infoLabel.setOpacity(0);
+		AddonViews.infoLabel.setMouseTransparent(true);
 	}
 
 	public String getTableHead() {
@@ -599,7 +600,7 @@ public class Controller {
 		for (Label label : allLabels) {
 			label.setFont(font3);
 		}
-		infoLabel.setFont(font2);
+		AddonViews.infoLabel.setFont(font2);
 		notificationLabel.setFont(font1);
 		notificationLabel2.setFont(font1);
 		for (Button button : boldTextModifiedButtons) {
@@ -803,7 +804,8 @@ public class Controller {
 		//Main.primaryStage.setFullScreen(true);
 	}
 
-	public void showRlmi() {
+	@FXML
+	private void showRlmi() {
 		if (Stages.second == null) {
 			Stages.second = new Stage();
 			Label label = new Label(ReinforcementLinearMassInfo.get());
@@ -821,5 +823,9 @@ public class Controller {
 			Stages.primary.setOnCloseRequest(windowEvent -> Stages.second.close());
 		}
 		Stages.second.show();
+	}
+
+	public void addInfoLabel(Label label) {
+		anchorPane1.getChildren().add(label);
 	}
 }

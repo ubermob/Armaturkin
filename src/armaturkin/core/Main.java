@@ -3,6 +3,7 @@ package armaturkin.core;
 import armaturkin.controller.Controller;
 import armaturkin.utils.PcInformation;
 import armaturkin.utils.Spammer;
+import armaturkin.view.AddonViews;
 import armaturkin.view.Stages;
 import armaturkin.workers.CalculatingFileWorker;
 import armaturkin.workers.FileWorker;
@@ -50,9 +51,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/main_scene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/main.fxml"));
         root = loader.load();
         controller = loader.getController();
+	    doingAddonViews();
         controller.startSetup();
         primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
         log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
@@ -344,18 +346,23 @@ public class Main extends Application {
 	    notificationStorageDirectory = properties.getProperty("notification_storage_directory");
     }
 
-    static void doingPrimaryStage(Stage stage) {
+    private static void doingPrimaryStage(Stage stage) {
 	    Stages.primary = stage;
 	    Stages.defaultHeight = stage.getHeight();
 	    Stages.defaultWidth = stage.getWidth();
     }
 
-    static String getDate() {
+    private static void doingAddonViews() throws IOException {
+	    AddonViews.infoLabel = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/infoLabel.fxml")).load();
+	    controller.addInfoLabel(AddonViews.infoLabel);
+    }
+
+    private static String getDate() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
 	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("date_pattern"), new Locale("en")));
     }
 
-    static String getTime() {
+    private static String getTime() {
 	    LocalDateTime localDateTime = LocalDateTime.now();
 	    return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("time_pattern")));
     }
