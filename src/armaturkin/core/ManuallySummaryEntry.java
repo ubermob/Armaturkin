@@ -8,8 +8,8 @@ import javafx.scene.input.MouseEvent;
 public class ManuallySummaryEntry {
 
 	private Label label;
-	private int summaryLabelID;
-	private ReinforcementLiteInfo reinforcementLiteInfo;
+	private final int summaryLabelID;
+	private final ReinforcementLiteInfo reinforcementLiteInfo;
 
 	public static void add(String summaryLabel, Integer diameter, RFClass rfClass, String massAsString) {
 		try {
@@ -79,7 +79,7 @@ public class ManuallySummaryEntry {
 		return reinforcementLiteInfo.getMass();
 	}
 
-	//TODO: Do create a fxml card?
+	// TODO: Do create a fxml card?
 	private void buildLabel(String summaryLabel, int diameter, RFClass rfClass, double mass) {
 		label = new Label();
 		label.setPrefWidth(100);

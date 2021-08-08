@@ -15,7 +15,7 @@ public class Content {
 	public Content() {
 		possibleHash = new ArrayList<>();
 		try {
-			InputStream resource = this.getClass().getResourceAsStream("/RfHashCodeList.txt");
+			InputStream resource = this.getClass().getResourceAsStream("/RF_hash_code_list.txt");
 			InputStreamReader inputStreamReader = new InputStreamReader(resource);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			while (bufferedReader.ready()) {

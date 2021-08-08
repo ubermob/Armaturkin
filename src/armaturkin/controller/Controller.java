@@ -5,9 +5,12 @@ import armaturkin.utils.ReinforcementLinearMassInfo;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
@@ -30,6 +33,8 @@ public class Controller {
 
 	@FXML
 	private AnchorPane anchorPane1;
+	@FXML
+	private AnchorPane anchorPane3;
 	@FXML
 	private Label upperDropSpace;
 	@FXML
@@ -175,12 +180,6 @@ public class Controller {
 	@FXML
 	private CheckBox autoParseProductListCheckBox;
 	@FXML
-	private Line redirectLine;
-	@FXML
-	private Line arrowLine1;
-	@FXML
-	private Line arrowLine2;
-	@FXML
 	private HBox mSummaryHBox;
 	@FXML
 	private ChoiceBox<String> mSummaryChoiceBox1;
@@ -205,7 +204,7 @@ public class Controller {
 		}
 		setNotificationOpacity(0);
 		setRedirectLineOpacity(0);
-		AddonViews.arrow = new Arrow(arrowLine1, arrowLine2);
+		AddonViews.arrow = new Arrow(AddonViews.arrowLine1, AddonViews.arrowLine2);
 		setArrowOpacity(0);
 		setupBorderColor();
 		setupInfoLabel();
@@ -894,7 +893,7 @@ public class Controller {
 	}
 
 	public void setRedirectLineOpacity(int i) {
-		redirectLine.setOpacity(i);
+		AddonViews.redirectLine.setOpacity(i);
 	}
 
 	public void setArrowOpacity(int i) {
@@ -966,10 +965,6 @@ public class Controller {
 		return notificationLabel.getTextAlignment();
 	}
 
-	public Line getLine() {
-		return redirectLine;
-	}
-
 	public void mSummaryHBoxAdd(Label label) {
 		mSummaryHBox.getChildren().add(label);
 	}
@@ -980,5 +975,28 @@ public class Controller {
 
 	public double getMSummaryHBoxPrefHeight() {
 		return mSummaryHBox.getPrefHeight();
+	}
+
+	public void addArrowLines() {
+		ObservableList<Node> children = anchorPane3.getChildren();
+		children.add(0, AddonViews.redirectLine);
+		children.add(1, AddonViews.arrowLine1);
+		children.add(2, AddonViews.arrowLine2);
+	}
+
+	// Test
+	public void doTest() throws Exception {
+		/*System.out.println("test start");
+		var v = (AnchorPane) new FXMLLoader(getClass().getResource("/armaturkin/fxml/Arrow_lines.fxml")).load();
+		System.out.println(v);
+		System.out.println(v.getChildren());
+		var v1 = (Line) v.getChildren().get(0);
+		var v2 = (Line) v.getChildren().get(1);
+		var v3 = (Line) v.getChildren().get(2);
+		anchorPane1.getChildren().add(v1);
+		anchorPane1.getChildren().add(v2);
+		anchorPane1.getChildren().add(v3);
+		System.out.println(v1.getId());
+		System.out.println("test end");*/
 	}
 }

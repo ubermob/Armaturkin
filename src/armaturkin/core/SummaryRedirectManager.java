@@ -24,7 +24,7 @@ public class SummaryRedirectManager {
 	}
 
 	static void setLine(int i) {
-		Line line = Main.controller.getLine();
+		Line line = AddonViews.redirectLine;
 		line.setStartX(labels[5].getLayoutX() + labels[5].getWidth() / 2);
 		line.setStartY(labels[5].getLayoutY() + labels[5].getHeight() / 2);
 		line.setEndX(labels[i - 1].getLayoutX() + labels[i - 1].getWidth() / 2);

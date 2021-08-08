@@ -51,7 +51,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/Main.fxml"));
         root = loader.load();
         controller = loader.getController();
 	    doingAddonViews();
@@ -60,7 +60,7 @@ public class Main extends Application {
         log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
         log.add(PcInformation.getInformation());
         try {
-	        InputStream resource = Main.class.getResourceAsStream("/Icon.png");
+	        InputStream resource = getClass().getResourceAsStream("/Icon.png");
 	        primaryStage.getIcons().add(new Image(resource));
 	        resource.close();
         } catch (Exception e) {
@@ -353,9 +353,8 @@ public class Main extends Application {
     }
 
     private static void doingAddonViews() throws IOException {
-	    AddonViews.infoLabel = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/infoLabel.fxml")).load();
-	    controller.addInfoLabel(AddonViews.infoLabel);
-	    AddonViews.setupInfoLabel();
+    	AddonViews.loadInfoLabel(Main.class.getResource("/armaturkin/fxml/Info_label.fxml"));
+    	AddonViews.loadArrowLines(Main.class.getResource("/armaturkin/fxml/Arrow_lines.fxml"));
     }
 
     private static String getDate() {

@@ -12,7 +12,7 @@ public class ReinforcementLinearMassInfo {
 	public static String get() {
 		List<String> read = null;
 		try {
-			read = Reader.read(ReinforcementLinearMassInfo.class.getResourceAsStream("/RlmiStyle.txt"));
+			read = Reader.read(ReinforcementLinearMassInfo.class.getResourceAsStream("/RLMI_style.txt"));
 		} catch (IOException e) {
 			Main.log.add(e);
 		}
