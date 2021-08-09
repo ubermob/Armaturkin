@@ -7,9 +7,9 @@ import java.util.Formatter;
 import java.util.HashMap;
 
 import armaturkin.core.Main;
-import armaturkin.core.Reinforcement;
-import armaturkin.core.ReinforcementProduct;
-import armaturkin.core.StandardsRepository;
+import armaturkin.reinforcement.Reinforcement;
+import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.ParseInt;
 import armaturkin.interfaces.RowEmptyChecker;

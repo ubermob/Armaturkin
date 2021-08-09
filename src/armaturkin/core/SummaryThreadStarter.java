@@ -1,5 +1,6 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.workers.SummaryFileWorker;
 
 import java.util.ArrayList;

@@ -10,6 +10,9 @@ import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.ParseInt;
 import armaturkin.interfaces.RowEmptyChecker;
 import armaturkin.interfaces.Stopwatch;
+import armaturkin.reinforcement.RFClass;
+import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.reinforcement.StandardsRepository;
 import org.apache.poi.ss.usermodel.*;
 
 public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, Stopwatch {

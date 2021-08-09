@@ -1,5 +1,6 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.RFClass;
 import armaturkin.utils.MassCounter;
 
 import java.util.Arrays;

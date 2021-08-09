@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.reinforcement;
 
 public class Reinforcement {
 
@@ -34,7 +34,7 @@ public class Reinforcement {
 	public String toString() {
 		return getClass() + ": [position: " + position + "]," +
 				"[diameter: " + diameter + "]," +
-				"[armaturkin.core.RFClass: " + rfClass + "]," +
+				"[armaturkin.reinforcement.RFClass: " + rfClass + "]," +
 				"[length: " + length + "]," +
 				"[number: " + number + "]," +
 				"[mass: " + mass +  "]," +

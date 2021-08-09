@@ -1,5 +1,9 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.RFClass;
+import armaturkin.reinforcement.ReinforcementLiteInfo;
+import armaturkin.reinforcement.StandardsRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 

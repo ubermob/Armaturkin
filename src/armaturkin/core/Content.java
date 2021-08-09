@@ -1,5 +1,6 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.utils.MassCounter;
 
 import java.io.*;

@@ -1,8 +1,12 @@
 package armaturkin.core;
 
 import armaturkin.controller.Controller;
+import armaturkin.reinforcement.Reinforcement;
+import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.utils.Dev;
 import armaturkin.utils.PcInformation;
 import armaturkin.utils.Spammer;
+import armaturkin.utils.UnacceptableSymbolReplacer;
 import armaturkin.view.AddonViews;
 import armaturkin.view.Stages;
 import armaturkin.workers.CalculatingFileWorker;
@@ -30,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.6";
+	public static String version = "0.5.7b";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -47,7 +51,8 @@ public class Main extends Application {
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
-	public static List<ManuallySummaryEntry> manuallySummaryEntries = new ArrayList<>();
+	public static List<ManuallyEntry> manuallySummaryEntries = new ArrayList<>();
+	public static List<ManuallyEntry> backgroundReinforcementManuallyEntries = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -128,9 +133,9 @@ public class Main extends Application {
     		FileWorker fileWorker = new FileWorker(
     				path,
 				    reinforcementHashMap,
-				    controller.getBackgroundReinforcement(),
+				    controller.getBackgroundReinforcement().replace(",", "."),
 				    controller.getTableHead(),
-				    controller.getFileName()
+				    UnacceptableSymbolReplacer.replace(controller.getFileName())
 		    );
     		Thread fileWorkerThread = new Thread(fileWorker);
     		fileWorkerThread.start();
@@ -149,7 +154,13 @@ public class Main extends Application {
     		if (summaryTableHead.equals("")) {
     			summaryTableHead = properties.getProperty("default_table_main_header");
 		    }
-    		SummaryHub summaryHub = new SummaryHub(summaryPaths, manuallySummaryEntries, path, controller.getSummaryFileName(), summaryTableHead);
+    		SummaryHub summaryHub = new SummaryHub(
+    				summaryPaths,
+				    manuallySummaryEntries,
+				    path,
+				    UnacceptableSymbolReplacer.replace(controller.getSummaryFileName()),
+				    summaryTableHead
+		    );
     		Thread summaryHubThread = new Thread(summaryHub);
     		summaryHubThread.start();
 	    }
@@ -173,8 +184,8 @@ public class Main extends Application {
 	    }
 	}
 
-    static void parseArgs(String[] args) {
-    	String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk", "-helloSpammer"};
+    private static void parseArgs(String[] args) {
+    	String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk", "-helloSpammer", "-dev"};
 	    for (String arg : args) {
 		    if (arg.equals(argCommand[0])) {
 			    Log.enable();
@@ -200,10 +211,14 @@ public class Main extends Application {
 			    spammerThread.start();
 			    log.add(argCommand[3]);
 		    }
+		    if (isMatchCommands(arg, argCommand[4])) {
+			    Dev.isDevMode = true;
+			    log.add(argCommand[4]);
+		    }
 	    }
     }
 
-    static boolean isMatchCommands(String arg, String argCommand) {
+    private static boolean isMatchCommands(String arg, String argCommand) {
     	return arg.length() >= argCommand.length() && arg.startsWith(argCommand);
     }
 
@@ -257,7 +272,7 @@ public class Main extends Application {
     	notificationString = "";
     }
 
-    static void checkDirectory() throws IOException {
+    private static void checkDirectory() throws IOException {
     	if (diskLetter != null) {
     		programRootPath = diskLetter + programRootPath.substring(1);
 	    }
@@ -272,15 +287,15 @@ public class Main extends Application {
 	    }
     }
 
-	static void loadConfigFile() throws IOException {
+	private static void loadConfigFile() throws IOException {
 		config = new Configuration(programRootPath + configFileName);
 	}
 
-    static void saveConfigFile() throws IOException {
+    private static void saveConfigFile() throws IOException {
 	    config.saveConfigFile();
     }
 
-    static void loadProperties() {
+    private static void loadProperties() {
     	properties = new Properties();
     	try {
 		    InputStream resource = Main.class.getResourceAsStream("/Properties.xml");
@@ -289,6 +304,7 @@ public class Main extends Application {
 	    } catch (Exception e) {
     		log.add(e);
 	    }
+		ManuallyEntry.loadColorProperties();
     }
 
     public static void saveNotification() throws IOException {
@@ -337,7 +353,7 @@ public class Main extends Application {
 	    }
 	}
 
-    static void readBasicFieldsFromProperties() {
+    private static void readBasicFieldsFromProperties() {
     	programRootPath = properties.getProperty("program_root_path");
     	configFileName = properties.getProperty("config_file_name");
     	logFileName = properties.getProperty("log_file_name");
@@ -353,7 +369,6 @@ public class Main extends Application {
     }
 
     private static void doingAddonViews() throws IOException {
-    	AddonViews.loadInfoLabel(Main.class.getResource("/armaturkin/fxml/Info_label.fxml"));
     	AddonViews.loadArrowLines(Main.class.getResource("/armaturkin/fxml/Arrow_lines.fxml"));
     }
 

@@ -1,12 +1,16 @@
 package armaturkin.controller;
 
 import armaturkin.core.*;
+import armaturkin.reinforcement.RFClass;
+import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.utils.Dev;
 import armaturkin.utils.ReinforcementLinearMassInfo;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -25,6 +29,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Controller {
@@ -33,6 +38,8 @@ public class Controller {
 	private AnchorPane anchorPane1;
 	@FXML
 	private AnchorPane anchorPane3;
+	@FXML
+	private AnchorPane utilAnchorPane;
 	@FXML
 	private Label upperDropSpace;
 	@FXML
@@ -70,7 +77,7 @@ public class Controller {
 	@FXML
 	private Button clearUpperDropSpaceButton;
 	@FXML
-	private Button infoButton;
+	private Button showInfoButton;
 	@FXML
 	private Button downloadResultLabelButton;
 	@FXML
@@ -108,7 +115,13 @@ public class Controller {
 	@FXML
 	private Button restoreWindowSizeButton;
 	@FXML
-	private Button showRlmiButton;
+	private Button showReinforcementLinearMassListButton;
+	@FXML
+	private Button backgroundReinforcementAddButton;
+	@FXML
+	private Button testButton;
+	@FXML
+	private Button varStateButton;
 	@FXML
 	private TextField tableHead;
 	@FXML
@@ -125,6 +138,8 @@ public class Controller {
 	private TextField notificationLimit;
 	@FXML
 	private TextField mSummaryTextField;
+	@FXML
+	private TextField mBackgroundTextField;
 	@FXML
 	private Text appearanceText1;
 	@FXML
@@ -150,7 +165,9 @@ public class Controller {
 	@FXML
 	private Text settingsText7;
 	@FXML
-	private Text mSummaryEntryText;
+	private Text mSummaryEntryText1;
+	@FXML
+	private Text mSummaryEntryText2;
 	@FXML
 	private Circle circle1;
 	@FXML
@@ -185,6 +202,8 @@ public class Controller {
 	private ChoiceBox<Integer> mSummaryChoiceBox2;
 	@FXML
 	private ChoiceBox<RFClass> mSummaryChoiceBox3;
+	@FXML
+	private ChoiceBox<Integer> mBackgroundChoiceBox;
 
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
@@ -193,6 +212,10 @@ public class Controller {
 	private Text[] allTexts;
 
 	public void startSetup() {
+		if (!Dev.isDevMode) {
+			utilAnchorPane.getChildren().remove(testButton);
+			utilAnchorPane.getChildren().remove(varStateButton);
+		}
 		groupingAppearanceVariables();
 		setupBackgroundColor();
 		setupTextColor();
@@ -205,7 +228,6 @@ public class Controller {
 		AddonViews.arrow = new Arrow(AddonViews.arrowLine1, AddonViews.arrowLine2);
 		setArrowOpacity(0);
 		setupBorderColor();
-		setupInfoLabel();
 		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
 		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
 
@@ -227,6 +249,7 @@ public class Controller {
 		settingsTextWrapper6 = new TextWrapper(settingsText6);
 
 		setupMSummaryChoiceBox();
+		setupMBackgroundChoiceBox();
 	}
 
 	private void groupingAppearanceVariables() {
@@ -236,7 +259,6 @@ public class Controller {
 				resultLabel,
 				notificationLabel,
 				notificationLabel2,
-				AddonViews.infoLabel,
 				summaryDropSpace1,
 				summaryDropSpace2,
 				summaryDropSpace3,
@@ -275,7 +297,7 @@ public class Controller {
 				clearResultLabelButton,
 				lowerDropSpaceButton,
 				clearUpperDropSpaceButton,
-				infoButton,
+				showInfoButton,
 				downloadResultLabelButton,
 				downloadSummaryFileButton,
 				clearAllSummaryDropSpaceButton,
@@ -294,7 +316,8 @@ public class Controller {
 				font20Button,
 				mSummaryAddButton,
 				restoreWindowSizeButton,
-				showRlmiButton
+				showReinforcementLinearMassListButton,
+				backgroundReinforcementAddButton,
 		};
 		allTexts = new Text[] {
 				appearanceText1,
@@ -307,7 +330,8 @@ public class Controller {
 				settingsText5,
 				settingsText6,
 				settingsText7,
-				mSummaryEntryText
+				mSummaryEntryText1,
+				mSummaryEntryText2
 		};
 	}
 
@@ -393,7 +417,12 @@ public class Controller {
     }
     
     private void setupBorderColor() {
-		Border border = new Border(new BorderStroke(Paint.valueOf(Main.config.getBorderColor()), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5)));
+		Border border = new Border(new BorderStroke(
+				Paint.valueOf(Main.config.getBorderColor()),
+				BorderStrokeStyle.SOLID,
+				CornerRadii.EMPTY,
+				new BorderWidths(5)
+		));
 	    for (Label label : borderModifiedLabels) {
 	    	label.setBorder(border);
 	    }
@@ -469,19 +498,19 @@ public class Controller {
 	}
 
 	@FXML
-	private void toggleInfoLabelOpacity() {
-    	double d = AddonViews.infoLabel.getOpacity();
-    	if (d == 0.0) {
-		    AddonViews.infoLabel.setOpacity(1);
+	private void showInfoStage() throws IOException {
+    	if (Stages.infoStage == null) {
+    		Stages.infoStage = new Stage();
+    		Label label = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/Info_label.fxml")).load();
+    		label.setBackground(getUserBackgroundColor());
+    		label.setFont(getFont());
+    		label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+		    Stages.infoStage.setScene(new Scene(label));
+		    Stages.infoStage.setTitle(Main.properties.getProperty("info_stage_name"));
+		    Stages.infoStage.initStyle(StageStyle.UTILITY);
+		    Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 	    }
-    	if (d == 1.0) {
-		    AddonViews.infoLabel.setOpacity(0);
-	    }
-	}
-
-	private void setupInfoLabel() {
-		AddonViews.infoLabel.setOpacity(0);
-		AddonViews.infoLabel.setMouseTransparent(true);
+    	Stages.infoStage.show();
 	}
 
 	public String getTableHead() {
@@ -704,7 +733,6 @@ public class Controller {
 		for (Label label : allLabels) {
 			label.setFont(font3);
 		}
-		AddonViews.infoLabel.setFont(font2);
 		notificationLabel.setFont(font1);
 		notificationLabel2.setFont(font1);
 		for (Button button : boldTextModifiedButtons) {
@@ -904,7 +932,7 @@ public class Controller {
 		));
 		mSummaryChoiceBox1.setValue(Main.properties.getProperty("content_row").split("-")[0]);
 		mSummaryChoiceBox2.setItems(FXCollections.observableList(StandardsRepository.getDiametersAsList()));
-		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[0]);
+		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[2]);
 		mSummaryChoiceBox3.setItems(FXCollections.observableArrayList(
 				RFClass.A240,
 				RFClass.A400,
@@ -915,13 +943,27 @@ public class Controller {
 		mSummaryChoiceBox3.setValue(RFClass.A500S);
 	}
 
+	// TODO: remake background reinforcement input list
+	private void setupMBackgroundChoiceBox() {
+		ObservableList<Integer> list = FXCollections.observableList(StandardsRepository.getDiametersAsList());
+		list.remove(0);
+		mBackgroundChoiceBox.setItems(list);
+		mBackgroundChoiceBox.setValue(StandardsRepository.diameters[2]);
+	}
+
 	@FXML
 	private void addManuallySummaryEntry() {
-		ManuallySummaryEntry.add(mSummaryChoiceBox1.getValue(),
+		ManuallyEntry.addManuallySummaryEntry(
+				mSummaryChoiceBox1.getValue(),
 				mSummaryChoiceBox2.getValue(),
 				mSummaryChoiceBox3.getValue(),
 				mSummaryTextField.getText()
 		);
+	}
+
+	@FXML
+	private void addBackgroundReinforcement() {
+		ManuallyEntry.addBackgroundReinforcement(mBackgroundChoiceBox.getValue(), mBackgroundTextField.getText());
 	}
 
 	@FXML
@@ -931,34 +973,28 @@ public class Controller {
 	}
 
 	@FXML
-	private void showRlmi() {
-		if (Stages.second == null) {
-			Stages.second = new Stage();
+	private void showReinforcementLinearMassListButton() {
+		if (Stages.reinforcementLinearMassListStage == null) {
+			Stages.reinforcementLinearMassListStage = new Stage();
 			Label label = new Label(ReinforcementLinearMassInfo.get());
-			label.setBackground(new Background(new BackgroundFill(
-					Color.valueOf(Main.config.getBackgroundColor()),
-					CornerRadii.EMPTY,
-					Insets.EMPTY
-			)));
+			label.setBackground(getUserBackgroundColor());
 			label.setFont(new Font("Consolas", 20));
 			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
 			label.setAlignment(Pos.CENTER);
-			Stages.second.setScene(new Scene(label));
-			Stages.second.setTitle("Масса арматуры");
-			Stages.second.initStyle(StageStyle.UTILITY);
-			Stages.primary.setOnCloseRequest(windowEvent -> Stages.second.close());
+			Stages.reinforcementLinearMassListStage.setScene(new Scene(label));
+			Stages.reinforcementLinearMassListStage.setTitle(Main.properties.getProperty("reinforcement_linear_mass_list_stage_name"));
+			Stages.reinforcementLinearMassListStage.initStyle(StageStyle.UTILITY);
+			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 		}
-		Stages.second.show();
+		Stages.reinforcementLinearMassListStage.show();
 	}
 
-	public void addInfoLabel(Label label) {
-		anchorPane1.getChildren().add(label);
-	}
-
+	@Deprecated
 	public Background getBackgroundSample() {
 		return notificationLabel.getBackground();
 	}
 
+	@Deprecated
 	public TextAlignment getTextAlignmentSample() {
 		return notificationLabel.getTextAlignment();
 	}
@@ -982,19 +1018,48 @@ public class Controller {
 		children.add(2, AddonViews.arrowLine2);
 	}
 
-	// Test
-	public void doTest() throws Exception {
-		/*System.out.println("test start");
-		var v = (AnchorPane) new FXMLLoader(getClass().getResource("/armaturkin/fxml/Arrow_lines.fxml")).load();
-		System.out.println(v);
-		System.out.println(v.getChildren());
-		var v1 = (Line) v.getChildren().get(0);
-		var v2 = (Line) v.getChildren().get(1);
-		var v3 = (Line) v.getChildren().get(2);
-		anchorPane1.getChildren().add(v1);
-		anchorPane1.getChildren().add(v2);
-		anchorPane1.getChildren().add(v3);
-		System.out.println(v1.getId());
-		System.out.println("test end");*/
+	private Font getFont() {
+		return upperDropSpace.getFont();
+	}
+
+	/**
+	 * @return user {@link Background} color
+	 */
+	private Background getUserBackgroundColor() {
+		return new Background(new BackgroundFill(
+				Color.valueOf(Main.config.getBackgroundColor()),
+				CornerRadii.EMPTY,
+				Insets.EMPTY
+		));
+	}
+
+	@FXML
+	private void doTest() throws Exception {
+		if (Dev.isDevMode) {
+			/*System.out.println("test start");
+			var v = (AnchorPane) new FXMLLoader(getClass().getResource("/armaturkin/fxml/Arrow_lines.fxml")).load();
+			System.out.println(v);
+			System.out.println(v.getChildren());
+			var v1 = (Line) v.getChildren().get(0);
+			var v2 = (Line) v.getChildren().get(1);
+			var v3 = (Line) v.getChildren().get(2);
+			anchorPane1.getChildren().add(v1);
+			anchorPane1.getChildren().add(v2);
+			anchorPane1.getChildren().add(v3);
+			System.out.println(v1.getId());
+			System.out.println("test end");*/
+
+			/*System.out.println(Main.manuallySummaryEntries.size());
+			System.out.println(Main.backgroundReinforcementManuallyEntries.size());*/
+
+			//utilAnchorPane.getChildren().remove(testButton);
+		}
+	}
+
+	@FXML
+	private void printVarState() {
+		if (Dev.isDevMode) {
+			Dev.printVarState();
+		}
 	}
 }

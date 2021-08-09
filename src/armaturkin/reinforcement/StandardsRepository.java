@@ -1,11 +1,11 @@
-package armaturkin.core;
+package armaturkin.reinforcement;
 
 import java.util.ArrayList;
 
 // Class contains organization standards for publish documentation
 public class StandardsRepository {
 
-	public static int[] diameters = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40};
+	public static int[] diameters = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40}; // Size == 14
 	static String[] rfClass240 = {
 			"а240", // Russian letter
 			"а 240", // Russian letter
@@ -58,8 +58,8 @@ public class StandardsRepository {
 	public static double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85 ,4.83, 6.31, 7.99, 9.87}; // implements math rules
 	public static double[] mass2Digit2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86 ,4.84, 6.32, 8.00, 9.86}; // alternative version
 
-	public static int[] reservedPositions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
-	public static int[] reservedDiameters = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14};
+	public static int[] reservedPositions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}; // Size == 18
+	public static int[] reservedDiameters = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14}; // Size == 18
 
 	public static byte[][] rgb = {
 			{(byte) 255, (byte) 0, (byte) 255}, // d6

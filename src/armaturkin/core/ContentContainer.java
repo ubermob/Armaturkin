@@ -1,5 +1,7 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.RFClass;
+
 public class ContentContainer {
 
 	private Content content;

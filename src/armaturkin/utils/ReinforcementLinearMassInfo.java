@@ -2,7 +2,7 @@ package armaturkin.utils;
 
 import armaturkin.core.Main;
 import armaturkin.core.Reader;
-import armaturkin.core.StandardsRepository;
+import armaturkin.reinforcement.StandardsRepository;
 
 import java.io.IOException;
 import java.util.List;

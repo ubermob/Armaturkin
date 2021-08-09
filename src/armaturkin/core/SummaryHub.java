@@ -2,6 +2,8 @@ package armaturkin.core;
 
 import armaturkin.interfaces.FileNameCreator;
 import armaturkin.interfaces.Stopwatch;
+import armaturkin.reinforcement.ReinforcementLiteInfo;
+import armaturkin.reinforcement.RfHashCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +12,7 @@ import java.util.List;
 public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 
 	private final HashMap<Integer, List<String>> summaryPaths;
-	private final List<ManuallySummaryEntry> manuallySummaryEntries;
+	private final List<ManuallyEntry> manuallySummaryEntries;
 	private final String path;
 	private final String fileName;
 	private final String tableHead;
@@ -21,7 +23,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	private long millis;
 
 	public SummaryHub(HashMap<Integer, List<String>> summaryPaths,
-	                  List<ManuallySummaryEntry> manuallySummaryEntries,
+	                  List<ManuallyEntry> manuallySummaryEntries,
 	                  String path,
 	                  String fileName,
 	                  String tableHead) {
@@ -95,7 +97,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 			}
 		}
 		// Filling manually tab entries
-		for (ManuallySummaryEntry entry : manuallySummaryEntries) {
+		for (ManuallyEntry entry : manuallySummaryEntries) {
 			contentContainer.put(entry.getSummaryLabelID(), RfHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMass());
 		}
 		// Redirect

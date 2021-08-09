@@ -3,6 +3,9 @@ package armaturkin.workers;
 import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
 import armaturkin.interfaces.Stopwatch;
+import armaturkin.reinforcement.RFClass;
+import armaturkin.reinforcement.Reinforcement;
+import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.utils.CellStyleRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -44,6 +47,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		buildTableHead();
 		addBackgroundReinforcement();
+		addBackgroundReinforcementFromTextField();
 		fillTable();
 		fileName = createFileName(fileName);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
@@ -92,8 +96,12 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 					cell = row.getCell(7);
 					cell.setCellValue(reinforcement.getMass());
 					Formatter formatter = new Formatter();
-					formatter.format(getClass() + "write excel row: [%d],[%d %s],[-],[-],[%f],[-],[%f]",
-							reinforcement.getPosition(), reinforcement.getDiameter(), RFClass.toString(reinforcement.getRfClass()), reinforcement.getLength() / 1000.0,
+					formatter.format(
+							getClass() + " write excel row: [%d],[%d %s],[-],[-],[%f],[-],[%f]",
+							reinforcement.getPosition(),
+							reinforcement.getDiameter(),
+							RFClass.toString(reinforcement.getRfClass()),
+							reinforcement.getLength() / 1000.0,
 							reinforcement.getMass()
 					);
 					Main.log.add(formatter.toString());
@@ -117,9 +125,15 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 					cell = row.getCell(7);
 					cell.setCellValue(reinforcement.getMass() * reinforcement.getNumber());
 					Formatter formatter = new Formatter();
-					formatter.format(getClass() + "write excel row: [%d],[%d %s],[%d],[%d],[%f],[%f],[%f]",
-							reinforcement.getPosition(), reinforcement.getDiameter(), RFClass.toString(reinforcement.getRfClass()), reinforcement.getLength(),
-							reinforcement.getNumber(), reinforcement.getLength() * reinforcement.getNumber() / 1000.0, reinforcement.getMass(),
+					formatter.format(
+							getClass() + " write excel row: [%d],[%d %s],[%d],[%d],[%f],[%f],[%f]",
+							reinforcement.getPosition(),
+							reinforcement.getDiameter(),
+							RFClass.toString(reinforcement.getRfClass()),
+							reinforcement.getLength(),
+							reinforcement.getNumber(),
+							reinforcement.getLength() * reinforcement.getNumber() / 1000.0,
+							reinforcement.getMass(),
 							reinforcement.getMass() * reinforcement.getNumber()
 					);
 					Main.log.add(formatter.toString());
@@ -130,6 +144,55 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 	}
 
 	private void addBackgroundReinforcement() {
+		for (ManuallyEntry entry : Main.backgroundReinforcementManuallyEntries) {
+			int diameter = entry.getDiameter();
+			double length = entry.getMass();
+			int lengthInt = (int) (length * 1000);
+			RFClass rfClass = entry.getRfClass();
+			Main.log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
+					",[length: " + length + "],[lengthInt: " + lengthInt + "]"
+			);
+			int reservedDiameterIndex = StandardsRepository.getReservedDiameterIndex(diameter);
+			if (reservedDiameterIndex == -1) {
+				Main.log.add(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
+				Main.addNotification("Указанного диаметра: " + diameter +
+						" нет в зарезервированном списке диаметров (class Pattern)"
+				);
+			} else {
+				int position = StandardsRepository.reservedPositions[reservedDiameterIndex];
+				if (reinforcementHashMap.containsKey(position)) {
+					Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
+					Reinforcement currentReinforcement = new Reinforcement(
+							position,
+							diameter,
+							rfClass,
+							lengthInt,
+							StandardsRepository.getMass(diameter) * lengthInt / 1000
+					);
+					reinforcementHashMap.put(position, new Reinforcement(
+							position,
+							currentReinforcement.getDiameter(),
+							currentReinforcement.getRfClass(),
+							calculatedReinforcement.getLength() + currentReinforcement.getLength(),
+							calculatedReinforcement.getMass() + currentReinforcement.getMass()
+					));
+				} else {
+					reinforcementHashMap.put(position, new Reinforcement(
+							position,
+							diameter,
+							rfClass,
+							lengthInt,
+							StandardsRepository.getMass(diameter) * lengthInt / 1000
+					));
+				}
+				Main.log.add(reinforcementHashMap.get(position).toString());
+			}
+		}
+	}
+
+	// TODO: replace with gui parser
+	@Deprecated
+	private void addBackgroundReinforcementFromTextField() {
 		if (backgroundReinforcement.length() != 0) {
 			String[] splittedString = backgroundReinforcement.split("-");
 			if (splittedString.length % 2 != 0) {
@@ -157,20 +220,23 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 						int position = StandardsRepository.reservedPositions[reservedDiameterIndex];
 						if (reinforcementHashMap.containsKey(position)) {
 							Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
-							Reinforcement currentReinforcement = new Reinforcement(position,
+							Reinforcement currentReinforcement = new Reinforcement(
+									position,
 									diameter,
 									StandardsRepository.getReservedRFClass(position),
 									lengthInt,
 									StandardsRepository.getMass(diameter) * lengthInt / 1000
 							);
-							reinforcementHashMap.put(position, new Reinforcement(position,
+							reinforcementHashMap.put(position, new Reinforcement(
+									position,
 									currentReinforcement.getDiameter(),
 									currentReinforcement.getRfClass(),
 									calculatedReinforcement.getLength() + currentReinforcement.getLength(),
 									calculatedReinforcement.getMass() + currentReinforcement.getMass()
 							));
 						} else {
-							reinforcementHashMap.put(position, new Reinforcement(position,
+							reinforcementHashMap.put(position, new Reinforcement(
+									position,
 									diameter,
 									StandardsRepository.getReservedRFClass(position),
 									lengthInt,

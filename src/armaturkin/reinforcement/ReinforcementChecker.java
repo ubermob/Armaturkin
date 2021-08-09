@@ -1,8 +1,8 @@
-package armaturkin.core;
+package armaturkin.reinforcement;
 
 public abstract class ReinforcementChecker {
 
-	private ReinforcementProduct reinforcementProduct;
+	private final ReinforcementProduct reinforcementProduct;
 
 	public ReinforcementChecker(ReinforcementProduct reinforcementProduct) {
 		this.reinforcementProduct = reinforcementProduct;

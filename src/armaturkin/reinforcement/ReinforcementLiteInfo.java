@@ -1,4 +1,6 @@
-package armaturkin.core;
+package armaturkin.reinforcement;
+
+import armaturkin.core.Main;
 
 public class ReinforcementLiteInfo {
 

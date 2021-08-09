@@ -31,6 +31,10 @@
     <entry key="notification_storage_limit">20</entry>
     <entry key="auto_parse_product_list">true</entry>
 
+    <!--Stages-->
+    <entry key="info_stage_name">Информация</entry>
+    <entry key="reinforcement_linear_mass_list_stage_name">Масса арматуры</entry>
+
     <!--Default redirect arrow properties-->
     <entry key="angle_gap">30</entry>
     <entry key="line_length">40</entry>
@@ -128,10 +132,13 @@
     <entry key="column_name_12">Всех элементов</entry>
 
     <!--Manually Summary Entry-->
-    <entry key="negative_mass_exception">parsedValue4: %.3f (less then 0)</entry>
-    <entry key="manually_summary_entry_label_text">%s&#10;диаметр: %d&#10;%s&#10;масса: %.1f</entry>
+    <entry key="negative_number_exception">negative number: %.3f</entry>
+    <entry key="manually_summary_entry_label_text">%s&#10;Диаметр: %d&#10;%s&#10;%s: %.1f</entry>
     <entry key="add_manually_summary_entry">%s add entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
     <entry key="remove_manually_summary_entry">%s remove entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
+    <entry key="add_background_manually_entry">%s add entry: [Background], [Diameter: %d], [RFClass: %s], [Length: %.3f]</entry>
+    <entry key="remove_background_manually_entry">%s remove entry: [Background], [Diameter: %d], [RFClass: %s], [Length: %.3f]</entry>
+    <entry key="background_title">Фон</entry>
 
     <!--Date & Time-->
     <entry key="date_pattern">dd-MMM-yyyy</entry>

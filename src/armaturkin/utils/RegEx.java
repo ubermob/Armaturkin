@@ -1,4 +1,6 @@
-package armaturkin.core;
+package armaturkin.utils;
+
+import armaturkin.core.Main;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

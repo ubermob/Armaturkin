@@ -20,7 +20,7 @@
       <content>
         <AnchorPane fx:id="anchorPane1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="infoButton" layoutX="72.0" layoutY="498.0" mnemonicParsing="false" onAction="#toggleInfoLabelOpacity" prefHeight="37.0" prefWidth="67.0" text="Инфо">
+                  <Button fx:id="showInfoButton" layoutX="72.0" layoutY="498.0" mnemonicParsing="false" onAction="#showInfoStage" prefHeight="37.0" prefWidth="67.0" text="Инфо">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -125,12 +125,12 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="clearAllSummaryDropSpaceButton" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
+                  <Button fx:id="clearAllSummaryDropSpaceButton" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="downloadSummaryFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="100.0" text="Скачать">
+                  <Button fx:id="downloadSummaryFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="100.0" text="Скачать" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -243,17 +243,17 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="checkSummaryDropSpaceButton6" layoutX="412.0" layoutY="342.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace6" prefHeight="30.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                  <Button fx:id="checkSummaryDropSpaceButton6" layoutX="412.0" layoutY="342.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace6" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="checkSummaryDropSpaceButton8" layoutX="412.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace8" prefHeight="23.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                  <Button fx:id="checkSummaryDropSpaceButton8" layoutX="412.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace8" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="checkSummaryDropSpaceButton7" layoutX="17.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace7" prefHeight="14.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                  <Button fx:id="checkSummaryDropSpaceButton7" layoutX="17.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace7" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -267,15 +267,34 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <HBox fx:id="mSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                  <Button fx:id="mSummaryAddButton" layoutX="351.0" layoutY="508.0" mnemonicParsing="false" onAction="#addManuallySummaryEntry" text="Добавить">
+                  <Button fx:id="mSummaryAddButton" layoutX="260.0" layoutY="520.0" mnemonicParsing="false" onAction="#addManuallySummaryEntry" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость" AnchorPane.bottomAnchor="14.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
-                  <TextField fx:id="mSummaryTextField" layoutX="601.0" layoutY="461.0" prefHeight="25.0" prefWidth="185.0" promptText="Масса (Пример: 20 или 77.77)" />
-                  <ChoiceBox fx:id="mSummaryChoiceBox1" layoutX="14.0" layoutY="461.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="mSummaryChoiceBox2" layoutX="224.0" layoutY="461.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="mSummaryChoiceBox3" layoutX="426.0" layoutY="461.0" prefWidth="150.0" />
-                  <Text fx:id="mSummaryEntryText" layoutX="14.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавить ручную позицию в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
+                  <Text fx:id="mSummaryEntryText1" layoutX="14.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление арматуры в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="backgroundReinforcementAddButton" layoutX="260.0" layoutY="360.0" mnemonicParsing="false" onAction="#addBackgroundReinforcement" prefHeight="37.0" prefWidth="280.0" text="Добавить в фоновую арматуру">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <HBox alignment="CENTER" layoutX="15.0" layoutY="50.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 15;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                     <children>
+                        <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="185.0" />
+                        <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="185.0" />
+                        <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="185.0" />
+                        <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="185.0" promptText="Масса (Пример: 20 или 77.77)" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="14.0" layoutY="286.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 15;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                     <children>
+                        <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="185.0" />
+                        <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="185.0" promptText="Длина (Пример: 20 или 77.77)" />
+                     </children></HBox>
+                  <Text fx:id="mSummaryEntryText2" layoutX="14.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="772.89453125">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -405,13 +424,18 @@
       </Tab>
       <Tab text="Утилиты">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane fx:id="utilAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="showRlmiButton" layoutX="34.0" layoutY="38.0" mnemonicParsing="false" onAction="#showRlmi" text="Таблица погонной массы" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+                  <Button fx:id="showReinforcementLinearMassListButton" layoutX="34.0" layoutY="38.0" mnemonicParsing="false" onAction="#showReinforcementLinearMassListButton" prefHeight="37.0" prefWidth="226.0" text="Таблица погонной массы" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
-                  <Button fx:id="testButton" layoutX="371.0" layoutY="267.0" mnemonicParsing="false" onAction="#doTest" text="TEST">
+                  <Button fx:id="testButton" layoutX="40.0" layoutY="490.0" mnemonicParsing="false" onAction="#doTest" prefHeight="37.0" prefWidth="60.0" text="Test" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="varStateButton" layoutX="92.0" layoutY="520.0" mnemonicParsing="false" onAction="#printVarState" prefHeight="37.0" prefWidth="100.0" text="Var state" AnchorPane.bottomAnchor="14.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

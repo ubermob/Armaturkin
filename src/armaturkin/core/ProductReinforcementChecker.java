@@ -1,5 +1,9 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.ReinforcementChecker;
+import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.reinforcement.StandardsRepository;
+
 public class ProductReinforcementChecker extends ReinforcementChecker {
 
 	private int diameterIndex;

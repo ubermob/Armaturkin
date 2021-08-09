@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.reinforcement;
 
 public enum RFClass {
 	A240,
@@ -31,7 +31,7 @@ public enum RFClass {
 	}
 
 	public static synchronized RFClass parseRFClass(String string) {
-		//Sorted by often use
+		// Sorted by often use
 		for (int i = 0; i < StandardsRepository.rfClass500S.length; i++) {
 			if (string.equalsIgnoreCase(StandardsRepository.rfClass500S[i])) {
 				return A500S;

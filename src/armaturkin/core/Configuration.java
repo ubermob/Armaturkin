@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Contains user settings
+ */
 public class Configuration {
 
 	private final String path;
@@ -92,6 +95,9 @@ public class Configuration {
 		backgroundColor = string;
 	}
 
+	/**
+	 * @return HEX code {@link String} of background
+	 */
 	public String getBackgroundColor() {
 		return backgroundColor;
 	}
@@ -100,6 +106,9 @@ public class Configuration {
 		textColor = string;
 	}
 
+	/**
+	 * @return HEX code {@link String} of text
+	 */
 	public String getTextColor() {
 		return textColor;
 	}

@@ -1,0 +1,2 @@
+manually_entry=#4097f5
+background_entry=#008000
