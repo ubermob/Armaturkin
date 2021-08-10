@@ -1,6 +1,7 @@
 package armaturkin.controller;
 
 import armaturkin.core.*;
+import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.utils.Dev;
@@ -203,7 +204,7 @@ public class Controller {
 	@FXML
 	private ChoiceBox<RFClass> mSummaryChoiceBox3;
 	@FXML
-	private ChoiceBox<Integer> mBackgroundChoiceBox;
+	private ChoiceBox<PairDR> mBackgroundChoiceBox;
 
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
@@ -943,12 +944,9 @@ public class Controller {
 		mSummaryChoiceBox3.setValue(RFClass.A500S);
 	}
 
-	// TODO: remake background reinforcement input list
 	private void setupMBackgroundChoiceBox() {
-		ObservableList<Integer> list = FXCollections.observableList(StandardsRepository.getDiametersAsList());
-		list.remove(0);
-		mBackgroundChoiceBox.setItems(list);
-		mBackgroundChoiceBox.setValue(StandardsRepository.diameters[2]);
+		mBackgroundChoiceBox.setItems(FXCollections.observableList(StandardsRepository.getPairsAsList()));
+		mBackgroundChoiceBox.setValue(StandardsRepository.pairs[1]);
 	}
 
 	@FXML
@@ -1048,11 +1046,6 @@ public class Controller {
 			anchorPane1.getChildren().add(v3);
 			System.out.println(v1.getId());
 			System.out.println("test end");*/
-
-			/*System.out.println(Main.manuallySummaryEntries.size());
-			System.out.println(Main.backgroundReinforcementManuallyEntries.size());*/
-
-			//utilAnchorPane.getChildren().remove(testButton);
 		}
 	}
 

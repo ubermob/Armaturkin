@@ -144,9 +144,9 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 	}
 
 	private void addBackgroundReinforcement() {
-		for (ManuallyEntry entry : Main.backgroundReinforcementManuallyEntries) {
+		for (var entry : Main.backgroundReinforcementManuallyEntries) {
 			int diameter = entry.getDiameter();
-			double length = entry.getMass();
+			double length = entry.getLength();
 			int lengthInt = (int) (length * 1000);
 			RFClass rfClass = entry.getRfClass();
 			Main.log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +

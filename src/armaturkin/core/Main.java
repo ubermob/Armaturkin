@@ -3,6 +3,7 @@ package armaturkin.core;
 import armaturkin.controller.Controller;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.utils.Dev;
 import armaturkin.utils.PcInformation;
 import armaturkin.utils.Spammer;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.7b";
+	public static String version = "0.5.7";
 	public static Properties properties;
 	public static Parent root;
     public static Controller controller;
@@ -52,7 +53,7 @@ public class Main extends Application {
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
 	public static List<ManuallyEntry> manuallySummaryEntries = new ArrayList<>();
-	public static List<ManuallyEntry> backgroundReinforcementManuallyEntries = new ArrayList<>();
+	public static List<ManuallyEntryAdaptor> backgroundReinforcementManuallyEntries = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -98,6 +99,7 @@ public class Main extends Application {
 	    } catch (Exception e) {
 		    log.add(e);
 	    }
+    	StandardsRepository.createPairs();
         launch(args);
         saveConfigFile();
         Log.saveLog();

@@ -1,5 +1,6 @@
 package armaturkin.core;
 
+import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import javafx.geometry.Insets;
@@ -20,9 +21,10 @@ import java.util.Properties;
 
 public class ManuallyEntry {
 
-	private static final String BACKGROUND = "br";
+	private static final String BACKGROUND = "bg";
 	private static final int BACKGROUND_LABEL_ID = 0;
 	private static Properties colorProperties;
+
 	private Label label;
 	private final int summaryLabelID;
 	private final ReinforcementLiteInfo reinforcementLiteInfo;
@@ -42,20 +44,20 @@ public class ManuallyEntry {
 		add(summaryLabel, diameter, rfClass, massAsString, Main.manuallySummaryEntries);
 	}
 
-	// TODO: remake background reinforcement input list
-	public static void addBackgroundReinforcement(int diameter, String lengthAsString) {
-		add(BACKGROUND, diameter, RFClass.A500S, lengthAsString, Main.backgroundReinforcementManuallyEntries);
+	public static void addBackgroundReinforcement(PairDR pair, String lengthAsString) {
+		add(BACKGROUND, pair.getDiameter(), pair.getRfClass(), lengthAsString, Main.backgroundReinforcementManuallyEntries);
 	}
 
-	private static void add(String summaryLabel, int diameter, RFClass rfClass, String massAsString, List<ManuallyEntry> list) {
+	private static <E> void add(String summaryLabel, int diameter, RFClass rfClass, String massAsStringOrLengthAsString, List<E> list) {
 		try {
-			double mass = Double.parseDouble(massAsString.replace(",", "."));
+			double mass = Double.parseDouble(massAsStringOrLengthAsString.replace(",", "."));
 			if (mass <= 0.0) {
 				throw new Exception(Main.properties.getProperty("negative_number_exception").formatted(mass));
 			}
 			ManuallyEntry entry = new ManuallyEntry(summaryLabel, diameter, rfClass, mass);
-			list.add(entry);
-			if (entry.getSummaryLabelID() == BACKGROUND_LABEL_ID) {
+			if (summaryLabel.equals(BACKGROUND)) {
+				ManuallyEntryAdaptor adaptor = new ManuallyEntryAdaptor(entry);
+				list.add((E) adaptor);
 				Main.log.add(Main.properties.getProperty("add_background_manually_entry").formatted(
 						ManuallyEntry.class,
 						entry.getDiameter(),
@@ -63,6 +65,7 @@ public class ManuallyEntry {
 						entry.getMass()
 				));
 			} else {
+				list.add((E) entry);
 				Main.log.add(Main.properties.getProperty("add_manually_summary_entry").formatted(
 						ManuallyEntry.class,
 						entry.getSummaryLabelID(),
@@ -78,7 +81,7 @@ public class ManuallyEntry {
 
 	private static void remove(ManuallyEntry entry) {
 		Main.manuallySummaryEntries.remove(entry);
-		Main.backgroundReinforcementManuallyEntries.remove(entry);
+		Main.backgroundReinforcementManuallyEntries.removeIf(v -> v.getManuallyEntry() == entry);
 		Main.controller.mSummaryHBoxRemove(entry.getLabel());
 		if (entry.getSummaryLabelID() == BACKGROUND_LABEL_ID) {
 			Main.log.add(Main.properties.getProperty("remove_background_manually_entry").formatted(
@@ -149,11 +152,11 @@ public class ManuallyEntry {
 		label.setPrefWidth(100);
 		label.setPrefHeight(Main.controller.getMSummaryHBoxPrefHeight());
 		String labelTitle = summaryLabel;
-		String lastFieldName = "Масса";
+		String lastFieldName = Main.properties.getProperty("last_field_name_mass");
 		String colorCode = colorProperties.getProperty("manually_entry");
 		if (summaryLabel.equals(BACKGROUND)) {
 			labelTitle = Main.properties.getProperty("background_title");
-			lastFieldName = "Длина";
+			lastFieldName = Main.properties.getProperty("last_field_name_length");
 			colorCode = colorProperties.getProperty("background_entry");
 		}
 		label.setText(Main.properties.getProperty("manually_summary_entry_label_text").formatted(
@@ -166,7 +169,7 @@ public class ManuallyEntry {
 		label.setBackground(new Background(new BackgroundFill(Paint.valueOf(colorCode), CornerRadii.EMPTY, Insets.EMPTY)));
 		label.setTextAlignment(TextAlignment.CENTER);
 		label.setAlignment(Pos.CENTER);
-		label.setFont(new Font("System bold", 12));
+		label.setFont(new Font("System bold", 13));
 		label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
 		// https://stackoverflow.com/questions/45306039/how-to-write-lambda-expression-with-eventhandler-javafx
 		label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

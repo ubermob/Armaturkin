@@ -281,18 +281,18 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <HBox alignment="CENTER" layoutX="15.0" layoutY="50.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 15;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  <HBox alignment="CENTER" layoutX="15.0" layoutY="50.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 25;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
                      <children>
-                        <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="185.0" />
-                        <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="185.0" />
-                        <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="185.0" />
-                        <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="185.0" promptText="Масса (Пример: 20 или 77.77)" />
+                        <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="120.0" />
+                        <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="120.0" />
+                        <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="120.0" />
+                        <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="200.0" promptText="Масса, кг (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="14.0" layoutY="286.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 15;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  <HBox alignment="CENTER" layoutX="14.0" layoutY="286.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 25;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
                      <children>
-                        <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="185.0" />
-                        <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="185.0" promptText="Длина (Пример: 20 или 77.77)" />
+                        <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="120.0" />
+                        <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="200.0" promptText="Длина, м (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
                      </children></HBox>
                   <Text fx:id="mSummaryEntryText2" layoutX="14.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="772.89453125">
                      <font>

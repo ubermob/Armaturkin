@@ -1,7 +1,7 @@
 package armaturkin.reinforcement;
 
 /**
- * Class contain pare values:
+ * Class contain pair values:
  * {@code int} diameter and {@link RFClass}
  */
 public class PairDR {
@@ -9,6 +9,10 @@ public class PairDR {
 	private final int diameter;
 	private final RFClass rfClass;
 
+	/**
+	 * @param diameter int value of diameter.
+	 * @param rfClass value of RFClass.
+	 */
 	public PairDR(int diameter, RFClass rfClass) {
 		this.diameter = diameter;
 		this.rfClass = rfClass;
@@ -26,5 +30,10 @@ public class PairDR {
 	 */
 	public RFClass getRfClass() {
 		return rfClass;
+	}
+
+	@Override
+	public String toString() {
+		return diameter + " - " + rfClass;
 	}
 }

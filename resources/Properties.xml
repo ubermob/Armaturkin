@@ -18,7 +18,7 @@
     <entry key="log_storage_directory">Log storage</entry>
     <entry key="notification_storage_directory">Notification storage</entry>
     <entry key="application_main_line">Application: %s&#10;Date: %s&#10;Time: %s</entry>
-    <entry key="pc_information">User: %s, System name: %s, OS ver: %s, Processors: %d, RAM: %d mb / %d mb (free / total)</entry>
+    <entry key="pc_information">User: %s, System name: %s, OS ver: %s, Processors: %d, RAM: %d mb / %d mb (free / total)&#10;</entry>
 
     <!--Default config values-->
     <entry key="background_color">#444444</entry>
@@ -139,6 +139,8 @@
     <entry key="add_background_manually_entry">%s add entry: [Background], [Diameter: %d], [RFClass: %s], [Length: %.3f]</entry>
     <entry key="remove_background_manually_entry">%s remove entry: [Background], [Diameter: %d], [RFClass: %s], [Length: %.3f]</entry>
     <entry key="background_title">Фон</entry>
+    <entry key="last_field_name_mass">Масса</entry>
+    <entry key="last_field_name_length">Длина</entry>
 
     <!--Date & Time-->
     <entry key="date_pattern">dd-MMM-yyyy</entry>
