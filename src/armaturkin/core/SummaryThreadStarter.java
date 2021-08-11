@@ -45,7 +45,7 @@ public class SummaryThreadStarter {
 
 	private void createThreads() {
 		labelPaths = Main.summaryPaths.get(id);
-		hashMap= new HashMap<>();
+		hashMap = new HashMap<>();
 		logList = new ArrayList<>();
 		if (labelPaths != null) {
 			subThreads = new Thread[labelPaths.size()];

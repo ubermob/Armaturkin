@@ -3,6 +3,7 @@ package armaturkin.view;
 import javafx.stage.Stage;
 
 public class Stages {
+
 	public static Stage primary;
 	public static Stage infoStage;
 	public static Stage reinforcementLinearMassListStage;

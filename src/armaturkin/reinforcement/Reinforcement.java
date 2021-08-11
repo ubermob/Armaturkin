@@ -37,7 +37,7 @@ public class Reinforcement {
 				"[armaturkin.reinforcement.RFClass: " + rfClass + "]," +
 				"[length: " + length + "]," +
 				"[number: " + number + "]," +
-				"[mass: " + mass +  "]," +
+				"[mass: " + mass + "]," +
 				"[linear: " + linear + "]";
 	}
 

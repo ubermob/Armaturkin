@@ -53,7 +53,7 @@ public class DropWorker {
 		List<File> wildFileList = getDroppedFile(dragEvent);
 		final List<String> verifiedFileList = new ArrayList<>();
 		wildFileList.forEach(x -> {
-			if(isExcelFile(x.getName()) && x.isFile()) {
+			if (isExcelFile(x.getName()) && x.isFile()) {
 				verifiedFileList.add(x.getAbsolutePath());
 			}
 		});

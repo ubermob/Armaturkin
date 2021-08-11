@@ -1046,6 +1046,7 @@ public class Controller {
 			anchorPane1.getChildren().add(v3);
 			System.out.println(v1.getId());
 			System.out.println("test end");*/
+			Main.addNotification("just one string");
 		}
 	}
 

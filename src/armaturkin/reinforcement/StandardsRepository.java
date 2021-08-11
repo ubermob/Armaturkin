@@ -55,7 +55,7 @@ public class StandardsRepository {
 	public static int maxLength = 11_700;
 	public static int maxPosition = 3_000;
 
-	public static double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853 ,4.834, 6.313, 7.990, 9.865};
+	public static double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853, 4.834, 6.313, 7.990, 9.865};
 	public static double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85, 4.83, 6.31, 7.99, 9.87}; // implements math rules
 	public static double[] mass2Digit2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86, 4.84, 6.32, 8.00, 9.86}; // alternative version
 

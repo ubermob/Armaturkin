@@ -55,7 +55,7 @@ public class Log {
 									StorageCleaner.getStorageSize(Main.programRootPath + Main.logStorageDirectory) + 1)
 					)
 			);
-			Writer.write(Main.programRootPath + Main.logFileName, Main.log.getList(), 1024 * 1024);
+			Writer.write(Main.programRootPath + Main.logFileName, Main.log.getList());
 		}
 	}
 }

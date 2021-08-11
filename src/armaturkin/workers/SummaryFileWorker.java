@@ -202,7 +202,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 		checker2.checkDiameter();
 		checker2.checkMass(mass);
 		if (!checker2.isCorrectMass()) {
-			Main. addNotification(Main.properties.getProperty("mass_multiply_notification").formatted(
+			Main.addNotification(Main.properties.getProperty("mass_multiply_notification").formatted(
 					path,
 					(rowInt + 1),
 					mass,

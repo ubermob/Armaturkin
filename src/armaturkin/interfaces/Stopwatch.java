@@ -3,7 +3,7 @@ package armaturkin.interfaces;
 import java.time.Instant;
 
 public interface Stopwatch {
-	default long getStartTime(){
+	default long getStartTime() {
 		return Instant.now().toEpochMilli();
 	}
 

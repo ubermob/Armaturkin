@@ -11,7 +11,7 @@ public class PairDR {
 
 	/**
 	 * @param diameter int value of diameter.
-	 * @param rfClass value of RFClass.
+	 * @param rfClass  value of RFClass.
 	 */
 	public PairDR(int diameter, RFClass rfClass) {
 		this.diameter = diameter;

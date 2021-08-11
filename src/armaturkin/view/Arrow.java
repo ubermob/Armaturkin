@@ -19,7 +19,7 @@ public class Arrow {
 		double endY = line.getEndY();
 		// triangle
 		double a = endX - startX;
-		double b = - (endY - startY);
+		double b = -(endY - startY);
 		double c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 		double angle = Math.toDegrees(Math.acos(a / c));
 		if (b > 0) {

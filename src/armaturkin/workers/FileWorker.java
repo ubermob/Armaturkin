@@ -33,7 +33,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 	private long millis;
 
 	public FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
-	           String backgroundReinforcement, String downloadFileTableHead, String fileName) {
+	                  String backgroundReinforcement, String downloadFileTableHead, String fileName) {
 		this.path = path;
 		this.reinforcementHashMap = reinforcementHashMap;
 		this.backgroundReinforcement = backgroundReinforcement;
@@ -43,7 +43,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 
 	@Override
 	public void run() {
-		millis  = getStartTime();
+		millis = getStartTime();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		buildTableHead();
 		addBackgroundReinforcement();

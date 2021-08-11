@@ -22,7 +22,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
-	ProductReinforcementChecker checker;
+	private ProductReinforcementChecker checker;
 	private int position;
 	private int diameter;
 	private String rfClass;
@@ -38,7 +38,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	@Override
 	public void run() {
-		millis  = getStartTime();
+		millis = getStartTime();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {

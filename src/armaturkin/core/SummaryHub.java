@@ -43,7 +43,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 		allThreads = new Thread[8][];
 		for (int i = 1; i <= 8; i++) {
 			SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
-			if(!summaryThreadStarter.isNullable()) {
+			if (!summaryThreadStarter.isNullable()) {
 				targetHashMap.put(i, summaryThreadStarter.getHashMap());
 				allThreads[i - 1] = summaryThreadStarter.getSubThreads();
 				List<Log> logList = summaryThreadStarter.getLogList();

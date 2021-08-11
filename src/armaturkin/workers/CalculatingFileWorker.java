@@ -47,7 +47,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	@Override
 	public void run() {
-		millis  = getStartTime();
+		millis = getStartTime();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
@@ -255,6 +255,6 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			string = "position";
 		}
 		string += " variable";
-		Main.addNotification("Я ненашел колонку (" + string +") в файле");
+		Main.addNotification("Я ненашел колонку (" + string + ") в файле");
 	}
 }
