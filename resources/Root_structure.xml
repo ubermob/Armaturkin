@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!-- Root -->
+    <entry key="program_root_path">C:\Armaturkin\</entry>
+
+    <!-- Directories -->
+    <entry key="log_storage_directory">Log storage</entry>
+    <entry key="notification_storage_directory">Notification storage</entry>
+    <entry key="update_data_directory">Update data</entry>
+
+    <!-- Files -->
+    <entry key="config_file_name">config.txt</entry>
+    <entry key="log_file_name">log.txt</entry>
+    <entry key="numbered_log_file_name">log%d.txt</entry>
+    <entry key="notification_file_name">notification.txt</entry>
+    <entry key="numbered_notification_file_name">notification%d.txt</entry>
+</properties>

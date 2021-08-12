@@ -32,18 +32,11 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.9";
-	public static Properties properties;
+	public static String version = "0.5.10";
+	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
 	public static Configuration config;
-	public static String programRootPath;
-	public static String configFileName;
-	public static String logFileName;
-	public static String notificationFileName;
-	public static String logStorageDirectory;
-	public static String notificationStorageDirectory;
-	private static Character diskLetter;
 	private volatile static String notificationString = "";
 	public static Log log = new Log();
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
@@ -89,14 +82,10 @@ public class Main extends Application {
 			log.add(e);
 		}
 		loadProperties();
-		readBasicFieldsFromProperties();
-		checkDirectory();
-		try {
-			loadConfigFile();
-		} catch (Exception e) {
-			log.add(e);
-		}
+		Root.checkDirectories();
+		loadConfigFile();
 		StandardsRepository.createPairs();
+		// LAUNCH
 		launch(args);
 		saveConfigFile();
 		Log.saveLog();
@@ -200,8 +189,8 @@ public class Main extends Application {
 				char letterC = 'C';
 				char letterZ = 'Z';
 				if (letterC <= diskLetter && diskLetter <= letterZ) {
-					Main.diskLetter = diskLetter;
-					log.add(argCommand[2] + "=" + Main.diskLetter);
+					Root.diskLetter = diskLetter;
+					log.add(argCommand[2] + "=" + Root.diskLetter);
 				}
 			}
 			if (isMatchCommands(arg, argCommand[3])) {
@@ -275,23 +264,8 @@ public class Main extends Application {
 		notificationString = "";
 	}
 
-	private static void checkDirectory() throws IOException {
-		if (diskLetter != null) {
-			programRootPath = diskLetter + programRootPath.substring(1);
-		}
-		if (Files.notExists(Path.of(programRootPath))) {
-			Files.createDirectory(Path.of(programRootPath));
-		}
-		if (Files.notExists(Path.of(programRootPath, logStorageDirectory))) {
-			Files.createDirectory(Path.of(programRootPath, logStorageDirectory));
-		}
-		if (Files.notExists(Path.of(programRootPath, notificationStorageDirectory))) {
-			Files.createDirectory(Path.of(programRootPath, notificationStorageDirectory));
-		}
-	}
-
 	private static void loadConfigFile() throws IOException {
-		config = new Configuration(programRootPath + configFileName);
+		config = new Configuration(Root.programRootPath + Root.get("config_file_name"));
 	}
 
 	private static void saveConfigFile() throws IOException {
@@ -299,7 +273,6 @@ public class Main extends Application {
 	}
 
 	private static void loadProperties() {
-		properties = new Properties();
 		try {
 			InputStream resource = Main.class.getResourceAsStream("/Properties.xml");
 			properties.loadFromXML(resource);
@@ -307,21 +280,22 @@ public class Main extends Application {
 		} catch (Exception e) {
 			log.add(e);
 		}
+		Root.loadProperties();
 		ManuallyEntry.loadColorProperties();
 	}
 
 	public static void saveNotification() throws IOException {
-		StorageCleaner.clearStorage(Path.of(programRootPath, notificationStorageDirectory));
+		StorageCleaner.clearStorage(Path.of(Root.programRootPath, Root.get("notification_storage_directory")));
 		if (config.getWriteNotification() && notificationString.length() > 0) {
 			StorageCleaner.copyFile(
-					Path.of(programRootPath, notificationFileName),
-					Path.of(programRootPath, notificationStorageDirectory,
-							properties.getProperty("numbered_notification_file_name").formatted(
-									StorageCleaner.getStorageSize(programRootPath + notificationStorageDirectory) + 1)
+					Path.of(Root.programRootPath, Root.get("notification_file_name")),
+					Path.of(Root.programRootPath, Root.get("notification_storage_directory"),
+							Root.get("numbered_notification_file_name").formatted(
+									StorageCleaner.getStorageSize(Root.programRootPath + Root.get("notification_storage_directory")) + 1)
 					)
 			);
 			notificationString = NewLineReplacer.replace(notificationString);
-			Writer.write(programRootPath + notificationFileName, notificationString);
+			Writer.write(Root.programRootPath + Root.get("notification_file_name"), notificationString);
 		}
 	}
 
@@ -353,15 +327,6 @@ public class Main extends Application {
 				log.add(e);
 			}
 		}
-	}
-
-	private static void readBasicFieldsFromProperties() {
-		programRootPath = properties.getProperty("program_root_path");
-		configFileName = properties.getProperty("config_file_name");
-		logFileName = properties.getProperty("log_file_name");
-		notificationFileName = properties.getProperty("notification_file_name");
-		logStorageDirectory = properties.getProperty("log_storage_directory");
-		notificationStorageDirectory = properties.getProperty("notification_storage_directory");
 	}
 
 	private static void doingPrimaryStage(Stage stage) {

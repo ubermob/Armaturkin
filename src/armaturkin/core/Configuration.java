@@ -88,7 +88,7 @@ public class Configuration {
 				String.valueOf(autoParseProductList),
 				String.valueOf(resultLabelFontSize)
 		};
-		Writer.write(Main.programRootPath + Main.configFileName, configList);
+		Writer.write(Root.programRootPath + Root.get("config_file_name"), configList);
 	}
 
 	public void setBackgroundColor(String string) {

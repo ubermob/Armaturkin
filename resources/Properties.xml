@@ -9,14 +9,6 @@
 
     <!--Main-->
     <entry key="application_name">Арматуркин</entry>
-    <entry key="program_root_path">C:\Armaturkin\</entry>
-    <entry key="config_file_name">config.txt</entry>
-    <entry key="log_file_name">log.txt</entry>
-    <entry key="numbered_log_file_name">log%d.txt</entry>
-    <entry key="notification_file_name">notification.txt</entry>
-    <entry key="numbered_notification_file_name">notification%d.txt</entry>
-    <entry key="log_storage_directory">Log storage</entry>
-    <entry key="notification_storage_directory">Notification storage</entry>
     <entry key="application_main_line">Application: %s&#10;Date: %s&#10;Time: %s</entry>
     <entry key="pc_information">User: %s, System name: %s, OS ver: %s, Processors: %d, RAM: %d mb / %d mb (free / total)&#10;</entry>
 
