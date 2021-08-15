@@ -23,17 +23,16 @@ public class ManuallyEntry {
 
 	private static final String BACKGROUND = "bg";
 	private static final int BACKGROUND_LABEL_ID = 0;
-	private static Properties colorProperties;
+	private static final Properties COLOR_PROPERTIES = new Properties();
 
 	private Label label;
 	private final int summaryLabelID;
 	private final ReinforcementLiteInfo reinforcementLiteInfo;
 
 	public static void loadColorProperties() {
-		colorProperties = new Properties();
 		try {
 			InputStream resource = Main.class.getResourceAsStream("/Colors_properties.txt");
-			colorProperties.load(resource);
+			COLOR_PROPERTIES.load(resource);
 			resource.close();
 		} catch (Exception e) {
 			Main.log.add(e);
@@ -153,11 +152,11 @@ public class ManuallyEntry {
 		label.setPrefHeight(Main.controller.getMSummaryHBoxPrefHeight());
 		String labelTitle = summaryLabel;
 		String lastFieldName = Main.properties.getProperty("last_field_name_mass");
-		String colorCode = colorProperties.getProperty("manually_entry");
+		String colorCode = COLOR_PROPERTIES.getProperty("manually_entry");
 		if (summaryLabel.equals(BACKGROUND)) {
 			labelTitle = Main.properties.getProperty("background_title");
 			lastFieldName = Main.properties.getProperty("last_field_name_length");
-			colorCode = colorProperties.getProperty("background_entry");
+			colorCode = COLOR_PROPERTIES.getProperty("background_entry");
 		}
 		label.setText(Main.properties.getProperty("manually_summary_entry_label_text").formatted(
 				labelTitle,

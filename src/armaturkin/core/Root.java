@@ -9,19 +9,19 @@ import java.util.Properties;
 
 public class Root {
 
-	private static final Properties root = new Properties();
+	private static final Properties PROPERTIES = new Properties();
 	public static String programRootPath;
 	static Character diskLetter;
 
 	public static void loadProperties() {
 		try {
 			InputStream resource = Main.class.getResourceAsStream("/Root_structure.xml");
-			root.loadFromXML(resource);
+			PROPERTIES.loadFromXML(resource);
 			resource.close();
 		} catch (Exception e) {
 			Main.log.add(e);
 		}
-		programRootPath = root.getProperty("program_root_path");
+		programRootPath = PROPERTIES.getProperty("program_root_path");
 	}
 
 	public static void checkDirectories() throws IOException {
@@ -31,7 +31,7 @@ public class Root {
 		if (Files.notExists(Path.of(programRootPath))) {
 			Files.createDirectory(Path.of(programRootPath));
 		}
-		Iterator<Object> objectIterator = root.keys().asIterator();
+		Iterator<Object> objectIterator = PROPERTIES.keys().asIterator();
 		while (objectIterator.hasNext()) {
 			String key = (String) objectIterator.next();
 			if (key.contains("directory")) {
@@ -48,6 +48,6 @@ public class Root {
 	 * @return {@link String} the value in this property list with the specified key value.
 	 */
 	public static String get(String key) {
-		return root.getProperty(key);
+		return PROPERTIES.getProperty(key);
 	}
 }

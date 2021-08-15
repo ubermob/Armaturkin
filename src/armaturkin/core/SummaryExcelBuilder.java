@@ -90,8 +90,8 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 		// Write column name
 		sheet.getRow(5).createCell(columnInt).setCellValue(Main.properties.getProperty("column_name_2"));
 		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
-		// Write standart document name
-		sheet.getRow(4).createCell(startBlockColumn).setCellValue(Main.properties.getProperty("standart_document_name"));
+		// Write specification document
+		sheet.getRow(4).createCell(startBlockColumn).setCellValue(Specification.get("reinforcing_rolled"));
 		sheet.getRow(4).getCell(startBlockColumn).setCellStyle(textCellStyle);
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
 			sheet.getRow(4).createCell(j);

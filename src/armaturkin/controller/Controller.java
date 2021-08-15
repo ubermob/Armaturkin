@@ -1047,7 +1047,7 @@ public class Controller {
 			System.out.println(v1.getId());
 			System.out.println("test end");*/
 
-			Main.addNotification("just one string");
+			System.out.println(Specification.get("reinforcing_rolled"));
 		}
 	}
 

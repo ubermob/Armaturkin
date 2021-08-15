@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.10";
+	public static String version = "0.5.11b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -81,8 +81,11 @@ public class Main extends Application {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			log.add(e);
 		}
-		loadProperties();
+		loadMainProperties();
+		Root.loadProperties();
+		ManuallyEntry.loadColorProperties();
 		Root.checkDirectories();
+		Specification.loadProperties();
 		loadConfigFile();
 		StandardsRepository.createPairs();
 		// LAUNCH
@@ -272,16 +275,14 @@ public class Main extends Application {
 		config.saveConfigFile();
 	}
 
-	private static void loadProperties() {
+	private static void loadMainProperties() {
 		try {
-			InputStream resource = Main.class.getResourceAsStream("/Properties.xml");
+			InputStream resource = Main.class.getResourceAsStream("/Main_properties.xml");
 			properties.loadFromXML(resource);
 			resource.close();
 		} catch (Exception e) {
 			log.add(e);
 		}
-		Root.loadProperties();
-		ManuallyEntry.loadColorProperties();
 	}
 
 	public static void saveNotification() throws IOException {
