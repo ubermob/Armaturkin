@@ -16,7 +16,6 @@ public class Specification {
 		try {
 			InputStream inputStream;
 			Path check = Path.of(Root.programRootPath, Root.get("update_data_directory"), FILE_NAME);
-			System.out.println(check.toString());
 			if (Files.exists(check)) {
 				inputStream = new FileInputStream(check.toString());
 				isUpdate = true;

@@ -12,7 +12,11 @@ public class PcInformation {
 			return Main.properties.getProperty("pc_information").formatted(
 					System.getProperty("user.name"),
 					InetAddress.getLocalHost().getHostName(),
-					ManagementFactory.getOperatingSystemMXBean().getVersion(),
+					System.getProperty("os.name"),
+					System.getProperty("os.version"),
+					System.getProperty("os.arch"),
+					System.getProperty("java.vendor"),
+					System.getProperty("java.version"),
 					ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors(),
 					(((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 1024 / 1024),
 					(((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize() / 1024 / 1024)
