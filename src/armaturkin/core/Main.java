@@ -14,6 +14,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.12b";
+	public static String version = "0.5.13b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -76,23 +77,25 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) throws IOException {
-		try {
-			parseArgs(args);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			log.add(e);
+		boolean isHelp = parseArgs(args);
+		if (!isHelp) {
+			loadMainProperties();
+			Root.loadProperties();
+			ManuallyEntry.loadColorProperties();
+			Root.checkDirectories();
+			Specification.loadProperties();
+			loadConfigFile();
+			StandardsRepository.createPairs();
+			// Launch
+			launch(args);
+			saveConfigFile();
+			Log.saveLog();
+			saveNotification();
+		} else {
+			// https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
+			Platform.exit();
+			System.exit(0);
 		}
-		loadMainProperties();
-		Root.loadProperties();
-		ManuallyEntry.loadColorProperties();
-		Root.checkDirectories();
-		Specification.loadProperties();
-		loadConfigFile();
-		StandardsRepository.createPairs();
-		// LAUNCH
-		launch(args);
-		saveConfigFile();
-		Log.saveLog();
-		saveNotification();
 	}
 
 	public static void loadProduct() {
@@ -175,38 +178,37 @@ public class Main extends Application {
 		}
 	}
 
-	private static void parseArgs(String[] args) {
-		String[] argCommand = {"-writeLog", "-logStorageLimit", "-disk", "-helloSpammer", "-dev"};
-		for (String arg : args) {
-			if (arg.equals(argCommand[0])) {
-				Log.enable();
-				log.add(argCommand[0]);
+	private static boolean parseArgs(String[] args) throws IOException {
+		String[] argCommand = {
+				"-help", // 0
+				"-disk", // 1
+				"-dev"   // 2
+		};
+		for (var arg : args) {
+			if (isMatchCommands(arg, argCommand[0])) {
+				System.out.println("Version " + version);
+				for (var line : Reader.read(Main.class.getResourceAsStream("/Run_arguments.txt"))) {
+					System.out.println(line);
+				}
+				return true;
 			}
-		    /*if (isMatchCommands(arg, argCommand[1])) {
-			    int value = Integer.parseInt(arg.split("=")[1]);
-			    Log.setLogStorageLimit(value);
-			    log.add(argCommand[1] + "=" + value);
-		    }*/
-			if (isMatchCommands(arg, argCommand[2])) {
+			if (isMatchCommands(arg, argCommand[1])) {
 				char diskLetter = arg.split("=")[1].charAt(0);
 				char letterC = 'C';
 				char letterZ = 'Z';
 				if (letterC <= diskLetter && diskLetter <= letterZ) {
 					Root.diskLetter = diskLetter;
-					log.add(argCommand[2] + "=" + Root.diskLetter);
+					log.add(argCommand[1] + "=" + Root.diskLetter);
+				} else {
+					throw new UnsupportedOperationException("Invalid argument \"" + arg + "\"");
 				}
 			}
-			if (isMatchCommands(arg, argCommand[3])) {
-				Spammer spammer = new Spammer();
-				Thread spammerThread = new Thread(spammer);
-				spammerThread.start();
-				log.add(argCommand[3]);
-			}
-			if (isMatchCommands(arg, argCommand[4])) {
+			if (isMatchCommands(arg, argCommand[2])) {
 				Dev.isDevMode = true;
-				log.add(argCommand[4]);
+				log.add(argCommand[2]);
 			}
 		}
+		return false;
 	}
 
 	private static boolean isMatchCommands(String arg, String argCommand) {
