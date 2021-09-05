@@ -1,0 +1,6 @@
+Run arguments:
+"-writeLog" (example: -writeLog) // write log to a file
+"-logStorageLimit" (example: -logStorageLimit=100) // set limit to log storage // !!! COMMAND HAS REMOVED !!!
+"-disk" (example: -disk=J) // change disk letter
+"-helloSpammer" (example: -helloSpammer) // fill notification tab
+"-dev" (example: -dev) // enable dev mod. Change Dev.isDevMode variable to true
