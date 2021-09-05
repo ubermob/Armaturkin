@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.11b";
+	public static String version = "0.5.12b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;

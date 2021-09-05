@@ -4,9 +4,9 @@ import armaturkin.reinforcement.RFClass;
 
 public class ContentContainer {
 
-	private Content content;
-	private ContentHead contentHead;
-	private ContentRow contentRow;
+	private final Content content;
+	private final ContentHead contentHead;
+	private final ContentRow contentRow;
 
 	public ContentContainer() {
 		content = new Content();
@@ -69,5 +69,9 @@ public class ContentContainer {
 
 	public void redirect(int i) {
 		content.redirect(i);
+	}
+
+	public int maxHashCode() {
+		return content.maxHashCode();
 	}
 }

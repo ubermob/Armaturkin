@@ -88,7 +88,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 				HashMap<Integer, ReinforcementLiteInfo> subMap = targetHashMap.get(i);
 				Main.log.add(Main.properties.getProperty("summary_drop_space").formatted(i));
 				// RF_hash_code_list.txt range
-				for (int j = 0; j < 291; j++) {
+				for (int j = 0; j <= contentContainer.maxHashCode(); j++) {
 					if (subMap.containsKey(j)) {
 						contentContainer.put(i, j, subMap.get(j).getMass());
 						Main.log.add(Main.properties.getProperty("print_target_hash_map").formatted(j, subMap.get(j).toString()));

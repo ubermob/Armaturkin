@@ -1047,7 +1047,14 @@ public class Controller {
 			System.out.println(v1.getId());
 			System.out.println("test end");*/
 
-			System.out.println(Specification.get("reinforcing_rolled"));
+			//System.out.println(Specification.get("reinforcing_rolled"));
+
+//			List<Integer> possibleHash = Reader.readRfHashCode(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"));
+//			possibleHash.forEach(System.out::println);
+			ContentContainer c = new ContentContainer();
+			c.compress();
+			System.out.println("=========");
+			System.out.println(c.maxHashCode());
 		}
 	}
 

@@ -25,4 +25,15 @@ public class Reader {
 		bufferedReader.close();
 		return result;
 	}
+
+	public static List<Integer> readRfHashCode(InputStream inputStream) throws IOException {
+		List<String> read = read(inputStream);
+		List<Integer> result = new ArrayList<>();
+		for (String line : read) {
+			if (!line.startsWith("//") && line.length() != 0) {
+				result.add(Integer.parseInt(line));
+			}
+		}
+		return result;
+	}
 }

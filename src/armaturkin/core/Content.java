@@ -3,7 +3,6 @@ package armaturkin.core;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.utils.MassCounter;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,18 +10,18 @@ import java.util.List;
 public class Content {
 
 	private Double[][] table;
-	private final List<Integer> possibleHash;
+	private List<Integer> possibleHash;
 
 	public Content() {
-		possibleHash = new ArrayList<>();
 		try {
-			InputStream resource = this.getClass().getResourceAsStream("/RF_hash_code_list.txt");
+			possibleHash = Reader.readRfHashCode(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"));
+			/*InputStream resource = this.getClass().getResourceAsStream("/RF_hash_code_list.txt");
 			InputStreamReader inputStreamReader = new InputStreamReader(resource);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			while (bufferedReader.ready()) {
 				possibleHash.add(Integer.parseInt(bufferedReader.readLine()));
 			}
-			bufferedReader.close();
+			bufferedReader.close();*/
 			table = new Double[8][possibleHash.size()];
 		} catch (Exception e) {
 			Main.log.add(e);
@@ -172,5 +171,9 @@ public class Content {
 				}
 			}
 		}
+	}
+
+	public int maxHashCode() {
+		return possibleHash.get(possibleHash.size() - 1);
 	}
 }
