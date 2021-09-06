@@ -47,7 +47,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	@Override
 	public void run() {
-		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
+		stopwatch = new Stopwatch();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
@@ -66,7 +66,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			tableHeadDoNotValid();
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_2").formatted(rowInt));
-		Main.log.add(stopwatch.getPrettyString());
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void readRow() {

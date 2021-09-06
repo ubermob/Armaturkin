@@ -38,7 +38,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	@Override
 	public void run() {
-		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
+		stopwatch = new Stopwatch();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
@@ -53,7 +53,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			rowInt++;
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_1").formatted(rowInt));
-		Main.log.add(stopwatch.getPrettyString());
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void readRow() {

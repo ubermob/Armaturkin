@@ -33,7 +33,7 @@ public class SummaryExcelBuilder implements Runnable {
 
 	@Override
 	public void run() {
-		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
+		stopwatch = new Stopwatch();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		initWorkbook();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
@@ -58,7 +58,7 @@ public class SummaryExcelBuilder implements Runnable {
 			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
 			Main.log.add(e);
 		}
-		Main.log.add(stopwatch.getPrettyString());
+		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void buildBlock(int i) {

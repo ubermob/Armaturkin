@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.15b";
+	public static String version = "0.5.16b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -56,10 +56,8 @@ public class Main extends Application {
 		primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
 		log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		log.add(PcInformation.getInformation());
-		try {
-			InputStream resource = getClass().getResourceAsStream("/Icon.png");
+		try (InputStream resource = getClass().getResourceAsStream("/Icon.png")) {
 			primaryStage.getIcons().add(new Image(resource));
-			resource.close();
 		} catch (Exception e) {
 			log.add(e);
 		}
