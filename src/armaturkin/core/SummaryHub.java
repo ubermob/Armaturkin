@@ -1,15 +1,15 @@
 package armaturkin.core;
 
 import armaturkin.interfaces.FileNameCreator;
-import armaturkin.interfaces.Stopwatch;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.RfHashCode;
+import utools.stopwatch.Stopwatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
+public class SummaryHub implements Runnable, FileNameCreator {
 
 	private final HashMap<Integer, List<String>> summaryPaths;
 	private final List<ManuallyEntry> manuallySummaryEntries;
@@ -20,7 +20,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 	private Thread[][] allThreads;
 	private final List<Log> summaryLog;
 	private ContentContainer contentContainer;
-	private long millis;
+	private Stopwatch stopwatch;
 
 	public SummaryHub(HashMap<Integer, List<String>> summaryPaths,
 	                  List<ManuallyEntry> manuallySummaryEntries,
@@ -38,7 +38,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 
 	@Override
 	public void run() {
-		millis = getStartTime();
+		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		allThreads = new Thread[8][];
 		for (int i = 1; i <= 8; i++) {
@@ -63,7 +63,7 @@ public class SummaryHub implements Runnable, FileNameCreator, Stopwatch {
 		}
 		mergeLog();
 		buildExcel();
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(stopwatch.getPrettyString());
 	}
 
 	void mergeLog() {

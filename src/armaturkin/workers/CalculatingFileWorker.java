@@ -13,10 +13,10 @@ import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.ParseInt;
 import armaturkin.interfaces.RowEmptyChecker;
-import armaturkin.interfaces.Stopwatch;
 import org.apache.poi.ss.usermodel.*;
+import utools.stopwatch.Stopwatch;
 
-public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, Stopwatch {
+public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
@@ -25,7 +25,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private Sheet sheet;
 	private Row row;
 	private int rowInt;
-	private long millis;
+	private Stopwatch stopwatch;
 
 	private int majorNumberColumn = -1;
 	private int majorNumber;
@@ -47,7 +47,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	@Override
 	public void run() {
-		millis = getStartTime();
+		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
@@ -66,7 +66,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			tableHeadDoNotValid();
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_2").formatted(rowInt));
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(stopwatch.getPrettyString());
 	}
 
 	private void readRow() {

@@ -9,13 +9,13 @@ import armaturkin.core.*;
 import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.ParseInt;
 import armaturkin.interfaces.RowEmptyChecker;
-import armaturkin.interfaces.Stopwatch;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
 import org.apache.poi.ss.usermodel.*;
+import utools.stopwatch.Stopwatch;
 
-public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, Stopwatch {
+public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
 	private final String path;
 	private final HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
@@ -29,7 +29,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private int length;
 	private double mass;
 	private int rowInt;
-	private long millis;
+	private Stopwatch stopwatch;
 
 	public ProductFileWorker(String path, HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap) {
 		this.path = path;
@@ -38,7 +38,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	@Override
 	public void run() {
-		millis = getStartTime();
+		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
@@ -53,7 +53,7 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			rowInt++;
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_1").formatted(rowInt));
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(stopwatch.getPrettyString());
 	}
 
 	private void readRow() {

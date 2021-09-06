@@ -1,32 +1,28 @@
 package armaturkin.core;
 
-import armaturkin.interfaces.Stopwatch;
 import armaturkin.reinforcement.RFClass;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import utools.stopwatch.Stopwatch;
 
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class SummaryExcelBuilder implements Runnable, Stopwatch {
+public class SummaryExcelBuilder implements Runnable {
 
 	private final ContentContainer contentContainer;
-	private final String path;
-	private final String fileName;
-	private final String tableHead;
+	private final String path, fileName, tableHead;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
-	private CellStyle cellStyle;
-	private CellStyle textCellStyle;
-	private CellStyle headerCellStyle;
+	private CellStyle cellStyle, textCellStyle, headerCellStyle;
 	private int columnInt = 1;
-	private int baseRowInt = 6;
+	private final int baseRowInt = 6;
 	private int rowInt = baseRowInt;
-	private long millis;
+	private Stopwatch stopwatch;
 
 	public SummaryExcelBuilder(ContentContainer contentContainer, String path, String fileName, String tableHead) {
 		this.contentContainer = contentContainer;
@@ -37,7 +33,7 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 
 	@Override
 	public void run() {
-		millis = getStartTime();
+		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		initWorkbook();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
@@ -62,7 +58,7 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
 			Main.log.add(e);
 		}
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(stopwatch.getPrettyString());
 	}
 
 	private void buildBlock(int i) {
@@ -150,7 +146,7 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 	private void buildFinallyVerticalSummaryMass() {
 		Double[] mass = contentContainer.getFinallyVerticalSummaryMass();
 		rowInt = baseRowInt;
-		for (Double d : mass) {
+		for (var d : mass) {
 			writeCell(sheet.getRow(rowInt++).createCell(columnInt), d);
 		}
 		// Write column name
@@ -188,7 +184,7 @@ public class SummaryExcelBuilder implements Runnable, Stopwatch {
 		sheet.getRow(1).getCell(0).setCellStyle(textCellStyle);
 		sheet.addMergedRegion(new CellRangeAddress(1, 5, 0, 0));
 		rowInt = baseRowInt;
-		for (String string : rowStrings) {
+		for (var string : rowStrings) {
 			sheet.getRow(rowInt).createCell(0).setCellValue(string);
 			sheet.getRow(rowInt++).getCell(0).setCellStyle(textCellStyle);
 		}

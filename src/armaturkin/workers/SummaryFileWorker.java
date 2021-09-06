@@ -9,13 +9,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker, RowEmptyChecker, FileHashCode {
+public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, FileHashCode {
 
 	private final String path;
 	private final HashMap<Integer, ReinforcementLiteInfo> hashMap;
@@ -50,7 +51,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 	private int productMassColumn;
 	private String notification;
 	private MassCounter massCounter;
-	private long millis;
+	private Stopwatch stopwatch;
 
 	public SummaryFileWorker(String path, HashMap<Integer, ReinforcementLiteInfo> hashMap, int labelID, Log log, int set) {
 		this.path = path;
@@ -63,7 +64,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 
 	@Override
 	public void run() {
-		millis = getStartTime();
+		stopwatch = new Stopwatch();
 		fileHashCode = getFileHashCode(path);
 		log.add(Main.properties.getProperty("summary_thread_start").formatted(getClass(), labelID, path, fileHashCode));
 		try {
@@ -94,7 +95,7 @@ public class SummaryFileWorker implements Runnable, Stopwatch, CellEmptyChecker,
 			}
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_3").formatted(path, rowInt));
-		log.add(Main.properties.getProperty("summary_thread_complete").formatted(getClass(), getStopwatch(millis), labelID, path, fileHashCode));
+		log.add(Main.properties.getProperty("summary_thread_complete").formatted(getClass(), stopwatch.getElapsedTime(), labelID, path, fileHashCode));
 	}
 
 	private void readRow() {

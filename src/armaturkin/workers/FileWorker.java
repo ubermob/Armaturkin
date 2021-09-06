@@ -2,7 +2,6 @@ package armaturkin.workers;
 
 import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
-import armaturkin.interfaces.Stopwatch;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.StandardsRepository;
@@ -10,6 +9,7 @@ import armaturkin.utils.CellStyleRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
+import utools.stopwatch.Stopwatch;
 
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -17,12 +17,11 @@ import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.HashMap;
 
-public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
+public class FileWorker implements Runnable, FileNameCreator {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
-	private final String backgroundReinforcement;
-	private final String downloadFileTableHead;
+	private final String backgroundReinforcement, downloadFileTableHead;
 	private String fileName;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
@@ -30,7 +29,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 	private XSSFCell cell;
 	private int rowInt;
 	private CellStyleRepository cellStyleRepository;
-	private long millis;
+	private Stopwatch stopwatch;
 
 	public FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
 	                  String backgroundReinforcement, String downloadFileTableHead, String fileName) {
@@ -43,7 +42,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 
 	@Override
 	public void run() {
-		millis = getStartTime();
+		stopwatch = new Stopwatch(Main.properties.getProperty("thread_complete").formatted(getClass()));
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		buildTableHead();
 		addBackgroundReinforcement();
@@ -58,7 +57,7 @@ public class FileWorker implements Runnable, FileNameCreator, Stopwatch {
 			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
 			Main.log.add(e);
 		}
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), getStopwatch(millis)));
+		Main.log.add(stopwatch.getPrettyString());
 	}
 
 	private void fillTable() {
