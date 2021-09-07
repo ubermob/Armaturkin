@@ -7,6 +7,7 @@ import java.util.Formatter;
 import java.util.HashMap;
 
 import armaturkin.core.Main;
+import armaturkin.interfaces.ParseExpression;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
@@ -16,7 +17,11 @@ import armaturkin.interfaces.RowEmptyChecker;
 import org.apache.poi.ss.usermodel.*;
 import utools.stopwatch.Stopwatch;
 
-public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
+import static armaturkin.core.Log.log;
+import static armaturkin.core.Main.addNotification;
+import static armaturkin.core.Main.getProperty;
+
+public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, ParseExpression {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
@@ -24,7 +29,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
-	private int rowInt;
+	private int currentRow;
 	private Stopwatch stopwatch;
 
 	private int majorNumberColumn = -1;
@@ -48,43 +53,59 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
-		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
-		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
+		log(Main.properties.getProperty("thread_start").formatted(getClass()));
+		log(Main.properties.getProperty("thread_file").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			Main.log.add(e);
+			log(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		if (tableHeadVerification()) {
-			rowInt = 1;
-			while (!isRowEmpty(sheet.getRow(rowInt)) && !isCellEmpty(sheet.getRow(rowInt).getCell(0))) {
+			currentRow = 1;
+			while (!isRowEmpty(sheet.getRow(currentRow)) && !isCellEmpty(sheet.getRow(currentRow).getCell(0))) {
 				readRow();
-				rowInt++;
+				currentRow++;
 			}
 		} else {
 			tableHeadDoNotValid();
 		}
-		Main.addNotification(Main.properties.getProperty("file_successfully_read_2").formatted(rowInt));
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+		addNotification(Main.properties.getProperty("file_successfully_read_2").formatted(currentRow));
+		log(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void readRow() {
-		row = sheet.getRow(rowInt);
+		log(Main.properties.getProperty("current_row").formatted(getClass(), currentRow));
+		row = sheet.getRow(currentRow);
 		majorNumber = parseIntFromNumber(row.getCell(majorNumberColumn));
 		diameter = parseIntFromString(row.getCell(diameterColumn));
 		length = parseIntFromString(row.getCell(lengthColumn));
-		minorNumber = parseIntFromString(row.getCell(minorNumberColumn));
+		try {
+			minorNumber = parseIntFromString(row.getCell(minorNumberColumn));
+		} catch (NumberFormatException e) {
+			// Try parsing expression
+			int localCurrentRow = currentRow;
+			String localParsedString = row.getCell(minorNumberColumn).getStringCellValue();
+			log(getProperty("expression_console").formatted(getClass(), localCurrentRow, localParsedString));
+			addNotification(getProperty("expression_notification").formatted(localCurrentRow + 1, localParsedString));
+			try {
+				minorNumber = parseIntFromExpression(row.getCell(minorNumberColumn));
+			} catch (UnsupportedOperationException e2) {
+				// Unsupported expression
+				addNotification(getProperty("interface_exception_notification").formatted(localParsedString, localCurrentRow + 1));
+				log(getProperty("interface_exception_console").formatted(getClass(), localParsedString, localCurrentRow));
+				log(e2);
+			}
+		}
 		position = parseIntFromString(row.getCell(positionColumn));
 
-		Main.log.add(Main.properties.getProperty("current_row").formatted(getClass(), rowInt));
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]",
 				position, diameter, length, majorNumber, minorNumber);
-		Main.log.add(formatter.toString());
+		log(formatter.toString());
 		checkPosition();
 		buildMap();
-		Main.log.add(reinforcementHashMap.get(position).toString());
+		log(reinforcementHashMap.get(position).toString());
 	}
 
 	private void buildMap() {
@@ -144,7 +165,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			compareLength();
 			reinforcementHashMap.put(position, getReinforcement(false, number));
 		} else {
-			Main.addNotification("Позиция: " + position + " отсутствует в списке изделий");
+			addNotification("Позиция: " + position + " отсутствует в списке изделий");
 		}
 	}
 
@@ -168,17 +189,17 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	private void checkPosition() {
 		if (position <= 0) {
-			Main.addNotification(Main.properties.getProperty("position_notification_3").formatted((rowInt + 1), position));
+			addNotification(Main.properties.getProperty("position_notification_3").formatted((currentRow + 1), position));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			Main.addNotification(Main.properties.getProperty("position_notification_4").formatted((rowInt + 1), position));
+			addNotification(Main.properties.getProperty("position_notification_4").formatted((currentRow + 1), position));
 		}
 	}
 
 	private void compareDiameter(int reservedPositionIndex) {
 		int productDiameter = StandardsRepository.reservedDiameters[reservedPositionIndex];
 		if (diameter != productDiameter) {
-			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает диаметр: " + diameter +
+			addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
 					" (в зарезервированных позициях: " + productDiameter + ")");
 		}
 	}
@@ -186,21 +207,21 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private void compareDiameter() {
 		int productDiameter = reinforcementProductHashMap.get(position).getDiameter();
 		if (diameter != productDiameter) {
-			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает диаметр: " + diameter +
+			addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
 					" (в списке изделий: " + productDiameter + ")");
 		}
 	}
 
 	private void compareMaxLength() {
 		if (length > StandardsRepository.maxLength) {
-			Main.addNotification("В строке " + (rowInt + 1) + " длина изделия/стержня: " + length);
+			addNotification("В строке " + (currentRow + 1) + " длина изделия/стержня: " + length);
 		}
 	}
 
 	private void compareLength() {
 		int productLength = reinforcementProductHashMap.get(position).getLength();
 		if (length != productLength) {
-			Main.addNotification("В строке " + (rowInt + 1) + " не совпадает длина: " + length +
+			addNotification("В строке " + (currentRow + 1) + " не совпадает длина: " + length +
 					" (в списке изделий : " + productLength + ")");
 		}
 	}
@@ -229,7 +250,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " table head: [majorNumberColumn: %d],[diameterColumn: %d],[lengthColumn: %d],[minorNumberColumn: %d],[positionColumn: %d]",
 				majorNumberColumn, diameterColumn, lengthColumn, minorNumberColumn, positionColumn);
-		Main.log.add(formatter.toString());
+		log(formatter.toString() + "\n");
 		return majorNumberColumn != -1 && diameterColumn != -1 && lengthColumn != -1 && minorNumberColumn != -1 && positionColumn != -1;
 	}
 
@@ -255,6 +276,6 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			string = "position";
 		}
 		string += " variable";
-		Main.addNotification("Я ненашел колонку (" + string + ") в файле");
+		addNotification("Я ненашел колонку (" + string + ") в файле");
 	}
 }

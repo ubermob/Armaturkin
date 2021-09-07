@@ -3,6 +3,7 @@ package armaturkin.interfaces;
 import org.apache.poi.ss.usermodel.Cell;
 
 public interface ParseInt {
+
 	default int parseIntFromNumber(Cell cell) {
 		return (int) Math.round(cell.getNumericCellValue());
 	}

@@ -2,11 +2,9 @@ package armaturkin.reinforcement;
 
 public class Reinforcement {
 
-	private final int position;
-	private final int diameter;
+	private final int position, diameter;
 	private final RFClass rfClass;
-	private final int length;
-	private final int number;
+	private final int length, number;
 	private final double mass;
 	private final boolean linear;
 
@@ -34,7 +32,7 @@ public class Reinforcement {
 	public String toString() {
 		return getClass() + ": [position: " + position + "]," +
 				"[diameter: " + diameter + "]," +
-				"[armaturkin.reinforcement.RFClass: " + rfClass + "]," +
+				"[RFClass: " + rfClass + "]," +
 				"[length: " + length + "]," +
 				"[number: " + number + "]," +
 				"[mass: " + mass + "]," +

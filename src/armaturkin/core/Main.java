@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
-	public static String version = "0.5.16b";
+	public static String version = "0.5.17b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -283,6 +283,10 @@ public class Main extends Application {
 		} catch (Exception e) {
 			log.add(e);
 		}
+	}
+
+	public static String getProperty(String key) {
+		return properties.getProperty(key);
 	}
 
 	public static void saveNotification() throws IOException {

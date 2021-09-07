@@ -65,7 +65,7 @@
     <entry key="thread_start">%s: Thread start</entry>
     <entry key="thread_file">%s work with file: %s</entry>
     <entry key="thread_complete">%s: Thread complete in %d ms</entry>
-    <entry key="current_row">%s: [RowInt: %d]</entry>
+    <entry key="current_row">%s: [CurrentRow: %d]</entry>
     <entry key="summary_thread_start">&#09;%s: Thread start. [SummaryDropSpace ID: %d], [File: %s], [FileNameHashCode: %s]</entry>
     <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s]</entry>
     <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d],[FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
@@ -122,8 +122,15 @@
     <entry key="column_name_11">Одного элемента</entry>
     <entry key="column_name_12">Всех элементов</entry>
 
+    <!--Interface "parseIntFromExpression()" exception-->
+    <entry key="interface_exception_throw">input string: "%s"</entry>
+    <entry key="interface_exception_console">%s can not parse string "%s" in row %d</entry>
+    <entry key="interface_exception_notification">Не могу принять выражение «%s» в строке %d</entry>
+    <entry key="expression_console">%s: in row %d detected expression: "%s"</entry>
+    <entry key="expression_notification">В строке %d обнаружено выражение: «%s»</entry>
+
     <!--Manually Summary Entry-->
-    <entry key="negative_number_exception">negative number: %.3f</entry>
+    <entry key="negative_number_exception">Negative number: %.3f</entry>
     <entry key="manually_summary_entry_label_text">%s&#10;Диаметр: %d&#10;%s&#10;%s: %.1f</entry>
     <entry key="add_manually_summary_entry">%s add entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
     <entry key="remove_manually_summary_entry">%s remove entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>

@@ -21,7 +21,7 @@ public class Log {
 		System.out.println(string);
 	}
 
-	public void add(Exception exception) {
+	public synchronized void add(Exception exception) {
 		// https://stackoverflow.com/questions/10120709/difference-between-printstacktrace-and-tostring
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		PrintStream printStream = new PrintStream(byteArrayOutputStream);
@@ -57,5 +57,13 @@ public class Log {
 			);
 			Writer.write(Root.programRootPath + Root.get("log_file_name"), Main.log.getList());
 		}
+	}
+
+	public static synchronized void log(String string) {
+		Main.log.add(string);
+	}
+
+	public static synchronized void log(Exception exception) {
+		Main.log.add(exception);
 	}
 }
