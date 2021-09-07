@@ -2,3 +2,4 @@ Run arguments:
 "-help" (example: -help) // print help
 "-disk" (example: -disk=J) // change disk letter for Windows JRE
 "-dev" (example: -dev) // enable dev mod for test some features
+"-linux" (example: -linux) // set file working for Linux JRE

@@ -30,10 +30,8 @@ public class ManuallyEntry {
 	private final ReinforcementLiteInfo reinforcementLiteInfo;
 
 	public static void loadColorProperties() {
-		try {
-			InputStream resource = Main.class.getResourceAsStream("/Colors_properties.txt");
+		try (InputStream resource = Main.class.getResourceAsStream("/Colors_properties.txt")) {
 			COLOR_PROPERTIES.load(resource);
-			resource.close();
 		} catch (Exception e) {
 			Main.log.add(e);
 		}

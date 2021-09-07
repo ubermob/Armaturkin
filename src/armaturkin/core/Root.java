@@ -9,23 +9,27 @@ import java.util.Properties;
 
 public class Root {
 
+	static Os os = Os.WINDOWS;
 	private static final Properties PROPERTIES = new Properties();
 	public static String programRootPath;
 	static Character diskLetter;
 
 	public static void loadProperties() {
-		try {
-			InputStream resource = Main.class.getResourceAsStream("/Root_structure.xml");
+		try (InputStream resource = Main.class.getResourceAsStream("/Root_structure.xml")) {
 			PROPERTIES.loadFromXML(resource);
-			resource.close();
 		} catch (Exception e) {
 			Main.log.add(e);
 		}
-		programRootPath = PROPERTIES.getProperty("program_root_path");
+		if (os == Os.WINDOWS) {
+			programRootPath = PROPERTIES.getProperty("program_root_path_windows");
+		}
+		if (os == Os.LINUX) {
+			programRootPath = System.getProperty("user.home") + PROPERTIES.getProperty("program_root_path_linux");
+		}
 	}
 
 	public static void checkDirectories() throws IOException {
-		if (diskLetter != null) {
+		if (os == Os.WINDOWS && diskLetter != null) {
 			programRootPath = diskLetter + programRootPath.substring(1);
 		}
 		if (Files.notExists(Path.of(programRootPath))) {

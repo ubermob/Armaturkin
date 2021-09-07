@@ -35,7 +35,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.18b";
+	public static String version = "0.5.19b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -182,7 +182,8 @@ public class Main extends Application {
 		String[] argCommand = {
 				"-help", // 0
 				"-disk", // 1
-				"-dev"   // 2
+				"-dev",  // 2
+				"-linux" // 3
 		};
 		for (var arg : args) {
 			if (isMatchCommands(arg, argCommand[0])) {
@@ -206,6 +207,9 @@ public class Main extends Application {
 			if (isMatchCommands(arg, argCommand[2])) {
 				Dev.isDevMode = true;
 				log(argCommand[2]);
+			}
+			if (isMatchCommands(arg, argCommand[3])) {
+				Root.os = Os.LINUX;
 			}
 		}
 		return false;
@@ -278,10 +282,8 @@ public class Main extends Application {
 	}
 
 	private static void loadMainProperties() {
-		try {
-			InputStream resource = Main.class.getResourceAsStream("/Main_properties.xml");
+		try (InputStream resource = Main.class.getResourceAsStream("/Main_properties.xml")) {
 			properties.loadFromXML(resource);
-			resource.close();
 		} catch (Exception e) {
 			log(e);
 		}
