@@ -7,12 +7,12 @@
         more: https://www.ascii-code.com/
     </comment>
 
-    <!--Main-->
+    <!-- Main -->
     <entry key="application_name">Арматуркин</entry>
     <entry key="application_main_line">Application: %s&#10;Date: %s&#10;Time: %s</entry>
     <entry key="pc_information">User: %s, System name: %s, OS: %s, OS ver: %s, OS arch: %s&#10;Java vendor: %s, Java ver: %s, Processors: %d, RAM: %d Mb / %d Mb (free / total)&#10;</entry>
 
-    <!--Default config values-->
+    <!-- Default config values -->
     <entry key="background_color">#444444</entry>
     <entry key="text_color">#ffffff</entry>
     <entry key="border_color">#008000</entry>
@@ -23,11 +23,11 @@
     <entry key="notification_storage_limit">20</entry>
     <entry key="auto_parse_product_list">true</entry>
 
-    <!--Stages-->
+    <!-- Stages -->
     <entry key="info_stage_name">Информация</entry>
     <entry key="reinforcement_linear_mass_list_stage_name">Масса арматуры</entry>
 
-    <!--Default redirect arrow properties-->
+    <!-- Default redirect arrow properties -->
     <entry key="angle_gap">30</entry>
     <entry key="line_length">40</entry>
 
@@ -49,7 +49,7 @@
     <entry key="favorite_restore_failed_1">Не могу восстановить или получить доступ к папке «%s».&#10;Советую перепривязать твою папку или удалить её из отслеживания</entry>
     <entry key="favorite_restore_failed_2">%s restore failed</entry>
 
-    <!--Summary labels and Content rows-->
+    <!-- Summary labels and Content rows -->
     <entry key="summary_label_default_first_line_1">Фундамент&#10;%s</entry>
     <entry key="summary_label_default_first_line_2">Перекрытия&#10;%s</entry>
     <entry key="summary_label_default_first_line_3">Покрытие&#10;%s</entry>
@@ -102,7 +102,7 @@
 
     <entry key="redirect">%s: redirect %d to %d</entry>
 
-    <!--Summary Excel Builder-->
+    <!-- Summary Excel Builder -->
     <entry key="default_list_name">Лист1</entry>
     <entry key="column_name_1">%%C</entry>
     <entry key="column_name_2">Итого</entry>
@@ -122,14 +122,14 @@
     <entry key="column_name_11">Одного элемента</entry>
     <entry key="column_name_12">Всех элементов</entry>
 
-    <!--Interface "parseIntFromExpression()" exception-->
+    <!-- Interface "parseIntFromExpression()" exception -->
     <entry key="interface_exception_throw">input string: "%s"</entry>
     <entry key="interface_exception_console">%s can not parse string "%s" in row %d</entry>
     <entry key="interface_exception_notification">Не могу принять выражение «%s» в строке %d</entry>
     <entry key="expression_console">%s: in row %d detected expression: "%s"</entry>
     <entry key="expression_notification">В строке %d обнаружено выражение: «%s»</entry>
 
-    <!--Manually Summary Entry-->
+    <!-- Manually Summary Entry -->
     <entry key="negative_number_exception">Negative number: %.3f</entry>
     <entry key="manually_summary_entry_label_text">%s&#10;Диаметр: %d&#10;%s&#10;%s: %.1f</entry>
     <entry key="add_manually_summary_entry">%s add entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
@@ -140,7 +140,7 @@
     <entry key="last_field_name_mass">Масса</entry>
     <entry key="last_field_name_length">Длина</entry>
 
-    <!--Date & Time-->
+    <!-- Date & Time -->
     <entry key="date_pattern">dd-MMM-yyyy</entry>
     <entry key="time_pattern">HH:mm:ss</entry>
     <entry key="date_time_pattern">dd-MM-yyyy HH-mm-ss</entry>

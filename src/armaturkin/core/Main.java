@@ -31,9 +31,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static armaturkin.core.Log.log;
+
 public class Main extends Application {
 
-	public static String version = "0.5.17b";
+	public static String version = "0.5.18b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -53,13 +55,13 @@ public class Main extends Application {
 		controller = loader.getController();
 		doingAddonViews();
 		controller.startSetup();
-		primaryStage.setTitle(properties.getProperty("application_name") + " ver " + version);
-		log.add(properties.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
-		log.add(PcInformation.getInformation());
+		primaryStage.setTitle(getProperty("application_name") + " ver " + version);
+		log(getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
+		log(PcInformation.getInformation());
 		try (InputStream resource = getClass().getResourceAsStream("/Icon.png")) {
 			primaryStage.getIcons().add(new Image(resource));
 		} catch (Exception e) {
-			log.add(e);
+			log(e);
 		}
 		primaryStage.setScene(new Scene(root));
 		checkFavoriteDirectory();
@@ -144,7 +146,7 @@ public class Main extends Application {
 			}
 			String summaryTableHead = controller.getSummaryTableHead();
 			if (summaryTableHead.equals("")) {
-				summaryTableHead = properties.getProperty("default_table_main_header");
+				summaryTableHead = getProperty("default_table_main_header");
 			}
 			SummaryHub summaryHub = new SummaryHub(
 					summaryPaths,
@@ -167,7 +169,7 @@ public class Main extends Application {
 				try {
 					thread.join();
 				} catch (Exception e) {
-					log.add(e);
+					log(e);
 				}
 			}
 			for (Log threadLog : logList) {
@@ -196,14 +198,14 @@ public class Main extends Application {
 				char letterZ = 'Z';
 				if (letterC <= diskLetter && diskLetter <= letterZ) {
 					Root.diskLetter = diskLetter;
-					log.add(argCommand[1] + "=" + Root.diskLetter);
+					log(argCommand[1] + "=" + Root.diskLetter);
 				} else {
 					throw new UnsupportedOperationException("Invalid argument \"" + arg + "\"");
 				}
 			}
 			if (isMatchCommands(arg, argCommand[2])) {
 				Dev.isDevMode = true;
-				log.add(argCommand[2]);
+				log(argCommand[2]);
 			}
 		}
 		return false;
@@ -218,7 +220,7 @@ public class Main extends Application {
 			Path path = Path.of(config.getPathToProductFile());
 			if (Files.exists(path)) {
 				controller.setUpperDropSpaceText(
-						properties.getProperty("upper_label_text_with_file").formatted(path.getFileName().toString())
+						getProperty("upper_label_text_with_file").formatted(path.getFileName().toString())
 				);
 				loadProduct();
 			}
@@ -227,17 +229,17 @@ public class Main extends Application {
 
 	private void checkFavoriteDirectory() {
 		if (config.isFavoritePathNotNull()) {
-			controller.setFavoriteDropSpaceText(properties.getProperty("favorite_is_on").formatted(config.getFavoritePath()));
+			controller.setFavoriteDropSpaceText(getProperty("favorite_is_on").formatted(config.getFavoritePath()));
 			if (Files.notExists(Path.of(config.getFavoritePath()))) {
 				try {
 					restoreDirectory(config.getFavoritePath());
-					addNotification(properties.getProperty("favorite_is_restored_1").formatted(config.getFavoritePath()));
-					Main.log.add(properties.getProperty("favorite_is_restored_2").formatted(getClass()));
+					addNotification(getProperty("favorite_is_restored_1").formatted(config.getFavoritePath()));
+					log(getProperty("favorite_is_restored_2").formatted(getClass()));
 				} catch (Exception e) {
-					addNotification(properties.getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
-					Main.log.add(properties.getProperty("favorite_restore_failed_2").formatted(getClass()));
-					Main.log.add(e);
-					controller.setFavoriteDropSpaceText(properties.getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
+					addNotification(getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
+					log(getProperty("favorite_restore_failed_2").formatted(getClass()));
+					log(e);
+					controller.setFavoriteDropSpaceText(getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
 				}
 			}
 		}
@@ -281,7 +283,7 @@ public class Main extends Application {
 			properties.loadFromXML(resource);
 			resource.close();
 		} catch (Exception e) {
-			log.add(e);
+			log(e);
 		}
 	}
 
@@ -311,7 +313,7 @@ public class Main extends Application {
 				Files.delete(file);
 			}
 		} catch (IOException e) {
-			log.add(e);
+			log(e);
 		}
 	}
 
@@ -329,7 +331,7 @@ public class Main extends Application {
 					}
 				}
 			} catch (Exception e) {
-				log.add(e);
+				log(e);
 			}
 		}
 	}
@@ -346,11 +348,11 @@ public class Main extends Application {
 
 	private static String getDate() {
 		LocalDateTime localDateTime = LocalDateTime.now();
-		return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("date_pattern"), new Locale("en")));
+		return localDateTime.format(DateTimeFormatter.ofPattern(getProperty("date_pattern"), new Locale("en")));
 	}
 
 	private static String getTime() {
 		LocalDateTime localDateTime = LocalDateTime.now();
-		return localDateTime.format(DateTimeFormatter.ofPattern(properties.getProperty("time_pattern")));
+		return localDateTime.format(DateTimeFormatter.ofPattern(getProperty("time_pattern")));
 	}
 }
