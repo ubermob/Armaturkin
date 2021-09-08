@@ -33,10 +33,10 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static armaturkin.core.Main.getProperty;
+
 public class Controller {
 
-	@FXML
-	private AnchorPane anchorPane1;
 	@FXML
 	private AnchorPane anchorPane3;
 	@FXML
@@ -170,6 +170,8 @@ public class Controller {
 	@FXML
 	private Text mSummaryEntryText2;
 	@FXML
+	private Text notificationText;
+	@FXML
 	private Circle circle1;
 	@FXML
 	private Circle circle2;
@@ -229,20 +231,20 @@ public class Controller {
 		AddonViews.arrow = new Arrow(AddonViews.arrowLine1, AddonViews.arrowLine2);
 		setArrowOpacity(0);
 		setupBorderColor();
-		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
-		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
+		setUpperDropSpaceText(getProperty("upper_label_default_text"));
+		setLowerDropSpaceText(getProperty("lower_label_default_text"));
 
-		String secondLine = Main.properties.getProperty("summary_label_default_second_line");
-		setSummaryDropSpaceText(1, Main.properties.getProperty("summary_label_default_first_line_1").formatted(secondLine));
-		setSummaryDropSpaceText(2, Main.properties.getProperty("summary_label_default_first_line_2").formatted(secondLine));
-		setSummaryDropSpaceText(3, Main.properties.getProperty("summary_label_default_first_line_3").formatted(secondLine));
-		setSummaryDropSpaceText(4, Main.properties.getProperty("summary_label_default_first_line_4").formatted(secondLine));
-		setSummaryDropSpaceText(5, Main.properties.getProperty("summary_label_default_first_line_5").formatted(secondLine));
-		setSummaryDropSpaceText(6, Main.properties.getProperty("summary_label_default_first_line_6").formatted(secondLine));
-		setSummaryDropSpaceText(7, Main.properties.getProperty("summary_label_default_first_line_7").formatted(secondLine));
-		setSummaryDropSpaceText(8, Main.properties.getProperty("summary_label_default_first_line_8").formatted(secondLine));
+		String secondLine = getProperty("summary_label_default_second_line");
+		setSummaryDropSpaceText(1, getProperty("summary_label_default_first_line_1").formatted(secondLine));
+		setSummaryDropSpaceText(2, getProperty("summary_label_default_first_line_2").formatted(secondLine));
+		setSummaryDropSpaceText(3, getProperty("summary_label_default_first_line_3").formatted(secondLine));
+		setSummaryDropSpaceText(4, getProperty("summary_label_default_first_line_4").formatted(secondLine));
+		setSummaryDropSpaceText(5, getProperty("summary_label_default_first_line_5").formatted(secondLine));
+		setSummaryDropSpaceText(6, getProperty("summary_label_default_first_line_6").formatted(secondLine));
+		setSummaryDropSpaceText(7, getProperty("summary_label_default_first_line_7").formatted(secondLine));
+		setSummaryDropSpaceText(8, getProperty("summary_label_default_first_line_8").formatted(secondLine));
 
-		setFavoriteDropSpaceText(Main.properties.getProperty("favorite_is_off"));
+		setFavoriteDropSpaceText(getProperty("favorite_is_off"));
 
 		settingsTextWrapper2 = new TextWrapper(settingsText2);
 		settingsTextWrapper3 = new TextWrapper(settingsText3);
@@ -254,7 +256,7 @@ public class Controller {
 	}
 
 	private void groupingAppearanceVariables() {
-		allLabels = new Label[] {
+		allLabels = new Label[]{
 				upperDropSpace,
 				lowerDropSpace,
 				resultLabel,
@@ -270,7 +272,7 @@ public class Controller {
 				summaryDropSpace8,
 				favoriteDropSpace
 		};
-		borderModifiedLabels = new Label[] {
+		borderModifiedLabels = new Label[]{
 				upperDropSpace,
 				lowerDropSpace,
 				summaryDropSpace1,
@@ -283,7 +285,7 @@ public class Controller {
 				summaryDropSpace8,
 				favoriteDropSpace
 		};
-		allSummaryLabelWrappers = new LabelWrapper[] {
+		allSummaryLabelWrappers = new LabelWrapper[]{
 				new LabelWrapper(summaryDropSpace1),
 				new LabelWrapper(summaryDropSpace2),
 				new LabelWrapper(summaryDropSpace3),
@@ -293,7 +295,7 @@ public class Controller {
 				new LabelWrapper(summaryDropSpace7),
 				new LabelWrapper(summaryDropSpace8)
 		};
-		boldTextModifiedButtons = new Button[] {
+		boldTextModifiedButtons = new Button[]{
 				downloadFileButton,
 				clearResultLabelButton,
 				lowerDropSpaceButton,
@@ -320,7 +322,7 @@ public class Controller {
 				showReinforcementLinearMassListButton,
 				backgroundReinforcementAddButton,
 		};
-		allTexts = new Text[] {
+		allTexts = new Text[]{
 				appearanceText1,
 				appearanceText2,
 				appearanceText3,
@@ -332,39 +334,40 @@ public class Controller {
 				settingsText6,
 				settingsText7,
 				mSummaryEntryText1,
-				mSummaryEntryText2
+				mSummaryEntryText2,
+				notificationText
 		};
 	}
 
 	@FXML
 	private void setBackgroundColor1() {
 		Main.config.setBackgroundColor(getColorHexCode(circle1.getFill()));
-        setupBackgroundColor();
-    }
+		setupBackgroundColor();
+	}
 
 	@FXML
 	private void setBackgroundColor2() {
-	    Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
-        setupBackgroundColor();
-    }
+		Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
+		setupBackgroundColor();
+	}
 
 	@FXML
 	private void setBackgroundColor3() {
-	    Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
-        setupBackgroundColor();
-    }
+		Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
+		setupBackgroundColor();
+	}
 
 	@FXML
 	private void setBackgroundColor4() {
-	    Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
-        setupBackgroundColor();
-    }
+		Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
+		setupBackgroundColor();
+	}
 
 	@FXML
 	private void setBackgroundColor5() {
-	    Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
-        setupBackgroundColor();
-    }
+		Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
+		setupBackgroundColor();
+	}
 
 	private void setupBackgroundColor() {
 		Main.root.setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
@@ -372,107 +375,102 @@ public class Controller {
 
 	@FXML
 	private void setTextColor1() {
-        Main.config.setTextColor(getColorHexCode(circle1.getFill()));
-        setupTextColor();
-    }
+		Main.config.setTextColor(getColorHexCode(circle1.getFill()));
+		setupTextColor();
+	}
 
 	@FXML
 	private void setTextColor2() {
-	    Main.config.setTextColor(getColorHexCode(circle2.getFill()));
-        setupTextColor();
-    }
+		Main.config.setTextColor(getColorHexCode(circle2.getFill()));
+		setupTextColor();
+	}
 
 	@FXML
 	private void setTextColor3() {
-	    Main.config.setTextColor(getColorHexCode(circle3.getFill()));
-        setupTextColor();
-    }
+		Main.config.setTextColor(getColorHexCode(circle3.getFill()));
+		setupTextColor();
+	}
 
 	@FXML
 	private void setTextColor4() {
-	    Main.config.setTextColor(getColorHexCode(circle4.getFill()));
-        setupTextColor();
-    }
+		Main.config.setTextColor(getColorHexCode(circle4.getFill()));
+		setupTextColor();
+	}
 
 	@FXML
 	private void setTextColor5() {
-	    Main.config.setTextColor(getColorHexCode(circle5.getFill()));
-        setupTextColor();
-    }
+		Main.config.setTextColor(getColorHexCode(circle5.getFill()));
+		setupTextColor();
+	}
 
-    public LabelWrapper getSummaryLabelWrapper(int i) {
+	public LabelWrapper getSummaryLabelWrapper(int i) {
 		return allSummaryLabelWrappers[i - 1];
-    }
+	}
 
 	private String getColorHexCode(Paint paint) {
 		return "#" + paint.toString().substring(2, 8);
 	}
 
-    private void setupTextColor() {
-	    for (Text text : allTexts) {
-		    text.setFill(Paint.valueOf(Main.config.getTextColor()));
-	    }
-	    for (Label label : allLabels) {
-		    label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
-	    }
-    }
-    
-    private void setupBorderColor() {
-		Border border = new Border(new BorderStroke(
-				Paint.valueOf(Main.config.getBorderColor()),
-				BorderStrokeStyle.SOLID,
-				CornerRadii.EMPTY,
-				new BorderWidths(5)
-		));
-	    for (Label label : borderModifiedLabels) {
-	    	label.setBorder(border);
-	    }
-    }
+	private void setupTextColor() {
+		for (var text : allTexts) {
+			text.setFill(Paint.valueOf(Main.config.getTextColor()));
+		}
+		for (var label : allLabels) {
+			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+		}
+	}
 
-    public void setResultLabelText(String string) {
+	private void setupBorderColor() {
+		for (var label : borderModifiedLabels) {
+			label.setStyle("-fx-border-color: %s; -fx-border-width: %d;"
+					.formatted(Main.config.getBorderColor(), 5));
+		}
+	}
+
+	public void setResultLabelText(String string) {
 		resultLabel.setText(string);
-    }
+	}
 
-    public void setNotificationOpacity(int i) {
-	    notificationLabel.setOpacity(i);
-	    notificationLabel2.setOpacity(i);
-    }
+	public void setNotificationOpacity(int i) {
+		notificationLabel.setOpacity(i);
+		notificationLabel2.setOpacity(i);
+	}
 
 	@FXML
 	private void upperDragDropped(DragEvent dragEvent) {
-	    DropWorker.dragDropped(dragEvent, 0, this);
-    }
+		DropWorker.dragDropped(dragEvent, 0, this);
+	}
 
 	@FXML
 	private void upperDragOver(DragEvent dragEvent) {
-	    DropWorker.dragOver(dragEvent);
-    }
+		DropWorker.dragOver(dragEvent);
+	}
 
 	@FXML
 	private void lowerDragDropped(DragEvent dragEvent) {
-	    DropWorker.dragDropped(dragEvent, 1, this);
-    }
+		DropWorker.dragDropped(dragEvent, 1, this);
+	}
 
 	@FXML
 	private void lowerDragOver(DragEvent dragEvent) {
-	    DropWorker.dragOver(dragEvent);
-    }
+		DropWorker.dragOver(dragEvent);
+	}
 
-    public void setUpperDropSpaceText(String string) {
+	public void setUpperDropSpaceText(String string) {
 		upperDropSpace.setText(string);
-    }
+	}
 
-    public Label getUpperDropSpaceLabel() {
+	public Label getUpperDropSpaceLabel() {
 		return upperDropSpace;
-    }
+	}
 
 	public Label getLowerDropSpaceLabel() {
 		return lowerDropSpace;
 	}
 
-    private void setLowerDropSpaceText(String string) {
+	private void setLowerDropSpaceText(String string) {
 		lowerDropSpace.setText(string);
-    }
+	}
 
 	@FXML
 	private void downloadFile() {
@@ -488,30 +486,30 @@ public class Controller {
 	private void clearUpperDropSpace() {
 		Main.config.setPathToProductFile(null);
 		Main.reinforcementProductHashMap.clear();
-		setUpperDropSpaceText(Main.properties.getProperty("upper_label_default_text"));
+		setUpperDropSpaceText(getProperty("upper_label_default_text"));
 	}
 
 	@FXML
 	private void clearLowerDropSpace() {
 		Main.config.setPathToCalculatingFile(null);
 		Main.reinforcementHashMap.clear();
-		setLowerDropSpaceText(Main.properties.getProperty("lower_label_default_text"));
+		setLowerDropSpaceText(getProperty("lower_label_default_text"));
 	}
 
 	@FXML
 	private void showInfoStage() throws IOException {
-    	if (Stages.infoStage == null) {
-    		Stages.infoStage = new Stage();
-    		Label label = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/Info_label.fxml")).load();
-    		label.setBackground(getUserBackgroundColor());
-    		label.setFont(getFont());
-    		label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
-		    Stages.infoStage.setScene(new Scene(label));
-		    Stages.infoStage.setTitle(Main.properties.getProperty("info_stage_name"));
-		    Stages.infoStage.initStyle(StageStyle.UTILITY);
-		    Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
-	    }
-    	Stages.infoStage.show();
+		if (Stages.infoStage == null) {
+			Stages.infoStage = new Stage();
+			Label label = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/Info_label.fxml")).load();
+			label.setBackground(getUserBackgroundColor());
+			label.setFont(getFont());
+			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+			Stages.infoStage.setScene(new Scene(label));
+			Stages.infoStage.setTitle(getProperty("info_stage_name"));
+			Stages.infoStage.initStyle(StageStyle.UTILITY);
+			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
+		}
+		Stages.infoStage.show();
 	}
 
 	public String getTableHead() {
@@ -519,7 +517,7 @@ public class Controller {
 	}
 
 	public String getBackgroundReinforcement() {
-    	return backgroundReinforcement.getText();
+		return backgroundReinforcement.getText();
 	}
 
 	public String getFileName() {
@@ -805,7 +803,7 @@ public class Controller {
 	@FXML
 	private void forgetFavorite() {
 		Main.config.setFavoritePath(null);
-		setFavoriteDropSpaceText(Main.properties.getProperty("favorite_is_off"));
+		setFavoriteDropSpaceText(getProperty("favorite_is_off"));
 	}
 
 	@FXML
@@ -929,9 +927,9 @@ public class Controller {
 
 	private void setupMSummaryChoiceBox() {
 		mSummaryChoiceBox1.setItems(FXCollections.observableArrayList(
-				Arrays.asList(Main.properties.getProperty("content_row").split("-"))
+				Arrays.asList(getProperty("content_row").split("-"))
 		));
-		mSummaryChoiceBox1.setValue(Main.properties.getProperty("content_row").split("-")[0]);
+		mSummaryChoiceBox1.setValue(getProperty("content_row").split("-")[0]);
 		mSummaryChoiceBox2.setItems(FXCollections.observableList(StandardsRepository.getDiametersAsList()));
 		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[2]);
 		mSummaryChoiceBox3.setItems(FXCollections.observableArrayList(
@@ -980,7 +978,7 @@ public class Controller {
 			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
 			label.setAlignment(Pos.CENTER);
 			Stages.reinforcementLinearMassListStage.setScene(new Scene(label));
-			Stages.reinforcementLinearMassListStage.setTitle(Main.properties.getProperty("reinforcement_linear_mass_list_stage_name"));
+			Stages.reinforcementLinearMassListStage.setTitle(getProperty("reinforcement_linear_mass_list_stage_name"));
 			Stages.reinforcementLinearMassListStage.initStyle(StageStyle.UTILITY);
 			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 		}
@@ -1032,6 +1030,13 @@ public class Controller {
 	}
 
 	@FXML
+	private void printVarState() {
+		if (Dev.isDevMode) {
+			Dev.printVarState();
+		}
+	}
+
+	@FXML
 	private void doTest() throws Exception {
 		if (Dev.isDevMode) {
 			/*System.out.println("test start");
@@ -1049,19 +1054,13 @@ public class Controller {
 
 			//System.out.println(Specification.get("reinforcing_rolled"));
 
-//			List<Integer> possibleHash = Reader.readRfHashCode(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"));
-//			possibleHash.forEach(System.out::println);
-			ContentContainer c = new ContentContainer();
+			/*List<Integer> possibleHash = Reader.readRfHashCode(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"));
+			possibleHash.forEach(System.out::println);*/
+
+			/*ContentContainer c = new ContentContainer();
 			c.compress();
 			System.out.println("=========");
-			System.out.println(c.maxHashCode());
-		}
-	}
-
-	@FXML
-	private void printVarState() {
-		if (Dev.isDevMode) {
-			Dev.printVarState();
+			System.out.println(c.maxHashCode());*/
 		}
 	}
 }

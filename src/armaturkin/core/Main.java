@@ -35,7 +35,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.20b";
+	public static String version = "0.5.20b2";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
