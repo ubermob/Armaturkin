@@ -1,5 +1,9 @@
 Run arguments:
-"-help" (example: -help) // print help
-"-disk" (example: -disk=J) // change disk letter for Windows JRE
-"-dev" (example: -dev) // enable dev mod for test some features
-"-linux" (example: -linux) // set file working for Linux JRE
+"-help" (example: -help) // Print help
+"-disk" (example: -disk=J) // Change disk letter for Windows
+"-dev" (example: -dev) // Enable developer mod for test some features
+"-linux" (example: -linux) // Set file paths for Linux
+"-abs_path" (example for Windows: -abs_path=C:/Directory_1/.../Directory_N/)
+(example for Linux: -abs_path=/home/User_name/Directory_1/.../Directory_N/)
+ // Set path to application root directory. Absolute path must be exist.
+ "-abs_path" has a higher priority than "-disk"

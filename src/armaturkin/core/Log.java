@@ -46,16 +46,16 @@ public class Log {
 	}
 
 	public static void saveLog() throws IOException {
-		StorageCleaner.clearStorage(Path.of(Root.programRootPath, Root.get("log_storage_directory")));
+		StorageCleaner.clearStorage(Path.of(Root.programRootPath, Root.getProperty("log_storage_directory")));
 		if (writeLog) {
 			StorageCleaner.copyFile(
-					Path.of(Root.programRootPath, Root.get("log_file_name")),
-					Path.of(Root.programRootPath, Root.get("log_storage_directory"),
-							Root.get("numbered_log_file_name").formatted(
-									StorageCleaner.getStorageSize(Root.programRootPath + Root.get("log_storage_directory")) + 1)
+					Path.of(Root.programRootPath, Root.getProperty("log_file_name")),
+					Path.of(Root.programRootPath, Root.getProperty("log_storage_directory"),
+							Root.getProperty("numbered_log_file_name").formatted(
+									StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("log_storage_directory")) + 1)
 					)
 			);
-			Writer.write(Root.programRootPath + Root.get("log_file_name"), Main.log.getList());
+			Writer.write(Root.programRootPath + Root.getProperty("log_file_name"), Main.log.getList());
 		}
 	}
 

@@ -13,6 +13,7 @@ public class Root {
 	private static final Properties PROPERTIES = new Properties();
 	public static String programRootPath;
 	static Character diskLetter;
+	static String absolutePath;
 
 	public static void loadProperties() {
 		try (InputStream resource = Main.class.getResourceAsStream("/Root_structure.xml")) {
@@ -21,14 +22,18 @@ public class Root {
 			Main.log.add(e);
 		}
 		if (os == Os.WINDOWS) {
-			programRootPath = PROPERTIES.getProperty("program_root_path_windows");
+			programRootPath = getProperty("program_root_path_windows");
 		}
 		if (os == Os.LINUX) {
-			programRootPath = System.getProperty("user.home") + PROPERTIES.getProperty("program_root_path_linux");
+			programRootPath = System.getProperty("user.home") + getProperty("program_root_path_extend");
 		}
 	}
 
 	public static void checkDirectories() throws IOException {
+		if (absolutePath != null) {
+			diskLetter = null;
+			programRootPath = absolutePath + getProperty("program_root_path_extend");
+		}
 		if (os == Os.WINDOWS && diskLetter != null) {
 			programRootPath = diskLetter + programRootPath.substring(1);
 		}
@@ -39,7 +44,7 @@ public class Root {
 		while (objectIterator.hasNext()) {
 			String key = (String) objectIterator.next();
 			if (key.contains("directory")) {
-				Path path = Path.of(programRootPath, get(key));
+				Path path = Path.of(programRootPath, getProperty(key));
 				if (Files.notExists(path)) {
 					Files.createDirectory(path);
 				}
@@ -51,7 +56,7 @@ public class Root {
 	 * @param key the property key
 	 * @return {@link String} the value in this property list with the specified key value.
 	 */
-	public static String get(String key) {
+	public static String getProperty(String key) {
 		return PROPERTIES.getProperty(key);
 	}
 }

@@ -15,7 +15,7 @@ public class Specification {
 	public static void loadProperties() {
 		try {
 			InputStream inputStream;
-			Path check = Path.of(Root.programRootPath, Root.get("update_data_directory"), FILE_NAME);
+			Path check = Path.of(Root.programRootPath, Root.getProperty("update_data_directory"), FILE_NAME);
 			if (Files.exists(check)) {
 				inputStream = new FileInputStream(check.toString());
 				isUpdate = true;

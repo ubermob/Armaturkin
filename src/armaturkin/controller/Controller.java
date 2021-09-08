@@ -765,15 +765,15 @@ public class Controller {
 			settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(Main.config.getLogStorageLimit()));
 			settingsTextWrapper3.setText(
 					settingsTextWrapper3.getDefaultText().formatted(
-							StorageCleaner.getStorageSize(Root.programRootPath + Root.get("log_storage_directory")),
-							new LongWrapper(StorageCleaner.getSize(Root.programRootPath + Root.get("log_storage_directory"))).toString()
+							StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("log_storage_directory")),
+							new LongWrapper(StorageCleaner.getSize(Root.programRootPath + Root.getProperty("log_storage_directory"))).toString()
 					)
 			);
 			settingsTextWrapper5.setText(settingsTextWrapper5.getDefaultText().formatted(Main.config.getNotificationStorageLimit()));
 			settingsTextWrapper6.setText(
 					settingsTextWrapper6.getDefaultText().formatted(
-							StorageCleaner.getStorageSize(Root.programRootPath + Root.get("notification_storage_directory")),
-							new LongWrapper(StorageCleaner.getSize(Root.programRootPath + Root.get("notification_storage_directory"))).toString()
+							StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("notification_storage_directory")),
+							new LongWrapper(StorageCleaner.getSize(Root.programRootPath + Root.getProperty("notification_storage_directory"))).toString()
 					)
 			);
 		} catch (Exception e) {
@@ -783,13 +783,13 @@ public class Controller {
 
 	@FXML
 	private void deleteLogs() {
-		Main.deleteStorage(Root.programRootPath + Root.get("log_storage_directory"));
+		Main.deleteStorage(Root.programRootPath + Root.getProperty("log_storage_directory"));
 		setText();
 	}
 
 	@FXML
 	private void deleteNotifications() {
-		Main.deleteStorage(Root.programRootPath + Root.get("notification_storage_directory"));
+		Main.deleteStorage(Root.programRootPath + Root.getProperty("notification_storage_directory"));
 		setText();
 	}
 

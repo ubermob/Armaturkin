@@ -3,7 +3,7 @@
 <properties>
     <!-- Root -->
     <entry key="program_root_path_windows">C:\Armaturkin\</entry>
-    <entry key="program_root_path_linux">/Armaturkin/</entry>
+    <entry key="program_root_path_extend">/Armaturkin/</entry>
 
     <!-- Directories -->
     <entry key="log_storage_directory">Log storage</entry>

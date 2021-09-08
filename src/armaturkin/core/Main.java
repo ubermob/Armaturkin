@@ -35,7 +35,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.19b";
+	public static String version = "0.5.20b";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -77,8 +77,8 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) throws IOException {
-		boolean isHelp = parseArgs(args);
-		if (!isHelp) {
+		boolean isRunnable = parseArgs(args);
+		if (isRunnable) {
 			loadMainProperties();
 			Root.loadProperties();
 			ManuallyEntry.loadColorProperties();
@@ -179,44 +179,61 @@ public class Main extends Application {
 	}
 
 	private static boolean parseArgs(String[] args) throws IOException {
-		String[] argCommand = {
-				"-help", // 0
-				"-disk", // 1
-				"-dev",  // 2
-				"-linux" // 3
+		String[] sampleArgCommands = {
+				"-help",     // 0
+				"-disk",     // 1
+				"-dev",      // 2
+				"-linux",    // 3
+				"-abs_path"  // 4
 		};
 		for (var arg : args) {
-			if (isMatchCommands(arg, argCommand[0])) {
+			if (isMatchCommands(arg, sampleArgCommands[0])) {
 				System.out.println("Version " + version);
 				for (var line : Reader.read(Main.class.getResourceAsStream("/Run_arguments.txt"))) {
 					System.out.println(line);
 				}
-				return true;
+				return false;
 			}
-			if (isMatchCommands(arg, argCommand[1])) {
-				char diskLetter = arg.split("=")[1].charAt(0);
-				char letterC = 'C';
-				char letterZ = 'Z';
-				if (letterC <= diskLetter && diskLetter <= letterZ) {
-					Root.diskLetter = diskLetter;
-					log(argCommand[1] + "=" + Root.diskLetter);
-				} else {
-					throw new UnsupportedOperationException("Invalid argument \"" + arg + "\"");
+			if (isMatchComplexCommands(arg, sampleArgCommands[1])) {
+				String[] splitted = arg.split("=");
+				if (splitted[1].length() != 1) {
+					throw new UnsupportedOperationException("Invalid argument: \"" + arg + "\"");
 				}
+				char diskLetter = splitted[1].charAt(0);
+				if (diskLetter < 'C' || 'Z' < diskLetter) {
+					throw new UnsupportedOperationException("Invalid argument: \"" + arg + "\"");
+				}
+				if (Files.notExists(Path.of(diskLetter + ":\\"))) {
+					throw new IOException("Disk \"" + diskLetter + ":\" do not exist");
+				}
+				Root.diskLetter = diskLetter;
+				log(arg);
 			}
-			if (isMatchCommands(arg, argCommand[2])) {
+			if (isMatchCommands(arg, sampleArgCommands[2])) {
 				Dev.isDevMode = true;
-				log(argCommand[2]);
+				log(arg);
 			}
-			if (isMatchCommands(arg, argCommand[3])) {
+			if (isMatchCommands(arg, sampleArgCommands[3])) {
 				Root.os = Os.LINUX;
 			}
+			if (isMatchComplexCommands(arg, sampleArgCommands[4])) {
+				String absolutePath = arg.split("=")[1];
+				if (Files.notExists(Path.of(absolutePath))) {
+					throw new IOException("Absolute path: \"" + absolutePath + "\" do not exist");
+				}
+				Root.absolutePath = absolutePath;
+			}
 		}
-		return false;
+		return true;
 	}
 
-	private static boolean isMatchCommands(String arg, String argCommand) {
-		return arg.length() >= argCommand.length() && arg.startsWith(argCommand);
+	private static boolean isMatchCommands(String arg, String sampleArgCommand) {
+		return arg.equals(sampleArgCommand);
+	}
+
+	private static boolean isMatchComplexCommands(String arg, String sampleArgCommand) {
+		String[] splitted = arg.split("=");
+		return splitted.length == 2 && splitted[0].equals(sampleArgCommand);
 	}
 
 	private void preloadUpperDropSpace() {
@@ -274,7 +291,7 @@ public class Main extends Application {
 	}
 
 	private static void loadConfigFile() throws IOException {
-		config = new Configuration(Root.programRootPath + Root.get("config_file_name"));
+		config = new Configuration(Root.programRootPath + Root.getProperty("config_file_name"));
 	}
 
 	private static void saveConfigFile() throws IOException {
@@ -294,17 +311,17 @@ public class Main extends Application {
 	}
 
 	public static void saveNotification() throws IOException {
-		StorageCleaner.clearStorage(Path.of(Root.programRootPath, Root.get("notification_storage_directory")));
+		StorageCleaner.clearStorage(Path.of(Root.programRootPath, Root.getProperty("notification_storage_directory")));
 		if (config.getWriteNotification() && notificationString.length() > 0) {
 			StorageCleaner.copyFile(
-					Path.of(Root.programRootPath, Root.get("notification_file_name")),
-					Path.of(Root.programRootPath, Root.get("notification_storage_directory"),
-							Root.get("numbered_notification_file_name").formatted(
-									StorageCleaner.getStorageSize(Root.programRootPath + Root.get("notification_storage_directory")) + 1)
+					Path.of(Root.programRootPath, Root.getProperty("notification_file_name")),
+					Path.of(Root.programRootPath, Root.getProperty("notification_storage_directory"),
+							Root.getProperty("numbered_notification_file_name").formatted(
+									StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("notification_storage_directory")) + 1)
 					)
 			);
 			notificationString = NewLineReplacer.replace(notificationString);
-			Writer.write(Root.programRootPath + Root.get("notification_file_name"), notificationString);
+			Writer.write(Root.programRootPath + Root.getProperty("notification_file_name"), notificationString);
 		}
 	}
 

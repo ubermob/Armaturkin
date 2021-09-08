@@ -13,15 +13,15 @@ public class StorageCleaner {
 		int storageLimit = 10;
 		String beginningOfName = "";
 		String numberedFileName = "";
-		if (path.equals(Path.of(Root.programRootPath, Root.get("log_storage_directory")))) {
+		if (path.equals(Path.of(Root.programRootPath, Root.getProperty("log_storage_directory")))) {
 			storageLimit = Main.config.getLogStorageLimit();
-			beginningOfName = Root.get("log_file_name").split("\\.txt")[0];
-			numberedFileName = Root.get("numbered_log_file_name");
+			beginningOfName = Root.getProperty("log_file_name").split("\\.txt")[0];
+			numberedFileName = Root.getProperty("numbered_log_file_name");
 		}
-		if (path.equals(Path.of(Root.programRootPath, Root.get("notification_storage_directory")))) {
+		if (path.equals(Path.of(Root.programRootPath, Root.getProperty("notification_storage_directory")))) {
 			storageLimit = Main.config.getNotificationStorageLimit();
-			beginningOfName = Root.get("notification_file_name").split("\\.txt")[0];
-			numberedFileName = Root.get("numbered_notification_file_name");
+			beginningOfName = Root.getProperty("notification_file_name").split("\\.txt")[0];
+			numberedFileName = Root.getProperty("numbered_notification_file_name");
 		}
 		storageList = Files.list(path).collect(Collectors.toList());
 		if (storageList.size() >= storageLimit) {
