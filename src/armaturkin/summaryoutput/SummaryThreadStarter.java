@@ -1,5 +1,7 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
+import armaturkin.core.Log;
+import armaturkin.core.Main;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.workers.SummaryFileWorker;
 

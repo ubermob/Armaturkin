@@ -70,13 +70,15 @@
     <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s]</entry>
     <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d],[FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
 
+    <!-- Content -->
     <entry key="reinforcement_lite_info_to_string">[Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
     <entry key="target_hash_map">Target Hash Map:</entry>
     <entry key="summary_drop_space">SummaryDropSpace ID: %d</entry>
     <entry key="print_target_hash_map">&#09;Hash: %d = %s</entry>
     <entry key="full_content">Full content:</entry>
     <entry key="compressed_content">Compressed content:</entry>
-    <entry key="content_head_pretty_string">[%d-%s],</entry>
+    <entry key="content_head_pretty_string">[%s],</entry>
+    <entry key="content_head_pretty_string_reinforcement">%d-%s</entry>
 
     <entry key="file_successfully_read_1">☻ Список изделий прочитан до строки с номером: %d (включительно)</entry>
     <entry key="file_successfully_read_2">☻ Файл с армированием прочитан до строки с номером: %d (включительно)</entry>

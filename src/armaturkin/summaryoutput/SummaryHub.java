@@ -1,5 +1,6 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
+import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.RfHashCode;
@@ -108,12 +109,12 @@ public class SummaryHub implements Runnable, FileNameCreator {
 			));
 		}
 		Main.log.add(Main.properties.getProperty("full_content"));
-		Main.log.add(contentContainer.printBorder());
-		Main.log.add(contentContainer.printContent());
-		Main.log.add(contentContainer.printCompact());
+		Main.log.add(contentContainer.borderToString());
+		Main.log.add(contentContainer.contentToString());
+		Main.log.add(contentContainer.compactContentToString());
 		contentContainer.compress();
 		Main.log.add(Main.properties.getProperty("compressed_content"));
-		Main.log.add(contentContainer.printBorder());
-		Main.log.add(contentContainer.printContent());
+		Main.log.add(contentContainer.borderToString());
+		Main.log.add(contentContainer.contentToString());
 	}
 }

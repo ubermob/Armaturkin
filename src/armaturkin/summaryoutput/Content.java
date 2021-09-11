@@ -1,6 +1,6 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
-import armaturkin.reinforcement.ReinforcementLiteInfo;
+import armaturkin.core.Main;
 import armaturkin.utils.MassCounter;
 
 import java.util.ArrayList;
@@ -10,27 +10,16 @@ import java.util.List;
 public class Content {
 
 	private Double[][] table;
-	private List<Integer> possibleHash;
+	private List<Integer> hashes;
 
-	public Content() {
-		try {
-			possibleHash = Reader.readRfHashCode(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"));
-			/*InputStream resource = this.getClass().getResourceAsStream("/RF_hash_code_list.txt");
-			InputStreamReader inputStreamReader = new InputStreamReader(resource);
-			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-			while (bufferedReader.ready()) {
-				possibleHash.add(Integer.parseInt(bufferedReader.readLine()));
-			}
-			bufferedReader.close();*/
-			table = new Double[8][possibleHash.size()];
-		} catch (Exception e) {
-			Main.log.add(e);
-		}
+	public Content(List<Integer> hashes) {
+		this.hashes = hashes;
+		table = new Double[8][this.hashes.size()];
 	}
 
 	public void put(int labelID, int hashCode, double mass) {
 		try {
-			int column = possibleHash.indexOf(hashCode);
+			int column = hashes.indexOf(hashCode);
 			if (table[labelID - 1][column] == null) {
 				table[labelID - 1][column] = mass;
 			} else {
@@ -71,7 +60,7 @@ public class Content {
 		}
 		// Create new compressed table
 		List<String> newContentRowList = new ArrayList<>();
-		List<ReinforcementLiteInfo> newContentHeadList = new ArrayList<>();
+		List<ContentHeadEntry> newContentHeadList = new ArrayList<>();
 		int compressedHeight = 0;
 		for (int i = 0; i < height; i++) {
 			if (rowFullness[i]) {
@@ -115,7 +104,7 @@ public class Content {
 		return result.substring(0, (result.length() - 1));
 	}
 
-	public String printCompact() {
+	public String compactContentToString() {
 		String result = "";
 		for (Double[] row : table) {
 			for (Double cell : row) {
@@ -174,6 +163,6 @@ public class Content {
 	}
 
 	public int maxHashCode() {
-		return possibleHash.get(possibleHash.size() - 1);
+		return hashes.get(hashes.size() - 1);
 	}
 }

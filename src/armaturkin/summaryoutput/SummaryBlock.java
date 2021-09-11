@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
 import armaturkin.reinforcement.RFClass;
 import armaturkin.utils.MassCounter;

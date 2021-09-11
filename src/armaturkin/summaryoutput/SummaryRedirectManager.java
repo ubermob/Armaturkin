@@ -1,5 +1,6 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
+import armaturkin.core.Main;
 import armaturkin.view.AddonViews;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Line;

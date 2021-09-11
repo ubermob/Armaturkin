@@ -1,4 +1,6 @@
-// A240
+// reinforcing rolled
+// прокат арматурный
+[Block: A240]
 56
 58
 60
@@ -13,7 +15,7 @@
 82
 86
 90
-// A400
+[Block: A400]
 106
 108
 110
@@ -28,7 +30,7 @@
 132
 136
 140
-// A500
+[Block: A500]
 156
 158
 160
@@ -43,7 +45,7 @@
 182
 186
 190
-// A500S
+[Block: A500S]
 206
 208
 210
@@ -58,7 +60,7 @@
 232
 236
 240
-// A600
+[Block: A600]
 256
 258
 260
@@ -73,12 +75,19 @@
 282
 286
 290
+[Block: equal-leg]
+// hot-rolled steel equal-leg angles
 // уголок равнополчный
+// TODO
 300
 301
+[Block: unequal-leg]
+// hot-rolled steel unequal-leg angles
 // уголок неравнополочный
 302
 303
+[Block: sheet]
+// hot-rolled steel sheets
 // пластина
 304
 305

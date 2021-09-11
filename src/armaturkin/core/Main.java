@@ -4,6 +4,8 @@ import armaturkin.controller.Controller;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.summaryoutput.SummaryHub;
+import armaturkin.summaryoutput.SummaryThreadStarter;
 import armaturkin.utils.*;
 import armaturkin.view.AddonViews;
 import armaturkin.view.Stages;
@@ -35,7 +37,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.20b2";
+	public static String version = "0.5.20b3";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -214,7 +216,7 @@ public class Main extends Application {
 				log(arg);
 			}
 			if (isMatchCommands(arg, sampleArgCommands[3])) {
-				Root.os = Os.LINUX;
+				Root.os = Root.Os.LINUX;
 			}
 			if (isMatchComplexCommands(arg, sampleArgCommands[4])) {
 				String absolutePath = arg.split("=")[1];

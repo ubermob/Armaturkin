@@ -1,16 +1,18 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
 import armaturkin.reinforcement.RFClass;
 
 public class ContentContainer {
 
+	private final ContentHeadPlacement contentHeadPlacement;
 	private final Content content;
 	private final ContentHead contentHead;
 	private final ContentRow contentRow;
 
 	public ContentContainer() {
-		content = new Content();
-		contentHead = new ContentHead();
+		contentHeadPlacement = new ContentHeadPlacement();
+		content = new Content(contentHeadPlacement.getHashes());
+		contentHead = new ContentHead(contentHeadPlacement.getBlocks());
 		contentRow = new ContentRow();
 	}
 
@@ -18,15 +20,15 @@ public class ContentContainer {
 		content.put(labelID, hashCode, mass);
 	}
 
-	public String printContent() {
+	public String contentToString() {
 		return content.toString();
 	}
 
-	public String printCompact() {
-		return content.printCompact();
+	public String compactContentToString() {
+		return content.compactContentToString();
 	}
 
-	public String printBorder() {
+	public String borderToString() {
 		return contentHead.toPrettyString() + "\n" + contentRow.toString();
 	}
 

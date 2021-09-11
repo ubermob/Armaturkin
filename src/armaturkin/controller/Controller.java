@@ -4,8 +4,10 @@ import armaturkin.core.*;
 import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.summaryoutput.SummaryRedirectManager;
 import armaturkin.utils.Dev;
 import armaturkin.utils.ReinforcementLinearMassInfo;
+import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
 import javafx.collections.FXCollections;
@@ -1039,28 +1041,22 @@ public class Controller {
 	@FXML
 	private void doTest() throws Exception {
 		if (Dev.isDevMode) {
-			/*System.out.println("test start");
-			var v = (AnchorPane) new FXMLLoader(getClass().getResource("/armaturkin/fxml/Arrow_lines.fxml")).load();
-			System.out.println(v);
-			System.out.println(v.getChildren());
-			var v1 = (Line) v.getChildren().get(0);
-			var v2 = (Line) v.getChildren().get(1);
-			var v3 = (Line) v.getChildren().get(2);
-			anchorPane1.getChildren().add(v1);
-			anchorPane1.getChildren().add(v2);
-			anchorPane1.getChildren().add(v3);
-			System.out.println(v1.getId());
-			System.out.println("test end");*/
-
-			//System.out.println(Specification.get("reinforcing_rolled"));
-
-			/*List<Integer> possibleHash = Reader.readRfHashCode(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"));
-			possibleHash.forEach(System.out::println);*/
-
-			/*ContentContainer c = new ContentContainer();
-			c.compress();
-			System.out.println("=========");
-			System.out.println(c.maxHashCode());*/
+			Test.test();
 		}
+	}
+
+	private void localTest() throws Exception {
+		/*System.out.println("test start");
+		var v = (AnchorPane) new FXMLLoader(getClass().getResource("/armaturkin/fxml/Arrow_lines.fxml")).load();
+		System.out.println(v);
+		System.out.println(v.getChildren());
+		var v1 = (Line) v.getChildren().get(0);
+		var v2 = (Line) v.getChildren().get(1);
+		var v3 = (Line) v.getChildren().get(2);
+		anchorPane1.getChildren().add(v1);
+		anchorPane1.getChildren().add(v2);
+		anchorPane1.getChildren().add(v3);
+		System.out.println(v1.getId());
+		System.out.println("test end");*/
 	}
 }

@@ -27,6 +27,7 @@ public class Reader {
 		return result;
 	}
 
+	@Deprecated
 	public static List<Integer> readRfHashCode(InputStream inputStream) throws IOException {
 		List<Integer> result = new ArrayList<>();
 		for (var line : read(inputStream)) {

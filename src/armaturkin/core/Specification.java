@@ -33,7 +33,7 @@ public class Specification {
 	 * @param key the property key
 	 * @return {@link String} the value in this property list with the specified key value.
 	 */
-	public static String get(String key) {
+	public static String getProperty(String key) {
 		return PROPERTIES.getProperty(key);
 	}
 

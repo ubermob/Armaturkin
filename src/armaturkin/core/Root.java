@@ -59,4 +59,8 @@ public class Root {
 	public static String getProperty(String key) {
 		return PROPERTIES.getProperty(key);
 	}
+
+	enum Os {
+		WINDOWS, LINUX
+	}
 }

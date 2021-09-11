@@ -1,5 +1,6 @@
-package armaturkin.core;
+package armaturkin.summaryoutput;
 
+import armaturkin.core.Main;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.StandardsRepository;
@@ -9,23 +10,25 @@ import java.util.List;
 
 public class ContentHead {
 
-	private List<ReinforcementLiteInfo> list;
-	private final RFClass[] rfClass = {RFClass.A240, RFClass.A400, RFClass.A500, RFClass.A500S, RFClass.A600};
+	private List<ContentHeadEntry> list;
+	private final Object[] blocks;
 
-	public ContentHead() {
+	public ContentHead(Object[] blocks) {
+		this.blocks = blocks;
 		list = new ArrayList<>();
-		for (RFClass r : rfClass) {
+		RFClass[] rfClasses = RFClass.values();
+		for (int j = 0; j < (rfClasses.length - 1); j++) {
 			for (int i : StandardsRepository.diameters) {
-				list.add(new ReinforcementLiteInfo(i, r, 0.0));
+				list.add(new ContentHeadEntry(new ReinforcementLiteInfo(i, rfClasses[j], 0.0)));
 			}
 		}
 	}
 
-	public ReinforcementLiteInfo get(int index) {
+	public ContentHeadEntry get(int index) {
 		return list.get(index);
 	}
 
-	public void newList(List<ReinforcementLiteInfo> list) {
+	public void newList(List<ContentHeadEntry> list) {
 		this.list = list;
 	}
 
@@ -36,17 +39,21 @@ public class ContentHead {
 
 	public String toPrettyString() {
 		String result = "";
-		for (ReinforcementLiteInfo rein : list) {
-			result += Main.properties.getProperty("content_head_pretty_string").formatted(rein.getDiameter(), rein.getRfClass());
+		for (var entry : list) {
+			result += Main.properties.getProperty("content_head_pretty_string").formatted(entry.getPrettyString());
 		}
 		return result.substring(0, (result.length() - 1));
 	}
 
+	/**
+	 * @return Возвращает массив заполнености блоков для сводной ведомости
+	 */
 	public boolean[] getBlockFullness() {
-		boolean[] result = new boolean[rfClass.length];
+		// Посмотреть в файл RF_hash_code_list.txt
+		boolean[] result = new boolean[RFClass.values().length + 3];
 		for (int i = 0; i < result.length; i++) {
-			for (ReinforcementLiteInfo r : list) {
-				if (r.getRfClass() == rfClass[i]) {
+			for (var entry : list) {
+				if (entry.getRfClass() == blocks[i]) {
 					result[i] = true;
 					break;
 				}
@@ -56,13 +63,13 @@ public class ContentHead {
 	}
 
 	public RFClass getRFClass(int i) {
-		return rfClass[i];
+		return (RFClass) blocks[i];
 	}
 
 	public int[] getDiameters(RFClass rfClass) {
 		int counter = 0;
-		for (ReinforcementLiteInfo r : list) {
-			if (r.getRfClass() == rfClass) {
+		for (var entry : list) {
+			if (entry.getRfClass() == rfClass) {
 				counter++;
 			}
 		}
@@ -78,8 +85,8 @@ public class ContentHead {
 
 	public int[] getIndexes(RFClass rfClass) {
 		int counter = 0;
-		for (ReinforcementLiteInfo r : list) {
-			if (r.getRfClass() == rfClass) {
+		for (var entry : list) {
+			if (entry.getRfClass() == rfClass) {
 				counter++;
 			}
 		}
