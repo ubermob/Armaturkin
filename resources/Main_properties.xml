@@ -106,6 +106,7 @@
 
     <!-- Summary Excel Builder -->
     <entry key="default_list_name">Лист1</entry>
+    <entry key="sheet_zoom_1">130</entry>
     <entry key="column_name_1">%%C</entry>
     <entry key="column_name_2">Итого</entry>
     <entry key="column_name_3">Всего</entry>

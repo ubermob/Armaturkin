@@ -2,6 +2,7 @@ package armaturkin.summaryoutput;
 
 import armaturkin.core.Main;
 import armaturkin.utils.MassCounter;
+import armaturkin.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,7 +102,7 @@ public class Content {
 		for (Double[] row : table) {
 			result += Arrays.toString(row) + "\n";
 		}
-		return result.substring(0, (result.length() - 1));
+		return StringUtil.cutEnd(result, 1);
 	}
 
 	public String compactContentToString() {
@@ -116,7 +117,7 @@ public class Content {
 			}
 			result += "\n";
 		}
-		return result.substring(0, (result.length() - 1));
+		return StringUtil.cutEnd(result, 1);
 	}
 
 	public int getHeight() {

@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static armaturkin.core.Main.getProperty;
+
 public class SummaryExcelBuilder implements Runnable {
 
 	private final ContentContainer contentContainer;
@@ -36,11 +38,11 @@ public class SummaryExcelBuilder implements Runnable {
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
-		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
+		Main.log.add(getProperty("thread_start").formatted(getClass()));
 		initWorkbook();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
 		String[] rowStrings = contentContainer.getRowStrings();
-		int totalExcelRows = 6 + rowStrings.length + 1;
+		int totalExcelRows = baseRowInt + rowStrings.length + 1;
 		for (int i = 0; i < totalExcelRows; i++) {
 			sheet.createRow(i); // Create all rows
 		}
@@ -54,13 +56,13 @@ public class SummaryExcelBuilder implements Runnable {
 		buildLeftRows(rowStrings);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
-			Main.addNotification(Main.properties.getProperty("file_successfully_download").formatted(fileName));
-			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
+			Main.addNotification(getProperty("file_successfully_download").formatted(fileName));
+			Main.log.add(getProperty("file_download").formatted(getClass(), fileName, path));
 		} catch (Exception e) {
-			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
+			Main.addNotification(getProperty("excel_creation_exception").formatted(fileName));
 			Main.log.add(e);
 		}
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+		Main.log.add(getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void buildBlock(int i) {
@@ -75,7 +77,7 @@ public class SummaryExcelBuilder implements Runnable {
 			}
 			writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getHorizontalSummaryMass(j));
 			// Write column name
-			sheet.getRow(5).createCell(columnInt).setCellValue(Main.properties.getProperty("column_name_1") + block.getDiameter(j));
+			sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_1") + block.getDiameter(j));
 			sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
 			// Next column
 			columnInt++;
@@ -86,7 +88,7 @@ public class SummaryExcelBuilder implements Runnable {
 		}
 		writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getBlockSummaryMass());
 		// Write column name
-		sheet.getRow(5).createCell(columnInt).setCellValue(Main.properties.getProperty("column_name_2"));
+		sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_2"));
 		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
 		// Write specification document
 		sheet.getRow(4).createCell(startBlockColumn).setCellValue(Specification.getProperty("reinforcing_rolled"));
@@ -152,7 +154,7 @@ public class SummaryExcelBuilder implements Runnable {
 			writeCell(sheet.getRow(rowInt++).createCell(columnInt), d);
 		}
 		// Write column name
-		sheet.getRow(5).createCell(columnInt).setCellValue(Main.properties.getProperty("column_name_3"));
+		sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_3"));
 		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
 		// 2 empty spaces
 		sheet.getRow(4).createCell(columnInt).setCellStyle(textCellStyle);
@@ -167,13 +169,13 @@ public class SummaryExcelBuilder implements Runnable {
 			sheet.getRow(0).createCell(i).setCellStyle(headerCellStyle);
 		}
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, columnInt));
-		sheet.getRow(1).createCell(1).setCellValue(Main.properties.getProperty("table_head_1"));
+		sheet.getRow(1).createCell(1).setCellValue(getProperty("table_head_1"));
 		sheet.getRow(1).getCell(1).setCellStyle(textCellStyle);
 		for (int i = 2; i <= columnInt; i++) {
 			sheet.getRow(1).createCell(i).setCellStyle(textCellStyle);
 		}
 		sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, columnInt));
-		sheet.getRow(2).createCell(1).setCellValue(Main.properties.getProperty("table_head_2"));
+		sheet.getRow(2).createCell(1).setCellValue(getProperty("table_head_2"));
 		sheet.getRow(2).getCell(1).setCellStyle(textCellStyle);
 		for (int i = 2; i <= columnInt; i++) {
 			sheet.getRow(2).createCell(i).setCellStyle(textCellStyle);
@@ -182,7 +184,7 @@ public class SummaryExcelBuilder implements Runnable {
 	}
 
 	private void buildLeftRows(String[] rowStrings) {
-		sheet.getRow(1).createCell(0).setCellValue(Main.properties.getProperty("left_string_head"));
+		sheet.getRow(1).createCell(0).setCellValue(getProperty("left_string_head"));
 		sheet.getRow(1).getCell(0).setCellStyle(textCellStyle);
 		sheet.addMergedRegion(new CellRangeAddress(1, 5, 0, 0));
 		rowInt = baseRowInt;
@@ -190,12 +192,13 @@ public class SummaryExcelBuilder implements Runnable {
 			sheet.getRow(rowInt).createCell(0).setCellValue(string);
 			sheet.getRow(rowInt++).getCell(0).setCellStyle(textCellStyle);
 		}
-		sheet.getRow(rowInt).createCell(0).setCellValue(Main.properties.getProperty("left_string_last"));
+		sheet.getRow(rowInt).createCell(0).setCellValue(getProperty("left_string_last"));
 		sheet.getRow(rowInt).getCell(0).setCellStyle(textCellStyle);
 	}
 
 	private void initWorkbook() {
 		workbook = new XSSFWorkbook();
-		sheet = workbook.createSheet(Main.properties.getProperty("default_list_name"));
+		sheet = workbook.createSheet(getProperty("default_list_name"));
+		sheet.setZoom(Integer.parseInt(getProperty("sheet_zoom_1")));
 	}
 }

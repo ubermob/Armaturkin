@@ -5,7 +5,10 @@ import armaturkin.core.Main;
 import armaturkin.core.Reader;
 import armaturkin.core.Specification;
 import armaturkin.reinforcement.RFClass;
-import armaturkin.steelcomponent.HotRolledSteel;
+import armaturkin.steelcomponent.HotRolledSteelType;
+import armaturkin.summaryoutput.ContentHeadPlacement;
+import armaturkin.utils.StringUtil;
+import utools.printer.Printer;
 
 import java.io.*;
 import java.util.Arrays;
@@ -14,7 +17,23 @@ import java.util.List;
 public class Test {
 
 	public static void test() throws Exception {
+		//loadBlocks();
+		stringUtil();
+	}
 
+	private static void stringUtil() {
+		System.out.println(StringUtil.replaceNewLine("ABC\n\n\n"));
+		System.out.println(StringUtil.cutEnd("123", 0));
+		System.out.println(StringUtil.cutEnd("123", 1));
+		System.out.println(StringUtil.cutEnd("123", 2));
+		System.out.println(StringUtil.cutEnd("123", 3));
+	}
+
+	private static void loadBlocks() {
+		System.out.println("Load blocks test");
+		ContentHeadPlacement contentHeadPlacement = new ContentHeadPlacement();
+		System.out.println(contentHeadPlacement.getHashes());
+		Printer.print(contentHeadPlacement.getBlocks());
 	}
 
 	private static void saveAndLoad() throws IOException {
@@ -25,9 +44,9 @@ public class Test {
 					RFClass.A500,
 					RFClass.A500S,
 					RFClass.A600,
-					HotRolledSteel.EQUAL_LEG_ANGLE,
-					HotRolledSteel.UNEQUAL_LEG_ANGLE,
-					HotRolledSteel.SHEET
+					HotRolledSteelType.EQUAL_LEG_ANGLE,
+					HotRolledSteelType.UNEQUAL_LEG_ANGLE,
+					HotRolledSteelType.SHEET
 			};
 
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("J:\\abcdef"));

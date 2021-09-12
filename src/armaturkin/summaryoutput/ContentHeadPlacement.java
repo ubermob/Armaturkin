@@ -3,7 +3,7 @@ package armaturkin.summaryoutput;
 import armaturkin.core.Main;
 import armaturkin.core.Reader;
 import armaturkin.reinforcement.RFClass;
-import armaturkin.steelcomponent.HotRolledSteel;
+import armaturkin.steelcomponent.HotRolledSteelType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class ContentHeadPlacement {
 	public ContentHeadPlacement() {
 		try {
 			for (var line : Reader.read(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"))) {
-				if (line.length() != 0 && !line.startsWith("//")) {
+				if (line.length() != 0 && !line.startsWith("//") && !line.startsWith("[")) {
 					hashes.add(Integer.parseInt(line));
 				}
 				if (line.length() != 0 && line.startsWith("[")) {
@@ -28,9 +28,9 @@ public class ContentHeadPlacement {
 						case "A500" -> blocks.add(RFClass.A500);
 						case "A500S" -> blocks.add(RFClass.A500S);
 						case "A600" -> blocks.add(RFClass.A600);
-						case "equal-leg" -> blocks.add(HotRolledSteel.EQUAL_LEG_ANGLE);
-						case "unequal-leg" -> blocks.add(HotRolledSteel.UNEQUAL_LEG_ANGLE);
-						case "sheet" -> blocks.add(HotRolledSteel.SHEET);
+						case "equal-leg angle" -> blocks.add(HotRolledSteelType.EQUAL_LEG_ANGLE);
+						case "unequal-leg angle" -> blocks.add(HotRolledSteelType.UNEQUAL_LEG_ANGLE);
+						case "sheet" -> blocks.add(HotRolledSteelType.SHEET);
 					}
 				}
 			}

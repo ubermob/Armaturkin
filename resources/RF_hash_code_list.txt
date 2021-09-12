@@ -75,13 +75,13 @@
 282
 286
 290
-[Block: equal-leg]
+[Block: equal-leg angle]
 // hot-rolled steel equal-leg angles
 // уголок равнополчный
 // TODO
 300
 301
-[Block: unequal-leg]
+[Block: unequal-leg angle]
 // hot-rolled steel unequal-leg angles
 // уголок неравнополочный
 302

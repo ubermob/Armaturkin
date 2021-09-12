@@ -1,6 +1,7 @@
 package armaturkin.summaryoutput;
 
 import armaturkin.reinforcement.RFClass;
+import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.SteelProductLiteInfo;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 
@@ -28,11 +29,16 @@ public class ContentHeadEntry {
 		}
 	}
 
-	public RFClass getRfClass() {
+	public Object getType() {
 		if (entry instanceof ReinforcementLiteInfo) {
 			return ((ReinforcementLiteInfo) entry).getRfClass();
+		} else {
+			return ((SteelProductLiteInfo) entry).getHotRolledSteelType();
 		}
-		return null; // TODO
+	}
+
+	public RFClass getRfClass() {
+		return ((ReinforcementLiteInfo) entry).getRfClass();
 	}
 
 	public int getDiameter() {

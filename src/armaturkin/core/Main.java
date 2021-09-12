@@ -37,7 +37,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.20b3";
+	public static String version = "0.5.20b3.2";
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -322,7 +322,7 @@ public class Main extends Application {
 									StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("notification_storage_directory")) + 1)
 					)
 			);
-			notificationString = NewLineReplacer.replace(notificationString);
+			notificationString = StringUtil.replaceNewLine(notificationString);
 			Writer.write(Root.programRootPath + Root.getProperty("notification_file_name"), notificationString);
 		}
 	}

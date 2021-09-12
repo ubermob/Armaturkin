@@ -4,6 +4,7 @@ import armaturkin.core.Main;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class ContentHead {
 		for (var entry : list) {
 			result += Main.properties.getProperty("content_head_pretty_string").formatted(entry.getPrettyString());
 		}
-		return result.substring(0, (result.length() - 1));
+		return StringUtil.cutEnd(result, 1);
 	}
 
 	/**
@@ -50,10 +51,10 @@ public class ContentHead {
 	 */
 	public boolean[] getBlockFullness() {
 		// Посмотреть в файл RF_hash_code_list.txt
-		boolean[] result = new boolean[RFClass.values().length + 3];
+		boolean[] result = new boolean[blocks.length];
 		for (int i = 0; i < result.length; i++) {
 			for (var entry : list) {
-				if (entry.getRfClass() == blocks[i]) {
+				if (entry.getType() == blocks[i]) {
 					result[i] = true;
 					break;
 				}
