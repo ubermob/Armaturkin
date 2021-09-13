@@ -37,18 +37,22 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.20";
-	// Serial or Parallel Summary working
-	public static boolean isSerial = true;
+	public static String version = "0.5.21b1";
+	// Serial or Parallel Summary Running
+	public static boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
 	public static Configuration config;
 	private volatile static String notificationString = "";
 	public static Log log = new Log();
+
+	// 1st Tab
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
 	public volatile static HashMap<Integer, Reinforcement> reinforcementHashMap = new HashMap<>();
+	// 3th Tab
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
+	// 4th Tab
 	public static List<ManuallyEntry> manuallySummaryEntries = new ArrayList<>();
 	public static List<ManuallyEntryAdaptor> backgroundReinforcementManuallyEntries = new ArrayList<>();
 
@@ -81,7 +85,7 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) throws IOException {
-		boolean isRunnable = parseArgs(args);
+		boolean isRunnable = ArgParser.parse(args);
 		if (isRunnable) {
 			loadMainProperties();
 			Root.loadProperties();
@@ -104,7 +108,10 @@ public class Main extends Application {
 
 	public static void loadProduct() {
 		reinforcementProductHashMap.clear();
-		ProductFileWorker productFileWorker = new ProductFileWorker(config.getPathToProductFile(), reinforcementProductHashMap);
+		ProductFileWorker productFileWorker = new ProductFileWorker(
+				config.getPathToProductFile(),
+				reinforcementProductHashMap
+		);
 		Thread productFileWorkerThread = new Thread(productFileWorker);
 		productFileWorkerThread.start();
 	}
@@ -182,64 +189,6 @@ public class Main extends Application {
 		}
 	}
 
-	private static boolean parseArgs(String[] args) throws IOException {
-		String[] sampleArgCommands = {
-				"-help",     // 0
-				"-disk",     // 1
-				"-dev",      // 2
-				"-linux",    // 3
-				"-abs_path"  // 4
-		};
-		for (var arg : args) {
-			if (isMatchCommands(arg, sampleArgCommands[0])) {
-				System.out.println("Version " + version);
-				for (var line : Reader.read(Main.class.getResourceAsStream("/Run_arguments.txt"))) {
-					System.out.println(line);
-				}
-				return false;
-			}
-			if (isMatchComplexCommands(arg, sampleArgCommands[1])) {
-				String[] splitted = arg.split("=");
-				if (splitted[1].length() != 1) {
-					throw new UnsupportedOperationException("Invalid argument: \"" + arg + "\"");
-				}
-				char diskLetter = splitted[1].charAt(0);
-				if (diskLetter < 'C' || 'Z' < diskLetter) {
-					throw new UnsupportedOperationException("Invalid argument: \"" + arg + "\"");
-				}
-				if (Files.notExists(Path.of(diskLetter + ":\\"))) {
-					throw new IOException("Disk \"" + diskLetter + ":\" do not exist");
-				}
-				Root.diskLetter = diskLetter;
-				log(arg);
-			}
-			if (isMatchCommands(arg, sampleArgCommands[2])) {
-				Dev.isDevMode = true;
-				log(arg);
-			}
-			if (isMatchCommands(arg, sampleArgCommands[3])) {
-				Root.os = Root.Os.LINUX;
-			}
-			if (isMatchComplexCommands(arg, sampleArgCommands[4])) {
-				String absolutePath = arg.split("=")[1];
-				if (Files.notExists(Path.of(absolutePath))) {
-					throw new IOException("Absolute path: \"" + absolutePath + "\" do not exist");
-				}
-				Root.absolutePath = absolutePath;
-			}
-		}
-		return true;
-	}
-
-	private static boolean isMatchCommands(String arg, String sampleArgCommand) {
-		return arg.equals(sampleArgCommand);
-	}
-
-	private static boolean isMatchComplexCommands(String arg, String sampleArgCommand) {
-		String[] splitted = arg.split("=");
-		return splitted.length == 2 && splitted[0].equals(sampleArgCommand);
-	}
-
 	private void preloadUpperDropSpace() {
 		if (config.isPathToProductFileNotNull() && config.getAutoParseProductList()) {
 			Path path = Path.of(config.getPathToProductFile());
@@ -264,7 +213,9 @@ public class Main extends Application {
 					addNotification(getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
 					log(getProperty("favorite_restore_failed_2").formatted(getClass()));
 					log(e);
-					controller.setFavoriteDropSpaceText(getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath()));
+					controller.setFavoriteDropSpaceText(
+							getProperty("favorite_restore_failed_1").formatted(config.getFavoritePath())
+					);
 				}
 			}
 		}
@@ -319,9 +270,11 @@ public class Main extends Application {
 		if (config.getWriteNotification() && notificationString.length() > 0) {
 			StorageCleaner.copyFile(
 					Path.of(Root.programRootPath, Root.getProperty("notification_file_name")),
-					Path.of(Root.programRootPath, Root.getProperty("notification_storage_directory"),
+					Path.of(Root.programRootPath,
+							Root.getProperty("notification_storage_directory"),
 							Root.getProperty("numbered_notification_file_name").formatted(
-									StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("notification_storage_directory")) + 1)
+									StorageCleaner.getStorageSize(Root.programRootPath +
+											Root.getProperty("notification_storage_directory")) + 1)
 					)
 			);
 			notificationString = StringUtil.replaceNewLine(notificationString);
@@ -377,5 +330,67 @@ public class Main extends Application {
 	private static String getTime() {
 		LocalDateTime localDateTime = LocalDateTime.now();
 		return localDateTime.format(DateTimeFormatter.ofPattern(getProperty("time_pattern")));
+	}
+
+
+	private static class ArgParser {
+
+		private static boolean parse(String[] args) throws IOException {
+			String[] sampleArgCommands = {
+					"-help",     // 0
+					"-disk",     // 1
+					"-dev",      // 2
+					"-linux",    // 3
+					"-abs_path"  // 4
+			};
+			for (var arg : args) {
+				if (isMatchCommands(arg, sampleArgCommands[0])) {
+					System.out.println("Version " + version);
+					for (var line : Reader.read(Main.class.getResourceAsStream("/Run_arguments.txt"))) {
+						System.out.println(line);
+					}
+					return false;
+				}
+				if (isMatchComplexCommands(arg, sampleArgCommands[1])) {
+					String[] splitted = arg.split("=");
+					if (splitted[1].length() != 1) {
+						throw new UnsupportedOperationException("Invalid argument: \"" + arg + "\"");
+					}
+					char diskLetter = splitted[1].charAt(0);
+					if (diskLetter < 'C' || 'Z' < diskLetter) {
+						throw new UnsupportedOperationException("Invalid argument: \"" + arg + "\"");
+					}
+					if (Files.notExists(Path.of(diskLetter + ":\\"))) {
+						throw new IOException("Disk \"" + diskLetter + ":\" do not exist");
+					}
+					Root.diskLetter = diskLetter;
+					log(arg);
+				}
+				if (isMatchCommands(arg, sampleArgCommands[2])) {
+					Dev.isDevMode = true;
+					log(arg);
+				}
+				if (isMatchCommands(arg, sampleArgCommands[3])) {
+					Root.os = Root.Os.LINUX;
+				}
+				if (isMatchComplexCommands(arg, sampleArgCommands[4])) {
+					String absolutePath = arg.split("=")[1];
+					if (Files.notExists(Path.of(absolutePath))) {
+						throw new IOException("Absolute path: \"" + absolutePath + "\" do not exist");
+					}
+					Root.absolutePath = absolutePath;
+				}
+			}
+			return true;
+		}
+
+		private static boolean isMatchCommands(String arg, String sampleArgCommand) {
+			return arg.equals(sampleArgCommand);
+		}
+
+		private static boolean isMatchComplexCommands(String arg, String sampleArgCommand) {
+			String[] splitted = arg.split("=");
+			return splitted.length == 2 && splitted[0].equals(sampleArgCommand);
+		}
 	}
 }

@@ -57,7 +57,7 @@ public class SummaryThreadStarter {
 				SummaryFileWorker summaryFileWorker = new SummaryFileWorker(labelPaths.get(j), hashMap, id, log, set);
 				subThreads[j] = new Thread(summaryFileWorker);
 				subThreads[j].start();
-				if (Main.isSerial) {
+				if (Main.isSerialSummaryRunning) {
 					subThreads[j].join();
 				}
 			}
