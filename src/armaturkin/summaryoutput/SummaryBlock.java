@@ -65,11 +65,11 @@ public class SummaryBlock {
 		for (Double[] d : blockBody) {
 			res += Arrays.toString(d) + "\n";
 		}
-		res += Arrays.toString(horizontalSummaryMass) + "\n";
-		res += Arrays.toString(verticalSummaryMass) + "\n";
-		res += blockSummaryMass + "\n";
-		res += Arrays.toString(diameters) + "\n";
-		res += rfClass + "\n";
+		res += "Horizontal summary mass " + Arrays.toString(horizontalSummaryMass) + "\n";
+		res += "Vertical summary mass " + Arrays.toString(verticalSummaryMass) + "\n";
+		res += "Block summary mass " + blockSummaryMass + "\n";
+		res += "Diameters " + Arrays.toString(diameters) + "\n";
+		res += "rfClass " + rfClass + "\n";
 		res += "-----------";
 		return res;
 	}

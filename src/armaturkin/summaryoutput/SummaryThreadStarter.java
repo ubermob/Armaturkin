@@ -23,7 +23,7 @@ public class SummaryThreadStarter {
 	private Thread[] subThreads;
 	private List<Log> logList;
 
-	public SummaryThreadStarter(int id) {
+	public SummaryThreadStarter(int id) throws InterruptedException {
 		this.id = id;
 		set = DROP_SPACE_SET[id - 1];
 		createThreads();
@@ -41,11 +41,11 @@ public class SummaryThreadStarter {
 		return logList;
 	}
 
-	public boolean isNullable() {
-		return labelPaths == null;
+	public boolean isNotNull() {
+		return labelPaths != null;
 	}
 
-	private void createThreads() {
+	private void createThreads() throws InterruptedException {
 		labelPaths = Main.summaryPaths.get(id);
 		hashMap = new HashMap<>();
 		logList = new ArrayList<>();
@@ -57,6 +57,9 @@ public class SummaryThreadStarter {
 				SummaryFileWorker summaryFileWorker = new SummaryFileWorker(labelPaths.get(j), hashMap, id, log, set);
 				subThreads[j] = new Thread(summaryFileWorker);
 				subThreads[j].start();
+				if (Main.isSerial) {
+					subThreads[j].join();
+				}
 			}
 		}
 	}

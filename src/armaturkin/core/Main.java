@@ -37,7 +37,9 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.20b3.2";
+	public static String version = "0.5.20";
+	// Serial or Parallel Summary working
+	public static boolean isSerial = true;
 	public static Properties properties = new Properties();
 	public static Parent root;
 	public static Controller controller;
@@ -162,7 +164,7 @@ public class Main extends Application {
 		}
 	}
 
-	public static void checkSummaryDropSpace(int i) {
+	public static void checkSummaryDropSpace(int i) throws InterruptedException {
 		if (!summaryPaths.get(i).isEmpty()) {
 			SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
 			Thread[] subThreads = summaryThreadStarter.getSubThreads();

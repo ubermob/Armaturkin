@@ -658,26 +658,26 @@ public class Controller {
 	}
 
 	@FXML
-	private void checkSummaryDropSpace4() {
+	private void checkSummaryDropSpace4() throws InterruptedException {
 		checkSummaryDropSpace(4);
 	}
 
 	@FXML
-	private void checkSummaryDropSpace6() {
+	private void checkSummaryDropSpace6() throws InterruptedException {
 		checkSummaryDropSpace(6);
 	}
 
 	@FXML
-	private void checkSummaryDropSpace7() {
+	private void checkSummaryDropSpace7() throws InterruptedException {
 		checkSummaryDropSpace(7);
 	}
 
 	@FXML
-	private void checkSummaryDropSpace8() {
+	private void checkSummaryDropSpace8() throws InterruptedException {
 		checkSummaryDropSpace(8);
 	}
 
-	private void checkSummaryDropSpace(int i) {
+	private void checkSummaryDropSpace(int i) throws InterruptedException {
 		if (Main.summaryPaths.get(i) != null) {
 			Main.checkSummaryDropSpace(i);
 		}

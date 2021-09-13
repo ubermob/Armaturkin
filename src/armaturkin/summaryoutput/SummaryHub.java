@@ -43,8 +43,13 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
 		allThreads = new Thread[8][];
 		for (int i = 1; i <= 8; i++) {
-			SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
-			if (!summaryThreadStarter.isNullable()) {
+			SummaryThreadStarter summaryThreadStarter = null;
+			try {
+				summaryThreadStarter = new SummaryThreadStarter(i);
+			} catch (InterruptedException e) {
+				Main.log.add(e);
+			}
+			if (summaryThreadStarter.isNotNull()) {
 				targetHashMap.put(i, summaryThreadStarter.getHashMap());
 				allThreads[i - 1] = summaryThreadStarter.getSubThreads();
 				List<Log> logList = summaryThreadStarter.getLogList();
@@ -65,6 +70,10 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		mergeLog();
 		buildExcel();
 		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+	}
+
+	private void parallel() {
+
 	}
 
 	void mergeLog() {
