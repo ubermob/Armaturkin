@@ -2,6 +2,7 @@ package armaturkin.summaryoutput;
 
 import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
+import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.RfHashCode;
 import utools.stopwatch.Stopwatch;
@@ -72,10 +73,6 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
-	private void parallel() {
-
-	}
-
 	void mergeLog() {
 		for (Log log : summaryLog) {
 			Main.log.merge(log);
@@ -108,7 +105,7 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		}
 		// Filling manually tab entries
 		for (ManuallyEntry entry : manuallySummaryEntries) {
-			contentContainer.put(entry.getSummaryLabelID(), RfHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMass());
+			contentContainer.put(entry.getSummaryLabelID(), RfHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMassReinforcement());
 		}
 		// Redirect
 		if (SummaryRedirectManager.redirectTo != SummaryRedirectManager.DEFAULT_VALUE) {

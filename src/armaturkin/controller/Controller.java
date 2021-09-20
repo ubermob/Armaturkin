@@ -1,16 +1,18 @@
 package armaturkin.controller;
 
 import armaturkin.core.*;
+import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.steelcomponent.HotRolledSteelType;
+import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.SummaryRedirectManager;
 import armaturkin.utils.Dev;
 import armaturkin.utils.ReinforcementLinearMassInfo;
 import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,9 +35,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 import static armaturkin.core.Main.getProperty;
+import static javafx.collections.FXCollections.observableList;
+import static javafx.collections.FXCollections.observableArrayList;
 
 public class Controller {
 
@@ -116,6 +120,8 @@ public class Controller {
 	@FXML
 	private Button mSummaryAddButton;
 	@FXML
+	private Button mSummaryAddButton2;
+	@FXML
 	private Button restoreWindowSizeButton;
 	@FXML
 	private Button showReinforcementLinearMassListButton;
@@ -144,6 +150,8 @@ public class Controller {
 	@FXML
 	private TextField mBackgroundTextField;
 	@FXML
+	private TextField mSummaryTextField2;
+	@FXML
 	private Text appearanceText1;
 	@FXML
 	private Text appearanceText2;
@@ -171,6 +179,8 @@ public class Controller {
 	private Text mSummaryEntryText1;
 	@FXML
 	private Text mSummaryEntryText2;
+	@FXML
+	private Text mSummaryEntryText3;
 	@FXML
 	private Text notificationText;
 	@FXML
@@ -209,6 +219,12 @@ public class Controller {
 	private ChoiceBox<RFClass> mSummaryChoiceBox3;
 	@FXML
 	private ChoiceBox<PairDR> mBackgroundChoiceBox;
+	@FXML
+	private ChoiceBox<HotRolledSteelType> mSummaryChoiceBox4;
+	@FXML
+	private ChoiceBox<SteelComponentRepository.Image> mSummaryChoiceBox5;
+	@FXML
+	private ChoiceBox<SteelComponentRepository.Image> mSummaryChoiceBox6;
 
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
@@ -323,6 +339,7 @@ public class Controller {
 				restoreWindowSizeButton,
 				showReinforcementLinearMassListButton,
 				backgroundReinforcementAddButton,
+				mSummaryAddButton2
 		};
 		allTexts = new Text[]{
 				appearanceText1,
@@ -337,6 +354,7 @@ public class Controller {
 				settingsText7,
 				mSummaryEntryText1,
 				mSummaryEntryText2,
+				mSummaryEntryText3,
 				notificationText
 		};
 	}
@@ -928,13 +946,13 @@ public class Controller {
 	}
 
 	private void setupMSummaryChoiceBox() {
-		mSummaryChoiceBox1.setItems(FXCollections.observableArrayList(
+		mSummaryChoiceBox1.setItems(observableArrayList(
 				Arrays.asList(getProperty("content_row").split("-"))
 		));
 		mSummaryChoiceBox1.setValue(getProperty("content_row").split("-")[0]);
-		mSummaryChoiceBox2.setItems(FXCollections.observableList(StandardsRepository.getDiametersAsList()));
+		mSummaryChoiceBox2.setItems(observableList(StandardsRepository.getDiametersAsList()));
 		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[2]);
-		mSummaryChoiceBox3.setItems(FXCollections.observableArrayList(
+		mSummaryChoiceBox3.setItems(observableArrayList(
 				RFClass.A240,
 				RFClass.A400,
 				RFClass.A500,
@@ -942,10 +960,32 @@ public class Controller {
 				RFClass.A600
 		));
 		mSummaryChoiceBox3.setValue(RFClass.A500S);
+		mSummaryChoiceBox4.setItems(observableList(HotRolledSteelType.getAsList()));
+		mSummaryChoiceBox4.setValue(HotRolledSteelType.EQUAL_LEG_ANGLE);
+		mSummaryChoiceBox4.setOnAction(x -> {
+			switch (mSummaryChoiceBox4.getValue()) {
+				case EQUAL_LEG_ANGLE -> {
+					setEqual();
+				}
+				case UNEQUAL_LEG_ANGLE -> {
+				}
+				case SHEET -> {
+				}
+			}
+		});
+		setEqual();
+	}
+
+	private void setEqual() {
+		/*mSummaryChoiceBox5.setItems(observableList(SteelComponentRepository.getFirstDimension()));
+		mSummaryChoiceBox5.setValue(mSummaryChoiceBox5.getItems().get(0));
+		mSummaryChoiceBox6.setItems(observableList(SteelComponentRepository.getSecondDimension()));
+		mSummaryChoiceBox6.setValue(mSummaryChoiceBox6.getItems().get(0));*/
+		mSummaryChoiceBox5.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImage()));
 	}
 
 	private void setupMBackgroundChoiceBox() {
-		mBackgroundChoiceBox.setItems(FXCollections.observableList(StandardsRepository.getPairsAsList()));
+		mBackgroundChoiceBox.setItems(observableList(StandardsRepository.getPairsAsList()));
 		mBackgroundChoiceBox.setValue(StandardsRepository.pairs[1]);
 	}
 
@@ -956,6 +996,14 @@ public class Controller {
 				mSummaryChoiceBox2.getValue(),
 				mSummaryChoiceBox3.getValue(),
 				mSummaryTextField.getText()
+		);
+	}
+
+	@FXML
+	private void addManuallySummaryEntry2() {
+		ManuallyEntry.addSteelComponentEntry(
+				mSummaryChoiceBox5.getValue(),
+				mSummaryTextField2.getText()
 		);
 	}
 

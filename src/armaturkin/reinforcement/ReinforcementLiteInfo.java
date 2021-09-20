@@ -1,8 +1,10 @@
 package armaturkin.reinforcement;
 
 import armaturkin.core.Main;
+import armaturkin.interfaces.AddMass;
+import armaturkin.interfaces.LightInfo;
 
-public class ReinforcementLiteInfo {
+public class ReinforcementLiteInfo implements AddMass, LightInfo {
 
 	private final int diameter;
 	private final RFClass rfClass;
@@ -26,6 +28,7 @@ public class ReinforcementLiteInfo {
 		return mass;
 	}
 
+	@Override
 	public void addMass(double mass) {
 		this.mass += mass;
 	}

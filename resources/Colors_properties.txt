@@ -1,2 +1,3 @@
 manually_entry=#4097f5
 background_entry=#008000
+manually_hot_rolled_steel_entry=#481d58

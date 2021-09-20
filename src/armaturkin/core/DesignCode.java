@@ -6,10 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-public class Specification {
+public class DesignCode {
 
 	private static final Properties PROPERTIES = new Properties();
-	private static final String FILE_NAME = "Specification_properties.xml";
+	private static final String FILE_NAME = "Design_code_properties.xml";
 	private static boolean isUpdate = false;
 
 	public static void loadProperties() {

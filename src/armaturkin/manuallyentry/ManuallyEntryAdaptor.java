@@ -1,4 +1,4 @@
-package armaturkin.core;
+package armaturkin.manuallyentry;
 
 import armaturkin.reinforcement.RFClass;
 
@@ -11,7 +11,7 @@ public class ManuallyEntryAdaptor {
 	}
 
 	public double getLength() {
-		return manuallyEntry.getMass();
+		return manuallyEntry.getMassReinforcement();
 	}
 
 	public ManuallyEntry getManuallyEntry() {

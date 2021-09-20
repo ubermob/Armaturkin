@@ -1,14 +1,16 @@
 package armaturkin.utils.test;
 
+import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.ContentContainer;
 import armaturkin.core.Main;
 import armaturkin.core.Reader;
-import armaturkin.core.Specification;
+import armaturkin.core.DesignCode;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.summaryoutput.ContentHeadPlacement;
 import armaturkin.utils.StringUtil;
 import utools.printer.Printer;
+import utools.stopwatch.Stopwatch;
 
 import java.io.*;
 import java.util.Arrays;
@@ -17,8 +19,21 @@ import java.util.List;
 public class Test {
 
 	public static void test() throws Exception {
-		//loadBlocks();
-		stringUtil();
+		/*loadBlocks();
+		ContentContainer contentContainer = new ContentContainer();
+		contentContainer.put(1, 300, 1);
+		System.out.println(contentContainer.compactContentToString());*/
+
+		System.out.println(SteelComponentRepository.getFirstDimension());
+		System.out.println(SteelComponentRepository.getSecondDimension(70));
+
+		testArtifact();
+	}
+
+	private static void testArtifact() throws InterruptedException {
+		Stopwatch stopwatch = new Stopwatch();
+		Thread.sleep(500);
+		stopwatch.print();
 	}
 
 	private static void stringUtil() {
@@ -90,7 +105,7 @@ public class Test {
 
 	private static void localTest1() {
 		printTestName(1);
-		System.out.println(Specification.getProperty("reinforcing_rolled"));
+		System.out.println(DesignCode.getProperty("reinforcing_rolled"));
 	}
 
 	private static void printTestName(int number) {

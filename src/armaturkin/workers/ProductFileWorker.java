@@ -9,6 +9,7 @@ import armaturkin.core.*;
 import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.ParseInt;
 import armaturkin.interfaces.RowEmptyChecker;
+import armaturkin.reinforcement.ProductReinforcementChecker;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;

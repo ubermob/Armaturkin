@@ -135,11 +135,15 @@
     <!-- Manually Summary Entry -->
     <entry key="negative_number_exception">Negative number: %.3f</entry>
     <entry key="manually_summary_entry_label_text">%s&#10;Диаметр: %d&#10;%s&#10;%s: %.1f</entry>
+    <entry key="manually_summary_entry_hot_rolled_steel_label_text">%s&#10;Вид: %s&#10;%s: %.1f</entry>
     <entry key="add_manually_summary_entry">%s add entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
     <entry key="remove_manually_summary_entry">%s remove entry: [Summary Label ID: %d], [Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
     <entry key="add_background_manually_entry">%s add entry: [Background], [Diameter: %d], [RFClass: %s], [Length: %.3f]</entry>
     <entry key="remove_background_manually_entry">%s remove entry: [Background], [Diameter: %d], [RFClass: %s], [Length: %.3f]</entry>
+    <entry key="add_manually_summary_hot_rolled_steel_entry">%s add entry: [Hot rolled steel: %s], [Image: %s], [Length: %.3f]</entry>
+    <entry key="remove_manually_summary_hot_rolled_steel_entry">%s remove entry: [Hot rolled steel: %s], [Image: %s], [Length: %.3f]</entry>
     <entry key="background_title">Фон</entry>
+    <entry key="hot_rolled_steel_title">Стальной&#10;прокат</entry>
     <entry key="last_field_name_mass">Масса</entry>
     <entry key="last_field_name_length">Длина</entry>
 

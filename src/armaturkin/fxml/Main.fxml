@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -271,39 +272,72 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <HBox fx:id="mSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                  <Button fx:id="mSummaryAddButton" layoutX="260.0" layoutY="520.0" mnemonicParsing="false" onAction="#addManuallySummaryEntry" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость" AnchorPane.bottomAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font></Button>
-                  <Text fx:id="mSummaryEntryText1" layoutX="14.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление арматуры в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Text>
-                  <Button fx:id="backgroundReinforcementAddButton" layoutX="260.0" layoutY="360.0" mnemonicParsing="false" onAction="#addBackgroundReinforcement" prefHeight="37.0" prefWidth="280.0" text="Добавить в фоновую арматуру">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <HBox alignment="CENTER" layoutX="15.0" layoutY="50.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 25;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  <VBox layoutX="14.0" layoutY="145.0" style="-fx-alignment: CENTER; -fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
                      <children>
-                        <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="120.0" />
-                        <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="120.0" />
-                        <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="120.0" />
-                        <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="200.0" promptText="Масса, кг (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
+                        <Text fx:id="mSummaryEntryText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="772.89453125">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                           <children>
+                              <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="120.0" />
+                              <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="200.0" promptText="Длина, м (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="backgroundReinforcementAddButton" mnemonicParsing="false" onAction="#addBackgroundReinforcement" prefHeight="37.0" prefWidth="280.0" text="Добавить в фоновую арматуру">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
                      </children>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="14.0" layoutY="286.0" prefHeight="62.0" prefWidth="770.0" style="-fx-spacing: 25;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  </VBox>
+                  <HBox fx:id="mSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                  <VBox layoutX="14.0" layoutY="287.0" style="-fx-alignment: CENTER; -fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
                      <children>
-                        <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="120.0" />
-                        <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="200.0" promptText="Длина, м (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
-                     </children></HBox>
-                  <Text fx:id="mSummaryEntryText2" layoutX="14.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="772.89453125">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Text>
+                        <Text fx:id="mSummaryEntryText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление арматуры в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                           <children>
+                              <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="120.0" />
+                              <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="80.0" />
+                              <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="80.0" />
+                              <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="200.0" promptText="Масса, кг (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="mSummaryAddButton" mnemonicParsing="false" onAction="#addManuallySummaryEntry" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="14.0" layoutY="429.0" style="-fx-alignment: CENTER; -fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                     <children>
+                        <Text fx:id="mSummaryEntryText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление стальных изделий в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                           <children>
+                              <ChoiceBox fx:id="mSummaryChoiceBox4" prefHeight="25.0" prefWidth="120.0" />
+                              <ChoiceBox fx:id="mSummaryChoiceBox5" prefHeight="25.0" prefWidth="80.0" />
+                              <ChoiceBox fx:id="mSummaryChoiceBox6" prefHeight="25.0" prefWidth="80.0" />
+                              <ChoiceBox fx:id="mSummaryChoiceBox7" layoutX="356.0" layoutY="10.0" prefHeight="25.0" prefWidth="80.0" />
+                              <TextField fx:id="mSummaryTextField2" prefHeight="25.0" prefWidth="225.0" promptText="Длина, мм (Пример: 750 или 150.5)" style="-fx-alignment: CENTER;" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="mSummaryAddButton2" mnemonicParsing="false" onAction="#addManuallySummaryEntry2" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
         </content>

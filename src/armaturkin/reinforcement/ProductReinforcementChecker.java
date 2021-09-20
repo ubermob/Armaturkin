@@ -1,8 +1,4 @@
-package armaturkin.core;
-
-import armaturkin.reinforcement.ReinforcementChecker;
-import armaturkin.reinforcement.ReinforcementProduct;
-import armaturkin.reinforcement.StandardsRepository;
+package armaturkin.reinforcement;
 
 public class ProductReinforcementChecker extends ReinforcementChecker {
 

@@ -1,7 +1,7 @@
 package armaturkin.summaryoutput;
 
 import armaturkin.core.Main;
-import armaturkin.core.Specification;
+import armaturkin.core.DesignCode;
 import armaturkin.reinforcement.RFClass;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -91,7 +91,7 @@ public class SummaryExcelBuilder implements Runnable {
 		sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_2"));
 		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
 		// Write specification document
-		sheet.getRow(4).createCell(startBlockColumn).setCellValue(Specification.getProperty("reinforcing_rolled"));
+		sheet.getRow(4).createCell(startBlockColumn).setCellValue(DesignCode.getProperty("reinforcing_rolled"));
 		sheet.getRow(4).getCell(startBlockColumn).setCellStyle(textCellStyle);
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
 			sheet.getRow(4).createCell(j);

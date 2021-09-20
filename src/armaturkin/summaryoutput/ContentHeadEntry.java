@@ -1,5 +1,6 @@
 package armaturkin.summaryoutput;
 
+import armaturkin.interfaces.LightInfo;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.SteelProductLiteInfo;
@@ -9,14 +10,10 @@ import static armaturkin.core.Main.getProperty;
 
 public class ContentHeadEntry {
 
-	private final Object entry;
+	private final LightInfo entry;
 
-	public ContentHeadEntry(Object entry) {
-		if (entry instanceof ReinforcementLiteInfo || entry instanceof SteelProductLiteInfo) {
-			this.entry = entry;
-		} else {
-			throw new ClassFormatError();
-		}
+	public ContentHeadEntry(LightInfo entry) {
+		this.entry = entry;
 	}
 
 	public String getPrettyString() {

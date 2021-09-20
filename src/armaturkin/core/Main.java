@@ -1,9 +1,12 @@
 package armaturkin.core;
 
 import armaturkin.controller.Controller;
+import armaturkin.manuallyentry.ManuallyEntry;
+import armaturkin.manuallyentry.ManuallyEntryAdaptor;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.SummaryHub;
 import armaturkin.summaryoutput.SummaryThreadStarter;
 import armaturkin.utils.*;
@@ -37,7 +40,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.21b1";
+	public static String version = "0.5.21b2";
 	// Serial or Parallel Summary Running
 	public static boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();
@@ -91,9 +94,10 @@ public class Main extends Application {
 			Root.loadProperties();
 			ManuallyEntry.loadColorProperties();
 			Root.checkDirectories();
-			Specification.loadProperties();
+			DesignCode.loadProperties();
 			loadConfigFile();
 			StandardsRepository.createPairs();
+			SteelComponentRepository.load();
 			// Launch
 			launch(args);
 			saveConfigFile();
