@@ -21,7 +21,6 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -40,11 +39,10 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.21b2";
+	public static String version = "0.5.21b3";
 	// Serial or Parallel Summary Running
 	public static boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();
-	public static Parent root;
 	public static Controller controller;
 	public static Configuration config;
 	private volatile static String notificationString = "";
@@ -62,9 +60,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/armaturkin/fxml/Main.fxml"));
-		root = loader.load();
+		primaryStage.setScene(new Scene(loader.load()));
 		controller = loader.getController();
 		doingAddonViews();
+		doingPrimaryStage(primaryStage);
 		controller.startSetup();
 		primaryStage.setTitle(getProperty("application_name") + " ver " + version);
 		log(getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
@@ -74,11 +73,9 @@ public class Main extends Application {
 		} catch (Exception e) {
 			log(e);
 		}
-		primaryStage.setScene(new Scene(root));
 		checkFavoriteDirectory();
 		preloadUpperDropSpace();
 		primaryStage.show();
-		doingPrimaryStage(primaryStage);
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 			controller.setResultLabelText(notificationString);
 			controller.setCheckBox();

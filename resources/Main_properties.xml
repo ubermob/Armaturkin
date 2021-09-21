@@ -26,6 +26,7 @@
     <!-- Stages -->
     <entry key="info_stage_name">Информация</entry>
     <entry key="reinforcement_linear_mass_list_stage_name">Масса арматуры</entry>
+    <entry key="hot_rolled_steel_stage_name">Изделия из прокатной стали</entry>
 
     <!-- Default redirect arrow properties -->
     <entry key="angle_gap">30</entry>

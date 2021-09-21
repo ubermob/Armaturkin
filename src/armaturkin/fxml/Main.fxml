@@ -465,7 +465,7 @@
         <content>
           <AnchorPane fx:id="utilAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="showReinforcementLinearMassListButton" layoutX="34.0" layoutY="38.0" mnemonicParsing="false" onAction="#showReinforcementLinearMassListButton" prefHeight="37.0" prefWidth="226.0" text="Таблица погонной массы" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+                  <Button fx:id="showReinforcementLinearMassListButton" layoutX="34.0" layoutY="38.0" mnemonicParsing="false" onAction="#showReinforcementLinearMassList" prefHeight="37.0" prefWidth="226.0" text="Таблица погонной массы" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font></Button>
@@ -475,6 +475,11 @@
                      </font>
                   </Button>
                   <Button fx:id="varStateButton" layoutX="92.0" layoutY="520.0" mnemonicParsing="false" onAction="#printVarState" prefHeight="37.0" prefWidth="100.0" text="Var state" AnchorPane.bottomAnchor="14.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="showHotRolledSteelCodeButton" layoutX="40.0" layoutY="108.0" mnemonicParsing="false" onAction="#showHotRolledSteelCode" prefHeight="37.0" prefWidth="245.0" text="Таблица стальных изделий">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ReinforcementLinearMassInfo {
 
-	public static String get() {
+	public static String getText() {
 		List<String> read = null;
 		try {
 			read = Reader.read(ReinforcementLinearMassInfo.class.getResourceAsStream("/RLMI_style.txt"));

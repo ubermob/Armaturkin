@@ -6,20 +6,17 @@ import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.steelcomponent.HotRolledSteelType;
+import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.SummaryRedirectManager;
 import armaturkin.utils.Dev;
-import armaturkin.utils.ReinforcementLinearMassInfo;
 import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
@@ -31,8 +28,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
@@ -128,6 +123,8 @@ public class Controller {
 	@FXML
 	private Button backgroundReinforcementAddButton;
 	@FXML
+	private Button showHotRolledSteelCodeButton;
+	@FXML
 	private Button testButton;
 	@FXML
 	private Button varStateButton;
@@ -222,9 +219,9 @@ public class Controller {
 	@FXML
 	private ChoiceBox<HotRolledSteelType> mSummaryChoiceBox4;
 	@FXML
-	private ChoiceBox<SteelComponentRepository.Image> mSummaryChoiceBox5;
+	private ChoiceBox<Image> mSummaryChoiceBox5;
 	@FXML
-	private ChoiceBox<SteelComponentRepository.Image> mSummaryChoiceBox6;
+	private ChoiceBox<Image> mSummaryChoiceBox6;
 
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
@@ -238,7 +235,7 @@ public class Controller {
 			utilAnchorPane.getChildren().remove(varStateButton);
 		}
 		groupingAppearanceVariables();
-		setupBackgroundColor();
+		setBackgroundColor();
 		setupTextColor();
 		setupFont();
 		if (Main.config.isResultLabelFontSizeNotNull()) {
@@ -339,6 +336,7 @@ public class Controller {
 				restoreWindowSizeButton,
 				showReinforcementLinearMassListButton,
 				backgroundReinforcementAddButton,
+				showHotRolledSteelCodeButton,
 				mSummaryAddButton2
 		};
 		allTexts = new Text[]{
@@ -362,35 +360,35 @@ public class Controller {
 	@FXML
 	private void setBackgroundColor1() {
 		Main.config.setBackgroundColor(getColorHexCode(circle1.getFill()));
-		setupBackgroundColor();
+		setBackgroundColor();
 	}
 
 	@FXML
 	private void setBackgroundColor2() {
 		Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
-		setupBackgroundColor();
+		setBackgroundColor();
 	}
 
 	@FXML
 	private void setBackgroundColor3() {
 		Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
-		setupBackgroundColor();
+		setBackgroundColor();
 	}
 
 	@FXML
 	private void setBackgroundColor4() {
 		Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
-		setupBackgroundColor();
+		setBackgroundColor();
 	}
 
 	@FXML
 	private void setBackgroundColor5() {
 		Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
-		setupBackgroundColor();
+		setBackgroundColor();
 	}
 
-	private void setupBackgroundColor() {
-		Main.root.setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
+	private void setBackgroundColor() {
+		Stages.primary.getScene().getRoot().setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
 	}
 
 	@FXML
@@ -518,18 +516,7 @@ public class Controller {
 
 	@FXML
 	private void showInfoStage() throws IOException {
-		if (Stages.infoStage == null) {
-			Stages.infoStage = new Stage();
-			Label label = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/Info_label.fxml")).load();
-			label.setBackground(getUserBackgroundColor());
-			label.setFont(getFont());
-			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
-			Stages.infoStage.setScene(new Scene(label));
-			Stages.infoStage.setTitle(getProperty("info_stage_name"));
-			Stages.infoStage.initStyle(StageStyle.UTILITY);
-			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
-		}
-		Stages.infoStage.show();
+		Stages.showInfoStage();
 	}
 
 	public String getTableHead() {
@@ -962,7 +949,7 @@ public class Controller {
 		mSummaryChoiceBox3.setValue(RFClass.A500S);
 		mSummaryChoiceBox4.setItems(observableList(HotRolledSteelType.getAsList()));
 		mSummaryChoiceBox4.setValue(HotRolledSteelType.EQUAL_LEG_ANGLE);
-		mSummaryChoiceBox4.setOnAction(x -> {
+		mSummaryChoiceBox4.setOnAction(actionEvent -> {
 			switch (mSummaryChoiceBox4.getValue()) {
 				case EQUAL_LEG_ANGLE -> {
 					setEqual();
@@ -1019,20 +1006,8 @@ public class Controller {
 	}
 
 	@FXML
-	private void showReinforcementLinearMassListButton() {
-		if (Stages.reinforcementLinearMassListStage == null) {
-			Stages.reinforcementLinearMassListStage = new Stage();
-			Label label = new Label(ReinforcementLinearMassInfo.get());
-			label.setBackground(getUserBackgroundColor());
-			label.setFont(new Font("Consolas", 20));
-			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
-			label.setAlignment(Pos.CENTER);
-			Stages.reinforcementLinearMassListStage.setScene(new Scene(label));
-			Stages.reinforcementLinearMassListStage.setTitle(getProperty("reinforcement_linear_mass_list_stage_name"));
-			Stages.reinforcementLinearMassListStage.initStyle(StageStyle.UTILITY);
-			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
-		}
-		Stages.reinforcementLinearMassListStage.show();
+	private void showReinforcementLinearMassList() {
+		Stages.showReinforcementLinearMassList();
 	}
 
 	@Deprecated
@@ -1064,19 +1039,24 @@ public class Controller {
 		children.add(2, AddonViews.arrowLine2);
 	}
 
-	private Font getFont() {
+	public Font getFont() {
 		return upperDropSpace.getFont();
 	}
 
 	/**
 	 * @return user {@link Background} color
 	 */
-	private Background getUserBackgroundColor() {
+	public Background getUserBackgroundColor() {
 		return new Background(new BackgroundFill(
 				Color.valueOf(Main.config.getBackgroundColor()),
 				CornerRadii.EMPTY,
 				Insets.EMPTY
 		));
+	}
+
+	@FXML
+	private void showHotRolledSteelCode() throws IOException {
+		SecondaryController.show();
 	}
 
 	@FXML

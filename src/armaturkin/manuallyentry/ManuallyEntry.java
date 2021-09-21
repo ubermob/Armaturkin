@@ -6,7 +6,7 @@ import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.steelcomponent.HotRolledSteelType;
-import armaturkin.steelcomponent.SteelComponentRepository;
+import armaturkin.steelcomponent.Image;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -49,7 +49,7 @@ public class ManuallyEntry {
 				TextFieldString, Main.backgroundReinforcementManuallyEntries);
 	}
 
-	public static void addSteelComponentEntry(SteelComponentRepository.Image image, String textFieldString) {
+	public static void addSteelComponentEntry(Image image, String textFieldString) {
 		try {
 			double length = checkTextFieldParse(textFieldString);
 			ManuallyEntry entry = getNewManuallyEntryOfHotRolledSteel(
@@ -159,7 +159,7 @@ public class ManuallyEntry {
 
 	private static ManuallyEntry getNewManuallyEntryOfHotRolledSteel(
 			Type type,
-			SteelComponentRepository.Image image,
+			Image image,
 			double length) {
 		return new ManuallyEntry(type, image, length);
 	}
@@ -173,7 +173,7 @@ public class ManuallyEntry {
 	}
 
 	// getNewManuallyEntryOfHotRolledSteel() fabric
-	private ManuallyEntry(Type type, SteelComponentRepository.Image image, double length) {
+	private ManuallyEntry(Type type, Image image, double length) {
 		this.type = type;
 		buildLabelHotRolledSteel(image, length);
 		summaryLabelID = parseSummaryLabel("");
@@ -221,7 +221,7 @@ public class ManuallyEntry {
 	}
 
 	public HotRolledSteelType getHotRolledSteelType() {
-		return ((SteelComponentRepository.Image) lightInfo).getType();
+		return ((Image) lightInfo).getType();
 	}
 
 	public String getImageAsString() {
@@ -229,7 +229,7 @@ public class ManuallyEntry {
 	}
 
 	public double getMassHotRolledSteel() {
-		return ((SteelComponentRepository.Image) lightInfo).getMass();
+		return ((Image) lightInfo).getMass();
 	}
 
 	private void buildLabelReinforcement(String summaryLabel, int diameter, RFClass rfClass, double mass) {
@@ -255,7 +255,7 @@ public class ManuallyEntry {
 		buildLabel(labelText, mass, labelColorCode);
 	}
 
-	private void buildLabelHotRolledSteel(SteelComponentRepository.Image image, double length) {
+	private void buildLabelHotRolledSteel(Image image, double length) {
 		String labelTitle = Main.properties.getProperty("hot_rolled_steel_title");
 		String lastFieldName = Main.properties.getProperty("last_field_name_length");
 		String labelColorCode = COLOR_PROPERTIES.getProperty("manually_hot_rolled_steel_entry");
