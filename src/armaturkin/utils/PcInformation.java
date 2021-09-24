@@ -19,7 +19,8 @@ public class PcInformation {
 					System.getProperty("java.version"),
 					ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors(),
 					(((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreeMemorySize() / 1024 / 1024),
-					(((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize() / 1024 / 1024)
+					(((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize() / 1024 / 1024),
+					Runtime.getRuntime().maxMemory() / 1024 / 1024
 			);
 		} catch (Exception e) {
 			Main.log.add(e);

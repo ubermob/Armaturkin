@@ -24,9 +24,9 @@ import static javafx.collections.FXCollections.observableList;
  * @author Andrey Korneychuk on 21-Sep-21
  * @version 1.0
  */
-public class SecondaryController {
+public class HotRolledSteelCodeController {
 
-	public static SecondaryController controller;
+	public static HotRolledSteelCodeController controller;
 
 	@FXML
 	private ChoiceBox<HotRolledSteelType> choiceBox1;
@@ -39,8 +39,8 @@ public class SecondaryController {
 
 	public static void show() throws IOException {
 		if (Stages.hotRolledSteelCodeViewStage == null) {
-			FXMLLoader fxmlLoader = new FXMLLoader(SecondaryController.class.getResource(
-					"/armaturkin/fxml/Hot_rolled_steel_full_view.fxml"
+			FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(
+					"/armaturkin/fxml/Hot_rolled_steel_code_view.fxml"
 			));
 			Stage stage = new Stage();
 			stage.setScene(new Scene(fxmlLoader.load()));
@@ -48,15 +48,10 @@ public class SecondaryController {
 			controller.setChoiceBox();
 			stage.setTitle(Main.properties.getProperty("hot_rolled_steel_stage_name"));
 			stage.getScene().getRoot().setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
+			controller.label.setFont(Main.controller.getFont());
 			controller.label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
 			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 			Stages.hotRolledSteelCodeViewStage = stage;
-			// TODO Refactor or delete
-			try {
-				controller.imageView.setImage(new javafx.scene.image.Image(Files.newInputStream(Path.of("D:\\Downloads\\image.png"))));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 		Stages.hotRolledSteelCodeViewStage.show();
 	}
@@ -66,12 +61,15 @@ public class SecondaryController {
 		choiceBox1.setValue(HotRolledSteelType.EQUAL_LEG_ANGLE);
 		choiceBox1.setOnAction(actionEvent -> {
 			if (choiceBox1.getValue() == HotRolledSteelType.EQUAL_LEG_ANGLE) {
-				choiceBox2.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImage()));
-				choiceBox2.setOnAction(actionEvent2 ->
-						label.setText(
-								SteelComponentRepository.getCodeByElement(choiceBox1.getValue(), choiceBox2.getValue())
-						));
+				choiceBox2.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImages()));
+			} else if (choiceBox1.getValue() == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
+				choiceBox2.setItems(observableList(SteelComponentRepository.getFullUnequalAnglesImages()));
 			}
 		});
+		choiceBox2.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImages()));
+		choiceBox2.setOnAction(actionEvent -> label.setText(SteelComponentRepository.getCodeByElement(
+				choiceBox1.getValue(),
+				choiceBox2.getValue()
+		)));
 	}
 }

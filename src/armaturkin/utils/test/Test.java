@@ -24,9 +24,6 @@ public class Test {
 		contentContainer.put(1, 300, 1);
 		System.out.println(contentContainer.compactContentToString());*/
 
-		System.out.println(SteelComponentRepository.getFirstDimension());
-		System.out.println(SteelComponentRepository.getSecondDimension(70));
-
 		testArtifact();
 	}
 

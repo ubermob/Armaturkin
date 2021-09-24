@@ -964,11 +964,11 @@ public class Controller {
 	}
 
 	private void setEqual() {
-		/*mSummaryChoiceBox5.setItems(observableList(SteelComponentRepository.getFirstDimension()));
-		mSummaryChoiceBox5.setValue(mSummaryChoiceBox5.getItems().get(0));
-		mSummaryChoiceBox6.setItems(observableList(SteelComponentRepository.getSecondDimension()));
-		mSummaryChoiceBox6.setValue(mSummaryChoiceBox6.getItems().get(0));*/
-		mSummaryChoiceBox5.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImage()));
+		mSummaryChoiceBox5.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImages()));
+	}
+
+	private void setUnequal() {
+
 	}
 
 	private void setupMBackgroundChoiceBox() {
@@ -1056,7 +1056,7 @@ public class Controller {
 
 	@FXML
 	private void showHotRolledSteelCode() throws IOException {
-		SecondaryController.show();
+		HotRolledSteelCodeController.show();
 	}
 
 	@FXML

@@ -14,33 +14,40 @@ import java.util.List;
 
 public class SteelComponentRepository {
 
-	static Sheet equalLegAnglesSheet;
-	static List<Image> equalLegAnglesList;
+	private static Sheet equalLegAnglesSheet;
+	private static List<Image> equalLegAnglesList;
+	private static Sheet unequalLegAnglesSheet;
+	private static List<Image> unequalLegAnglesList;
 
 	public static void load() {
 		try {
 			equalLegAnglesSheet = WorkbookFactory.create(Main.class.getResourceAsStream(
 					"/design_codes/%s.xlsx".formatted(DesignCode.getProperty("hot_rolled_steel_equal_leg_angles"))
 			)).getSheetAt(0);
+			unequalLegAnglesSheet = WorkbookFactory.create(Main.class.getResourceAsStream(
+					"/design_codes/%s.xlsx".formatted(DesignCode.getProperty("hot_rolled_steel_unequal_leg_angles"))
+			)).getSheetAt(0);
 		} catch (IOException e) {
 			Main.log.add(e);
 		}
 	}
 
-	public static List<Image> getFullEqualAnglesImage() {
+	public static List<Image> getFullEqualAnglesImages() {
 		if (equalLegAnglesList == null) {
 			Iterator<Row> iterator = equalLegAnglesSheet.iterator();
 			equalLegAnglesList = new ArrayList<>();
 			while (iterator.hasNext()) {
 				Row next = iterator.next();
+				// Skip first row because it is head
 				if (next.getRowNum() == 0) {
 					continue;
 				}
 				Number thickness;
-				if (WholeNumber.isAWholeNumber(next.getCell(2).getNumericCellValue())) {
-					thickness = (int) next.getCell(2).getNumericCellValue();
+				double thicknessCandidate = next.getCell(2).getNumericCellValue();
+				if (WholeNumber.isAWholeNumber(thicknessCandidate)) {
+					thickness = (int) thicknessCandidate;
 				} else {
-					thickness = next.getCell(2).getNumericCellValue();
+					thickness = thicknessCandidate;
 				}
 				equalLegAnglesList.add(new Image(
 						HotRolledSteelType.EQUAL_LEG_ANGLE,
@@ -53,14 +60,50 @@ public class SteelComponentRepository {
 		return equalLegAnglesList;
 	}
 
+	public static List<Image> getFullUnequalAnglesImages() {
+		if (unequalLegAnglesList == null) {
+			Iterator<Row> iterator = unequalLegAnglesSheet.iterator();
+			unequalLegAnglesList = new ArrayList<>();
+			while (iterator.hasNext()) {
+				Row next = iterator.next();
+				// Skip first row because it is head
+				if (next.getRowNum() == 0) {
+					continue;
+				}
+				Number thickness;
+				double thicknessCandidate = next.getCell(3).getNumericCellValue();
+				if (WholeNumber.isAWholeNumber(thicknessCandidate)) {
+					thickness = (int) thicknessCandidate;
+				} else {
+					thickness = thicknessCandidate;
+				}
+				unequalLegAnglesList.add(new Image(
+						HotRolledSteelType.UNEQUAL_LEG_ANGLE,
+						(int) next.getCell(1).getNumericCellValue(),
+						(int) next.getCell(2).getNumericCellValue(),
+						thickness,
+						next.getRowNum()
+				));
+			}
+		}
+		return unequalLegAnglesList;
+	}
+
 	public static String getCodeByElement(HotRolledSteelType type, Image image) {
 		Sheet sheet = null;
+		String header = "";
 		if (type == HotRolledSteelType.EQUAL_LEG_ANGLE) {
 			sheet = equalLegAnglesSheet;
+			header = DesignCode.getProperty("hot_rolled_steel_equal_leg_angles");
+		}
+		if (type == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
+			sheet = unequalLegAnglesSheet;
+			header = DesignCode.getProperty("hot_rolled_steel_unequal_leg_angles") + "\n" +
+					Main.getProperty("design_code_attention_1");
 		}
 		Iterator<Cell> iteratorHeader = sheet.getRow(0).iterator();
 		Iterator<Cell> iteratorElement = sheet.getRow(image.getRowNumber()).iterator();
-		String result = "";
+		String result = header + "\n";
 		while (iteratorHeader.hasNext()) {
 			result += getCellAsString(iteratorHeader.next()) + ": " + getCellAsString(iteratorElement.next()) + "\n";
 		}
@@ -80,14 +123,6 @@ public class SteelComponentRepository {
 		return null;
 	}
 
-	public static List<Number> getFirstDimension() {
-		return getDimension(1);
-	}
-
-	public static List<Number> getSecondDimension(int parentValue) {
-		return getDependedDimension(parentValue, 1, 2);
-	}
-
 	public static int getHashCode(HotRolledSteelType type, int[] dimensions) {
 		if (type == HotRolledSteelType.EQUAL_LEG_ANGLE) {
 			Iterator<Row> iterator = equalLegAnglesSheet.iterator();
@@ -100,42 +135,5 @@ public class SteelComponentRepository {
 			}
 		}
 		throw new IllegalArgumentException(type + " " + Arrays.toString(dimensions));
-	}
-
-	private static List<Number> getDependedDimension(int parentValue, int parentCellNumber, int dependedCellNumber) {
-		List<Number> result = new ArrayList<>();
-		Iterator<Row> iterator = equalLegAnglesSheet.iterator();
-		int unique = -1;
-		while (iterator.hasNext()) {
-			Row next = iterator.next();
-			if (next.getCell(dependedCellNumber).getCellType() == CellType.STRING) {
-				continue;
-			}
-			int dimension = (int) next.getCell(dependedCellNumber).getNumericCellValue();
-			if (dimension != unique
-					&& parentValue == (int) next.getCell(parentCellNumber).getNumericCellValue()) {
-				result.add(dimension);
-				unique = dimension;
-			}
-		}
-		return result;
-	}
-
-	private static List<Number> getDimension(int cellNumber) {
-		List<Number> result = new ArrayList<>();
-		Iterator<Row> iterator = equalLegAnglesSheet.iterator();
-		int unique = -1;
-		while (iterator.hasNext()) {
-			Cell cellValue = iterator.next().getCell(cellNumber);
-			if (cellValue.getCellType() == CellType.STRING) {
-				continue;
-			}
-			int dimension = (int) cellValue.getNumericCellValue();
-			if (dimension != unique) {
-				result.add(dimension);
-				unique = dimension;
-			}
-		}
-		return result;
 	}
 }

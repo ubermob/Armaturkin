@@ -10,7 +10,7 @@
     <!-- Main -->
     <entry key="application_name">Арматуркин</entry>
     <entry key="application_main_line">Application: %s&#10;Date: %s&#10;Time: %s</entry>
-    <entry key="pc_information">User: %s, System name: %s, OS: %s, OS ver: %s, OS arch: %s&#10;Java vendor: %s, Java ver: %s, Processors: %d, RAM: %d Mb / %d Mb (free / total)&#10;</entry>
+    <entry key="pc_information">User: %s, System name: %s, OS: %s, OS ver: %s, OS arch: %s&#10;Java vendor: %s, Java ver: %s, Processors: %d, RAM: %d Mb / %d Mb (free / total), JVM max memory: %d Mb&#10;</entry>
 
     <!-- Default config values -->
     <entry key="background_color">#444444</entry>
@@ -147,6 +147,9 @@
     <entry key="hot_rolled_steel_title">Стальной&#10;прокат</entry>
     <entry key="last_field_name_mass">Масса</entry>
     <entry key="last_field_name_length">Длина</entry>
+
+    <!-- Design code properties -->
+    <entry key="design_code_attention_1">(Уголки, отмеченные звездочкой, изготовляют по требованию потребителя)</entry>
 
     <!-- Date & Time -->
     <entry key="date_pattern">dd-MMM-yyyy</entry>
