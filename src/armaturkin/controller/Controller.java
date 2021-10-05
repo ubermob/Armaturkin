@@ -39,173 +39,31 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class Controller {
 
 	@FXML
-	private AnchorPane anchorPane3;
-	@FXML
-	private AnchorPane utilAnchorPane;
-	@FXML
-	private Label upperDropSpace;
-	@FXML
-	private Label lowerDropSpace;
-	@FXML
-	private Label resultLabel;
-	@FXML
-	private Label notificationLabel;
-	@FXML
-	private Label notificationLabel2;
-	@FXML
-	private Label summaryDropSpace1;
-	@FXML
-	private Label summaryDropSpace2;
-	@FXML
-	private Label summaryDropSpace3;
-	@FXML
-	private Label summaryDropSpace4;
-	@FXML
-	private Label summaryDropSpace5;
-	@FXML
-	private Label summaryDropSpace6;
-	@FXML
-	private Label summaryDropSpace7;
-	@FXML
-	private Label summaryDropSpace8;
-	@FXML
-	private Label favoriteDropSpace;
-	@FXML
-	private Button downloadFileButton;
-	@FXML
-	private Button clearResultLabelButton;
-	@FXML
-	private Button lowerDropSpaceButton;
-	@FXML
-	private Button clearUpperDropSpaceButton;
-	@FXML
-	private Button showInfoButton;
-	@FXML
-	private Button downloadResultLabelButton;
-	@FXML
-	private Button downloadSummaryFileButton;
-	@FXML
-	private Button clearAllSummaryDropSpaceButton;
-	@FXML
-	private Button checkSummaryDropSpaceButton4;
-	@FXML
-	private Button checkSummaryDropSpaceButton6;
-	@FXML
-	private Button checkSummaryDropSpaceButton8;
-	@FXML
-	private Button checkSummaryDropSpaceButton7;
-	@FXML
-	private Button boldTextButton;
-	@FXML
-	private Button deleteLogs;
-	@FXML
-	private Button deleteNotifications;
-	@FXML
-	private Button forgetFavorite;
-	@FXML
-	private Button font12Button;
-	@FXML
-	private Button font14Button;
-	@FXML
-	private Button font16Button;
-	@FXML
-	private Button font18Button;
-	@FXML
-	private Button font20Button;
-	@FXML
-	private Button mSummaryAddButton;
-	@FXML
-	private Button mSummaryAddButton2;
-	@FXML
-	private Button restoreWindowSizeButton;
-	@FXML
-	private Button showReinforcementLinearMassListButton;
-	@FXML
-	private Button backgroundReinforcementAddButton;
-	@FXML
-	private Button showHotRolledSteelCodeButton;
-	@FXML
-	private Button testButton;
-	@FXML
-	private Button varStateButton;
-	@FXML
-	private TextField tableHead;
-	@FXML
-	private TextField backgroundReinforcement;
-	@FXML
-	private TextField fileName;
-	@FXML
-	private TextField summaryFileName;
-	@FXML
-	private TextField summaryTableHead;
-	@FXML
-	private TextField logLimit;
-	@FXML
-	private TextField notificationLimit;
-	@FXML
-	private TextField mSummaryTextField;
-	@FXML
-	private TextField mBackgroundTextField;
-	@FXML
-	private TextField mSummaryTextField2;
-	@FXML
-	private Text appearanceText1;
-	@FXML
-	private Text appearanceText2;
-	@FXML
-	private Text appearanceText3;
-	@FXML
-	private Text settingsText1;
-	@FXML
-	private Text settingsText2;
-	private TextWrapper settingsTextWrapper2;
-	@FXML
-	private Text settingsText3;
-	private TextWrapper settingsTextWrapper3;
-	@FXML
-	private Text settingsText4;
-	@FXML
-	private Text settingsText5;
-	private TextWrapper settingsTextWrapper5;
-	@FXML
-	private Text settingsText6;
-	private TextWrapper settingsTextWrapper6;
-	@FXML
-	private Text settingsText7;
-	@FXML
-	private Text mSummaryEntryText1;
-	@FXML
-	private Text mSummaryEntryText2;
-	@FXML
-	private Text mSummaryEntryText3;
-	@FXML
-	private Text notificationText;
-	@FXML
-	private Circle circle1;
-	@FXML
-	private Circle circle2;
-	@FXML
-	private Circle circle3;
-	@FXML
-	private Circle circle4;
-	@FXML
-	private Circle circle5;
-	@FXML
-	private Circle circleBorderColor1;
-	@FXML
-	private Circle circleBorderColor2;
-	@FXML
-	private Circle circleBorderColor3;
-	@FXML
-	private Circle circleBorderColor4;
-	@FXML
-	private Circle circleBorderColor5;
-	@FXML
-	private CheckBox logCheckBox;
-	@FXML
-	private CheckBox notificationCheckBox;
-	@FXML
-	private CheckBox autoParseProductListCheckBox;
+	private AnchorPane anchorPane3, utilAnchorPane;
+	@FXML
+	private Label upperDropSpace, lowerDropSpace, resultLabel, notificationLabel, notificationLabel2,
+			summaryDropSpace1, summaryDropSpace2, summaryDropSpace3, summaryDropSpace4, summaryDropSpace5,
+			summaryDropSpace6, summaryDropSpace7, summaryDropSpace8, favoriteDropSpace;
+	@FXML
+	private Button downloadFileButton, clearResultLabelButton, lowerDropSpaceButton, clearUpperDropSpaceButton,
+			showInfoButton, downloadResultLabelButton, downloadSummaryFileButton, clearAllSummaryDropSpaceButton,
+			checkSummaryDropSpaceButton4, checkSummaryDropSpaceButton6, checkSummaryDropSpaceButton8,
+			checkSummaryDropSpaceButton7, boldTextButton, deleteLogs, deleteNotifications, forgetFavorite,
+			font12Button, font14Button, font16Button, font18Button, font20Button, mSummaryAddButton, mSummaryAddButton2,
+			restoreWindowSizeButton, showReinforcementLinearMassListButton, backgroundReinforcementAddButton,
+			showHotRolledSteelCodeButton, testButton, varStateButton;
+	@FXML
+	private TextField tableHead, backgroundReinforcement, fileName, summaryFileName, summaryTableHead, logLimit,
+			notificationLimit, mSummaryTextField, mBackgroundTextField, mSummaryTextField2;
+	@FXML
+	private Text appearanceText1, appearanceText2, appearanceText3, settingsText1, settingsText2, settingsText3,
+			settingsText4, settingsText5, settingsText6, settingsText7, mSummaryEntryText1, mSummaryEntryText2,
+			mSummaryEntryText3, notificationText;
+	@FXML
+	private Circle circle1, circle2, circle3, circle4, circle5, circleBorderColor1, circleBorderColor2,
+			circleBorderColor3, circleBorderColor4, circleBorderColor5;
+	@FXML
+	private CheckBox logCheckBox, notificationCheckBox, autoParseProductListCheckBox;
 	@FXML
 	private HBox mSummaryHBox;
 	@FXML
@@ -221,13 +79,15 @@ public class Controller {
 	@FXML
 	private ChoiceBox<Image> mSummaryChoiceBox5;
 	@FXML
-	private ChoiceBox<Image> mSummaryChoiceBox6;
+	private ChoiceBox<Number> mSummaryChoiceBox6, mSummaryChoiceBox7;
 
 	private Label[] allLabels;
 	private Label[] borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
 	private Button[] boldTextModifiedButtons;
 	private Text[] allTexts;
+	private TextWrapper settingsTextWrapper2, settingsTextWrapper3, settingsTextWrapper5, settingsTextWrapper6;
+	private ChoiceBoxWrapper choiceBoxWrapper1, choiceBoxWrapper2, choiceBoxWrapper3;
 
 	public void startSetup() {
 		if (!Dev.isDevMode) {
@@ -266,8 +126,15 @@ public class Controller {
 		settingsTextWrapper5 = new TextWrapper(settingsText5);
 		settingsTextWrapper6 = new TextWrapper(settingsText6);
 
+		setupChoiceBoxWrapper();
 		setupMSummaryChoiceBox();
 		setupMBackgroundChoiceBox();
+	}
+
+	private void setupChoiceBoxWrapper() {
+		choiceBoxWrapper1 = new ChoiceBoxWrapper(mSummaryChoiceBox5);
+		choiceBoxWrapper2 = new ChoiceBoxWrapper(mSummaryChoiceBox6);
+		choiceBoxWrapper3 = new ChoiceBoxWrapper(mSummaryChoiceBox7);
 	}
 
 	private void groupingAppearanceVariables() {
@@ -951,24 +818,37 @@ public class Controller {
 		mSummaryChoiceBox4.setValue(HotRolledSteelType.EQUAL_LEG_ANGLE);
 		mSummaryChoiceBox4.setOnAction(actionEvent -> {
 			switch (mSummaryChoiceBox4.getValue()) {
-				case EQUAL_LEG_ANGLE -> {
-					setEqual();
-				}
-				case UNEQUAL_LEG_ANGLE -> {
-				}
-				case SHEET -> {
-				}
+				case EQUAL_LEG_ANGLE -> setEqual();
+				case UNEQUAL_LEG_ANGLE -> setUnequal();
+				case SHEET -> setSheet();
 			}
 		});
 		setEqual();
 	}
 
 	private void setEqual() {
-		mSummaryChoiceBox5.setItems(observableList(SteelComponentRepository.getFullEqualAnglesImages()));
+		choiceBoxWrapper1.setList(observableList(SteelComponentRepository.getFullEqualAnglesImages()));
+		choiceBoxWrapper2.reset();
+		choiceBoxWrapper3.reset();
 	}
 
 	private void setUnequal() {
+		choiceBoxWrapper1.setList(observableList(SteelComponentRepository.getFullUnequalAnglesImages()));
+		choiceBoxWrapper2.reset();
+		choiceBoxWrapper3.reset();
+	}
 
+	private void setSheet() {
+		choiceBoxWrapper1.reset();
+		choiceBoxWrapper2.setList(observableList(SteelComponentRepository.getSheetThicknessList()));
+		// Test
+		List<Number> list = new ArrayList<>();
+		int v = 50;
+		for (int i = 0; i < 15; i++) {
+			list.add(v);
+			v += 10;
+		}
+		choiceBoxWrapper3.setList(observableList(list));
 	}
 
 	private void setupMBackgroundChoiceBox() {
@@ -982,20 +862,29 @@ public class Controller {
 				mSummaryChoiceBox1.getValue(),
 				mSummaryChoiceBox2.getValue(),
 				mSummaryChoiceBox3.getValue(),
-				mSummaryTextField.getText()
+				mSummaryTextField.getText() // Mass by kg
 		);
 	}
 
 	@FXML
 	private void addManuallySummaryEntry2() {
-		ManuallyEntry.addSteelComponentEntry(
-				mSummaryChoiceBox5.getValue(),
-				mSummaryTextField2.getText()
-		);
+		if (mSummaryChoiceBox4.getValue() != HotRolledSteelType.SHEET) {
+			ManuallyEntry.addSteelComponentEntry(
+					mSummaryChoiceBox5.getValue(),
+					mSummaryTextField2.getText() // Length by mm
+			);
+		} else {
+			ManuallyEntry.addSteelSheet(
+					mSummaryChoiceBox6.getValue(),
+					mSummaryChoiceBox7.getValue(),
+					mSummaryTextField2.getText() // Length by mm
+			);
+		}
 	}
 
 	@FXML
 	private void addBackgroundReinforcement() {
+		// Length by m
 		ManuallyEntry.addBackgroundReinforcement(mBackgroundChoiceBox.getValue(), mBackgroundTextField.getText());
 	}
 

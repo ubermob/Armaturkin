@@ -1,5 +1,7 @@
 package armaturkin.core;
 
+import utools.propertiestools.UtfProperties;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -9,7 +11,7 @@ import java.util.Properties;
 public class DesignCode {
 
 	private static final Properties PROPERTIES = new Properties();
-	private static final String FILE_NAME = "Design_code_properties.xml";
+	private static final String FILE_NAME = "Design_code_properties.txt";
 	private static boolean isUpdate = false;
 
 	public static void loadProperties() {
@@ -22,7 +24,7 @@ public class DesignCode {
 			} else {
 				inputStream = Main.class.getResourceAsStream("/" + FILE_NAME);
 			}
-			PROPERTIES.loadFromXML(inputStream);
+			UtfProperties.fill(PROPERTIES, inputStream);
 			inputStream.close();
 		} catch (Exception e) {
 			Main.log.add(e);

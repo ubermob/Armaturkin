@@ -2,7 +2,6 @@ package armaturkin.core;
 
 import armaturkin.controller.Controller;
 import armaturkin.manuallyentry.ManuallyEntry;
-import armaturkin.manuallyentry.ManuallyEntryAdaptor;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
@@ -39,7 +38,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.21b4";
+	public static String version = "0.5.21b5";
 	// Serial or Parallel Summary Running
 	public static boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();
@@ -55,7 +54,7 @@ public class Main extends Application {
 	public volatile static HashMap<Integer, List<String>> summaryPaths = new HashMap<>();
 	// 4th Tab
 	public static List<ManuallyEntry> manuallySummaryEntries = new ArrayList<>();
-	public static List<ManuallyEntryAdaptor> backgroundReinforcementManuallyEntries = new ArrayList<>();
+	public static List<ManuallyEntry> backgroundReinforcementManuallyEntries = new ArrayList<>();
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -89,7 +88,6 @@ public class Main extends Application {
 		if (isRunnable) {
 			loadMainProperties();
 			Root.loadProperties();
-			ManuallyEntry.loadColorProperties();
 			Root.checkDirectories();
 			DesignCode.loadProperties();
 			loadConfigFile();

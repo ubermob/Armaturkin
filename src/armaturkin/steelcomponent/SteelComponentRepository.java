@@ -2,6 +2,7 @@ package armaturkin.steelcomponent;
 
 import armaturkin.core.Main;
 import armaturkin.core.DesignCode;
+import armaturkin.core.Reader;
 import armaturkin.utils.StringUtil;
 import armaturkin.utils.WholeNumber;
 import org.apache.poi.ss.usermodel.*;
@@ -18,6 +19,7 @@ public class SteelComponentRepository {
 	private static List<Image> equalLegAnglesList;
 	private static Sheet unequalLegAnglesSheet;
 	private static List<Image> unequalLegAnglesList;
+	private static List<Number> sheetThicknessList;
 
 	public static void load() {
 		try {
@@ -27,9 +29,14 @@ public class SteelComponentRepository {
 			unequalLegAnglesSheet = WorkbookFactory.create(Main.class.getResourceAsStream(
 					"/design_codes/%s.xlsx".formatted(DesignCode.getProperty("hot_rolled_steel_unequal_leg_angles"))
 			)).getSheetAt(0);
+			fillSheetArray();
 		} catch (IOException e) {
 			Main.log.add(e);
 		}
+	}
+
+	public static List<Number> getSheetThicknessList() {
+		return sheetThicknessList;
 	}
 
 	public static List<Image> getFullEqualAnglesImages() {
@@ -53,7 +60,7 @@ public class SteelComponentRepository {
 						HotRolledSteelType.EQUAL_LEG_ANGLE,
 						(int) next.getCell(1).getNumericCellValue(),
 						thickness,
-						next.getRowNum()
+						(short) next.getRowNum()
 				));
 			}
 		}
@@ -82,7 +89,7 @@ public class SteelComponentRepository {
 						(int) next.getCell(1).getNumericCellValue(),
 						(int) next.getCell(2).getNumericCellValue(),
 						thickness,
-						next.getRowNum()
+						(short) next.getRowNum()
 				));
 			}
 		}
@@ -123,6 +130,21 @@ public class SteelComponentRepository {
 		return null;
 	}
 
+	public static double getAngleMassPerUnitLength(Image image) {
+		if (image.getType() == HotRolledSteelType.EQUAL_LEG_ANGLE) {
+			return equalLegAnglesSheet.getRow(image.getRowNumber()).getCell(16).getNumericCellValue();
+		} else if (image.getType() == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
+			return unequalLegAnglesSheet.getRow(image.getRowNumber()).getCell(20).getNumericCellValue();
+		}
+		return 0.0;
+	}
+
+	// density (kg / mm^3)
+	public static double getSteelDensity() {
+		return 7.85E-9;
+	}
+
+	// ???
 	public static int getHashCode(HotRolledSteelType type, int[] dimensions) {
 		if (type == HotRolledSteelType.EQUAL_LEG_ANGLE) {
 			Iterator<Row> iterator = equalLegAnglesSheet.iterator();
@@ -135,5 +157,29 @@ public class SteelComponentRepository {
 			}
 		}
 		throw new IllegalArgumentException(type + " " + Arrays.toString(dimensions));
+	}
+
+	// TODO in progress
+	private static void fillSheetArray() throws IOException {
+		sheetThicknessList = new ArrayList<>();
+		List<String> list = Reader.read(Main.class.getResourceAsStream(
+				"/design_codes/%s.txt".formatted(DesignCode.getProperty("hot_rolled_steel_sheets"))
+		));
+		// Parse list
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).equals("[width]")) {
+				// Skip first line: "[thickness]"
+				for (int j = 1; j < i; j++) {
+					Number thickness;
+					double thicknessCandidate = Double.parseDouble(list.get(j));
+					if (WholeNumber.isAWholeNumber(thicknessCandidate)) {
+						thickness = (int) thicknessCandidate;
+					} else {
+						thickness = thicknessCandidate;
+					}
+					sheetThicknessList.add(thickness);
+				}
+			}
+		}
 	}
 }

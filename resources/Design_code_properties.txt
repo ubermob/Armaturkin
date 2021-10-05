@@ -1,0 +1,4 @@
+reinforcing_rolled=ГОСТ 34028-2016
+hot_rolled_steel_equal_leg_angles=ГОСТ 8509-93
+hot_rolled_steel_unequal_leg_angles=ГОСТ 8510-86
+hot_rolled_steel_sheets=ГОСТ 19903-2015

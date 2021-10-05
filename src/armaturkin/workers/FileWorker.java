@@ -2,6 +2,7 @@ package armaturkin.workers;
 
 import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
+import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.StandardsRepository;
@@ -145,7 +146,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 	private void addBackgroundReinforcement() {
 		for (var entry : Main.backgroundReinforcementManuallyEntries) {
 			int diameter = entry.getDiameter();
-			double length = entry.getLength();
+			double length = entry.getParsedValue();
 			int lengthInt = (int) (length * 1000);
 			RFClass rfClass = entry.getRfClass();
 			Main.log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +

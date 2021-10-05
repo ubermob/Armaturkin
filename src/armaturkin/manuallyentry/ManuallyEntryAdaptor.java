@@ -1,3 +1,4 @@
+/*
 package armaturkin.manuallyentry;
 
 import armaturkin.reinforcement.RFClass;
@@ -25,4 +26,4 @@ public class ManuallyEntryAdaptor {
 	public RFClass getRfClass() {
 		return manuallyEntry.getRfClass();
 	}
-}
+}*/

@@ -7,6 +7,7 @@ import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.Image;
+import armaturkin.steelcomponent.SteelComponentRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -25,22 +26,25 @@ import java.util.Properties;
 
 public class ManuallyEntry {
 
-	private static final Properties COLOR_PROPERTIES = new Properties();
+	private static final Properties COLOR_PROPERTIES;
+
+	static {
+		COLOR_PROPERTIES = new Properties();
+		try (InputStream resource = Main.class.getResourceAsStream("/Colors_properties.txt")) {
+			COLOR_PROPERTIES.load(resource);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private final Type type;
 	private Label label;
 	private final int summaryLabelID;
 	private final LightInfo lightInfo;
+	private final double parsedValue;
 
-	public static void loadColorProperties() {
-		try (InputStream resource = Main.class.getResourceAsStream("/Colors_properties.txt")) {
-			COLOR_PROPERTIES.load(resource);
-		} catch (Exception e) {
-			Main.log.add(e);
-		}
-	}
-
-	public static void addManuallySummaryEntry(String summaryLabel, int diameter, RFClass rfClass, String TextFieldString) {
+	public static void addManuallySummaryEntry(String summaryLabel, int diameter,
+	                                           RFClass rfClass, String TextFieldString) {
 		add(Type.SUMMARY_REINFORCEMENT, summaryLabel, diameter, rfClass, TextFieldString, Main.manuallySummaryEntries);
 	}
 
@@ -51,38 +55,53 @@ public class ManuallyEntry {
 
 	public static void addSteelComponentEntry(Image image, String textFieldString) {
 		try {
-			double length = checkTextFieldParse(textFieldString);
-			ManuallyEntry entry = getNewManuallyEntryOfHotRolledSteel(
-					Type.SUMMARY_HOT_ROLLED_STEEL,
+			double parsedValue = parseIfNotNegative(textFieldString);
+			// do calculate mass here?
+			ManuallyEntry entry = getNewManuallyEntryOfAngleSteel(
 					image,
-					length
+					parsedValue
 			);
 			Main.manuallySummaryEntries.add(entry);
 			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
 					ManuallyEntry.class,
 					image.getType(),
 					image.toString(),
-					length
+					parsedValue
 			));
 		} catch (Exception e) {
 			Main.log.add(e);
 		}
 	}
 
-	private static <E> void add(Type type, String summaryLabel, int diameter,
-	                            RFClass rfClass, String textFieldString, List<E> list) {
+	public static void addSteelSheet(Number thickness, Number width, String textFieldString) {
 		try {
-			double massOrLength = checkTextFieldParse(textFieldString);
+			double parsedValue = parseIfNotNegative(textFieldString);
+			ManuallyEntry entry = getNewManuallyEntryOfSheet(thickness, width, parsedValue);
+			Main.manuallySummaryEntries.add(entry);
+			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
+					ManuallyEntry.class,
+					entry.getImageType(),
+					entry.getImageToString(),
+					parsedValue
+			));
+		} catch (Exception e) {
+			Main.log.add(e);
+		}
+	}
+
+	private static void add(Type type, String summaryLabel, int diameter,
+	                        RFClass rfClass, String textFieldString, List<ManuallyEntry> list) {
+		try {
+			double parsedValue = parseIfNotNegative(textFieldString);
 			if (type == Type.BACKGROUND_REINFORCEMENT) {
 				ManuallyEntry entry = getNewManuallyEntryOfReinforcement(
 						Type.BACKGROUND_REINFORCEMENT,
 						summaryLabel,
 						diameter,
 						rfClass,
-						massOrLength
+						parsedValue
 				);
-				ManuallyEntryAdaptor adaptor = new ManuallyEntryAdaptor(entry);
-				list.add((E) adaptor);
+				list.add(entry);
 				Main.log.add(Main.properties.getProperty("add_background_manually_entry").formatted(
 						ManuallyEntry.class,
 						entry.getDiameter(),
@@ -95,9 +114,9 @@ public class ManuallyEntry {
 						summaryLabel,
 						diameter,
 						rfClass,
-						massOrLength
+						parsedValue
 				);
-				list.add((E) entry);
+				list.add(entry);
 				Main.log.add(Main.properties.getProperty("add_manually_summary_entry").formatted(
 						ManuallyEntry.class,
 						entry.getSummaryLabelID(),
@@ -111,7 +130,7 @@ public class ManuallyEntry {
 		}
 	}
 
-	private static double checkTextFieldParse(String textFieldString) throws Exception {
+	private static double parseIfNotNegative(String textFieldString) throws Exception {
 		double parsed = Double.parseDouble(textFieldString.replace(",", "."));
 		if (parsed <= 0.0) {
 			throw new Exception(Main.properties.getProperty("negative_number_exception").formatted(parsed));
@@ -121,7 +140,7 @@ public class ManuallyEntry {
 
 	private static void remove(ManuallyEntry entry) {
 		Main.manuallySummaryEntries.remove(entry);
-		Main.backgroundReinforcementManuallyEntries.removeIf(v -> v.getManuallyEntry() == entry);
+		Main.backgroundReinforcementManuallyEntries.remove(entry);
 		Main.controller.mSummaryHBoxRemove(entry.getLabel());
 		if (entry.getType() == Type.BACKGROUND_REINFORCEMENT) {
 			Main.log.add(Main.properties.getProperty("remove_background_manually_entry").formatted(
@@ -143,7 +162,7 @@ public class ManuallyEntry {
 					ManuallyEntry.class,
 					entry.getHotRolledSteelType(),
 					entry.getImageAsString(),
-					entry.getMassHotRolledSteel()
+					entry.getParsedValue()
 			));
 		}
 	}
@@ -153,32 +172,49 @@ public class ManuallyEntry {
 			String summaryLabel,
 			int diameter,
 			RFClass rfClass,
-			double mass) {
-		return new ManuallyEntry(type, summaryLabel, diameter, rfClass, mass);
+			double parsedValue) {
+		return new ManuallyEntry(type, summaryLabel, diameter, rfClass, parsedValue, parsedValue);
 	}
 
-	private static ManuallyEntry getNewManuallyEntryOfHotRolledSteel(
-			Type type,
-			Image image,
-			double length) {
-		return new ManuallyEntry(type, image, length);
+	private static ManuallyEntry getNewManuallyEntryOfAngleSteel(Image image, double parsedValue) throws CloneNotSupportedException {
+		return new ManuallyEntry(image, parsedValue,
+				parsedValue / 1000 * SteelComponentRepository.getAngleMassPerUnitLength(image));
 	}
 
-	// getNewManuallyEntryOfReinforcement() fabric
-	private ManuallyEntry(Type type, String summaryLabel, int diameter, RFClass rfClass, double mass) {
+	private static ManuallyEntry getNewManuallyEntryOfSheet(Number thickness, Number width, double parsedValue) {
+		return new ManuallyEntry(parsedValue, width, thickness,
+				thickness.intValue() * width.intValue() * parsedValue * SteelComponentRepository.getSteelDensity());
+	}
+
+	// Non static
+
+	// Reinforcement fabric
+	private ManuallyEntry(Type type, String summaryLabel, int diameter, RFClass rfClass,
+	                      double parsedValue, double mass) {
 		this.type = type;
-		buildLabelReinforcement(summaryLabel, diameter, rfClass, mass);
+		buildLabelReinforcement(summaryLabel, diameter, rfClass, parsedValue);
 		summaryLabelID = parseSummaryLabel(summaryLabel);
 		lightInfo = new ReinforcementLiteInfo(diameter, rfClass, mass);
+		this.parsedValue = parsedValue;
 	}
 
-	// getNewManuallyEntryOfHotRolledSteel() fabric
-	private ManuallyEntry(Type type, Image image, double length) {
-		this.type = type;
-		buildLabelHotRolledSteel(image, length);
+	// Angle fabric
+	private ManuallyEntry(Image image, double parsedValue, double mass) throws CloneNotSupportedException {
+		this.type = Type.SUMMARY_HOT_ROLLED_STEEL;
+		buildLabelHotRolledSteel(image, parsedValue);
 		summaryLabelID = parseSummaryLabel("");
-		image.setMass(length);
-		lightInfo = image;
+		lightInfo = image.cloneWrapper();
+		((Image) lightInfo).setMass(mass);
+		this.parsedValue = parsedValue;
+	}
+
+	// Sheet fabric
+	private ManuallyEntry(double parsedValue, Number width, Number thickness, double mass) {
+		type = Type.SUMMARY_HOT_ROLLED_STEEL;
+		lightInfo = new Image(parsedValue, width, thickness, mass);
+		buildLabelHotRolledSteel((Image) lightInfo, parsedValue);
+		summaryLabelID = parseSummaryLabel("");
+		this.parsedValue = parsedValue;
 	}
 
 	/**
@@ -214,7 +250,9 @@ public class ManuallyEntry {
 		return ((ReinforcementLiteInfo) lightInfo).getRfClass();
 	}
 
-	public double getMassReinforcement() { return ((ReinforcementLiteInfo) lightInfo).getMass(); }
+	public double getMassReinforcement() {
+		return ((ReinforcementLiteInfo) lightInfo).getMass();
+	}
 
 	public Type getType() {
 		return type;
@@ -232,7 +270,19 @@ public class ManuallyEntry {
 		return ((Image) lightInfo).getMass();
 	}
 
-	private void buildLabelReinforcement(String summaryLabel, int diameter, RFClass rfClass, double mass) {
+	public double getParsedValue() {
+		return parsedValue;
+	}
+
+	public HotRolledSteelType getImageType() {
+		return ((Image) lightInfo).getType();
+	}
+
+	public String getImageToString() {
+		return ((Image) lightInfo).toString();
+	}
+
+	private void buildLabelReinforcement(String summaryLabel, int diameter, RFClass rfClass, double parsedValue) {
 		String labelTitle = "";
 		String lastFieldName = "";
 		String labelColorCode = "";
@@ -250,9 +300,9 @@ public class ManuallyEntry {
 				diameter,
 				RFClass.toString(rfClass),
 				lastFieldName,
-				mass
+				parsedValue
 		);
-		buildLabel(labelText, mass, labelColorCode);
+		buildLabel(labelText, labelColorCode);
 	}
 
 	private void buildLabelHotRolledSteel(Image image, double length) {
@@ -265,16 +315,16 @@ public class ManuallyEntry {
 				lastFieldName,
 				length
 		);
-		buildLabel(labelText, length, labelColorCode);
+		buildLabel(labelText, labelColorCode);
 	}
 
 	// TODO: Do create a fxml card?
-	private void buildLabel(String labelText, double mass, String labelColorCode) {
-		label = new Label();
+	private void buildLabel(String labelText, String labelColorCode) {
+		label = new Label(labelText);
 		label.setPrefWidth(100);
 		label.setPrefHeight(Main.controller.getMSummaryHBoxPrefHeight());
-		label.setText(labelText);
-		label.setBackground(new Background(new BackgroundFill(Paint.valueOf(labelColorCode), CornerRadii.EMPTY, Insets.EMPTY)));
+		label.setBackground(new Background(new BackgroundFill(Paint.valueOf(labelColorCode),
+				CornerRadii.EMPTY, Insets.EMPTY)));
 		label.setTextAlignment(TextAlignment.CENTER);
 		label.setAlignment(Pos.CENTER);
 		label.setFont(new Font("System bold", 13));

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-    <entry key="reinforcing_rolled">ГОСТ 34028-2016</entry>
-    <entry key="hot_rolled_steel_equal_leg_angles">ГОСТ 8509-93</entry>
-    <entry key="hot_rolled_steel_unequal_leg_angles">ГОСТ 8510-86</entry>
-    <entry key="hot_rolled_steel_sheets">ГОСТ 19903-2015</entry>
-</properties>

@@ -1,6 +1,5 @@
 package armaturkin.utils.test;
 
-import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.ContentContainer;
 import armaturkin.core.Main;
 import armaturkin.core.Reader;
@@ -9,7 +8,6 @@ import armaturkin.reinforcement.RFClass;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.summaryoutput.ContentHeadPlacement;
 import armaturkin.utils.StringUtil;
-import utools.printer.Printer;
 import utools.stopwatch.Stopwatch;
 
 import java.io.*;
@@ -45,7 +43,7 @@ public class Test {
 		System.out.println("Load blocks test");
 		ContentHeadPlacement contentHeadPlacement = new ContentHeadPlacement();
 		System.out.println(contentHeadPlacement.getHashes());
-		Printer.print(contentHeadPlacement.getBlocks());
+		System.out.println(Arrays.toString(contentHeadPlacement.getBlocks()));
 	}
 
 	private static void saveAndLoad() throws IOException {
