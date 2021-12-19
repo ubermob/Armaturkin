@@ -98,6 +98,7 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		Main.log.add(contentContainer.borderToString());
 		Main.log.add(contentContainer.contentToString());
 		Main.log.add(contentContainer.compactContentToString());
+		contentContainer.storeFullContentAsArray();
 		contentContainer.compress();
 		Main.log.add(Main.properties.getProperty("compressed_content"));
 		Main.log.add(contentContainer.borderToString());

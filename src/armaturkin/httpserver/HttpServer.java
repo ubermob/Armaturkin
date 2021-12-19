@@ -1,10 +1,7 @@
 package armaturkin.httpserver;
 
 import armaturkin.core.Main;
-import armaturkin.httpserver.handler.FaviconHandler;
-import armaturkin.httpserver.handler.MainPageHandler;
-import armaturkin.httpserver.handler.NotePageHandler;
-import armaturkin.httpserver.handler.StyleHandler;
+import armaturkin.httpserver.handler.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -25,6 +22,7 @@ public class HttpServer implements Runnable {
 		server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(hostname, port), 0);
 		server.createContext("/", new MainPageHandler());
 		server.createContext("/note", new NotePageHandler());
+		server.createContext("/content", new ContentPageHandler());
 		server.createContext("/favicon.png", new FaviconHandler());
 		server.createContext("/style.css", new StyleHandler());
 	}

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class ContentContainer {
 
+	private static String[][] contentAsArray;
+
 	private final ContentHeadPlacement contentHeadPlacement;
 	private final Content content;
 	private final ContentHead contentHead;
@@ -94,5 +96,29 @@ public class ContentContainer {
 
 	public int maxHashCode() {
 		return content.maxHashCode();
+	}
+
+	public void storeFullContentAsArray() {
+		contentAsArray = new String[content.getHeight() + 1][content.getWidth() + 1];
+		contentAsArray[0][0] = "";
+		String[] rowStrings = contentRow.getRowStrings();
+		for (int i = 0; i < rowStrings.length; i++) {
+			contentAsArray[i + 1][0] = rowStrings[i];
+		}
+		for (int i = 1; i < contentAsArray[0].length; i++) {
+			contentAsArray[0][i] = contentHead.get(i - 1).getPrettyString();
+		}
+		for (int i = 1; i < contentAsArray.length; i++) {
+			for (int j = 1; j < contentAsArray[0].length; j++) {
+				contentAsArray[i][j] = String.valueOf(content.getCell(i - 1, j - 1));
+				if (contentAsArray[i][j].equals("null")) {
+					contentAsArray[i][j] = "";
+				}
+			}
+		}
+	}
+
+	public static String[][] getContentAsArray() {
+		return contentAsArray;
 	}
 }

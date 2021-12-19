@@ -124,6 +124,10 @@ public class Content {
 		return table.length;
 	}
 
+	public int getWidth() {
+		return table[0].length;
+	}
+
 	public Double getCell(int height, int width) {
 		return table[height][width];
 	}
