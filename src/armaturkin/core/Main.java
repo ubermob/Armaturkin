@@ -1,6 +1,7 @@
 package armaturkin.core;
 
 import armaturkin.controller.Controller;
+import armaturkin.httpserver.HttpServer;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
@@ -41,7 +42,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static final String version = "0.5.21b6";
+	public static final String version = "0.5.21b7";
 	// Serial or Parallel Summary Running
 	public static final boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();
@@ -50,6 +51,7 @@ public class Main extends Application {
 	private volatile static String notificationString = "";
 	private static final Log notificationLog = new Log();
 	public static Log log = new Log();
+	public static HttpServer server = null;
 
 	// 1st Tab
 	public volatile static HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap = new HashMap<>();
@@ -71,6 +73,10 @@ public class Main extends Application {
 		primaryStage.setTitle(getAppNameAndVersion());
 		log(getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		log(PcInformation.getInformation());
+		if (server != null) {
+			Thread serverThread = new Thread(server);
+			serverThread.start();
+		}
 		try (InputStream resource = getClass().getResourceAsStream("/Icon.png")) {
 			primaryStage.getIcons().add(new Image(resource));
 		} catch (Exception e) {
@@ -100,6 +106,9 @@ public class Main extends Application {
 			// Launch
 			launch(args);
 			// Closing
+			if (server != null) {
+				server.stop();
+			}
 			saveConfigFile();
 			Log.saveLog();
 			saveAllNotification();
@@ -240,6 +249,16 @@ public class Main extends Application {
 		return notificationLog;
 	}
 
+	public static List<String> getAllNotifications() {
+		List<String> list = new ArrayList<>();
+		for (var multiString : getStoredNotifications().getList()) {
+			String[] split = multiString.split("\n");
+			list.addAll(Arrays.asList(split));
+		}
+		list.addAll(Arrays.asList(getNotification().split("\n")));
+		return list;
+	}
+
 	public static synchronized void clearNotification() {
 		notificationLog.addSkipConsole(notificationString);
 		notificationString = "";
@@ -271,7 +290,7 @@ public class Main extends Application {
 
 	public static void saveAllNotification() throws IOException {
 		StringBuilder builder = new StringBuilder();
-		for (var v: notificationLog.getList()) {
+		for (var v : notificationLog.getList()) {
 			builder.append(v);
 		}
 		builder.append(StringUtil.replaceNewLine(notificationString));
@@ -356,7 +375,8 @@ public class Main extends Application {
 					"-disk",     // 1
 					"-dev",      // 2
 					"-linux",    // 3
-					"-abs_path"  // 4
+					"-abs_path", // 4
+					"-http"      // 5
 			};
 			for (var arg : args) {
 				if (isMatchCommands(arg, sampleArgCommands[0])) {
@@ -394,6 +414,21 @@ public class Main extends Application {
 						throw new IOException("Absolute path: \"" + absolutePath + "\" do not exist");
 					}
 					Root.absolutePath = absolutePath;
+				}
+				if (isMatchComplexCommands(arg, sampleArgCommands[5])) {
+					String[] splitted = arg.split("=");
+					String hostname = "localhost";
+					int port = 8080;
+					if (splitted.length == 2) {
+						try {
+							String[] splittedValue = splitted[1].split(":");
+							hostname = splittedValue[0];
+							port = Integer.parseInt(splittedValue[1]);
+						} catch (Exception e) {
+							log(e);
+						}
+					}
+					Main.server = new HttpServer(hostname, port);
 				}
 			}
 			return true;

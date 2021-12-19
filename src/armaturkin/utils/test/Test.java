@@ -26,7 +26,7 @@ public class Test {
 
 		//contentHeadPlacementTest();
 
-		localTest5();
+		localTest6();
 	}
 
 	private static void contentHeadTest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -89,6 +89,13 @@ public class Test {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void localTest6() throws Exception {
+		Main.addNotification("Notification 1");
+		Main.addNotification("Notification 2");
+		Main.clearNotification();
+		Main.addNotification("Notification 3");
 	}
 
 	private static void localTest5() throws Exception {

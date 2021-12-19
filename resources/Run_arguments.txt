@@ -4,6 +4,10 @@ Run arguments:
 "-dev" (example: -dev) // Enable developer mod for test some features
 "-linux" (example: -linux) // Set file paths for Linux
 "-abs_path" (example for Windows: -abs_path=C:/Directory_1/.../Directory_N/)
-(example for Linux: -abs_path=/home/User_name/Directory_1/.../Directory_N/)
- // Set path to application root directory. Absolute path must be exist.
- "-abs_path" has a higher priority than "-disk"
+    (example for Linux: -abs_path=/home/User_name/Directory_1/.../Directory_N/)
+    // Set path to application root directory. Absolute path must be exist.
+    "-abs_path" has a higher priority than "-disk"
+
+"-http" (example: -http or -http=127.0.0.1:8080)
+    // Enable simple HTTP Server for additional features
+    "=http" implement default server address: localhost:8080
