@@ -15,55 +15,74 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="armaturkin.controller.Controller">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="armaturkin.controller.Controller">
   <tabs>
     <Tab text="Посчитать спецификацию">
       <content>
         <AnchorPane fx:id="anchorPane1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="showInfoButton" layoutX="72.0" layoutY="498.0" mnemonicParsing="false" onAction="#showInfoStage" prefHeight="37.0" prefWidth="67.0" text="Инфо">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="upperDropSpace" alignment="CENTER" layoutX="206.0" layoutY="33.0" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="upperLabel" textAlignment="CENTER" wrapText="true">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lowerDropSpace" alignment="CENTER" layoutX="206.0" layoutY="252.0" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="lowerLabel" textAlignment="CENTER" wrapText="true">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="downloadFileButton" layoutX="653.0" layoutY="498.0" mnemonicParsing="false" onAction="#downloadFile" prefHeight="37.0" prefWidth="100.0" text="Скачать">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
+                  <VBox alignment="CENTER" layoutX="194.0" layoutY="163.0" style="-fx-spacing: 45;">
+                     <children>
+                        <HBox alignment="CENTER" style="-fx-spacing: 100;">
+                           <children>
+                              <Label fx:id="upperDropSpace" alignment="CENTER" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="upperLabel" textAlignment="CENTER" wrapText="true">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="clearUpperDropSpaceButton" mnemonicParsing="false" onAction="#clearUpperDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;Drop Space" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" style="-fx-spacing: 100;">
+                           <children>
+                              <Label fx:id="lowerDropSpace" alignment="CENTER" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="lowerLabel" textAlignment="CENTER" wrapText="true">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="lowerDropSpaceButton" mnemonicParsing="false" onAction="#clearLowerDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;Drop Space" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" layoutX="142.0" layoutY="670.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="25.0">
+                     <children>
+                        <Button fx:id="showInfoButton" mnemonicParsing="false" onAction="#showInfoStage" prefHeight="37.0" prefWidth="67.0" text="Инфо">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <VBox alignment="CENTER" style="-fx-spacing: 25;">
+                           <children>
+                              <TextField fx:id="tableHead" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
+                              <TextField fx:id="fileName" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="downloadFileButton" mnemonicParsing="false" onAction="#downloadFile" prefHeight="37.0" prefWidth="100.0" text="Скачать">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                   <Label fx:id="notificationLabel" alignment="CENTER" layoutX="162.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font></Label>
-                  <Button fx:id="clearUpperDropSpaceButton" layoutX="647.0" layoutY="103.0" mnemonicParsing="false" onAction="#clearUpperDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;Drop Space" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="lowerDropSpaceButton" layoutX="647.0" layoutY="322.0" mnemonicParsing="false" onAction="#clearLowerDropSpace" prefHeight="60.0" prefWidth="112.0" text="Очистить&#10;Drop Space" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <TextField fx:id="tableHead" layoutX="206.0" layoutY="498.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет пустая строка)" />
-                  <TextField fx:id="backgroundReinforcement" layoutX="206.0" layoutY="463.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите фоновую арматуру (по-умолчанию фон не будет посчитан)" />
-                  <TextField fx:id="fileName" layoutX="206.0" layoutY="535.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -272,70 +291,187 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <VBox layoutX="14.0" layoutY="145.0" style="-fx-alignment: CENTER; -fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+                  <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" style="-fx-spacing: 35;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                      <children>
-                        <Text fx:id="mSummaryEntryText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="772.89453125">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <HBox alignment="CENTER" style="-fx-spacing: 25;">
-                           <children>
-                              <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="120.0" />
-                              <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="200.0" promptText="Длина, м (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
-                           </children>
+                        <HBox fx:id="mSummaryHBox" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;">
+                           <VBox.margin>
+                              <Insets bottom="35.0" />
+                           </VBox.margin>
                         </HBox>
-                        <Button fx:id="backgroundReinforcementAddButton" mnemonicParsing="false" onAction="#addBackgroundReinforcement" prefHeight="37.0" prefWidth="280.0" text="Добавить в фоновую арматуру">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </VBox>
-                  <HBox fx:id="mSummaryHBox" layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                  <VBox layoutX="14.0" layoutY="287.0" style="-fx-alignment: CENTER; -fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-                     <children>
-                        <Text fx:id="mSummaryEntryText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление арматуры в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                        <VBox alignment="CENTER" style="-fx-spacing: 14;">
                            <children>
-                              <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="120.0" />
-                              <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="80.0" />
-                              <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="80.0" />
-                              <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="200.0" promptText="Масса, кг (Пример: 20 или 77.77)" style="-fx-alignment: CENTER;" />
+                              <Text fx:id="mSummaryEntryText2" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="777.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                              <HBox alignment="CENTER" style="-fx-spacing: 50;">
+                                 <children>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Диаметр и класс арматуры" textAlignment="CENTER" wrappingWidth="190.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mBackgroundChoiceBox" prefHeight="25.0" prefWidth="190.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Длина, м" textAlignment="CENTER" wrappingWidth="100.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="mBackgroundTextField" prefHeight="25.0" prefWidth="140.0" promptText="Пример: 20 или 77.77" style="-fx-alignment: CENTER;" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="backgroundReinforcementAddButton" mnemonicParsing="false" onAction="#addBackgroundReinforcement" prefHeight="37.0" prefWidth="280.0" text="Добавить в фоновую арматуру">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
                            </children>
-                        </HBox>
-                        <Button fx:id="mSummaryAddButton" mnemonicParsing="false" onAction="#addManuallySummaryEntry" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </VBox>
-                  <VBox layoutX="14.0" layoutY="429.0" style="-fx-alignment: CENTER; -fx-spacing: 14;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-                     <children>
-                        <Text fx:id="mSummaryEntryText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Добавление стальных изделий в сводную ведомость" textAlignment="CENTER" wrappingWidth="772.89453125">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Text>
-                        <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                        </VBox>
+                        <VBox alignment="CENTER" style="-fx-spacing: 14;">
                            <children>
-                              <ChoiceBox fx:id="mSummaryChoiceBox4" prefHeight="25.0" prefWidth="120.0" />
-                              <ChoiceBox fx:id="mSummaryChoiceBox5" prefHeight="25.0" prefWidth="80.0" />
-                              <ChoiceBox fx:id="mSummaryChoiceBox6" prefHeight="25.0" prefWidth="80.0" />
-                              <ChoiceBox fx:id="mSummaryChoiceBox7" layoutX="356.0" layoutY="10.0" prefHeight="25.0" prefWidth="80.0" />
-                              <TextField fx:id="mSummaryTextField2" prefHeight="25.0" prefWidth="225.0" promptText="Длина, мм (Пример: 750 или 150.5)" style="-fx-alignment: CENTER;" />
+                              <Text fx:id="mSummaryEntryText1" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Добавление арматуры в сводную ведомость" textAlignment="CENTER" wrappingWidth="777.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                              <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                                 <children>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Группа элементов" textAlignment="CENTER" wrappingWidth="130.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox1" prefHeight="25.0" prefWidth="130.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText4" strokeType="OUTSIDE" strokeWidth="0.0" text="Диаметр арматуры" textAlignment="CENTER" wrappingWidth="140.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox2" prefHeight="25.0" prefWidth="140.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText5" strokeType="OUTSIDE" strokeWidth="0.0" text="Класс арматуры" textAlignment="CENTER" wrappingWidth="116.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox3" prefHeight="25.0" prefWidth="116.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText6" strokeType="OUTSIDE" strokeWidth="0.0" text="Масса, кг" textAlignment="CENTER" wrappingWidth="100.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="mSummaryTextField" prefHeight="25.0" prefWidth="140.0" promptText="Пример: 20 или 77.77" style="-fx-alignment: CENTER;" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="mSummaryAddButton" mnemonicParsing="false" onAction="#addManuallySummaryEntry" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
                            </children>
-                        </HBox>
-                        <Button fx:id="mSummaryAddButton2" mnemonicParsing="false" onAction="#addManuallySummaryEntry2" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Button>
+                        </VBox>
+                        <VBox alignment="CENTER" prefWidth="791.0" style="-fx-spacing: 14;">
+                           <children>
+                              <Text fx:id="mSummaryEntryText3" strokeType="OUTSIDE" strokeWidth="0.0" text="3. Добавление стальных изделий в сводную ведомость" textAlignment="CENTER" wrappingWidth="777.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                              <HBox alignment="CENTER" style="-fx-spacing: 25;">
+                                 <children>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText7" strokeType="OUTSIDE" strokeWidth="0.0" text="Группа элементов" textAlignment="CENTER" wrappingWidth="130.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox8" prefHeight="25.0" prefWidth="130.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText8" strokeType="OUTSIDE" strokeWidth="0.0" text="Вид изделия" textAlignment="CENTER" wrappingWidth="100.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox4" prefHeight="25.0" prefWidth="120.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText9" strokeType="OUTSIDE" strokeWidth="0.0" text="Уголок" textAlignment="CENTER" wrappingWidth="60.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox5" prefHeight="25.0" prefWidth="80.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText10" strokeType="OUTSIDE" strokeWidth="0.0" text="Толщина пластины, мм" textAlignment="CENTER" wrappingWidth="170.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox6" prefHeight="25.0" prefWidth="80.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText11" strokeType="OUTSIDE" strokeWidth="0.0" text="Ширина пластины, мм" textAlignment="CENTER" wrappingWidth="160.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <ChoiceBox fx:id="mSummaryChoiceBox7" prefHeight="25.0" prefWidth="80.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" style="-fx-spacing: 10;">
+                                       <children>
+                                          <Text fx:id="mSummaryHelpingText12" strokeType="OUTSIDE" strokeWidth="0.0" text="Длина изделия, мм" textAlignment="CENTER" wrappingWidth="140.0">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="mSummaryTextField2" prefHeight="25.0" prefWidth="140.0" promptText="Пример: 750 или 150.5" style="-fx-alignment: CENTER;" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="mSummaryAddButton2" mnemonicParsing="false" onAction="#addManuallySummaryEntry2" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                </children>
@@ -417,46 +553,75 @@
         <content>
           <AnchorPane layoutY="287.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Circle fx:id="circle3" fill="#ababab" layoutX="400.0" layoutY="110.0" onMouseClicked="#setBackgroundColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle5" layoutX="600.0" layoutY="110.0" onMouseClicked="#setBackgroundColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle4" fill="#444444" layoutX="500.0" layoutY="110.0" onMouseClicked="#setBackgroundColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle1" fill="WHITE" layoutX="200.0" layoutY="110.0" onMouseClicked="#setBackgroundColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle2" fill="#dadada" layoutX="300.0" layoutY="110.0" onMouseClicked="#setBackgroundColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Text fx:id="appearanceText1" layoutX="324.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет фона" textAlignment="CENTER" wrappingWidth="140.80337524414062">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="appearanceText2" layoutX="330.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет текста" textAlignment="CENTER" wrappingWidth="140.80337524414062">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Text>
-                  <Circle fx:id="circle6" fill="WHITE" layoutX="200.0" layoutY="260.0" onMouseClicked="#setTextColor1" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle7" fill="#dadada" layoutX="300.0" layoutY="260.0" onMouseClicked="#setTextColor2" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle8" fill="#ababab" layoutX="400.0" layoutY="260.0" onMouseClicked="#setTextColor3" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle9" fill="#444444" layoutX="500.0" layoutY="260.0" onMouseClicked="#setTextColor4" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circle10" layoutX="600.0" layoutY="260.0" onMouseClicked="#setTextColor5" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
-                  <Circle fx:id="circleBorderColor1" fill="MAROON" layoutX="200.0" layoutY="410.0" onMouseClicked="#setBorderColor1" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Circle fx:id="circleBorderColor3" fill="GREEN" layoutX="400.0" layoutY="410.0" onMouseClicked="#setBorderColor3" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Text fx:id="appearanceText3" layoutX="246.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет Drop Space границы" textAlignment="CENTER" wrappingWidth="308.8033752441406">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Text>
-                  <Circle fx:id="circleBorderColor2" fill="NAVY" layoutX="300.0" layoutY="410.0" onMouseClicked="#setBorderColor2" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Circle fx:id="circleBorderColor4" fill="#808080" layoutX="500.0" layoutY="410.0" onMouseClicked="#setBorderColor4" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Circle fx:id="circleBorderColor5" fill="BISQUE" layoutX="600.0" layoutY="410.0" onMouseClicked="#setBorderColor5" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Button fx:id="boldTextButton" layoutX="165.0" layoutY="480.0" mnemonicParsing="false" onAction="#toggleBoldText" prefHeight="37.0" prefWidth="140.0" text="Жирный текст">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="restoreWindowSizeButton" layoutX="415.0" layoutY="480.0" mnemonicParsing="false" onAction="#restoreWindowSize" prefHeight="37.0" prefWidth="220.0" text="Исходный размер окна">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
+                  <VBox alignment="CENTER" layoutX="269.0" layoutY="145.0" style="-fx-spacing: 18;" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="269.0" AnchorPane.rightAnchor="269.0" AnchorPane.topAnchor="145.0">
+                     <children>
+                        <Text fx:id="appearanceText1" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет фона" textAlignment="CENTER" wrappingWidth="140.80337524414062">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" style="-fx-spacing: 28;">
+                           <children>
+                              <Circle fx:id="circle1" fill="WHITE" onMouseClicked="#setBackgroundColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle2" fill="#dadada" onMouseClicked="#setBackgroundColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle3" fill="#ababab" onMouseClicked="#setBackgroundColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle4" fill="#444444" onMouseClicked="#setBackgroundColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle5" onMouseClicked="#setBackgroundColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                           </children>
+                        </HBox>
+                        <Text fx:id="appearanceText2" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет текста" textAlignment="CENTER" wrappingWidth="140.80337524414062">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Text>
+                        <HBox alignment="CENTER" style="-fx-spacing: 28;">
+                           <children>
+                              <Circle fx:id="circle6" fill="WHITE" onMouseClicked="#setTextColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle7" fill="#dadada" onMouseClicked="#setTextColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle8" fill="#ababab" onMouseClicked="#setTextColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle9" fill="#444444" onMouseClicked="#setTextColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                              <Circle fx:id="circle10" onMouseClicked="#setTextColor" radius="35.0" stroke="RED" strokeType="INSIDE" strokeWidth="3.0" />
+                           </children>
+                        </HBox>
+                        <Text fx:id="appearanceText3" strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет Drop Space границы" textAlignment="CENTER" wrappingWidth="308.8033752441406">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Text>
+                        <HBox alignment="CENTER" style="-fx-spacing: 28;">
+                           <children>
+                              <Circle fx:id="circleBorderColor1" fill="MAROON" onMouseClicked="#setBorderColor" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Circle fx:id="circleBorderColor2" fill="NAVY" onMouseClicked="#setBorderColor" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Circle fx:id="circleBorderColor3" fill="GREEN" onMouseClicked="#setBorderColor" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Circle fx:id="circleBorderColor4" fill="#808080" onMouseClicked="#setBorderColor" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Circle fx:id="circleBorderColor5" fill="BISQUE" onMouseClicked="#setBorderColor" radius="35.0" strokeType="INSIDE" strokeWidth="0.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" style="-fx-spacing: 102;">
+                           <children>
+                              <Button fx:id="boldTextButton" mnemonicParsing="false" onAction="#toggleBoldText" prefHeight="37.0" prefWidth="140.0" text="Жирный текст">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="restoreWindowSizeButton" mnemonicParsing="false" onAction="#restoreWindowSize" prefHeight="37.0" prefWidth="220.0" text="Исходный размер окна">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
         </content>

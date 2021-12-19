@@ -53,12 +53,13 @@ public class ManuallyEntry {
 				TextFieldString, Main.backgroundReinforcementManuallyEntries);
 	}
 
-	public static void addSteelComponentEntry(Image image, String textFieldString) {
+	public static void addSteelComponentEntry(String summaryLabel, Image image, String textFieldString) {
 		try {
 			double parsedValue = parseIfNotNegative(textFieldString);
 			ManuallyEntry entry = getNewManuallyEntryOfAngleSteel(
 					image,
-					parsedValue
+					parsedValue,
+					summaryLabel
 			);
 			Main.manuallySummaryEntries.add(entry);
 			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
@@ -72,10 +73,10 @@ public class ManuallyEntry {
 		}
 	}
 
-	public static void addSteelSheet(Number thickness, Number width, String textFieldString) {
+	public static void addSteelSheet(String summaryLabel, Number thickness, Number width, String textFieldString) {
 		try {
 			double parsedValue = parseIfNotNegative(textFieldString);
-			ManuallyEntry entry = getNewManuallyEntryOfSheet(thickness, width, parsedValue);
+			ManuallyEntry entry = getNewManuallyEntryOfSheet(thickness, width, parsedValue, summaryLabel);
 			Main.manuallySummaryEntries.add(entry);
 			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
 					ManuallyEntry.class,
@@ -175,14 +176,24 @@ public class ManuallyEntry {
 		return new ManuallyEntry(type, summaryLabel, diameter, rfClass, parsedValue, parsedValue);
 	}
 
-	private static ManuallyEntry getNewManuallyEntryOfAngleSteel(Image image, double parsedValue) throws CloneNotSupportedException {
-		return new ManuallyEntry(image, parsedValue,
-				parsedValue / 1000 * SteelComponentRepository.getAngleMassPerUnitLength(image));
+	private static ManuallyEntry getNewManuallyEntryOfAngleSteel(Image image, double parsedValue, String summaryLabel) {
+		return new ManuallyEntry(
+				image,
+				parsedValue,
+				parsedValue / 1000 * SteelComponentRepository.getAngleMassPerUnitLength(image),
+				summaryLabel
+		);
 	}
 
-	private static ManuallyEntry getNewManuallyEntryOfSheet(Number thickness, Number width, double parsedValue) {
-		return new ManuallyEntry(parsedValue, width, thickness,
-				thickness.intValue() * width.intValue() * parsedValue * SteelComponentRepository.getSteelDensity());
+	private static ManuallyEntry getNewManuallyEntryOfSheet(Number thickness, Number width
+			, double parsedValue, String summaryLabel) {
+		return new ManuallyEntry(
+				parsedValue,
+				width,
+				thickness,
+				thickness.intValue() * width.intValue() * parsedValue * SteelComponentRepository.getSteelDensity(),
+				summaryLabel
+		);
 	}
 
 	// Non static
@@ -198,21 +209,21 @@ public class ManuallyEntry {
 	}
 
 	// Angle fabric
-	private ManuallyEntry(Image image, double parsedValue, double mass) throws CloneNotSupportedException {
+	private ManuallyEntry(Image image, double parsedValue, double mass, String summaryLabel) {
 		this.type = Type.SUMMARY_HOT_ROLLED_STEEL;
-		buildLabelHotRolledSteel(image, parsedValue);
-		summaryLabelID = parseSummaryLabel("Фундамент"); // TODO: Refactor
+		buildLabelHotRolledSteel(image, parsedValue, summaryLabel);
+		summaryLabelID = parseSummaryLabel(summaryLabel);
 		lightInfo = image.getClone();
 		((Image) lightInfo).setMass(mass);
 		this.parsedValue = parsedValue;
 	}
 
 	// Sheet fabric
-	private ManuallyEntry(double parsedValue, Number width, Number thickness, double mass) {
+	private ManuallyEntry(double parsedValue, Number width, Number thickness, double mass, String summaryLabel) {
 		type = Type.SUMMARY_HOT_ROLLED_STEEL;
 		lightInfo = new Image(parsedValue, width, thickness, mass);
-		buildLabelHotRolledSteel((Image) lightInfo, parsedValue);
-		summaryLabelID = parseSummaryLabel("Фундамент"); // TODO: Refactor
+		buildLabelHotRolledSteel((Image) lightInfo, parsedValue, summaryLabel);
+		summaryLabelID = parseSummaryLabel(summaryLabel);
 		this.parsedValue = parsedValue;
 	}
 
@@ -330,8 +341,8 @@ public class ManuallyEntry {
 		buildLabel(labelText, labelColorCode);
 	}
 
-	private void buildLabelHotRolledSteel(Image image, double length) {
-		String labelTitle = Main.properties.getProperty("hot_rolled_steel_title");
+	private void buildLabelHotRolledSteel(Image image, double length, String summaryLabel) {
+		String labelTitle = Main.properties.getProperty("hot_rolled_steel_title") + "\n" + summaryLabel;
 		String lastFieldName = Main.properties.getProperty("last_field_name_length");
 		String labelColorCode = COLOR_PROPERTIES.getProperty("manually_hot_rolled_steel_entry");
 		String labelText = Main.properties.getProperty("manually_summary_entry_hot_rolled_steel_label_text").formatted(

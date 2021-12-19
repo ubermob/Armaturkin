@@ -1,7 +1,7 @@
 package armaturkin.steelcomponent;
 
-import armaturkin.core.Main;
 import armaturkin.core.DesignCode;
+import armaturkin.core.Main;
 import armaturkin.core.Reader;
 import armaturkin.utils.StringUtil;
 import armaturkin.utils.WholeNumber;
@@ -21,6 +21,7 @@ public class SteelComponentRepository {
 	private static Sheet unequalLegAnglesSheet;
 	private static List<Image> unequalLegAnglesList;
 	private static List<Number> sheetThicknessList;
+	private static List<Integer> sheetWidthList;
 
 	public static void load() {
 		try {
@@ -30,7 +31,8 @@ public class SteelComponentRepository {
 			unequalLegAnglesSheet = WorkbookFactory.create(Main.class.getResourceAsStream(
 					"/design_codes/%s.xlsx".formatted(DesignCode.getProperty("hot_rolled_steel_unequal_leg_angles"))
 			)).getSheetAt(0);
-			fillSheetArray();
+			fillSheetThicknessList();
+			fillSheetWidthList();
 		} catch (IOException e) {
 			Main.log.add(e);
 		}
@@ -38,6 +40,10 @@ public class SteelComponentRepository {
 
 	public static List<Number> getSheetThicknessList() {
 		return sheetThicknessList;
+	}
+
+	public static List<Integer> getSheetWidthList() {
+		return sheetWidthList;
 	}
 
 	public static List<Image> getFullEqualAnglesImages() {
@@ -159,8 +165,7 @@ public class SteelComponentRepository {
 		throw new IllegalArgumentException(type + " " + Arrays.toString(dimensions));
 	}
 
-	// TODO in progress
-	private static void fillSheetArray() throws IOException {
+	private static void fillSheetThicknessList() throws IOException {
 		sheetThicknessList = new ArrayList<>();
 		List<String> list = Reader.read(Main.class.getResourceAsStream(
 				"/design_codes/%s.txt".formatted(DesignCode.getProperty("hot_rolled_steel_sheets"))
@@ -180,6 +185,15 @@ public class SteelComponentRepository {
 					sheetThicknessList.add(thickness);
 				}
 			}
+		}
+	}
+
+	private static void fillSheetWidthList() {
+		sheetWidthList = new ArrayList<>();
+		int width = 20;
+		while (width <= 600) {
+			sheetWidthList.add(width);
+			width += 10;
 		}
 	}
 }

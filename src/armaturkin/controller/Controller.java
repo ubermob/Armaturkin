@@ -1,6 +1,8 @@
 package armaturkin.controller;
 
-import armaturkin.core.*;
+import armaturkin.core.Main;
+import armaturkin.core.Root;
+import armaturkin.core.StorageCleaner;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
@@ -30,11 +32,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static armaturkin.core.Main.getProperty;
-import static javafx.collections.FXCollections.observableList;
 import static javafx.collections.FXCollections.observableArrayList;
+import static javafx.collections.FXCollections.observableList;
 
 public class Controller {
 
@@ -53,21 +56,20 @@ public class Controller {
 			restoreWindowSizeButton, showReinforcementLinearMassListButton, backgroundReinforcementAddButton,
 			showHotRolledSteelCodeButton, testButton, varStateButton;
 	@FXML
-	private TextField tableHead, backgroundReinforcement, fileName, summaryFileName, summaryTableHead, logLimit,
+	private TextField tableHead, fileName, summaryFileName, summaryTableHead, logLimit,
 			notificationLimit, mSummaryTextField, mBackgroundTextField, mSummaryTextField2;
 	@FXML
 	private Text appearanceText1, appearanceText2, appearanceText3, settingsText1, settingsText2, settingsText3,
 			settingsText4, settingsText5, settingsText6, settingsText7, mSummaryEntryText1, mSummaryEntryText2,
-			mSummaryEntryText3, notificationText;
-	@FXML
-	private Circle circle1, circle2, circle3, circle4, circle5, circleBorderColor1, circleBorderColor2,
-			circleBorderColor3, circleBorderColor4, circleBorderColor5;
+			mSummaryEntryText3, notificationText, mSummaryHelpingText1, mSummaryHelpingText2, mSummaryHelpingText3,
+			mSummaryHelpingText4, mSummaryHelpingText5, mSummaryHelpingText6, mSummaryHelpingText7, mSummaryHelpingText8,
+			mSummaryHelpingText9, mSummaryHelpingText10, mSummaryHelpingText11, mSummaryHelpingText12;
 	@FXML
 	private CheckBox logCheckBox, notificationCheckBox, autoParseProductListCheckBox;
 	@FXML
 	private HBox mSummaryHBox;
 	@FXML
-	private ChoiceBox<String> mSummaryChoiceBox1;
+	private ChoiceBox<String> mSummaryChoiceBox1, mSummaryChoiceBox8;
 	@FXML
 	private ChoiceBox<Integer> mSummaryChoiceBox2;
 	@FXML
@@ -75,7 +77,7 @@ public class Controller {
 	@FXML
 	private ChoiceBox<PairDR> mBackgroundChoiceBox;
 	@FXML
-	private ChoiceBox<HotRolledSteelType> mSummaryChoiceBox4;
+	private ChoiceBox<String> mSummaryChoiceBox4;
 	@FXML
 	private ChoiceBox<Image> mSummaryChoiceBox5;
 	@FXML
@@ -85,7 +87,8 @@ public class Controller {
 	private Label[] borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
 	private Button[] boldTextModifiedButtons;
-	private Text[] allTexts;
+	private Text[] largeSizeText;
+	private Text[] littleSizeText;
 	private TextWrapper settingsTextWrapper2, settingsTextWrapper3, settingsTextWrapper5, settingsTextWrapper6;
 	private ChoiceBoxWrapper choiceBoxWrapper1, choiceBoxWrapper2, choiceBoxWrapper3;
 
@@ -131,126 +134,10 @@ public class Controller {
 		setupMBackgroundChoiceBox();
 	}
 
-	private void setupChoiceBoxWrapper() {
-		choiceBoxWrapper1 = new ChoiceBoxWrapper(mSummaryChoiceBox5);
-		choiceBoxWrapper2 = new ChoiceBoxWrapper(mSummaryChoiceBox6);
-		choiceBoxWrapper3 = new ChoiceBoxWrapper(mSummaryChoiceBox7);
-	}
-
-	private void groupingAppearanceVariables() {
-		allLabels = new Label[]{
-				upperDropSpace,
-				lowerDropSpace,
-				resultLabel,
-				notificationLabel,
-				notificationLabel2,
-				summaryDropSpace1,
-				summaryDropSpace2,
-				summaryDropSpace3,
-				summaryDropSpace4,
-				summaryDropSpace5,
-				summaryDropSpace6,
-				summaryDropSpace7,
-				summaryDropSpace8,
-				favoriteDropSpace
-		};
-		borderModifiedLabels = new Label[]{
-				upperDropSpace,
-				lowerDropSpace,
-				summaryDropSpace1,
-				summaryDropSpace2,
-				summaryDropSpace3,
-				summaryDropSpace4,
-				summaryDropSpace5,
-				summaryDropSpace6,
-				summaryDropSpace7,
-				summaryDropSpace8,
-				favoriteDropSpace
-		};
-		allSummaryLabelWrappers = new LabelWrapper[]{
-				new LabelWrapper(summaryDropSpace1),
-				new LabelWrapper(summaryDropSpace2),
-				new LabelWrapper(summaryDropSpace3),
-				new LabelWrapper(summaryDropSpace4),
-				new LabelWrapper(summaryDropSpace5),
-				new LabelWrapper(summaryDropSpace6),
-				new LabelWrapper(summaryDropSpace7),
-				new LabelWrapper(summaryDropSpace8)
-		};
-		boldTextModifiedButtons = new Button[]{
-				downloadFileButton,
-				clearResultLabelButton,
-				lowerDropSpaceButton,
-				clearUpperDropSpaceButton,
-				showInfoButton,
-				downloadResultLabelButton,
-				downloadSummaryFileButton,
-				clearAllSummaryDropSpaceButton,
-				checkSummaryDropSpaceButton4,
-				checkSummaryDropSpaceButton6,
-				checkSummaryDropSpaceButton7,
-				checkSummaryDropSpaceButton8,
-				boldTextButton,
-				deleteLogs,
-				deleteNotifications,
-				forgetFavorite,
-				font12Button,
-				font14Button,
-				font16Button,
-				font18Button,
-				font20Button,
-				mSummaryAddButton,
-				restoreWindowSizeButton,
-				showReinforcementLinearMassListButton,
-				backgroundReinforcementAddButton,
-				showHotRolledSteelCodeButton,
-				mSummaryAddButton2
-		};
-		allTexts = new Text[]{
-				appearanceText1,
-				appearanceText2,
-				appearanceText3,
-				settingsText1,
-				settingsText2,
-				settingsText3,
-				settingsText4,
-				settingsText5,
-				settingsText6,
-				settingsText7,
-				mSummaryEntryText1,
-				mSummaryEntryText2,
-				mSummaryEntryText3,
-				notificationText
-		};
-	}
-
 	@FXML
-	private void setBackgroundColor1() {
-		Main.config.setBackgroundColor(getColorHexCode(circle1.getFill()));
-		setBackgroundColor();
-	}
-
-	@FXML
-	private void setBackgroundColor2() {
-		Main.config.setBackgroundColor(getColorHexCode(circle2.getFill()));
-		setBackgroundColor();
-	}
-
-	@FXML
-	private void setBackgroundColor3() {
-		Main.config.setBackgroundColor(getColorHexCode(circle3.getFill()));
-		setBackgroundColor();
-	}
-
-	@FXML
-	private void setBackgroundColor4() {
-		Main.config.setBackgroundColor(getColorHexCode(circle4.getFill()));
-		setBackgroundColor();
-	}
-
-	@FXML
-	private void setBackgroundColor5() {
-		Main.config.setBackgroundColor(getColorHexCode(circle5.getFill()));
+	private void setBackgroundColor(MouseEvent mouseEvent) {
+		Circle circle = (Circle) mouseEvent.getSource();
+		Main.config.setBackgroundColor(getColorHexCode(circle.getFill()));
 		setBackgroundColor();
 	}
 
@@ -259,32 +146,9 @@ public class Controller {
 	}
 
 	@FXML
-	private void setTextColor1() {
-		Main.config.setTextColor(getColorHexCode(circle1.getFill()));
-		setupTextColor();
-	}
-
-	@FXML
-	private void setTextColor2() {
-		Main.config.setTextColor(getColorHexCode(circle2.getFill()));
-		setupTextColor();
-	}
-
-	@FXML
-	private void setTextColor3() {
-		Main.config.setTextColor(getColorHexCode(circle3.getFill()));
-		setupTextColor();
-	}
-
-	@FXML
-	private void setTextColor4() {
-		Main.config.setTextColor(getColorHexCode(circle4.getFill()));
-		setupTextColor();
-	}
-
-	@FXML
-	private void setTextColor5() {
-		Main.config.setTextColor(getColorHexCode(circle5.getFill()));
+	private void setTextColor(MouseEvent mouseEvent) {
+		Circle circle = (Circle) mouseEvent.getSource();
+		Main.config.setTextColor(getColorHexCode(circle.getFill()));
 		setupTextColor();
 	}
 
@@ -292,23 +156,15 @@ public class Controller {
 		return allSummaryLabelWrappers[i - 1];
 	}
 
-	private String getColorHexCode(Paint paint) {
-		return "#" + paint.toString().substring(2, 8);
-	}
-
 	private void setupTextColor() {
-		for (var text : allTexts) {
+		for (var text : largeSizeText) {
+			text.setFill(Paint.valueOf(Main.config.getTextColor()));
+		}
+		for (var text : littleSizeText) {
 			text.setFill(Paint.valueOf(Main.config.getTextColor()));
 		}
 		for (var label : allLabels) {
 			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
-		}
-	}
-
-	private void setupBorderColor() {
-		for (var label : borderModifiedLabels) {
-			label.setStyle("-fx-border-color: %s; -fx-border-width: %d;"
-					.formatted(Main.config.getBorderColor(), 5));
 		}
 	}
 
@@ -388,10 +244,6 @@ public class Controller {
 
 	public String getTableHead() {
 		return tableHead.getText();
-	}
-
-	public String getBackgroundReinforcement() {
-		return backgroundReinforcement.getText();
 	}
 
 	public String getFileName() {
@@ -556,33 +408,17 @@ public class Controller {
 	}
 
 	@FXML
-	private void setBorderColor1() {
-		Main.config.setBorderColor(getColorHexCode(circleBorderColor1.getFill()));
+	private void setBorderColor(MouseEvent mouseEvent) {
+		Circle circle = (Circle) mouseEvent.getSource();
+		Main.config.setBorderColor(getColorHexCode(circle.getFill()));
 		setupBorderColor();
 	}
 
-	@FXML
-	private void setBorderColor2() {
-		Main.config.setBorderColor(getColorHexCode(circleBorderColor2.getFill()));
-		setupBorderColor();
-	}
-
-	@FXML
-	private void setBorderColor3() {
-		Main.config.setBorderColor(getColorHexCode(circleBorderColor3.getFill()));
-		setupBorderColor();
-	}
-
-	@FXML
-	private void setBorderColor4() {
-		Main.config.setBorderColor(getColorHexCode(circleBorderColor4.getFill()));
-		setupBorderColor();
-	}
-
-	@FXML
-	private void setBorderColor5() {
-		Main.config.setBorderColor(getColorHexCode(circleBorderColor5.getFill()));
-		setupBorderColor();
+	private void setupBorderColor() {
+		for (var label : borderModifiedLabels) {
+			label.setStyle("-fx-border-color: %s; -fx-border-width: %d;"
+					.formatted(Main.config.getBorderColor(), 5));
+		}
 	}
 
 	@FXML
@@ -602,17 +438,20 @@ public class Controller {
 		}
 	}
 
-	private void setFont(Font font1, Font font2, Font font3) {
-		for (Label label : allLabels) {
-			label.setFont(font3);
+	private void setFont(Font font14, Font font16, Font font20) {
+		for (var label : allLabels) {
+			label.setFont(font20);
 		}
-		notificationLabel.setFont(font1);
-		notificationLabel2.setFont(font1);
-		for (Button button : boldTextModifiedButtons) {
-			button.setFont(font2);
+		notificationLabel.setFont(font14);
+		notificationLabel2.setFont(font14);
+		for (var button : boldTextModifiedButtons) {
+			button.setFont(font16);
 		}
-		for (Text text : allTexts) {
-			text.setFont(font3);
+		for (var text : largeSizeText) {
+			text.setFont(font20);
+		}
+		for (var text : littleSizeText) {
+			text.setFont(font14);
 		}
 	}
 
@@ -799,11 +638,123 @@ public class Controller {
 		AddonViews.arrow.setOpacity(i);
 	}
 
+	private void setupChoiceBoxWrapper() {
+		choiceBoxWrapper1 = new ChoiceBoxWrapper(mSummaryChoiceBox5);
+		choiceBoxWrapper2 = new ChoiceBoxWrapper(mSummaryChoiceBox6);
+		choiceBoxWrapper3 = new ChoiceBoxWrapper(mSummaryChoiceBox7);
+	}
+
+	private void groupingAppearanceVariables() {
+		allLabels = new Label[]{
+				upperDropSpace,
+				lowerDropSpace,
+				resultLabel,
+				notificationLabel,
+				notificationLabel2,
+				summaryDropSpace1,
+				summaryDropSpace2,
+				summaryDropSpace3,
+				summaryDropSpace4,
+				summaryDropSpace5,
+				summaryDropSpace6,
+				summaryDropSpace7,
+				summaryDropSpace8,
+				favoriteDropSpace
+		};
+		borderModifiedLabels = new Label[]{
+				upperDropSpace,
+				lowerDropSpace,
+				summaryDropSpace1,
+				summaryDropSpace2,
+				summaryDropSpace3,
+				summaryDropSpace4,
+				summaryDropSpace5,
+				summaryDropSpace6,
+				summaryDropSpace7,
+				summaryDropSpace8,
+				favoriteDropSpace
+		};
+		allSummaryLabelWrappers = new LabelWrapper[]{
+				new LabelWrapper(summaryDropSpace1),
+				new LabelWrapper(summaryDropSpace2),
+				new LabelWrapper(summaryDropSpace3),
+				new LabelWrapper(summaryDropSpace4),
+				new LabelWrapper(summaryDropSpace5),
+				new LabelWrapper(summaryDropSpace6),
+				new LabelWrapper(summaryDropSpace7),
+				new LabelWrapper(summaryDropSpace8)
+		};
+		boldTextModifiedButtons = new Button[]{
+				downloadFileButton,
+				clearResultLabelButton,
+				lowerDropSpaceButton,
+				clearUpperDropSpaceButton,
+				showInfoButton,
+				downloadResultLabelButton,
+				downloadSummaryFileButton,
+				clearAllSummaryDropSpaceButton,
+				checkSummaryDropSpaceButton4,
+				checkSummaryDropSpaceButton6,
+				checkSummaryDropSpaceButton7,
+				checkSummaryDropSpaceButton8,
+				boldTextButton,
+				deleteLogs,
+				deleteNotifications,
+				forgetFavorite,
+				font12Button,
+				font14Button,
+				font16Button,
+				font18Button,
+				font20Button,
+				mSummaryAddButton,
+				restoreWindowSizeButton,
+				showReinforcementLinearMassListButton,
+				backgroundReinforcementAddButton,
+				showHotRolledSteelCodeButton,
+				mSummaryAddButton2
+		};
+		largeSizeText = new Text[]{
+				appearanceText1,
+				appearanceText2,
+				appearanceText3,
+				settingsText1,
+				settingsText2,
+				settingsText3,
+				settingsText4,
+				settingsText5,
+				settingsText6,
+				settingsText7,
+				mSummaryEntryText1,
+				mSummaryEntryText2,
+				mSummaryEntryText3,
+				notificationText
+		};
+		littleSizeText = new Text[]{
+				mSummaryHelpingText1,
+				mSummaryHelpingText2,
+				mSummaryHelpingText3,
+				mSummaryHelpingText4,
+				mSummaryHelpingText5,
+				mSummaryHelpingText6,
+				mSummaryHelpingText7,
+				mSummaryHelpingText8,
+				mSummaryHelpingText9,
+				mSummaryHelpingText10,
+				mSummaryHelpingText11,
+				mSummaryHelpingText12
+		};
+	}
+
+	private String getColorHexCode(Paint paint) {
+		return "#" + paint.toString().substring(2, 8);
+	}
+
 	private void setupMSummaryChoiceBox() {
-		mSummaryChoiceBox1.setItems(observableArrayList(
-				Arrays.asList(getProperty("content_row").split("-"))
-		));
-		mSummaryChoiceBox1.setValue(getProperty("content_row").split("-")[0]);
+		List<String> list = Arrays.asList(getProperty("content_row").split("-"));
+		mSummaryChoiceBox1.setItems(observableArrayList(list));
+		mSummaryChoiceBox8.setItems(observableArrayList(list));
+		mSummaryChoiceBox1.setValue(list.get(0));
+		mSummaryChoiceBox8.setValue(list.get(0));
 		mSummaryChoiceBox2.setItems(observableList(StandardsRepository.getDiametersAsList()));
 		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[2]);
 		mSummaryChoiceBox3.setItems(observableArrayList(
@@ -814,13 +765,18 @@ public class Controller {
 				RFClass.A600
 		));
 		mSummaryChoiceBox3.setValue(RFClass.A500S);
-		mSummaryChoiceBox4.setItems(observableList(HotRolledSteelType.getAsList()));
-		mSummaryChoiceBox4.setValue(HotRolledSteelType.EQUAL_LEG_ANGLE);
+		List<String> list2 = HotRolledSteelType.getAsStrings();
+		mSummaryChoiceBox4.setItems(observableList(list2));
+		mSummaryChoiceBox4.setValue(list2.get(0));
 		mSummaryChoiceBox4.setOnAction(actionEvent -> {
-			switch (mSummaryChoiceBox4.getValue()) {
-				case EQUAL_LEG_ANGLE -> setEqual();
-				case UNEQUAL_LEG_ANGLE -> setUnequal();
-				case SHEET -> setSheet();
+			if (mSummaryChoiceBox4.getValue() == list2.get(0)) {
+				setEqual();
+			}
+			if (mSummaryChoiceBox4.getValue() == list2.get(1)) {
+				setUnequal();
+			}
+			if (mSummaryChoiceBox4.getValue() == list2.get(2)) {
+				setSheet();
 			}
 		});
 		setEqual();
@@ -841,14 +797,7 @@ public class Controller {
 	private void setSheet() {
 		choiceBoxWrapper1.reset();
 		choiceBoxWrapper2.setList(observableList(SteelComponentRepository.getSheetThicknessList()));
-		// TODO: now it work in test mode (THIS IS NOT REAL WIDTH)
-		List<Number> list = new ArrayList<>();
-		int v = 50;
-		for (int i = 0; i < 15; i++) {
-			list.add(v);
-			v += 10;
-		}
-		choiceBoxWrapper3.setList(observableList(list));
+		choiceBoxWrapper3.setList(observableList(SteelComponentRepository.getSheetWidthList()));
 	}
 
 	private void setupMBackgroundChoiceBox() {
@@ -859,24 +808,26 @@ public class Controller {
 	@FXML
 	private void addManuallySummaryEntry() {
 		ManuallyEntry.addManuallySummaryEntry(
-				mSummaryChoiceBox1.getValue(),
-				mSummaryChoiceBox2.getValue(),
-				mSummaryChoiceBox3.getValue(),
+				mSummaryChoiceBox1.getValue(), // Summary label
+				mSummaryChoiceBox2.getValue(), // Diameter
+				mSummaryChoiceBox3.getValue(), // RFClass
 				mSummaryTextField.getText() // Mass by kg
 		);
 	}
 
 	@FXML
 	private void addManuallySummaryEntry2() {
-		if (mSummaryChoiceBox4.getValue() != HotRolledSteelType.SHEET) {
+		if (HotRolledSteelType.parseHotRolledSteelType(mSummaryChoiceBox4.getValue()) != HotRolledSteelType.SHEET) {
 			ManuallyEntry.addSteelComponentEntry(
-					mSummaryChoiceBox5.getValue(),
+					mSummaryChoiceBox8.getValue(), // Summary label
+					mSummaryChoiceBox5.getValue(), // Image
 					mSummaryTextField2.getText() // Length by mm
 			);
 		} else {
 			ManuallyEntry.addSteelSheet(
-					mSummaryChoiceBox6.getValue(),
-					mSummaryChoiceBox7.getValue(),
+					mSummaryChoiceBox8.getValue(), // Summary label
+					mSummaryChoiceBox6.getValue(), // Thickness
+					mSummaryChoiceBox7.getValue(), // Width
 					mSummaryTextField2.getText() // Length by mm
 			);
 		}
@@ -884,8 +835,10 @@ public class Controller {
 
 	@FXML
 	private void addBackgroundReinforcement() {
-		// Length by m
-		ManuallyEntry.addBackgroundReinforcement(mBackgroundChoiceBox.getValue(), mBackgroundTextField.getText());
+		ManuallyEntry.addBackgroundReinforcement(
+				mBackgroundChoiceBox.getValue(), // PairDR
+				mBackgroundTextField.getText() // Length by m
+		);
 	}
 
 	@FXML

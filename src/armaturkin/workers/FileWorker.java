@@ -1,15 +1,17 @@
 package armaturkin.workers;
 
-import armaturkin.core.*;
+import armaturkin.core.Main;
 import armaturkin.interfaces.FileNameCreator;
-import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.utils.CellStyleRepository;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import utools.stopwatch.Stopwatch;
 
 import java.io.OutputStream;
@@ -22,7 +24,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
-	private final String backgroundReinforcement, downloadFileTableHead;
+	private final String downloadFileTableHead;
 	private String fileName;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
@@ -32,11 +34,10 @@ public class FileWorker implements Runnable, FileNameCreator {
 	private CellStyleRepository cellStyleRepository;
 	private Stopwatch stopwatch;
 
-	public FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
-	                  String backgroundReinforcement, String downloadFileTableHead, String fileName) {
+	public FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap
+			, String downloadFileTableHead, String fileName) {
 		this.path = path;
 		this.reinforcementHashMap = reinforcementHashMap;
-		this.backgroundReinforcement = backgroundReinforcement;
 		this.downloadFileTableHead = downloadFileTableHead;
 		this.fileName = fileName;
 	}
@@ -48,7 +49,6 @@ public class FileWorker implements Runnable, FileNameCreator {
 		// todo: initWorkbook method
 		buildTableHead();
 		addBackgroundReinforcement();
-		addBackgroundReinforcementFromTextField();
 		fillTable();
 		fileName = createFileName(fileName);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
@@ -187,66 +187,6 @@ public class FileWorker implements Runnable, FileNameCreator {
 					));
 				}
 				Main.log.add(reinforcementHashMap.get(position).toString());
-			}
-		}
-	}
-
-	// TODO: replace with gui parser
-	@Deprecated
-	private void addBackgroundReinforcementFromTextField() {
-		if (backgroundReinforcement.length() != 0) {
-			String[] splittedString = backgroundReinforcement.split("-");
-			if (splittedString.length % 2 != 0) {
-				Main.log.add(getClass() +
-						" can not parse background reinforcement, because [backgroundReinforcement] variable have length is " +
-						splittedString.length
-				);
-				Main.addNotification("Ошибка ввода фоновой арматуры");
-			}
-			if (splittedString.length % 2 == 0) {
-				for (int i = 0; i < splittedString.length / 2; i++) {
-					int diameter = Integer.parseInt(splittedString[i * 2]);
-					double length = Double.parseDouble(splittedString[i * 2 + 1]);
-					int lengthInt = (int) (length * 1000);
-					Main.log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
-							",[length: " + length + "],[lengthInt: " + lengthInt + "]"
-					);
-					int reservedDiameterIndex = StandardsRepository.getReservedDiameterIndex(diameter);
-					if (reservedDiameterIndex == -1) {
-						Main.log.add(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
-						Main.addNotification("Указанного диаметра: " + diameter +
-								" нет в зарезервированном списке диаметров (class Pattern)"
-						);
-					} else {
-						int position = StandardsRepository.reservedPositions[reservedDiameterIndex];
-						if (reinforcementHashMap.containsKey(position)) {
-							Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
-							Reinforcement currentReinforcement = new Reinforcement(
-									position,
-									diameter,
-									StandardsRepository.getReservedRFClass(position),
-									lengthInt,
-									StandardsRepository.getMass(diameter) * lengthInt / 1000
-							);
-							reinforcementHashMap.put(position, new Reinforcement(
-									position,
-									currentReinforcement.getDiameter(),
-									currentReinforcement.getRfClass(),
-									calculatedReinforcement.getLength() + currentReinforcement.getLength(),
-									calculatedReinforcement.getMass() + currentReinforcement.getMass()
-							));
-						} else {
-							reinforcementHashMap.put(position, new Reinforcement(
-									position,
-									diameter,
-									StandardsRepository.getReservedRFClass(position),
-									lengthInt,
-									StandardsRepository.getMass(diameter) * lengthInt / 1000
-							));
-						}
-						Main.log.add(reinforcementHashMap.get(position).toString());
-					}
-				}
 			}
 		}
 	}

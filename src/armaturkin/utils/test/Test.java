@@ -1,12 +1,11 @@
 package armaturkin.utils.test;
 
-import armaturkin.summaryoutput.ContentContainer;
+import armaturkin.core.DesignCode;
 import armaturkin.core.Main;
 import armaturkin.core.Reader;
-import armaturkin.core.DesignCode;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.steelcomponent.HotRolledSteelType;
-import armaturkin.summaryoutput.ContentHead;
+import armaturkin.summaryoutput.ContentContainer;
 import armaturkin.summaryoutput.ContentHeadPlacement;
 import armaturkin.utils.HttpServerUtil;
 import armaturkin.utils.StringUtil;
@@ -107,13 +106,13 @@ public class Test {
 	private static void localTest5() throws Exception {
 		String s = "1234,,";
 		System.out.println(s);
-		System.out.println(StringUtil.cutEndIfLastCharIs(s,','));
+		System.out.println(StringUtil.cutEndIfLastCharIs(s, ','));
 		s = "1234,";
 		System.out.println(s);
-		System.out.println(StringUtil.cutEndIfLastCharIs(s,','));
+		System.out.println(StringUtil.cutEndIfLastCharIs(s, ','));
 		s = "1234";
 		System.out.println(s);
-		System.out.println(StringUtil.cutEndIfLastCharIs(s,','));
+		System.out.println(StringUtil.cutEndIfLastCharIs(s, ','));
 	}
 
 	private static void localTest4() throws Exception {

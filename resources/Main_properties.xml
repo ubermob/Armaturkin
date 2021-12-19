@@ -114,6 +114,11 @@
 
     <entry key="redirect">%s: redirect %d to %d</entry>
 
+    <!-- Hot rolled steel type russian -->
+    <entry key="hot_rolled_steel_type_ru_0">Равнополочный уголок</entry>
+    <entry key="hot_rolled_steel_type_ru_1">Неравнополочный уголок</entry>
+    <entry key="hot_rolled_steel_type_ru_2">Лист</entry>
+
     <!-- Summary Excel Builder -->
     <entry key="summary_excel_builder_commentary">This file created by %s</entry>
     <entry key="default_list_name">Лист1</entry>
