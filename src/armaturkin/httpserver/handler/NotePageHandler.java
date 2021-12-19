@@ -6,8 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Andrey Korneychuk on 19-Dec-21
@@ -17,8 +16,8 @@ public class NotePageHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		// TODO: replace file and realize cache
-		String string = HttpServerUtil.getString(Files.readAllLines(Path.of("D:/VSCode_projects/Armaturkin/html_template.txt")));
+		// TODO: realize cache
+		String string = HttpServerUtil.getString(getClass().getResourceAsStream("/http/html_template.txt"));
 		StringBuilder builder = new StringBuilder();
 		builder.append("<table border=\"solid\">").append("<tr>");
 		builder.append("<td width=\"40%\">").append("<h2 align=\"center\">Короткие уведомления</h2>");
@@ -42,6 +41,6 @@ public class NotePageHandler implements HttpHandler {
 		builder.append("</td>");
 		builder.append("</tr>").append("</table>");
 		string = string.formatted(builder.toString());
-		HttpServerUtil.exchangeWorker(exchange, string.getBytes());
+		HttpServerUtil.exchangeWorker(exchange, string.getBytes(StandardCharsets.UTF_8));
 	}
 }

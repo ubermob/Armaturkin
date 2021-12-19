@@ -3,7 +3,9 @@ package armaturkin.utils;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -34,4 +36,9 @@ public class HttpServerUtil {
 		return builder.toString();
 	}
 
+	public static synchronized String getString(InputStream inputStream) throws IOException {
+		byte[] bytes = inputStream.readAllBytes();
+		inputStream.close();
+		return new String(bytes, StandardCharsets.UTF_8);
+	}
 }

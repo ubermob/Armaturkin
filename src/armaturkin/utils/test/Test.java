@@ -8,6 +8,7 @@ import armaturkin.reinforcement.RFClass;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.summaryoutput.ContentHead;
 import armaturkin.summaryoutput.ContentHeadPlacement;
+import armaturkin.utils.HttpServerUtil;
 import armaturkin.utils.StringUtil;
 import utools.stopwatch.Stopwatch;
 
@@ -26,7 +27,7 @@ public class Test {
 
 		//contentHeadPlacementTest();
 
-		localTest6();
+		localTest7();
 	}
 
 	private static void contentHeadTest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -89,6 +90,11 @@ public class Test {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void localTest7() throws Exception {
+		String string = HttpServerUtil.getString(Test.class.getResourceAsStream("/http/index.html"));
+		System.out.println(string);
 	}
 
 	private static void localTest6() throws Exception {

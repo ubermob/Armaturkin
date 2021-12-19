@@ -15,6 +15,7 @@ import java.util.List;
 
 public class SteelComponentRepository {
 
+	private static final double steelDensity = 7.85E-9; // kg / mm^3
 	private static Sheet equalLegAnglesSheet;
 	private static List<Image> equalLegAnglesList;
 	private static Sheet unequalLegAnglesSheet;
@@ -139,9 +140,8 @@ public class SteelComponentRepository {
 		return 0.0;
 	}
 
-	// density (kg / mm^3)
 	public static double getSteelDensity() {
-		return 7.85E-9;
+		return steelDensity;
 	}
 
 	// ???
