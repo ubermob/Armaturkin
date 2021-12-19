@@ -11,7 +11,7 @@ import java.util.List;
 public class Content {
 
 	private Double[][] table;
-	private List<Integer> hashes;
+	private final List<Integer> hashes;
 
 	public Content(List<Integer> hashes) {
 		this.hashes = hashes;
@@ -100,7 +100,7 @@ public class Content {
 	public String toString() {
 		String result = "";
 		for (Double[] row : table) {
-			result += Arrays.toString(row) + "\n";
+			result += Arrays.toString(row).replace("null", "-") + "\n";
 		}
 		return StringUtil.cutEnd(result, 1);
 	}

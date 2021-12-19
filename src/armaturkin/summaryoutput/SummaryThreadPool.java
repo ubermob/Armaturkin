@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SummaryThreadStarter {
+public class SummaryThreadPool {
 
 	public static final int RAW = 0;
 	public static final int PRETTY = 1;
@@ -20,10 +20,10 @@ public class SummaryThreadStarter {
 	private final int set;
 	private List<String> labelPaths;
 	private HashMap<Integer, ReinforcementLiteInfo> hashMap;
-	private Thread[] subThreads;
+	private Thread[] subThreads; // unused now
 	private List<Log> logList;
 
-	public SummaryThreadStarter(int id) throws InterruptedException {
+	public SummaryThreadPool(int id) throws InterruptedException {
 		this.id = id;
 		set = DROP_SPACE_SET[id - 1];
 		createThreads();
@@ -33,6 +33,7 @@ public class SummaryThreadStarter {
 		return hashMap;
 	}
 
+	@Deprecated
 	public Thread[] getSubThreads() {
 		return subThreads;
 	}

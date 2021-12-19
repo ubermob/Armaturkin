@@ -1,6 +1,11 @@
 package armaturkin.summaryoutput;
 
+import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.RFClass;
+import armaturkin.reinforcement.RfHashCode;
+import armaturkin.steelcomponent.Image;
+
+import java.util.ArrayList;
 
 public class ContentContainer {
 
@@ -9,15 +14,29 @@ public class ContentContainer {
 	private final ContentHead contentHead;
 	private final ContentRow contentRow;
 
-	public ContentContainer() {
+	public ContentContainer(ArrayList<Image> sortedSheets) throws Exception {
 		contentHeadPlacement = new ContentHeadPlacement();
 		content = new Content(contentHeadPlacement.getHashes());
-		contentHead = new ContentHead(contentHeadPlacement.getBlocks());
+		contentHead = new ContentHead(contentHeadPlacement.getBlocks(), contentHeadPlacement.getHashes().size(), sortedSheets);
 		contentRow = new ContentRow();
 	}
 
 	public void put(int labelID, int hashCode, double mass) {
 		content.put(labelID, hashCode, mass);
+	}
+
+	public void put(ManuallyEntry manuallyEntry) {
+		if (manuallyEntry.isReinforcement()) {
+			int hashCode = RfHashCode.getHashCode(manuallyEntry.getDiameter(), manuallyEntry.getRfClass());
+			put(manuallyEntry.getSummaryLabelID(), hashCode, manuallyEntry.getMassReinforcement());
+		} else if (manuallyEntry.isAngle()) {
+			Image image = manuallyEntry.getLightInfoCastingToImage();
+			put(manuallyEntry.getSummaryLabelID(), image.getHashCode(), image.getMass());
+		} else {
+			// .isSheet == true
+			Image image = manuallyEntry.getLightInfoCastingToImage();
+			put(manuallyEntry.getSummaryLabelID(), image.getHashCode(), image.getMass());
+		}
 	}
 
 	public String contentToString() {

@@ -3,6 +3,7 @@ package armaturkin.summaryoutput;
 import armaturkin.core.Main;
 import armaturkin.core.DesignCode;
 import armaturkin.reinforcement.RFClass;
+import org.apache.poi.ooxml.POIXMLProperties;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -200,5 +201,9 @@ public class SummaryExcelBuilder implements Runnable {
 		workbook = new XSSFWorkbook();
 		sheet = workbook.createSheet(getProperty("default_list_name"));
 		sheet.setZoom(Integer.parseInt(getProperty("sheet_zoom_1")));
+		var coreProperties =  workbook.getProperties().getCoreProperties();
+		coreProperties.setCreator(Main.getAppNameAndVersion());
+		coreProperties.setDescription(Main.getProperty("summary_excel_builder_commentary")
+				.formatted(Main.getAppNameAndVersion()));
 	}
 }

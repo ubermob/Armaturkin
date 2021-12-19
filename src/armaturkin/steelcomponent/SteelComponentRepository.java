@@ -131,9 +131,9 @@ public class SteelComponentRepository {
 	}
 
 	public static double getAngleMassPerUnitLength(Image image) {
-		if (image.getType() == HotRolledSteelType.EQUAL_LEG_ANGLE) {
+		if (image.getHotRolledSteelType() == HotRolledSteelType.EQUAL_LEG_ANGLE) {
 			return equalLegAnglesSheet.getRow(image.getRowNumber()).getCell(16).getNumericCellValue();
-		} else if (image.getType() == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
+		} else if (image.getHotRolledSteelType() == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
 			return unequalLegAnglesSheet.getRow(image.getRowNumber()).getCell(20).getNumericCellValue();
 		}
 		return 0.0;

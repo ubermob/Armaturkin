@@ -3,7 +3,7 @@ package armaturkin.workers;
 import armaturkin.core.*;
 import armaturkin.interfaces.*;
 import armaturkin.reinforcement.*;
-import armaturkin.summaryoutput.SummaryThreadStarter;
+import armaturkin.summaryoutput.SummaryThreadPool;
 import armaturkin.utils.MassCounter;
 import armaturkin.utils.RegEx;
 import org.apache.poi.ss.usermodel.Row;
@@ -74,7 +74,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		} catch (IOException e) {
 			log.add(e);
 		}
-		if (set == SummaryThreadStarter.RAW) {
+		if (set == SummaryThreadPool.RAW) {
 			majorNumber = RegEx.parseNumberOfElements(sheet.getRow(4).getCell(0).getStringCellValue());
 			checkMajorNumber(majorNumber);
 			massCounter = new MassCounter();
@@ -85,7 +85,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowInt++;
 		}
-		if (set == SummaryThreadStarter.RAW) {
+		if (set == SummaryThreadPool.RAW) {
 			productMass = sheet.getRow(4).getCell(productMassColumn).getNumericCellValue();
 			if (Math.abs(massCounter.getValue() - productMass) >= 0.01) {
 				Main.addNotification(Main.properties.getProperty("product_mass_multiply_notification").formatted(
@@ -96,7 +96,8 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			}
 		}
 		Main.addNotification(Main.properties.getProperty("file_successfully_read_3").formatted(path, rowInt));
-		log.add(Main.properties.getProperty("summary_thread_complete").formatted(getClass(), stopwatch.getElapsedTime(), labelID, path, fileHashCode));
+		log.add(Main.properties.getProperty("summary_thread_complete").formatted(
+				getClass(), stopwatch.getElapsedTime(), labelID, path, fileHashCode));
 	}
 
 	private void readRow() {
@@ -107,7 +108,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		rfClass = RFClass.parseRFClass(rfClassString);
 		mass = row.getCell(massColumn).getNumericCellValue();
 		hashCode = RfHashCode.getHashCode(diameter, rfClass);
-		if (set == SummaryThreadStarter.RAW || set == SummaryThreadStarter.RAW_STAIRWAY) {
+		if (set == SummaryThreadPool.RAW || set == SummaryThreadPool.RAW_STAIRWAY) {
 			position = (int) row.getCell(positionColumn).getNumericCellValue();
 			checkPosition();
 			length = (int) row.getCell(lengthColumn).getNumericCellValue();
@@ -122,7 +123,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			checkSingleMass();
 			checkMultiply();
 			massCounter.add(mass);
-			if (set == SummaryThreadStarter.RAW) {
+			if (set == SummaryThreadPool.RAW) {
 				mass *= majorNumber;
 			}
 		}
@@ -180,7 +181,8 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private void checkSingleMass() {
 		checker.checkMass(singleMass);
 		if (!checker.isCorrectMass()) {
-			notification = Main.properties.getProperty("mass_notification").formatted((rowInt + 1), singleMass, checker.getCorrectMass());
+			notification = Main.properties.getProperty("mass_notification").formatted((rowInt + 1), singleMass
+					, checker.getCorrectMass());
 			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
@@ -214,11 +216,11 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private void setup() {
-		if (set == SummaryThreadStarter.PRETTY) {
+		if (set == SummaryThreadPool.PRETTY) {
 			diameterAndRfClassColumn = 2;
 			massColumn = 7;
 		}
-		if (set == SummaryThreadStarter.RAW) {
+		if (set == SummaryThreadPool.RAW) {
 			diameterAndRfClassColumn = 3;
 			massColumn = 8;
 			positionColumn = 1;
@@ -228,7 +230,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			totalLengthColumn = 6;
 			productMassColumn = 9;
 		}
-		if (set == SummaryThreadStarter.RAW_STAIRWAY) {
+		if (set == SummaryThreadPool.RAW_STAIRWAY) {
 			diameterAndRfClassColumn = 2;
 			massColumn = 7;
 			positionColumn = 0;

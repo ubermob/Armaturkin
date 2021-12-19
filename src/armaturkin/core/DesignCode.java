@@ -2,31 +2,27 @@ package armaturkin.core;
 
 import utools.propertiestools.UtfProperties;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
 public class DesignCode {
 
-	private static final Properties PROPERTIES = new Properties();
+	private static Properties properties = new Properties();
 	private static final String FILE_NAME = "Design_code_properties.txt";
 	private static boolean isUpdate = false;
 
 	public static void loadProperties() {
 		try {
-			InputStream inputStream;
 			Path check = Path.of(Root.programRootPath, Root.getProperty("update_data_directory"), FILE_NAME);
 			if (Files.exists(check)) {
-				inputStream = new FileInputStream(check.toString());
+				properties = UtfProperties.getExternalUtfProperties(check.toString());
 				isUpdate = true;
 			} else {
-				inputStream = Main.class.getResourceAsStream("/" + FILE_NAME);
+				properties = UtfProperties.getInternalUtfProperties("/" + FILE_NAME);
 			}
-			UtfProperties.fill(PROPERTIES, inputStream);
-			inputStream.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			Main.log.add(e);
 		}
 	}
@@ -36,7 +32,7 @@ public class DesignCode {
 	 * @return {@link String} the value in this property list with the specified key value.
 	 */
 	public static String getProperty(String key) {
-		return PROPERTIES.getProperty(key);
+		return properties.getProperty(key);
 	}
 
 	/**

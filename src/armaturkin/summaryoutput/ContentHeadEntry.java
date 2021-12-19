@@ -2,8 +2,7 @@ package armaturkin.summaryoutput;
 
 import armaturkin.interfaces.LightInfo;
 import armaturkin.reinforcement.RFClass;
-import armaturkin.steelcomponent.HotRolledSteelType;
-import armaturkin.steelcomponent.SteelProductLiteInfo;
+import armaturkin.steelcomponent.Image;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 
 import static armaturkin.core.Main.getProperty;
@@ -21,8 +20,12 @@ public class ContentHeadEntry {
 			ReinforcementLiteInfo entry = (ReinforcementLiteInfo) this.entry;
 			return getProperty("content_head_pretty_string_reinforcement").formatted(entry.getDiameter(), entry.getRfClass());
 		} else {
-			// TODO
-			return null;
+			// instanceof Image
+			Image entry = (Image) this.entry;
+			if (entry == null) {
+				return "-";
+			}
+			return entry.toString();
 		}
 	}
 
@@ -30,7 +33,8 @@ public class ContentHeadEntry {
 		if (entry instanceof ReinforcementLiteInfo) {
 			return ((ReinforcementLiteInfo) entry).getRfClass();
 		} else {
-			return ((SteelProductLiteInfo) entry).getHotRolledSteelType();
+			// instanceof Image
+			return ((Image) entry).getHotRolledSteelType();
 		}
 	}
 
@@ -42,6 +46,6 @@ public class ContentHeadEntry {
 		if (entry instanceof ReinforcementLiteInfo) {
 			return ((ReinforcementLiteInfo) entry).getDiameter();
 		}
-		return -1; // TODO
+		return -1; // TODO ???
 	}
 }

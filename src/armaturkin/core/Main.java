@@ -7,8 +7,11 @@ import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.SummaryHub;
-import armaturkin.summaryoutput.SummaryThreadStarter;
-import armaturkin.utils.*;
+import armaturkin.summaryoutput.SummaryThreadPool;
+import armaturkin.utils.Dev;
+import armaturkin.utils.PcInformation;
+import armaturkin.utils.StringUtil;
+import armaturkin.utils.UnacceptableSymbolReplacer;
 import armaturkin.view.AddonViews;
 import armaturkin.view.Stages;
 import armaturkin.workers.CalculatingFileWorker;
@@ -38,13 +41,14 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static String version = "0.5.21b5";
+	public static final String version = "0.5.21b6";
 	// Serial or Parallel Summary Running
-	public static boolean isSerialSummaryRunning = true;
+	public static final boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();
 	public static Controller controller;
 	public static Configuration config;
 	private volatile static String notificationString = "";
+	private static final Log notificationLog = new Log();
 	public static Log log = new Log();
 
 	// 1st Tab
@@ -64,7 +68,7 @@ public class Main extends Application {
 		doingAddonViews();
 		doingPrimaryStage(primaryStage);
 		controller.startSetup();
-		primaryStage.setTitle(getProperty("application_name") + " ver " + version);
+		primaryStage.setTitle(getAppNameAndVersion());
 		log(getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		log(PcInformation.getInformation());
 		try (InputStream resource = getClass().getResourceAsStream("/Icon.png")) {
@@ -95,9 +99,10 @@ public class Main extends Application {
 			SteelComponentRepository.load();
 			// Launch
 			launch(args);
+			// Closing
 			saveConfigFile();
 			Log.saveLog();
-			saveNotification();
+			saveAllNotification();
 		} else {
 			// https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
 			Platform.exit();
@@ -159,7 +164,6 @@ public class Main extends Application {
 				summaryTableHead = getProperty("default_table_main_header");
 			}
 			SummaryHub summaryHub = new SummaryHub(
-					summaryPaths,
 					manuallySummaryEntries,
 					path,
 					UnacceptableSymbolReplacer.replace(controller.getSummaryFileName()),
@@ -172,16 +176,8 @@ public class Main extends Application {
 
 	public static void checkSummaryDropSpace(int i) throws InterruptedException {
 		if (!summaryPaths.get(i).isEmpty()) {
-			SummaryThreadStarter summaryThreadStarter = new SummaryThreadStarter(i);
-			Thread[] subThreads = summaryThreadStarter.getSubThreads();
-			List<Log> logList = summaryThreadStarter.getLogList();
-			for (Thread thread : subThreads) {
-				try {
-					thread.join();
-				} catch (Exception e) {
-					log(e);
-				}
-			}
+			SummaryThreadPool summaryThreadPool = new SummaryThreadPool(i);
+			List<Log> logList = summaryThreadPool.getLogList();
 			for (Log threadLog : logList) {
 				log.merge(threadLog);
 			}
@@ -240,7 +236,12 @@ public class Main extends Application {
 		return Main.notificationString;
 	}
 
-	public static void clearNotification() {
+	public static Log getStoredNotifications() {
+		return notificationLog;
+	}
+
+	public static synchronized void clearNotification() {
+		notificationLog.addSkipConsole(notificationString);
 		notificationString = "";
 	}
 
@@ -265,8 +266,21 @@ public class Main extends Application {
 	}
 
 	public static void saveNotification() throws IOException {
+		saveNotificationToFile(StringUtil.replaceNewLine(notificationString));
+	}
+
+	public static void saveAllNotification() throws IOException {
+		StringBuilder builder = new StringBuilder();
+		for (var v: notificationLog.getList()) {
+			builder.append(v);
+		}
+		builder.append(StringUtil.replaceNewLine(notificationString));
+		saveNotificationToFile(builder.toString());
+	}
+
+	private static void saveNotificationToFile(String string) throws IOException {
 		StorageCleaner.clearStorage(Path.of(Root.programRootPath, Root.getProperty("notification_storage_directory")));
-		if (config.getWriteNotification() && notificationString.length() > 0) {
+		if (config.getWriteNotification() && string.length() > 0) {
 			StorageCleaner.copyFile(
 					Path.of(Root.programRootPath, Root.getProperty("notification_file_name")),
 					Path.of(Root.programRootPath,
@@ -276,8 +290,7 @@ public class Main extends Application {
 											Root.getProperty("notification_storage_directory")) + 1)
 					)
 			);
-			notificationString = StringUtil.replaceNewLine(notificationString);
-			Writer.write(Root.programRootPath + Root.getProperty("notification_file_name"), notificationString);
+			Writer.write(Root.programRootPath + Root.getProperty("notification_file_name"), string);
 		}
 	}
 
@@ -311,6 +324,10 @@ public class Main extends Application {
 		}
 	}
 
+	public static String getAppNameAndVersion() {
+		return getProperty("application_name") + " ver " + version;
+	}
+
 	private static void doingPrimaryStage(Stage stage) {
 		Stages.primary = stage;
 		Stages.defaultHeight = stage.getHeight();
@@ -330,7 +347,6 @@ public class Main extends Application {
 		LocalDateTime localDateTime = LocalDateTime.now();
 		return localDateTime.format(DateTimeFormatter.ofPattern(getProperty("time_pattern")));
 	}
-
 
 	private static class ArgParser {
 

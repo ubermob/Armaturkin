@@ -4,7 +4,6 @@ import armaturkin.core.*;
 import armaturkin.interfaces.FileNameCreator;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
-import armaturkin.reinforcement.RfHashCode;
 import utools.stopwatch.Stopwatch;
 
 import java.util.ArrayList;
@@ -13,23 +12,19 @@ import java.util.List;
 
 public class SummaryHub implements Runnable, FileNameCreator {
 
-	private final HashMap<Integer, List<String>> summaryPaths;
 	private final List<ManuallyEntry> manuallySummaryEntries;
 	private final String path;
 	private final String fileName;
 	private final String tableHead;
 	private final HashMap<Integer, HashMap<Integer, ReinforcementLiteInfo>> targetHashMap;
-	private Thread[][] allThreads;
 	private final List<Log> summaryLog;
 	private ContentContainer contentContainer;
 	private Stopwatch stopwatch;
 
-	public SummaryHub(HashMap<Integer, List<String>> summaryPaths,
-	                  List<ManuallyEntry> manuallySummaryEntries,
+	public SummaryHub(List<ManuallyEntry> manuallySummaryEntries,
 	                  String path,
 	                  String fileName,
 	                  String tableHead) {
-		this.summaryPaths = summaryPaths;
 		this.manuallySummaryEntries = manuallySummaryEntries;
 		this.path = path;
 		this.fileName = fileName;
@@ -42,55 +37,40 @@ public class SummaryHub implements Runnable, FileNameCreator {
 	public void run() {
 		stopwatch = new Stopwatch();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
-		allThreads = new Thread[8][];
 		for (int i = 1; i <= 8; i++) {
-			SummaryThreadStarter summaryThreadStarter = null;
+			SummaryThreadPool summaryThreadPool = null;
 			try {
-				summaryThreadStarter = new SummaryThreadStarter(i);
+				summaryThreadPool = new SummaryThreadPool(i);
 			} catch (InterruptedException e) {
 				Main.log.add(e);
 			}
-			if (summaryThreadStarter.isNotNull()) {
-				targetHashMap.put(i, summaryThreadStarter.getHashMap());
-				allThreads[i - 1] = summaryThreadStarter.getSubThreads();
-				List<Log> logList = summaryThreadStarter.getLogList();
+			if (summaryThreadPool.isNotNull()) {
+				targetHashMap.put(i, summaryThreadPool.getHashMap());
+				List<Log> logList = summaryThreadPool.getLogList();
 				summaryLog.addAll(logList);
 			}
 		}
-		for (Thread[] threadArray : allThreads) {
-			if (threadArray != null) {
-				for (Thread thread : threadArray) {
-					try {
-						thread.join();
-					} catch (InterruptedException e) {
-						Main.log.add(e);
-					}
-				}
-			}
-		}
 		mergeLog();
-		buildExcel();
+		try {
+			buildContent();
+			buildExcel();
+		} catch (Exception e) {
+			Main.log.add(e);
+		}
 		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
-	void mergeLog() {
+	private void mergeLog() {
 		for (Log log : summaryLog) {
 			Main.log.merge(log);
 		}
 	}
 
-	void buildExcel() {
-		buildContent();
-		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(contentContainer, path, createFileName(fileName), tableHead);
-		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);
-		summaryExcelBuilderThread.start();
-	}
-
-	void buildContent() {
-		contentContainer = new ContentContainer();
+	private void buildContent() throws Exception {
+		contentContainer = new ContentContainer(SheetDynamicHashCode.sortAndGetSortedCurrentSheetList(manuallySummaryEntries));
 		Main.log.add(Main.properties.getProperty("target_hash_map"));
 		// Filling auto tab entries
-		for (int i = 1; i < 9; i++) {
+		for (int i = 1; i <= 8; i++) {
 			if (targetHashMap.containsKey(i)) {
 				HashMap<Integer, ReinforcementLiteInfo> subMap = targetHashMap.get(i);
 				Main.log.add(Main.properties.getProperty("summary_drop_space").formatted(i));
@@ -104,8 +84,8 @@ public class SummaryHub implements Runnable, FileNameCreator {
 			}
 		}
 		// Filling manually tab entries
-		for (ManuallyEntry entry : manuallySummaryEntries) {
-			contentContainer.put(entry.getSummaryLabelID(), RfHashCode.getHashCode(entry.getDiameter(), entry.getRfClass()), entry.getMassReinforcement());
+		for (var entry : manuallySummaryEntries) {
+			contentContainer.put(entry);
 		}
 		// Redirect
 		if (SummaryRedirectManager.redirectTo != SummaryRedirectManager.DEFAULT_VALUE) {
@@ -122,5 +102,12 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		Main.log.add(Main.properties.getProperty("compressed_content"));
 		Main.log.add(contentContainer.borderToString());
 		Main.log.add(contentContainer.contentToString());
+	}
+
+	private void buildExcel() {
+		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(contentContainer, path
+				, createFileName(fileName), tableHead);
+		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);
+		summaryExcelBuilderThread.start();
 	}
 }

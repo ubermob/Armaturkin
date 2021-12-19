@@ -1,5 +1,7 @@
+/*
 package armaturkin.steelcomponent;
 
+import armaturkin.core.Main;
 import armaturkin.interfaces.AddMass;
 import armaturkin.interfaces.LightInfo;
 
@@ -8,8 +10,8 @@ import java.util.Arrays;
 // TODO Replace to Image
 public class SteelProductLiteInfo implements AddMass, LightInfo {
 
-	private HotRolledSteelType type;
-	private int[] dimensions;
+	private final HotRolledSteelType type;
+	private final int[] dimensions;
 	private double mass;
 
 	public SteelProductLiteInfo(HotRolledSteelType type, int[] dimensions, double mass) {
@@ -40,4 +42,14 @@ public class SteelProductLiteInfo implements AddMass, LightInfo {
 		return "SteelProductLiteInfo{" + "type=" + type + ", dimensions=" + Arrays.toString(dimensions) +
 				", mass=" + mass + '}';
 	}
-}
+
+	public String prettyString() {
+		String sign;
+		if (type == HotRolledSteelType.SHEET) {
+			sign = Main.getProperty("sheet_sign");
+		} else {
+			sign = Main.getProperty("angle_sign");
+		}
+		return
+	}
+}*/

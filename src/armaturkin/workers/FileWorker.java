@@ -45,6 +45,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 	public void run() {
 		stopwatch = new Stopwatch();
 		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
+		// todo: initWorkbook method
 		buildTableHead();
 		addBackgroundReinforcement();
 		addBackgroundReinforcementFromTextField();

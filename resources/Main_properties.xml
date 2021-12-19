@@ -69,7 +69,13 @@
     <entry key="current_row">%s: [CurrentRow: %d]</entry>
     <entry key="summary_thread_start">&#09;%s: Thread start. [SummaryDropSpace ID: %d], [File: %s], [FileNameHashCode: %s]</entry>
     <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s]</entry>
-    <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d],[FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
+    <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d], [FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
+
+    <!-- Sheet dynamic hash code -->
+    <entry key="dynamic_non_duplicated_hash_code_list">Dynamic non duplicated hash code list (size=%d): %s</entry>
+    <entry key="dynamic_sorted_hash_code_list">Dynamic sorted non duplicated hash code list (size=%d): %s</entry>
+    <entry key="empty_dynamic_hash_code_list">Empty dynamic hash code list</entry>
+    <entry key="invalid_size_of_dynamic_hash_code_list">Dynamic hash code list has size=%d more, than %d. Correct operation is not guaranteed</entry>
 
     <!-- Content -->
     <entry key="reinforcement_lite_info_to_string">[Diameter: %d], [RFClass: %s], [Mass: %.3f]</entry>
@@ -80,6 +86,9 @@
     <entry key="compressed_content">Compressed content:</entry>
     <entry key="content_head_pretty_string">[%s],</entry>
     <entry key="content_head_pretty_string_reinforcement">%d-%s</entry>
+
+    <entry key="sheet_sign">-</entry>
+    <entry key="angle_sign">L</entry>
 
     <entry key="file_successfully_read_1">☻ Список изделий прочитан до строки с номером: %d (включительно)</entry>
     <entry key="file_successfully_read_2">☻ Файл с армированием прочитан до строки с номером: %d (включительно)</entry>
@@ -106,6 +115,7 @@
     <entry key="redirect">%s: redirect %d to %d</entry>
 
     <!-- Summary Excel Builder -->
+    <entry key="summary_excel_builder_commentary">This file created by %s</entry>
     <entry key="default_list_name">Лист1</entry>
     <entry key="sheet_zoom_1">130</entry>
     <entry key="column_name_1">%%C</entry>

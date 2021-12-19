@@ -16,6 +16,11 @@ public class ReinforcementLiteInfo implements AddMass, LightInfo {
 		this.mass = mass;
 	}
 
+	public ReinforcementLiteInfo(int diameter, RFClass rfClass) {
+		this.diameter = diameter;
+		this.rfClass = rfClass;
+	}
+
 	public int getDiameter() {
 		return diameter;
 	}

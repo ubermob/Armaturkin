@@ -21,6 +21,10 @@ public class Log {
 		System.out.println(string);
 	}
 
+	public synchronized void addSkipConsole(String string) {
+		log.add(string);
+	}
+
 	public synchronized void add(Exception exception) {
 		// https://stackoverflow.com/questions/10120709/difference-between-printstacktrace-and-tostring
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -41,6 +45,7 @@ public class Log {
 	}
 
 	// S T A T I C
+
 	public static void enable() {
 		writeLog = true;
 	}

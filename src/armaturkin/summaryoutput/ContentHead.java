@@ -4,6 +4,8 @@ import armaturkin.core.Main;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.steelcomponent.Image;
+import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -14,14 +16,28 @@ public class ContentHead {
 	private List<ContentHeadEntry> list;
 	private final Object[] blocks;
 
-	public ContentHead(Object[] blocks) {
+	public ContentHead(Object[] blocks, int hashesSize, ArrayList<Image> sortedSheets) throws Exception {
 		this.blocks = blocks;
 		list = new ArrayList<>();
 		RFClass[] rfClasses = RFClass.values();
+		// exclude "UNKNOWN" value
 		for (int j = 0; j < (rfClasses.length - 1); j++) {
 			for (int i : StandardsRepository.diameters) {
-				list.add(new ContentHeadEntry(new ReinforcementLiteInfo(i, rfClasses[j], 0.0)));
+				list.add(new ContentHeadEntry(new ReinforcementLiteInfo(i, rfClasses[j])));
 			}
+		}
+		for (var v : SteelComponentRepository.getFullEqualAnglesImages()) {
+			list.add(new ContentHeadEntry(v));
+		}
+		for (var v : SteelComponentRepository.getFullUnequalAnglesImages()) {
+			list.add(new ContentHeadEntry(v));
+		}
+		for (var v : sortedSheets) {
+			list.add(new ContentHeadEntry(v));
+		}
+		if (list.size() != hashesSize) {
+			throw new Exception("\"ContentHead.list.size\"=" + list.size()
+					+ " must be equal \"ContentHeadPlacement.hashes.size\"=" + hashesSize);
 		}
 	}
 
@@ -41,9 +57,21 @@ public class ContentHead {
 	public String toPrettyString() {
 		String result = "";
 		for (var entry : list) {
-			result += Main.properties.getProperty("content_head_pretty_string").formatted(entry.getPrettyString());
+			String string = entry.getPrettyString();
+			if (string.equals("-")) {
+				break;
+			}
+			result += Main.getProperty("content_head_pretty_string").formatted(string);
 		}
-		return StringUtil.cutEnd(result, 1);
+		int nullCounter = SheetDynamicHashCode.getNullFillingNumber();
+		if (nullCounter != 0) {
+			result += Main.getProperty("content_head_pretty_string").formatted("-");
+			result = StringUtil.cutEndIfLastCharIs(result, ',');
+			result += "x" + nullCounter;
+		} else {
+			result = StringUtil.cutEndIfLastCharIs(result, ',');
+		}
+		return result;
 	}
 
 	/**

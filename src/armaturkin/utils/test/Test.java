@@ -6,11 +6,13 @@ import armaturkin.core.Reader;
 import armaturkin.core.DesignCode;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.steelcomponent.HotRolledSteelType;
+import armaturkin.summaryoutput.ContentHead;
 import armaturkin.summaryoutput.ContentHeadPlacement;
 import armaturkin.utils.StringUtil;
 import utools.stopwatch.Stopwatch;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,20 @@ public class Test {
 		contentContainer.put(1, 300, 1);
 		System.out.println(contentContainer.compactContentToString());*/
 
-		testArtifact();
+		//contentHeadPlacementTest();
+
+		localTest5();
+	}
+
+	private static void contentHeadTest() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		ContentContainer head = ContentContainer.class.getDeclaredConstructor().newInstance();
+	}
+
+	private static void contentHeadPlacementTest() {
+		ContentHeadPlacement c = new ContentHeadPlacement();
+		c.getHashes().forEach(System.out::println);
+		System.out.println("Size: " + c.getHashes().size());
+		System.out.println(Arrays.toString(c.getBlocks()));
 	}
 
 	private static void testArtifact() throws InterruptedException {
@@ -76,20 +91,32 @@ public class Test {
 		}
 	}
 
-	private static void localTest4() {
-		printTestName(4);
+	private static void localTest5() throws Exception {
+		String s = "1234,,";
+		System.out.println(s);
+		System.out.println(StringUtil.cutEndIfLastCharIs(s,','));
+		s = "1234,";
+		System.out.println(s);
+		System.out.println(StringUtil.cutEndIfLastCharIs(s,','));
+		s = "1234";
+		System.out.println(s);
+		System.out.println(StringUtil.cutEndIfLastCharIs(s,','));
+	}
+
+	private static void localTest4() throws Exception {
+/*		printTestName(4);
 		ContentContainer c = new ContentContainer();
 		//c.put(1, 300, 1.0);
 		System.out.println(c.maxHashCode());
-		System.out.println(c.borderToString());
+		System.out.println(c.borderToString());*/
 	}
 
-	private static void localTest3() {
-		printTestName(3);
+	private static void localTest3() throws Exception {
+/*		printTestName(3);
 		ContentContainer c = new ContentContainer();
 		c.compress();
 		System.out.println("=========");
-		System.out.println(c.maxHashCode());
+		System.out.println(c.maxHashCode());*/
 	}
 
 	private static void localTest2() throws IOException {

@@ -56,7 +56,6 @@ public class ManuallyEntry {
 	public static void addSteelComponentEntry(Image image, String textFieldString) {
 		try {
 			double parsedValue = parseIfNotNegative(textFieldString);
-			// do calculate mass here?
 			ManuallyEntry entry = getNewManuallyEntryOfAngleSteel(
 					image,
 					parsedValue
@@ -64,7 +63,7 @@ public class ManuallyEntry {
 			Main.manuallySummaryEntries.add(entry);
 			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
 					ManuallyEntry.class,
-					image.getType(),
+					image.getHotRolledSteelType(),
 					image.toString(),
 					parsedValue
 			));
@@ -202,8 +201,8 @@ public class ManuallyEntry {
 	private ManuallyEntry(Image image, double parsedValue, double mass) throws CloneNotSupportedException {
 		this.type = Type.SUMMARY_HOT_ROLLED_STEEL;
 		buildLabelHotRolledSteel(image, parsedValue);
-		summaryLabelID = parseSummaryLabel("");
-		lightInfo = image.cloneWrapper();
+		summaryLabelID = parseSummaryLabel("Фундамент"); // TODO: Refactor
+		lightInfo = image.getClone();
 		((Image) lightInfo).setMass(mass);
 		this.parsedValue = parsedValue;
 	}
@@ -213,7 +212,7 @@ public class ManuallyEntry {
 		type = Type.SUMMARY_HOT_ROLLED_STEEL;
 		lightInfo = new Image(parsedValue, width, thickness, mass);
 		buildLabelHotRolledSteel((Image) lightInfo, parsedValue);
-		summaryLabelID = parseSummaryLabel("");
+		summaryLabelID = parseSummaryLabel("Фундамент"); // TODO: Refactor
 		this.parsedValue = parsedValue;
 	}
 
@@ -224,7 +223,7 @@ public class ManuallyEntry {
 	 */
 	private int parseSummaryLabel(String summaryLabel) {
 		String[] labels = Main.properties.getProperty("content_row").split("-");
-		if (type == Type.SUMMARY_REINFORCEMENT) {
+		if (type != Type.BACKGROUND_REINFORCEMENT) {
 			for (int i = 0; i < labels.length; i++) {
 				if (summaryLabel.equals(labels[i])) {
 					return i + 1;
@@ -259,7 +258,7 @@ public class ManuallyEntry {
 	}
 
 	public HotRolledSteelType getHotRolledSteelType() {
-		return ((Image) lightInfo).getType();
+		return ((Image) lightInfo).getHotRolledSteelType();
 	}
 
 	public String getImageAsString() {
@@ -275,11 +274,37 @@ public class ManuallyEntry {
 	}
 
 	public HotRolledSteelType getImageType() {
-		return ((Image) lightInfo).getType();
+		return ((Image) lightInfo).getHotRolledSteelType();
 	}
 
 	public String getImageToString() {
 		return ((Image) lightInfo).toString();
+	}
+
+	public Image getLightInfoCastingToImage() {
+		return (Image) lightInfo;
+	}
+
+	public boolean isReinforcement() {
+		return lightInfo instanceof ReinforcementLiteInfo;
+	}
+
+	public boolean isAngle() {
+		if (isHotRolledSteelAndInstanceOfImage()) {
+			return ((Image) lightInfo).getHotRolledSteelType() != HotRolledSteelType.SHEET;
+		}
+		return false;
+	}
+
+	public boolean isSheet() {
+		if (isHotRolledSteelAndInstanceOfImage()) {
+			return ((Image) lightInfo).getHotRolledSteelType() == HotRolledSteelType.SHEET;
+		}
+		return false;
+	}
+
+	private boolean isHotRolledSteelAndInstanceOfImage() {
+		return type == Type.SUMMARY_HOT_ROLLED_STEEL && lightInfo instanceof Image;
 	}
 
 	private void buildLabelReinforcement(String summaryLabel, int diameter, RFClass rfClass, double parsedValue) {

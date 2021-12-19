@@ -841,7 +841,7 @@ public class Controller {
 	private void setSheet() {
 		choiceBoxWrapper1.reset();
 		choiceBoxWrapper2.setList(observableList(SteelComponentRepository.getSheetThicknessList()));
-		// Test
+		// TODO: now it work in test mode (THIS IS NOT REAL WIDTH)
 		List<Number> list = new ArrayList<>();
 		int v = 50;
 		for (int i = 0; i < 15; i++) {

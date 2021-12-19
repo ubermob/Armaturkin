@@ -38,4 +38,18 @@ public class StringUtil {
 		}
 		return input.substring(0, input.length() - number);
 	}
+
+	/**
+	 * Remove the one last char.
+	 *
+	 * @param input string for cut
+	 * @param c     foreign char
+	 * @return cutting string
+	 */
+	public synchronized static String cutEndIfLastCharIs(String input, char c) {
+		if (input.charAt(input.length() - 1) == c) {
+			return cutEnd(input, 1);
+		}
+		return input;
+	}
 }
