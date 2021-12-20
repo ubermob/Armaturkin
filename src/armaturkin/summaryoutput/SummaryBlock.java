@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 public class SummaryBlock {
 
-	private final Double[][] blockBody;
-	private final Double[] horizontalSummaryMass;
-	private final Double[] verticalSummaryMass;
+	protected final Double[][] blockBody;
+	protected final Double[] horizontalSummaryMass;
+	protected final Double[] verticalSummaryMass;
 	private double blockSummaryMass;
 	private final int[] diameters;
 	private final RFClass rfClass;
@@ -61,17 +61,17 @@ public class SummaryBlock {
 
 	@Override
 	public String toString() {
-		String res = "-B-L-O-C-K-\n";
+		String result = "-B-L-O-C-K-\n";
 		for (Double[] d : blockBody) {
-			res += Arrays.toString(d) + "\n";
+			result += Arrays.toString(d) + "\n";
 		}
-		res += "Horizontal summary mass " + Arrays.toString(horizontalSummaryMass) + "\n";
-		res += "Vertical summary mass " + Arrays.toString(verticalSummaryMass) + "\n";
-		res += "Block summary mass " + blockSummaryMass + "\n";
-		res += "Diameters " + Arrays.toString(diameters) + "\n";
-		res += "rfClass " + rfClass + "\n";
-		res += "-----------";
-		return res;
+		result += "Horizontal summary mass: " + Arrays.toString(horizontalSummaryMass) + "\n";
+		result += "Vertical summary mass: " + Arrays.toString(verticalSummaryMass) + "\n";
+		result += "Block summary mass: " + blockSummaryMass + "\n";
+		result += "Diameters: " + Arrays.toString(diameters) + "\n";
+		result += "RFClass: " + rfClass + "\n";
+		result += "-----------";
+		return result;
 	}
 
 	private void calculateMass() {

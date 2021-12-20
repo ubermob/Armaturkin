@@ -2,8 +2,8 @@ package armaturkin.summaryoutput;
 
 import armaturkin.interfaces.LightInfo;
 import armaturkin.reinforcement.RFClass;
-import armaturkin.steelcomponent.Image;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
+import armaturkin.steelcomponent.Image;
 
 import static armaturkin.core.Main.getProperty;
 
@@ -38,8 +38,20 @@ public class ContentHeadEntry {
 		}
 	}
 
+	public boolean isInstanceOfLiteInfo() {
+		return entry instanceof ReinforcementLiteInfo;
+	}
+
+	public boolean isInstanceOfImage() {
+		return entry instanceof Image;
+	}
+
 	public RFClass getRfClass() {
 		return ((ReinforcementLiteInfo) entry).getRfClass();
+	}
+
+	public Image getImage() {
+		return (Image) entry;
 	}
 
 	public int getDiameter() {

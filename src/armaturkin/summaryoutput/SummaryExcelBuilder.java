@@ -1,9 +1,9 @@
 package armaturkin.summaryoutput;
 
-import armaturkin.core.Main;
 import armaturkin.core.DesignCode;
+import armaturkin.core.Main;
 import armaturkin.reinforcement.RFClass;
-import org.apache.poi.ooxml.POIXMLProperties;
+import armaturkin.steelcomponent.HotRolledSteelType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -20,6 +20,7 @@ import static armaturkin.core.Main.getProperty;
 public class SummaryExcelBuilder implements Runnable {
 
 	private final ContentContainer contentContainer;
+	private final Object[] contentHeadPlacementBlocks;
 	private final String path, fileName, tableHead;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
@@ -31,6 +32,7 @@ public class SummaryExcelBuilder implements Runnable {
 
 	public SummaryExcelBuilder(ContentContainer contentContainer, String path, String fileName, String tableHead) {
 		this.contentContainer = contentContainer;
+		contentHeadPlacementBlocks = contentContainer.getContentHeadPlacementBlocks();
 		this.path = path;
 		this.fileName = fileName;
 		this.tableHead = tableHead;
@@ -41,15 +43,31 @@ public class SummaryExcelBuilder implements Runnable {
 		stopwatch = new Stopwatch();
 		Main.log.add(getProperty("thread_start").formatted(getClass()));
 		initWorkbook();
+		createCellStyle();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
 		String[] rowStrings = contentContainer.getRowStrings();
+		testLog("headBlockFullness.size=" + headBlockFullness.length); ////TODO: Delete code line
+		testLog("contentHeadPlacementBlocks.size=" + contentHeadPlacementBlocks.length); ////TODO: Delete code line
 		int totalExcelRows = baseRowInt + rowStrings.length + 1;
 		for (int i = 0; i < totalExcelRows; i++) {
 			sheet.createRow(i); // Create all rows
 		}
-		for (int i = 0; i < headBlockFullness.length; i++) {
-			if (headBlockFullness[i]) {
-				buildBlock(i);
+		for (int i = 0; i < contentHeadPlacementBlocks.length; i++) {
+			// Blocks with reinforcement
+			if (contentHeadPlacementBlocks[i] instanceof RFClass && headBlockFullness[i]) {
+				testLog("rfclass block i=" + i); // TODO: Delete code line
+				buildReinforcementBlock(i);
+			}
+			if (contentHeadPlacementBlocks[i] instanceof HotRolledSteelType && headBlockFullness[i]) {
+				// Blocks with angles
+				if (contentHeadPlacementBlocks[i] != sheet) {
+					testLog("angles block i=" + i); // TODO: Delete code line
+					buildAngleBlock(i);
+				} else {
+					// Block with sheet
+					testLog("sheet block i=" + i); // TODO: Delete code line
+					buildSheetBlock(i);
+				}
 			}
 		}
 		buildFinallyVerticalSummaryMass();
@@ -66,11 +84,10 @@ public class SummaryExcelBuilder implements Runnable {
 		Main.log.add(getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
-	private void buildBlock(int i) {
+	private void buildReinforcementBlock(int i) {
 		int startBlockColumn = columnInt;
 		SummaryBlock block = contentContainer.getBlock(i);
 		Main.log.add(block.toString());
-		createCellStyle();
 		for (int j = 0; j < block.getBodyWidth(); j++) {
 			rowInt = baseRowInt;
 			for (int k = 0; k < block.getBodyHeight(); k++) {
@@ -109,6 +126,30 @@ public class SummaryExcelBuilder implements Runnable {
 		sheet.addMergedRegion(new CellRangeAddress(3, 3, startBlockColumn, columnInt));
 		// Next column
 		columnInt++;
+	}
+
+	private void buildAngleBlock(int i) {
+		// TODO
+		int startBlockColumn = columnInt;
+		int startAngleBlock = columnInt;
+		HotRolledSteelSummaryBlock block = contentContainer.getHotRolledSteelSummaryBlock(i);
+		Main.log.add(block.toString());
+		for (int j = 0; j < block.getBodyWidth(); j++) {
+			rowInt = baseRowInt;
+			for (int k = 0; k < block.getBodyHeight(); k++) {
+				writeCell(sheet.getRow(rowInt++).createCell(columnInt), block.getValue(k, j));
+			}
+			writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getHorizontalSummaryMass(j));
+			// Write column name
+			sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_1") + block.getDiameter(j));
+			sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
+			// Next column
+			columnInt++;
+		}
+	}
+
+	private void buildSheetBlock(int i) {
+		// TODO
 	}
 
 	private void createCellStyle() {
@@ -201,9 +242,13 @@ public class SummaryExcelBuilder implements Runnable {
 		workbook = new XSSFWorkbook();
 		sheet = workbook.createSheet(getProperty("default_list_name"));
 		sheet.setZoom(Integer.parseInt(getProperty("sheet_zoom_1")));
-		var coreProperties =  workbook.getProperties().getCoreProperties();
+		var coreProperties = workbook.getProperties().getCoreProperties();
 		coreProperties.setCreator(Main.getAppNameAndVersion());
 		coreProperties.setDescription(Main.getProperty("summary_excel_builder_commentary")
 				.formatted(Main.getAppNameAndVersion()));
+	}
+
+	private void testLog(String string) {
+		Main.log.add(string);
 	}
 }

@@ -106,8 +106,12 @@ public class SummaryHub implements Runnable, FileNameCreator {
 	}
 
 	private void buildExcel() {
-		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(contentContainer, path
-				, createFileName(fileName), tableHead);
+		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(
+				contentContainer,
+				path,
+				createFileName(fileName),
+				tableHead
+		);
 		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);
 		summaryExcelBuilderThread.start();
 	}

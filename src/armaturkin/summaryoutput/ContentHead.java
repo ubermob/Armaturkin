@@ -4,6 +4,7 @@ import armaturkin.core.Main;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.utils.StringUtil;
@@ -95,36 +96,79 @@ public class ContentHead {
 		return (RFClass) blocks[i];
 	}
 
+	public HotRolledSteelType getHotRolledSteelType(int i) {
+		return (HotRolledSteelType) blocks[i];
+	}
+
 	public int[] getDiameters(RFClass rfClass) {
-		int counter = 0;
+		List<Integer> tmpList = new ArrayList<>();
+		// TODO: clear
+/*		int counter = 0;
 		for (var entry : list) {
-			if (entry.getRfClass() == rfClass) {
+			if (entry.isLiteInfoInstance() & entry.getRfClass() == rfClass) {
 				counter++;
 			}
-		}
-		int[] result = new int[counter];
-		int resultIndex = 0;
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getRfClass() == rfClass) {
-				result[resultIndex++] = list.get(i).getDiameter();
+		}*/
+//		int[] result = new int[counter];
+//		int resultIndex = 0;
+		for (var entry : list) {
+			if (entry.isInstanceOfLiteInfo() && entry.getRfClass() == rfClass) {
+				tmpList.add(entry.getDiameter());
 			}
+		}
+		Object[] objects = tmpList.toArray();
+		int[] result = new int[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			result[i] = (Integer) objects[i];
 		}
 		return result;
 	}
 
 	public int[] getIndexes(RFClass rfClass) {
-		int counter = 0;
+		List<Integer> tmpList = new ArrayList<>();
+		// TODO: clear
+/*		int counter = 0;
 		for (var entry : list) {
 			if (entry.getRfClass() == rfClass) {
 				counter++;
 			}
 		}
-		int[] result = new int[counter];
-		int resultIndex = 0;
+		int[] result = new int[counter];*/
+//		int resultIndex = 0;
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getRfClass() == rfClass) {
-				result[resultIndex++] = i;
+			if (list.get(i).isInstanceOfLiteInfo() && list.get(i).getRfClass() == rfClass) {
+				tmpList.add(i);
 			}
+		}
+		Object[] objects = tmpList.toArray();
+		int[] result = new int[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			result[i] = (Integer) objects[i];
+		}
+		return result;
+	}
+
+	public List<Image> getImages(HotRolledSteelType hotRolledSteelType) {
+		List<Image> resultList = new ArrayList<>();
+		for (var entry : list) {
+			if (entry.isInstanceOfImage() && entry.getImage().getHotRolledSteelType() == hotRolledSteelType) {
+				resultList.add(entry.getImage());
+			}
+		}
+		return resultList;
+	}
+
+	public int[] getIndexes(HotRolledSteelType hotRolledSteelType) {
+		List<Integer> tmpList = new ArrayList<>();
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).isInstanceOfImage() && list.get(i).getImage().getHotRolledSteelType() == hotRolledSteelType) {
+				tmpList.add(i);
+			}
+		}
+		Object[] objects = tmpList.toArray();
+		int[] result = new int[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			result[i] = (Integer) objects[i];
 		}
 		return result;
 	}

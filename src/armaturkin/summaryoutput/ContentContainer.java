@@ -3,9 +3,11 @@ package armaturkin.summaryoutput;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.RfHashCode;
+import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.Image;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContentContainer {
 
@@ -69,6 +71,12 @@ public class ContentContainer {
 		RFClass rfClass = contentHead.getRFClass(i);
 		int[] diameters = contentHead.getDiameters(rfClass);
 		int bodyWidth = diameters.length;
+		// Indexes relative full compressed content
+		//  |---|---|---|---|---| <- indexes [2, 3] of 5
+		//  |   |   |xxx|xxx|   |
+		//  |---|---|---|---|---|
+		//  |   |   |xxx|xxx|   |
+		//  |---|---|---|---|---|
 		int[] indexes = contentHead.getIndexes(rfClass);
 		int bodyHeight = content.getHeight();
 		Double[][] blockBody = new Double[bodyHeight][bodyWidth];
@@ -86,6 +94,33 @@ public class ContentContainer {
 		);
 	}
 
+	public HotRolledSteelSummaryBlock getHotRolledSteelSummaryBlock(int i) {
+		HotRolledSteelType hotRolledSteelType = contentHead.getHotRolledSteelType(i);
+		List<Image> images = contentHead.getImages(hotRolledSteelType);
+		int bodyWidth = images.size();
+		// Indexes relative full compressed content
+		//  |---|---|---|---|---| <- indexes [2, 3] of 5
+		//  |   |   |xxx|xxx|   |
+		//  |---|---|---|---|---|
+		//  |   |   |xxx|xxx|   |
+		//  |---|---|---|---|---|
+		int[] indexes = contentHead.getIndexes(hotRolledSteelType);
+		int bodyHeight = content.getHeight();
+		Double[][] blockBody = new Double[bodyHeight][bodyWidth];
+		for (int j = 0; j < indexes.length; j++) {
+			for (int k = 0; k < bodyHeight; k++) {
+				blockBody[k][j] = content.getCell(k, indexes[j]);
+			}
+		}
+		return new HotRolledSteelSummaryBlock(
+				blockBody,
+				images,
+				hotRolledSteelType,
+				bodyWidth,
+				bodyHeight
+		);
+	}
+
 	public Double[] getFinallyVerticalSummaryMass() {
 		return content.getFinallyVerticalSummaryMass();
 	}
@@ -96,6 +131,10 @@ public class ContentContainer {
 
 	public int maxHashCode() {
 		return content.maxHashCode();
+	}
+
+	public Object[] getContentHeadPlacementBlocks() {
+		return contentHeadPlacement.getBlocks();
 	}
 
 	public void storeFullContentAsArray() {
