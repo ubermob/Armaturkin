@@ -904,7 +904,7 @@ public class Controller {
 	@FXML
 	private void printVarState() {
 		if (Dev.isDevMode) {
-			Dev.printVarState();
+			Dev.printVariableStates();
 		}
 	}
 

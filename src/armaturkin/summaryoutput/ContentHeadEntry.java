@@ -58,6 +58,6 @@ public class ContentHeadEntry {
 		if (entry instanceof ReinforcementLiteInfo) {
 			return ((ReinforcementLiteInfo) entry).getDiameter();
 		}
-		return -1; // TODO ???
+		return -1;
 	}
 }

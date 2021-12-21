@@ -86,6 +86,7 @@ public class ContentContainer {
 			}
 		}
 		return new SummaryBlock(
+				i,
 				blockBody,
 				diameters,
 				rfClass,
@@ -113,6 +114,7 @@ public class ContentContainer {
 			}
 		}
 		return new HotRolledSteelSummaryBlock(
+				i,
 				blockBody,
 				images,
 				hotRolledSteelType,

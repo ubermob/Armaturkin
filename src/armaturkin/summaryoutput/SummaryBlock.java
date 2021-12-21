@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class SummaryBlock {
 
+	protected final int id;
 	protected final Double[][] blockBody;
 	protected final Double[] horizontalSummaryMass;
 	protected final Double[] verticalSummaryMass;
@@ -16,7 +17,8 @@ public class SummaryBlock {
 	private final int bodyWidth;
 	private final int bodyHeight;
 
-	public SummaryBlock(Double[][] blockBody, int[] diameters, RFClass rfClass, int bodyWidth, int bodyHeight) {
+	public SummaryBlock(int id, Double[][] blockBody, int[] diameters, RFClass rfClass, int bodyWidth, int bodyHeight) {
+		this.id = id;
 		this.blockBody = blockBody;
 		this.diameters = diameters;
 		this.rfClass = rfClass;
@@ -61,7 +63,7 @@ public class SummaryBlock {
 
 	@Override
 	public String toString() {
-		String result = "-B-L-O-C-K-\n";
+		String result = "--B-L-O-C-K--{id=%d}--\n".formatted(id);
 		for (Double[] d : blockBody) {
 			result += Arrays.toString(d) + "\n";
 		}
@@ -70,7 +72,7 @@ public class SummaryBlock {
 		result += "Block summary mass: " + blockSummaryMass + "\n";
 		result += "Diameters: " + Arrays.toString(diameters) + "\n";
 		result += "RFClass: " + rfClass + "\n";
-		result += "-----------";
+		result += "----------------------";
 		return result;
 	}
 

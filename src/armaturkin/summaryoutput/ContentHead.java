@@ -102,15 +102,6 @@ public class ContentHead {
 
 	public int[] getDiameters(RFClass rfClass) {
 		List<Integer> tmpList = new ArrayList<>();
-		// TODO: clear
-/*		int counter = 0;
-		for (var entry : list) {
-			if (entry.isLiteInfoInstance() & entry.getRfClass() == rfClass) {
-				counter++;
-			}
-		}*/
-//		int[] result = new int[counter];
-//		int resultIndex = 0;
 		for (var entry : list) {
 			if (entry.isInstanceOfLiteInfo() && entry.getRfClass() == rfClass) {
 				tmpList.add(entry.getDiameter());
@@ -126,15 +117,6 @@ public class ContentHead {
 
 	public int[] getIndexes(RFClass rfClass) {
 		List<Integer> tmpList = new ArrayList<>();
-		// TODO: clear
-/*		int counter = 0;
-		for (var entry : list) {
-			if (entry.getRfClass() == rfClass) {
-				counter++;
-			}
-		}
-		int[] result = new int[counter];*/
-//		int resultIndex = 0;
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).isInstanceOfLiteInfo() && list.get(i).getRfClass() == rfClass) {
 				tmpList.add(i);

@@ -46,8 +46,6 @@ public class SummaryExcelBuilder implements Runnable {
 		createCellStyle();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
 		String[] rowStrings = contentContainer.getRowStrings();
-		testLog("headBlockFullness.size=" + headBlockFullness.length); ////TODO: Delete code line
-		testLog("contentHeadPlacementBlocks.size=" + contentHeadPlacementBlocks.length); ////TODO: Delete code line
 		int totalExcelRows = baseRowInt + rowStrings.length + 1;
 		for (int i = 0; i < totalExcelRows; i++) {
 			sheet.createRow(i); // Create all rows
@@ -55,19 +53,10 @@ public class SummaryExcelBuilder implements Runnable {
 		for (int i = 0; i < contentHeadPlacementBlocks.length; i++) {
 			// Blocks with reinforcement
 			if (contentHeadPlacementBlocks[i] instanceof RFClass && headBlockFullness[i]) {
-				testLog("rfclass block i=" + i); // TODO: Delete code line
-				buildReinforcementBlock(i);
+				buildBlock(contentContainer.getBlock(i));
 			}
 			if (contentHeadPlacementBlocks[i] instanceof HotRolledSteelType && headBlockFullness[i]) {
-				// Blocks with angles
-				if (contentHeadPlacementBlocks[i] != sheet) {
-					testLog("angles block i=" + i); // TODO: Delete code line
-					buildAngleBlock(i);
-				} else {
-					// Block with sheet
-					testLog("sheet block i=" + i); // TODO: Delete code line
-					buildSheetBlock(i);
-				}
+				buildBlock(contentContainer.getHotRolledSteelSummaryBlock(i));
 			}
 		}
 		buildFinallyVerticalSummaryMass();
@@ -84,41 +73,78 @@ public class SummaryExcelBuilder implements Runnable {
 		Main.log.add(getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
-	private void buildReinforcementBlock(int i) {
+	private void buildBlock(SummaryBlock block) {
+		boolean isInstanceOfAngle = isInstanceOfAngle(block);
+		boolean isInstanceOfSheet = isInstanceOfSheet(block);
 		int startBlockColumn = columnInt;
-		SummaryBlock block = contentContainer.getBlock(i);
+		//SummaryBlock block = contentContainer.getBlock(i);
 		Main.log.add(block.toString());
 		for (int j = 0; j < block.getBodyWidth(); j++) {
 			rowInt = baseRowInt;
 			for (int k = 0; k < block.getBodyHeight(); k++) {
+				// Write body
 				writeCell(sheet.getRow(rowInt++).createCell(columnInt), block.getValue(k, j));
 			}
 			writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getHorizontalSummaryMass(j));
 			// Write column name
-			sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_1") + block.getDiameter(j));
+			String columnName;
+			if (isInstanceOfAngle || isInstanceOfSheet) {
+				columnName = ((HotRolledSteelSummaryBlock) block).getImage(j).toString();
+			} else {
+				// Reinforcement
+				columnName = getProperty("column_name_1") + block.getDiameter(j);
+			}
+			sheet.getRow(5).createCell(columnInt).setCellValue(columnName);
 			sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
 			// Next column
 			columnInt++;
 		}
 		rowInt = baseRowInt;
+		// Write vertical summary mass
 		for (int j = 0; j < block.getBodyHeight(); j++) {
 			writeCell(sheet.getRow(rowInt++).createCell(columnInt), block.getVerticalSummaryMass(j));
 		}
 		writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getBlockSummaryMass());
-		// Write column name
+		// Write vertical summary mass column name
 		sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_2"));
 		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
-		// Write specification document
-		sheet.getRow(4).createCell(startBlockColumn).setCellValue(DesignCode.getProperty("reinforcing_rolled"));
+		// Write design code
+		String designCode;
+		if (isInstanceOfAngle || isInstanceOfSheet) {
+			HotRolledSteelType hotRolledSteelType = ((HotRolledSteelSummaryBlock) block).getHotRolledSteelType();
+			if (hotRolledSteelType == HotRolledSteelType.EQUAL_LEG_ANGLE) {
+				designCode = DesignCode.getProperty("hot_rolled_steel_equal_leg_angles");
+			} else if (hotRolledSteelType == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
+				designCode = DesignCode.getProperty("hot_rolled_steel_unequal_leg_angles");
+			} else {
+				// Sheet
+				designCode = DesignCode.getProperty("hot_rolled_steel_sheets");
+			}
+		} else {
+			// Reinforcement
+			designCode = DesignCode.getProperty("reinforcing_rolled");
+		}
+		sheet.getRow(4).createCell(startBlockColumn).setCellValue(designCode);
 		sheet.getRow(4).getCell(startBlockColumn).setCellStyle(textCellStyle);
+		// Merge cells
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
 			sheet.getRow(4).createCell(j);
 			sheet.getRow(4).getCell(j).setCellStyle(textCellStyle);
 		}
 		sheet.addMergedRegion(new CellRangeAddress(4, 4, startBlockColumn, columnInt));
-		// Write reinforcement class
-		sheet.getRow(3).createCell(startBlockColumn).setCellValue(RFClass.toString(block.getRFClass()));
+		// Write reinforcement class or hot rolled steel type
+		String rfClassOrHrst;
+		if (isInstanceOfAngle) {
+			rfClassOrHrst = getProperty("table_head_3");
+		} else if (isInstanceOfSheet) {
+			rfClassOrHrst = getProperty("table_head_4");
+		} else {
+			// Reinforcement
+			rfClassOrHrst = RFClass.toString(block.getRFClass());
+		}
+		sheet.getRow(3).createCell(startBlockColumn).setCellValue(rfClassOrHrst);
 		sheet.getRow(3).getCell(startBlockColumn).setCellStyle(textCellStyle);
+		// Merge cells
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
 			sheet.getRow(3).createCell(j);
 			sheet.getRow(3).getCell(j).setCellStyle(textCellStyle);
@@ -128,28 +154,18 @@ public class SummaryExcelBuilder implements Runnable {
 		columnInt++;
 	}
 
-	private void buildAngleBlock(int i) {
-		// TODO
-		int startBlockColumn = columnInt;
-		int startAngleBlock = columnInt;
-		HotRolledSteelSummaryBlock block = contentContainer.getHotRolledSteelSummaryBlock(i);
-		Main.log.add(block.toString());
-		for (int j = 0; j < block.getBodyWidth(); j++) {
-			rowInt = baseRowInt;
-			for (int k = 0; k < block.getBodyHeight(); k++) {
-				writeCell(sheet.getRow(rowInt++).createCell(columnInt), block.getValue(k, j));
-			}
-			writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getHorizontalSummaryMass(j));
-			// Write column name
-			sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_1") + block.getDiameter(j));
-			sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
-			// Next column
-			columnInt++;
+	private boolean isInstanceOfAngle(SummaryBlock block) {
+		if (block instanceof HotRolledSteelSummaryBlock) {
+			return ((HotRolledSteelSummaryBlock) block).getHotRolledSteelType() != HotRolledSteelType.SHEET;
 		}
+		return false;
 	}
 
-	private void buildSheetBlock(int i) {
-		// TODO
+	private boolean isInstanceOfSheet(SummaryBlock block) {
+		if (block instanceof HotRolledSteelSummaryBlock) {
+			return ((HotRolledSteelSummaryBlock) block).getHotRolledSteelType() == HotRolledSteelType.SHEET;
+		}
+		return false;
 	}
 
 	private void createCellStyle() {
@@ -246,9 +262,5 @@ public class SummaryExcelBuilder implements Runnable {
 		coreProperties.setCreator(Main.getAppNameAndVersion());
 		coreProperties.setDescription(Main.getProperty("summary_excel_builder_commentary")
 				.formatted(Main.getAppNameAndVersion()));
-	}
-
-	private void testLog(String string) {
-		Main.log.add(string);
 	}
 }

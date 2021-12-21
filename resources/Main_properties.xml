@@ -128,6 +128,9 @@
     <entry key="column_name_3">Всего</entry>
     <entry key="table_head_1">Изделия арматурные</entry>
     <entry key="table_head_2">Арматура класса</entry>
+    <entry key="table_head_3">Уголок</entry>
+    <entry key="table_head_4">Пластина</entry>
+    <entry key="table_head_5">Изделия из прокатной стали марки С245</entry>
     <entry key="left_string_head">Марка элемента</entry>
     <entry key="left_string_last">Итого</entry>
     <entry key="default_table_main_header">Сводная ведомость расхода арматуры, кг</entry>
