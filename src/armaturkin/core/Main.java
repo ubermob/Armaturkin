@@ -42,7 +42,7 @@ import static armaturkin.core.Log.log;
 
 public class Main extends Application {
 
-	public static final String version = "0.5.21b12";
+	public static final String version = "0.5.21b13";
 	// Serial or Parallel Summary Running
 	public static final boolean isSerialSummaryRunning = true;
 	public static Properties properties = new Properties();

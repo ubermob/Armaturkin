@@ -14,6 +14,8 @@ import utools.stopwatch.Stopwatch;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static armaturkin.core.Main.getProperty;
 
@@ -25,10 +27,12 @@ public class SummaryExcelBuilder implements Runnable {
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
 	private CellStyle cellStyle, textCellStyle, headerCellStyle;
-	private int columnInt = 1;
+	private final int baseColumnInt = 1;
+	private int columnInt = baseColumnInt;
 	private int lastReinforcementBlockColumn = columnInt;
 	private final int baseRowInt = 6;
 	private int rowInt = baseRowInt;
+	private final List<CellRangeAddress> angleCellRanges;
 	private Stopwatch stopwatch;
 
 	public SummaryExcelBuilder(ContentContainer contentContainer, String path, String fileName, String tableHead) {
@@ -37,6 +41,7 @@ public class SummaryExcelBuilder implements Runnable {
 		this.path = path;
 		this.fileName = fileName;
 		this.tableHead = tableHead;
+		angleCellRanges = new ArrayList<>(2);
 	}
 
 	@Override
@@ -61,6 +66,7 @@ public class SummaryExcelBuilder implements Runnable {
 			}
 		}
 		buildFinallyVerticalSummaryMassColumn();
+		buildAngleCellRangeAddress();
 		buildUpperHead();
 		buildLeftColumn(rowStrings);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
@@ -94,8 +100,7 @@ public class SummaryExcelBuilder implements Runnable {
 				// Reinforcement
 				columnName = getProperty("column_name_1") + block.getDiameter(j);
 			}
-			sheet.getRow(5).createCell(columnInt).setCellValue(columnName);
-			sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
+			fillCell(5, columnInt, columnName);
 			// Next column
 			columnInt++;
 		}
@@ -106,10 +111,9 @@ public class SummaryExcelBuilder implements Runnable {
 		}
 		writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getBlockSummaryMass());
 		// Write vertical summary mass column name
-		sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_2"));
-		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
+		fillCell(5, columnInt, getProperty("column_name_2"));
 		// Write design code
-		String designCode;
+		String designCode = DesignCode.getProperty("reinforcing_rolled");
 		if (isInstanceOfAngle || isInstanceOfSheet) {
 			HotRolledSteelType hotRolledSteelType = ((HotRolledSteelSummaryBlock) block).getHotRolledSteelType();
 			if (hotRolledSteelType == HotRolledSteelType.EQUAL_LEG_ANGLE) {
@@ -120,36 +124,35 @@ public class SummaryExcelBuilder implements Runnable {
 				// Sheet
 				designCode = DesignCode.getProperty("hot_rolled_steel_sheets");
 			}
-		} else {
-			// Reinforcement
-			designCode = DesignCode.getProperty("reinforcing_rolled");
 		}
-		sheet.getRow(4).createCell(startBlockColumn).setCellValue(designCode);
-		sheet.getRow(4).getCell(startBlockColumn).setCellStyle(textCellStyle);
+		fillCell(4, startBlockColumn, designCode);
 		// Merge cells
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
-			sheet.getRow(4).createCell(j);
-			sheet.getRow(4).getCell(j).setCellStyle(textCellStyle);
+			createEmptyCell(4, j);
 		}
 		sheet.addMergedRegion(new CellRangeAddress(4, 4, startBlockColumn, columnInt));
 		// Write reinforcement class or hot rolled steel type
-		String rfClassOrHrst;
+		String rfClassOrHrst = RFClass.toString(block.getRFClass());
 		if (isInstanceOfAngle) {
 			rfClassOrHrst = getProperty("table_head_3");
-		} else if (isInstanceOfSheet) {
-			rfClassOrHrst = getProperty("table_head_4");
-		} else {
-			// Reinforcement
-			rfClassOrHrst = RFClass.toString(block.getRFClass());
 		}
-		sheet.getRow(3).createCell(startBlockColumn).setCellValue(rfClassOrHrst);
-		sheet.getRow(3).getCell(startBlockColumn).setCellStyle(textCellStyle);
+		if (isInstanceOfSheet) {
+			rfClassOrHrst = getProperty("table_head_4");
+		}
+		fillCell(3, startBlockColumn, rfClassOrHrst);
 		// Merge cells
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
-			sheet.getRow(3).createCell(j);
-			sheet.getRow(3).getCell(j).setCellStyle(textCellStyle);
+			createEmptyCell(3, j);
 		}
-		sheet.addMergedRegion(new CellRangeAddress(3, 3, startBlockColumn, columnInt));
+		CellRangeAddress cellAddresses = new CellRangeAddress(3, 3, startBlockColumn, columnInt);
+		if (isInstanceOfAngle) {
+			// Add to list and will be invoke "buildAngleCellRangeAddress" method
+			angleCellRanges.add(cellAddresses);
+		} else {
+			// Regular
+			sheet.addMergedRegion(cellAddresses);
+		}
+		// Remember last column
 		if (!isInstanceOfAngle && !isInstanceOfSheet) {
 			// Write last reinforcement block column for manage table head
 			lastReinforcementBlockColumn = columnInt;
@@ -216,15 +219,16 @@ public class SummaryExcelBuilder implements Runnable {
 			writeCell(sheet.getRow(rowInt++).createCell(columnInt), d);
 		}
 		// Write column name
-		sheet.getRow(5).createCell(columnInt).setCellValue(getProperty("column_name_3"));
-		sheet.getRow(5).getCell(columnInt).setCellStyle(textCellStyle);
-		// 2 empty cells above last column name
-		sheet.getRow(4).createCell(columnInt).setCellStyle(textCellStyle);
-		sheet.getRow(3).createCell(columnInt).setCellStyle(textCellStyle);
+		fillCell(5, columnInt, getProperty("column_name_3"));
+		// Empty cells above last column name
+		for (int i = 1; i <= 4; i++) {
+			createEmptyCell(i, columnInt);
+		}
 		sheet.addMergedRegion(new CellRangeAddress(1, 4, columnInt, columnInt));
 	}
 
 	private void buildUpperHead() {
+		// Write table name
 		sheet.getRow(0).createCell(0).setCellValue(tableHead);
 		sheet.getRow(0).getCell(0).setCellStyle(headerCellStyle);
 		sheet.getRow(0).setHeight((short) 450);
@@ -232,53 +236,67 @@ public class SummaryExcelBuilder implements Runnable {
 			sheet.getRow(0).createCell(i).setCellStyle(headerCellStyle);
 		}
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, columnInt));
-		boolean isReinforcementBlocksExist = lastReinforcementBlockColumn - 1 > 0; // 1 is start block column
+		boolean isReinforcementBlocksExist = lastReinforcementBlockColumn - baseColumnInt > 0;
 		if (isReinforcementBlocksExist) {
-			sheet.getRow(1).createCell(1).setCellValue(getProperty("table_head_1"));
-			sheet.getRow(1).getCell(1).setCellStyle(textCellStyle);
+			fillCell(1, 1, getProperty("table_head_1"));
 			for (int i = 2; i <= columnInt; i++) {
-				sheet.getRow(1).createCell(i).setCellStyle(textCellStyle);
+				createEmptyCell(1, i);
 			}
 			sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, lastReinforcementBlockColumn));
-			sheet.getRow(2).createCell(1).setCellValue(getProperty("table_head_2"));
-			sheet.getRow(2).getCell(1).setCellStyle(textCellStyle);
+			fillCell(2, 1, getProperty("table_head_2"));
 			for (int i = 2; i <= columnInt; i++) {
-				sheet.getRow(2).createCell(i).setCellStyle(textCellStyle);
+				createEmptyCell(2, i);
 			}
 			sheet.addMergedRegion(new CellRangeAddress(2, 2, 1, lastReinforcementBlockColumn));
 		}
-		/*
-		must be greater than 1 because "columnInt" variable incremented in "buildBlock" method
-		*/
+		// Must be greater than 1 because "columnInt" variable incremented in "buildBlock" method
 		boolean isHotRolledSteelBlocksExist = columnInt - lastReinforcementBlockColumn > 1;
 		if (isHotRolledSteelBlocksExist) {
 			int startColumn = lastReinforcementBlockColumn + 1;
 			if (!isReinforcementBlocksExist) {
 				startColumn = lastReinforcementBlockColumn;
 			}
-			sheet.getRow(1).createCell(startColumn).setCellValue("QWERTY");
-			sheet.getRow(1).getCell(startColumn).setCellStyle(textCellStyle);
+			fillCell(1, startColumn, getProperty("table_head_5"));
+			createEmptyCell(2, startColumn);
+			for (int i = 1; i <= 2; i++) {
+				for (int j = (startColumn + 1); j < columnInt; j++) {
+					createEmptyCell(i, j);
+				}
+			}
+			sheet.addMergedRegion(new CellRangeAddress(1, 2, startColumn, columnInt - 1));
+		}
+	}
+
+	private void buildAngleCellRangeAddress() {
+		if (angleCellRanges.size() > 1) {
+			// Expected size == 2 and 0 index element placed before 1 index element
+			int first = angleCellRanges.get(0).getFirstColumn();
+			int last = angleCellRanges.get(1).getLastColumn();
+			sheet.addMergedRegion(new CellRangeAddress(3, 3, first, last));
+		} else {
+			// Expected size == 1
+			sheet.addMergedRegion(angleCellRanges.get(0));
 		}
 	}
 
 	private void buildLeftColumn(String[] rowStrings) {
-		sheet.getRow(1).createCell(0).setCellValue(getProperty("left_string_head"));
-		sheet.getRow(1).getCell(0).setCellStyle(textCellStyle);
+		fillCell(1, 0, getProperty("left_string_head"));
 		sheet.addMergedRegion(new CellRangeAddress(1, 5, 0, 0));
 		rowInt = baseRowInt;
 		for (var string : rowStrings) {
-			sheet.getRow(rowInt).createCell(0).setCellValue(string);
-			sheet.getRow(rowInt++).getCell(0).setCellStyle(textCellStyle);
+			fillCell(rowInt++, 0, string);
 		}
-		sheet.getRow(rowInt).createCell(0).setCellValue(getProperty("left_string_last"));
-		sheet.getRow(rowInt).getCell(0).setCellStyle(textCellStyle);
-		//fillCell();
+		fillCell(rowInt, 0, getProperty("left_string_last"));
 	}
 
-	private void fillCell(int row, int column, String text, CellStyle cellStyle) {
+	private void fillCell(int row, int column, String text) {
 		XSSFCell cell = sheet.getRow(row).createCell(column);
 		cell.setCellValue(text);
-		cell.setCellStyle(cellStyle);
+		cell.setCellStyle(textCellStyle);
+	}
+
+	private void createEmptyCell(int row, int column) {
+		sheet.getRow(row).createCell(column).setCellStyle(textCellStyle);
 	}
 
 	private void initWorkbook() {
