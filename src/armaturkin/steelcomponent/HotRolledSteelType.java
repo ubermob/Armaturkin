@@ -17,6 +17,13 @@ public enum HotRolledSteelType {
 		return list;
 	}
 
+	public static List<HotRolledSteelType> getFirstTwoElementsAsList() {
+		List<HotRolledSteelType> list = new ArrayList<>(2);
+		list.add(EQUAL_LEG_ANGLE);
+		list.add(UNEQUAL_LEG_ANGLE);
+		return list;
+	}
+
 	public static List<String> getAsStrings() {
 		String[] strings = new String[]{
 				Main.getProperty("hot_rolled_steel_type_ru_0"),

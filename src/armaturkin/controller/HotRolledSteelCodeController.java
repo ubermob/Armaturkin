@@ -15,8 +15,6 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static javafx.collections.FXCollections.observableList;
 
@@ -57,7 +55,7 @@ public class HotRolledSteelCodeController {
 	}
 
 	private void setChoiceBox() {
-		choiceBox1.setItems(observableList(HotRolledSteelType.getAsList()));
+		choiceBox1.setItems(observableList(HotRolledSteelType.getFirstTwoElementsAsList()));
 		choiceBox1.setValue(HotRolledSteelType.EQUAL_LEG_ANGLE);
 		choiceBox1.setOnAction(actionEvent -> {
 			if (choiceBox1.getValue() == HotRolledSteelType.EQUAL_LEG_ANGLE) {
