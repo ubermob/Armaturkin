@@ -62,11 +62,11 @@ public class ContentHead {
 			if (string.equals("-")) {
 				break;
 			}
-			result += Main.getProperty("content_head_pretty_string").formatted(string);
+			result += Main.app.getProperty("content_head_pretty_string").formatted(string);
 		}
 		int nullCounter = SheetDynamicHashCode.getNullFillingNumber();
 		if (nullCounter != 0) {
-			result += Main.getProperty("content_head_pretty_string").formatted("-");
+			result += Main.app.getProperty("content_head_pretty_string").formatted("-");
 			result = StringUtil.cutEndIfLastCharIs(result, ',');
 			result += "x" + nullCounter;
 		} else {

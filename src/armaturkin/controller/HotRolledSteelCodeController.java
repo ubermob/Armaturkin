@@ -38,16 +38,16 @@ public class HotRolledSteelCodeController {
 	public static void show() throws IOException {
 		if (Stages.hotRolledSteelCodeViewStage == null) {
 			FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(
-					"/armaturkin/fxml/Hot_rolled_steel_code_view.fxml"
+					"/fxml/Hot_rolled_steel_code_view.fxml"
 			));
 			Stage stage = new Stage();
 			stage.setScene(new Scene(fxmlLoader.load()));
 			controller = fxmlLoader.getController();
 			controller.setChoiceBox();
-			stage.setTitle(Main.properties.getProperty("hot_rolled_steel_stage_name"));
-			stage.getScene().getRoot().setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
-			controller.label.setFont(Main.controller.getFont());
-			controller.label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+			stage.setTitle(Main.app.getProperty("hot_rolled_steel_stage_name"));
+			stage.getScene().getRoot().setStyle("-fx-background-color: " + Main.app.getConfig().getBackgroundColor() + ";");
+			controller.label.setFont(Main.app.getController().getFont());
+			controller.label.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
 			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 			Stages.hotRolledSteelCodeViewStage = stage;
 		}

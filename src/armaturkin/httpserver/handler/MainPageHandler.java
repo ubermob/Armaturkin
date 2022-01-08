@@ -15,7 +15,6 @@ public class MainPageHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		// TODO: realize cache
 		String string = HttpServerUtil.getString(getClass().getResourceAsStream("/http/index.html"));
 		HttpServerUtil.exchangeWorker(exchange, string.getBytes(StandardCharsets.UTF_8));
 	}

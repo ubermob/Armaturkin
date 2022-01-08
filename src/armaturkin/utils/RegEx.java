@@ -17,7 +17,7 @@ public class RegEx {
 			matcher.find();
 			return Integer.parseInt(string.substring(matcher.start(), matcher.end()));
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 			return 0;
 		}
 	}

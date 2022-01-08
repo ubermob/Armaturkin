@@ -1,5 +1,6 @@
 package armaturkin.view;
 
+import armaturkin.controller.Controller;
 import armaturkin.core.Main;
 import armaturkin.utils.ReinforcementLinearMassInfo;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +14,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-import static armaturkin.core.Main.getProperty;
-
 public class Stages {
 
 	public static Stage primary;
@@ -24,15 +23,22 @@ public class Stages {
 	public static double defaultHeight;
 	public static double defaultWidth;
 
+	public static void doingPrimaryStage(Stage stage) {
+		primary = stage;
+		defaultHeight = stage.getHeight();
+		defaultWidth = stage.getWidth();
+	}
+
 	public static void showInfoStage() throws IOException {
 		if (infoStage == null) {
+			Controller controller = Main.app.getController();
 			infoStage = new Stage();
-			Label label = new FXMLLoader(Main.class.getResource("/armaturkin/fxml/Info_label.fxml")).load();
-			label.setBackground(Main.controller.getUserBackgroundColor());
-			label.setFont(Main.controller.getFont());
-			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+			Label label = new FXMLLoader(Main.class.getResource("/fxml/Info_label.fxml")).load();
+			label.setBackground(controller.getUserBackgroundColor());
+			label.setFont(controller.getFont());
+			label.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
 			infoStage.setScene(new Scene(label));
-			infoStage.setTitle(getProperty("info_stage_name"));
+			infoStage.setTitle(Main.app.getProperty("info_stage_name"));
 			infoStage.initStyle(StageStyle.UTILITY);
 			primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 		}
@@ -43,12 +49,12 @@ public class Stages {
 		if (reinforcementLinearMassListStage == null) {
 			Stage stage = new Stage();
 			Label label = new Label(ReinforcementLinearMassInfo.getText());
-			label.setBackground(Main.controller.getUserBackgroundColor());
+			label.setBackground(Main.app.getController().getUserBackgroundColor());
 			label.setFont(new Font("Consolas", 20));
-			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+			label.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
 			label.setAlignment(Pos.CENTER);
 			stage.setScene(new Scene(label));
-			stage.setTitle(getProperty("reinforcement_linear_mass_list_stage_name"));
+			stage.setTitle(Main.app.getProperty("reinforcement_linear_mass_list_stage_name"));
 			stage.initStyle(StageStyle.UTILITY);
 			primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 			reinforcementLinearMassListStage = stage;

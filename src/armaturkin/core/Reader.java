@@ -26,15 +26,4 @@ public class Reader {
 		bufferedReader.close();
 		return result;
 	}
-
-	@Deprecated
-	public static List<Integer> readRfHashCode(InputStream inputStream) throws IOException {
-		List<Integer> result = new ArrayList<>();
-		for (var line : read(inputStream)) {
-			if (!line.startsWith("//") && line.length() != 0) {
-				result.add(Integer.parseInt(line));
-			}
-		}
-		return result;
-	}
 }

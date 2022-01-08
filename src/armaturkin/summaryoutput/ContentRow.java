@@ -11,9 +11,9 @@ public class ContentRow {
 
 	public ContentRow() {
 		try {
-			list = Arrays.asList(Main.properties.getProperty("content_row").split("-"));
+			list = Arrays.asList(Main.app.getProperty("content_row").split("-"));
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 

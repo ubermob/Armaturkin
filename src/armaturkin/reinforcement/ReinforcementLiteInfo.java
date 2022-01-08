@@ -40,6 +40,6 @@ public class ReinforcementLiteInfo implements AddMass, LightInfo {
 
 	@Override
 	public String toString() {
-		return Main.properties.getProperty("reinforcement_lite_info_to_string").formatted(diameter, rfClass, mass);
+		return Main.app.getProperty("reinforcement_lite_info_to_string").formatted(diameter, rfClass, mass);
 	}
 }

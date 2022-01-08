@@ -23,6 +23,18 @@ public class SummaryThreadPool {
 	private Thread[] subThreads; // unused now
 	private List<Log> logList;
 
+	public static int getSet(String type) {
+		type = type.toUpperCase();
+		if (type.equals("RAW")) {
+			return RAW;
+		} else if (type.equals("PRETTY")) {
+			return PRETTY;
+		} else if (type.equals("RAW_STAIRWAY")) {
+			return RAW_STAIRWAY;
+		}
+		return -1;
+	}
+
 	public SummaryThreadPool(int id) throws InterruptedException {
 		this.id = id;
 		set = DROP_SPACE_SET[id - 1];
@@ -31,11 +43,6 @@ public class SummaryThreadPool {
 
 	public HashMap<Integer, ReinforcementLiteInfo> getHashMap() {
 		return hashMap;
-	}
-
-	@Deprecated
-	public Thread[] getSubThreads() {
-		return subThreads;
 	}
 
 	public List<Log> getLogList() {
@@ -47,7 +54,7 @@ public class SummaryThreadPool {
 	}
 
 	private void createThreads() throws InterruptedException {
-		labelPaths = Main.summaryPaths.get(id);
+		labelPaths = Main.app.getSummaryModel().getSummaryPaths().get(id);
 		hashMap = new HashMap<>();
 		logList = new ArrayList<>();
 		if (labelPaths != null) {
@@ -58,7 +65,7 @@ public class SummaryThreadPool {
 				SummaryFileWorker summaryFileWorker = new SummaryFileWorker(labelPaths.get(j), hashMap, id, log, set);
 				subThreads[j] = new Thread(summaryFileWorker);
 				subThreads[j].start();
-				if (Main.isSerialSummaryRunning) {
+				if (Main.app.isSerialSummaryRunning()) {
 					subThreads[j].join();
 				}
 			}

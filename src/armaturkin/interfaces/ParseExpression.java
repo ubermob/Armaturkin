@@ -18,12 +18,12 @@ public interface ParseExpression {
 			String[] splitted = Parse.it(string, Condition.condition.ch);
 			if (splitted.length != 2) {
 				throw new UnsupportedOperationException(
-						Main.properties.getProperty("interface_exception_throw").formatted(string));
+						Main.app.getProperty("interface_exception_throw").formatted(string));
 			}
 			return Integer.parseInt(splitted[0]) * Integer.parseInt(splitted[1]);
 		} else {
 			throw new UnsupportedOperationException(
-					Main.properties.getProperty("interface_exception_throw").formatted(string));
+					Main.app.getProperty("interface_exception_throw").formatted(string));
 		}
 	}
 

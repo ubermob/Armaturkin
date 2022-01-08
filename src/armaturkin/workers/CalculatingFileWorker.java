@@ -1,25 +1,24 @@
 package armaturkin.workers;
 
+import armaturkin.core.Main;
+import armaturkin.interfaces.CellEmptyChecker;
+import armaturkin.interfaces.ParseExpression;
+import armaturkin.interfaces.ParseInt;
+import armaturkin.interfaces.RowEmptyChecker;
+import armaturkin.reinforcement.Reinforcement;
+import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.reinforcement.StandardsRepository;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import utools.stopwatch.Stopwatch;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.HashMap;
-
-import armaturkin.core.Main;
-import armaturkin.interfaces.ParseExpression;
-import armaturkin.reinforcement.Reinforcement;
-import armaturkin.reinforcement.ReinforcementProduct;
-import armaturkin.reinforcement.StandardsRepository;
-import armaturkin.interfaces.CellEmptyChecker;
-import armaturkin.interfaces.ParseInt;
-import armaturkin.interfaces.RowEmptyChecker;
-import org.apache.poi.ss.usermodel.*;
-import utools.stopwatch.Stopwatch;
-
-import static armaturkin.core.Log.log;
-import static armaturkin.core.Main.addNotification;
-import static armaturkin.core.Main.getProperty;
 
 public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt, ParseExpression {
 
@@ -53,12 +52,12 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
-		log(Main.properties.getProperty("thread_start").formatted(getClass()));
-		log(Main.properties.getProperty("thread_file").formatted(getClass(), path));
+		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
+		Main.app.log(Main.app.getProperty("thread_file").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			log(e);
+			Main.app.log(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		if (tableHeadVerification()) {
@@ -70,12 +69,12 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		} else {
 			tableHeadDoNotValid();
 		}
-		addNotification(Main.properties.getProperty("file_successfully_read_2").formatted(currentRow));
-		log(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+		Main.app.addNotification(Main.app.getProperty("file_successfully_read_2").formatted(currentRow));
+		Main.app.log(Main.app.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void readRow() {
-		log(Main.properties.getProperty("current_row").formatted(getClass(), currentRow));
+		Main.app.log(Main.app.getProperty("current_row").formatted(getClass(), currentRow));
 		row = sheet.getRow(currentRow);
 		majorNumber = parseIntFromNumber(row.getCell(majorNumberColumn));
 		diameter = parseIntFromString(row.getCell(diameterColumn));
@@ -86,15 +85,15 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			// Try parsing expression
 			int localCurrentRow = currentRow;
 			String localParsedString = row.getCell(minorNumberColumn).getStringCellValue();
-			log(getProperty("expression_console").formatted(getClass(), localCurrentRow, localParsedString));
-			addNotification(getProperty("expression_notification").formatted(localCurrentRow + 1, localParsedString));
+			Main.app.log(Main.app.getProperty("expression_console").formatted(getClass(), localCurrentRow, localParsedString));
+			Main.app.addNotification(Main.app.getProperty("expression_notification").formatted(localCurrentRow + 1, localParsedString));
 			try {
 				minorNumber = parseIntFromExpression(row.getCell(minorNumberColumn));
 			} catch (UnsupportedOperationException e2) {
 				// Unsupported expression
-				addNotification(getProperty("interface_exception_notification").formatted(localParsedString, localCurrentRow + 1));
-				log(getProperty("interface_exception_console").formatted(getClass(), localParsedString, localCurrentRow));
-				log(e2);
+				Main.app.addNotification(Main.app.getProperty("interface_exception_notification").formatted(localParsedString, localCurrentRow + 1));
+				Main.app.log(Main.app.getProperty("interface_exception_console").formatted(getClass(), localParsedString, localCurrentRow));
+				Main.app.log(e2);
 			}
 		}
 		position = parseIntFromString(row.getCell(positionColumn));
@@ -102,10 +101,10 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " RAW parsing values: [position: %d],[diameter: %d],[length: %d],[majorNumber: %d],[minorNumber: %d]",
 				position, diameter, length, majorNumber, minorNumber);
-		log(formatter.toString());
+		Main.app.log(formatter.toString());
 		checkPosition();
 		buildMap();
-		log(reinforcementHashMap.get(position).toString());
+		Main.app.log(reinforcementHashMap.get(position).toString());
 	}
 
 	private void buildMap() {
@@ -165,7 +164,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			compareLength();
 			reinforcementHashMap.put(position, getReinforcement(false, number));
 		} else {
-			addNotification("Позиция: " + position + " отсутствует в списке изделий");
+			Main.app.addNotification("Позиция: " + position + " отсутствует в списке изделий");
 		}
 	}
 
@@ -189,17 +188,17 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 
 	private void checkPosition() {
 		if (position <= 0) {
-			addNotification(Main.properties.getProperty("position_notification_3").formatted((currentRow + 1), position));
+			Main.app.addNotification(Main.app.getProperty("position_notification_3").formatted((currentRow + 1), position));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			addNotification(Main.properties.getProperty("position_notification_4").formatted((currentRow + 1), position));
+			Main.app.addNotification(Main.app.getProperty("position_notification_4").formatted((currentRow + 1), position));
 		}
 	}
 
 	private void compareDiameter(int reservedPositionIndex) {
 		int productDiameter = StandardsRepository.reservedDiameters[reservedPositionIndex];
 		if (diameter != productDiameter) {
-			addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
+			Main.app.addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
 					" (в зарезервированных позициях: " + productDiameter + ")");
 		}
 	}
@@ -207,21 +206,21 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private void compareDiameter() {
 		int productDiameter = reinforcementProductHashMap.get(position).getDiameter();
 		if (diameter != productDiameter) {
-			addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
+			Main.app.addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
 					" (в списке изделий: " + productDiameter + ")");
 		}
 	}
 
 	private void compareMaxLength() {
 		if (length > StandardsRepository.maxLength) {
-			addNotification("В строке " + (currentRow + 1) + " длина изделия/стержня: " + length);
+			Main.app.addNotification("В строке " + (currentRow + 1) + " длина изделия/стержня: " + length);
 		}
 	}
 
 	private void compareLength() {
 		int productLength = reinforcementProductHashMap.get(position).getLength();
 		if (length != productLength) {
-			addNotification("В строке " + (currentRow + 1) + " не совпадает длина: " + length +
+			Main.app.addNotification("В строке " + (currentRow + 1) + " не совпадает длина: " + length +
 					" (в списке изделий : " + productLength + ")");
 		}
 	}
@@ -250,7 +249,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		Formatter formatter = new Formatter();
 		formatter.format(getClass() + " table head: [majorNumberColumn: %d],[diameterColumn: %d],[lengthColumn: %d],[minorNumberColumn: %d],[positionColumn: %d]",
 				majorNumberColumn, diameterColumn, lengthColumn, minorNumberColumn, positionColumn);
-		log(formatter.toString() + "\n");
+		Main.app.log(formatter.toString() + "\n");
 		return majorNumberColumn != -1 && diameterColumn != -1 && lengthColumn != -1 && minorNumberColumn != -1 && positionColumn != -1;
 	}
 
@@ -276,6 +275,6 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 			string = "position";
 		}
 		string += " variable";
-		addNotification("Я ненашел колонку (" + string + ") в файле");
+		Main.app.addNotification("Я ненашел колонку (" + string + ") в файле");
 	}
 }

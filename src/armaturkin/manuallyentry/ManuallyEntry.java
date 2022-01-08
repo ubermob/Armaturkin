@@ -43,14 +43,27 @@ public class ManuallyEntry {
 	private final LightInfo lightInfo;
 	private final double parsedValue;
 
-	public static void addManuallySummaryEntry(String summaryLabel, int diameter,
-	                                           RFClass rfClass, String TextFieldString) {
-		add(Type.SUMMARY_REINFORCEMENT, summaryLabel, diameter, rfClass, TextFieldString, Main.manuallySummaryEntries);
+	public static void addManuallySummaryEntry(String summaryLabel, int diameter
+			, RFClass rfClass, String TextFieldString) {
+		add(
+				Type.SUMMARY_REINFORCEMENT
+				, summaryLabel
+				, diameter
+				, rfClass
+				, TextFieldString
+				, Main.app.getManuallyEntryModel().getManuallySummaryEntries()
+		);
 	}
 
 	public static void addBackgroundReinforcement(PairDR pair, String TextFieldString) {
-		add(Type.BACKGROUND_REINFORCEMENT, "", pair.getDiameter(), pair.getRfClass(),
-				TextFieldString, Main.backgroundReinforcementManuallyEntries);
+		add(
+				Type.BACKGROUND_REINFORCEMENT
+				, ""
+				, pair.getDiameter()
+				, pair.getRfClass()
+				, TextFieldString
+				, Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries()
+		);
 	}
 
 	public static void addSteelComponentEntry(String summaryLabel, Image image, String textFieldString) {
@@ -61,15 +74,16 @@ public class ManuallyEntry {
 					parsedValue,
 					summaryLabel
 			);
-			Main.manuallySummaryEntries.add(entry);
-			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
+			var manuallySummaryEntries = Main.app.getManuallyEntryModel().getManuallySummaryEntries();
+			manuallySummaryEntries.add(entry);
+			Main.app.log(Main.app.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
 					ManuallyEntry.class,
 					image.getHotRolledSteelType(),
 					image.toString(),
 					parsedValue
 			));
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 
@@ -77,15 +91,16 @@ public class ManuallyEntry {
 		try {
 			double parsedValue = parseIfNotNegative(textFieldString);
 			ManuallyEntry entry = getNewManuallyEntryOfSheet(thickness, width, parsedValue, summaryLabel);
-			Main.manuallySummaryEntries.add(entry);
-			Main.log.add(Main.properties.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
+			var manuallySummaryEntries = Main.app.getManuallyEntryModel().getManuallySummaryEntries();
+			manuallySummaryEntries.add(entry);
+			Main.app.log(Main.app.getProperty("add_manually_summary_hot_rolled_steel_entry").formatted(
 					ManuallyEntry.class,
 					entry.getImageType(),
 					entry.getImageToString(),
 					parsedValue
 			));
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 
@@ -102,7 +117,7 @@ public class ManuallyEntry {
 						parsedValue
 				);
 				list.add(entry);
-				Main.log.add(Main.properties.getProperty("add_background_manually_entry").formatted(
+				Main.app.log(Main.app.getProperty("add_background_manually_entry").formatted(
 						ManuallyEntry.class,
 						entry.getDiameter(),
 						entry.getRfClass(),
@@ -117,7 +132,7 @@ public class ManuallyEntry {
 						parsedValue
 				);
 				list.add(entry);
-				Main.log.add(Main.properties.getProperty("add_manually_summary_entry").formatted(
+				Main.app.log(Main.app.getProperty("add_manually_summary_entry").formatted(
 						ManuallyEntry.class,
 						entry.getSummaryLabelID(),
 						entry.getDiameter(),
@@ -126,31 +141,34 @@ public class ManuallyEntry {
 				));
 			}
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 
 	private static double parseIfNotNegative(String textFieldString) throws Exception {
 		double parsed = Double.parseDouble(textFieldString.replace(",", "."));
 		if (parsed <= 0.0) {
-			throw new Exception(Main.properties.getProperty("negative_number_exception").formatted(parsed));
+			throw new Exception(Main.app.getProperty("negative_number_exception").formatted(parsed));
 		}
 		return parsed;
 	}
 
 	private static void remove(ManuallyEntry entry) {
-		Main.manuallySummaryEntries.remove(entry);
-		Main.backgroundReinforcementManuallyEntries.remove(entry);
-		Main.controller.mSummaryHBoxRemove(entry.getLabel());
+		var manuallySummaryEntries = Main.app.getManuallyEntryModel().getManuallySummaryEntries();
+		manuallySummaryEntries.remove(entry);
+		var backgroundReinforcementManuallyEntries = Main.app
+				.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries();
+		backgroundReinforcementManuallyEntries.remove(entry);
+		Main.app.getController().mSummaryHBoxRemove(entry.getLabel());
 		if (entry.getType() == Type.BACKGROUND_REINFORCEMENT) {
-			Main.log.add(Main.properties.getProperty("remove_background_manually_entry").formatted(
+			Main.app.log(Main.app.getProperty("remove_background_manually_entry").formatted(
 					ManuallyEntry.class,
 					entry.getDiameter(),
 					entry.getRfClass(),
 					entry.getMassReinforcement()
 			));
 		} else if (entry.getType() == Type.SUMMARY_REINFORCEMENT) {
-			Main.log.add(Main.properties.getProperty("remove_manually_summary_entry").formatted(
+			Main.app.log(Main.app.getProperty("remove_manually_summary_entry").formatted(
 					ManuallyEntry.class,
 					entry.getSummaryLabelID(),
 					entry.getDiameter(),
@@ -158,7 +176,7 @@ public class ManuallyEntry {
 					entry.getMassReinforcement()
 			));
 		} else if (entry.getType() == Type.SUMMARY_HOT_ROLLED_STEEL) {
-			Main.log.add(Main.properties.getProperty("remove_manually_summary_hot_rolled_steel_entry").formatted(
+			Main.app.log(Main.app.getProperty("remove_manually_summary_hot_rolled_steel_entry").formatted(
 					ManuallyEntry.class,
 					entry.getHotRolledSteelType(),
 					entry.getImageAsString(),
@@ -233,7 +251,7 @@ public class ManuallyEntry {
 	 * -1 for invalid {@code summaryDropSpace#}.
 	 */
 	private int parseSummaryLabel(String summaryLabel) {
-		String[] labels = Main.properties.getProperty("content_row").split("-");
+		String[] labels = Main.app.getProperty("content_row").split("-");
 		if (type != Type.BACKGROUND_REINFORCEMENT) {
 			for (int i = 0; i < labels.length; i++) {
 				if (summaryLabel.equals(labels[i])) {
@@ -324,14 +342,14 @@ public class ManuallyEntry {
 		String labelColorCode = "";
 		if (type == Type.SUMMARY_REINFORCEMENT) {
 			labelTitle = summaryLabel;
-			lastFieldName = Main.properties.getProperty("last_field_name_mass");
+			lastFieldName = Main.app.getProperty("last_field_name_mass");
 			labelColorCode = COLOR_PROPERTIES.getProperty("manually_entry");
 		} else if (type == Type.BACKGROUND_REINFORCEMENT) {
-			labelTitle = Main.properties.getProperty("background_title");
-			lastFieldName = Main.properties.getProperty("last_field_name_length");
+			labelTitle = Main.app.getProperty("background_title");
+			lastFieldName = Main.app.getProperty("last_field_name_length");
 			labelColorCode = COLOR_PROPERTIES.getProperty("background_entry");
 		}
-		String labelText = Main.properties.getProperty("manually_summary_entry_label_text").formatted(
+		String labelText = Main.app.getProperty("manually_summary_entry_label_text").formatted(
 				labelTitle,
 				diameter,
 				RFClass.toString(rfClass),
@@ -342,10 +360,10 @@ public class ManuallyEntry {
 	}
 
 	private void buildLabelHotRolledSteel(Image image, double length, String summaryLabel) {
-		String labelTitle = Main.properties.getProperty("hot_rolled_steel_title") + "\n" + summaryLabel;
-		String lastFieldName = Main.properties.getProperty("last_field_name_length");
+		String labelTitle = Main.app.getProperty("hot_rolled_steel_title") + "\n" + summaryLabel;
+		String lastFieldName = Main.app.getProperty("last_field_name_length");
 		String labelColorCode = COLOR_PROPERTIES.getProperty("manually_hot_rolled_steel_entry");
-		String labelText = Main.properties.getProperty("manually_summary_entry_hot_rolled_steel_label_text").formatted(
+		String labelText = Main.app.getProperty("manually_summary_entry_hot_rolled_steel_label_text").formatted(
 				labelTitle,
 				image,
 				lastFieldName,
@@ -358,20 +376,20 @@ public class ManuallyEntry {
 	private void buildLabel(String labelText, String labelColorCode) {
 		label = new Label(labelText);
 		label.setPrefWidth(100);
-		label.setPrefHeight(Main.controller.getMSummaryHBoxPrefHeight());
+		label.setPrefHeight(Main.app.getController().getMSummaryHBoxPrefHeight());
 		label.setBackground(new Background(new BackgroundFill(Paint.valueOf(labelColorCode),
 				CornerRadii.EMPTY, Insets.EMPTY)));
 		label.setTextAlignment(TextAlignment.CENTER);
 		label.setAlignment(Pos.CENTER);
 		label.setFont(new Font("System bold", 13));
-		label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+		label.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
 		// https://stackoverflow.com/questions/45306039/how-to-write-lambda-expression-with-eventhandler-javafx
 		label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 			if (event.getButton() == MouseButton.SECONDARY) {
 				remove(this);
 			}
 		});
-		Main.controller.mSummaryHBoxAdd(label);
+		Main.app.getController().mSummaryHBoxAdd(label);
 	}
 
 	private enum Type {

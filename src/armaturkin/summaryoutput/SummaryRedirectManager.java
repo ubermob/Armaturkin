@@ -9,18 +9,18 @@ public class SummaryRedirectManager {
 
 	static final int DEFAULT_VALUE = 6;
 	static int redirectTo = DEFAULT_VALUE;
-	static Label[] labels = Main.controller.getSummaryLabels();
+	static Label[] labels = Main.app.getController().getSummaryLabels();
 
 	public static void setRedirectTo(int i) {
 		if (redirectTo != i) {
 			redirectTo = i;
 			setLine(i);
-			Main.controller.setRedirectLineOpacity(1);
-			Main.controller.setArrowOpacity(1);
+			Main.app.getController().setRedirectLineOpacity(1);
+			Main.app.getController().setArrowOpacity(1);
 		} else {
 			redirectTo = DEFAULT_VALUE;
-			Main.controller.setRedirectLineOpacity(0);
-			Main.controller.setArrowOpacity(0);
+			Main.app.getController().setRedirectLineOpacity(0);
+			Main.app.getController().setArrowOpacity(0);
 		}
 	}
 

@@ -27,15 +27,4 @@ public class Writer {
 	public static void write(String path, ArrayList<String> inputList) throws IOException {
 		Files.write(Path.of(path), inputList);
 	}
-
-	@Deprecated
-	public static void write(String path, ArrayList<String> inputList, int bufferSize) throws IOException {
-		FileWriter fileWriter = new FileWriter(path, StandardCharsets.UTF_8);
-		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter, bufferSize);
-		for (String s : inputList) {
-			bufferedWriter.write(s);
-			bufferedWriter.newLine();
-		}
-		bufferedWriter.close();
-	}
 }

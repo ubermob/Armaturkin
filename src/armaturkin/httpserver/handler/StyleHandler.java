@@ -16,9 +16,8 @@ public class StyleHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		// TODO: realize cache?
 		String string = HttpServerUtil.getString(getClass().getResourceAsStream("/http/css_template.txt"));
-		string = string.formatted(Main.config.getBackgroundColor(), Main.config.getTextColor());
+		string = string.formatted(Main.app.getConfig().getBackgroundColor(), Main.app.getConfig().getTextColor());
 		HttpServerUtil.exchangeWorker(exchange, string.getBytes(StandardCharsets.UTF_8));
 	}
 }

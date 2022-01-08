@@ -14,12 +14,12 @@ public class StorageCleaner {
 		String beginningOfName = "";
 		String numberedFileName = "";
 		if (path.equals(Path.of(Root.programRootPath, Root.getProperty("log_storage_directory")))) {
-			storageLimit = Main.config.getLogStorageLimit();
+			storageLimit = Main.app.getConfig().getLogStorageLimit();
 			beginningOfName = Root.getProperty("log_file_name").split("\\.txt")[0];
 			numberedFileName = Root.getProperty("numbered_log_file_name");
 		}
 		if (path.equals(Path.of(Root.programRootPath, Root.getProperty("notification_storage_directory")))) {
-			storageLimit = Main.config.getNotificationStorageLimit();
+			storageLimit = Main.app.getConfig().getNotificationStorageLimit();
 			beginningOfName = Root.getProperty("notification_file_name").split("\\.txt")[0];
 			numberedFileName = Root.getProperty("numbered_notification_file_name");
 		}
@@ -38,7 +38,7 @@ public class StorageCleaner {
 				try {
 					Files.delete(numbers[i]);
 				} catch (Exception e) {
-					Main.log.add(e);
+					Main.app.log(e);
 				}
 			}
 			int fileNumber = 1;
@@ -46,7 +46,7 @@ public class StorageCleaner {
 				try {
 					Files.move(numbers[i], Path.of(path.toString(), numberedFileName.formatted(fileNumber)));
 				} catch (Exception e) {
-					Main.log.add(e);
+					Main.app.log(e);
 				}
 				fileNumber++;
 			}
@@ -59,7 +59,7 @@ public class StorageCleaner {
 				Files.copy(from, to);
 			}
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 
@@ -75,7 +75,7 @@ public class StorageCleaner {
 				size += Files.size(file);
 			}
 		} catch (IOException e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 		if (size == 0) {
 			return 0;
@@ -90,7 +90,7 @@ public class StorageCleaner {
 		try {
 			return Integer.parseInt(currentFileName.split(beginningOfName)[1].split("\\.txt")[0]);
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 			return -1;
 		}
 	}

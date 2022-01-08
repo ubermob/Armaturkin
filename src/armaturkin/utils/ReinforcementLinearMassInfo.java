@@ -14,7 +14,7 @@ public class ReinforcementLinearMassInfo {
 		try {
 			read = Reader.read(ReinforcementLinearMassInfo.class.getResourceAsStream("/RLMI_style.txt"));
 		} catch (IOException e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 		assert read != null && read.size() == 4;
 		String string = read.get(0) + "\n";

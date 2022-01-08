@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Contains user settings
@@ -11,6 +12,7 @@ import java.util.List;
 public class Configuration {
 
 	private final String path;
+	private final Properties properties;
 	private String backgroundColor;
 	private String textColor;
 	private String pathToProductFile;
@@ -26,8 +28,9 @@ public class Configuration {
 	private Boolean autoParseProductList;
 	private Integer resultLabelFontSize;
 
-	public Configuration(String path) throws IOException {
+	public Configuration(String path, Properties properties) throws IOException {
 		this.path = path;
+		this.properties = properties;
 		defaultValues();
 		loadConfigFile();
 		setupLog();
@@ -62,7 +65,7 @@ public class Configuration {
 					resultLabelFontSize = Integer.parseInt(load.get(13));
 				}
 			} catch (Exception e) {
-				Main.log.add(e);
+				Main.app.log(e);
 			}
 		}
 		if (Files.notExists(Path.of(path))) {
@@ -222,15 +225,15 @@ public class Configuration {
 	}
 
 	private void defaultValues() {
-		backgroundColor = Main.properties.getProperty("background_color");
-		textColor = Main.properties.getProperty("text_color");
-		borderColor = Main.properties.getProperty("border_color");
-		boldText = Boolean.parseBoolean(Main.properties.getProperty("bold_text"));
-		writeLog = Boolean.parseBoolean(Main.properties.getProperty("write_log"));
-		writeNotification = Boolean.parseBoolean(Main.properties.getProperty("write_notification"));
-		logStorageLimit = Integer.parseInt(Main.properties.getProperty("log_storage_limit"));
-		notificationStorageLimit = Integer.parseInt(Main.properties.getProperty("notification_storage_limit"));
-		autoParseProductList = Boolean.parseBoolean(Main.properties.getProperty("auto_parse_product_list"));
+		backgroundColor = properties.getProperty("background_color");
+		textColor = properties.getProperty("text_color");
+		borderColor = properties.getProperty("border_color");
+		boldText = Boolean.parseBoolean(properties.getProperty("bold_text"));
+		writeLog = Boolean.parseBoolean(properties.getProperty("write_log"));
+		writeNotification = Boolean.parseBoolean(properties.getProperty("write_notification"));
+		logStorageLimit = Integer.parseInt(properties.getProperty("log_storage_limit"));
+		notificationStorageLimit = Integer.parseInt(properties.getProperty("notification_storage_limit"));
+		autoParseProductList = Boolean.parseBoolean(properties.getProperty("auto_parse_product_list"));
 	}
 
 	private void setupLog() {

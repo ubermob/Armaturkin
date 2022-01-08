@@ -44,7 +44,7 @@ public class ContentHeadPlacement {
 				}
 			}
 		} catch (IOException e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 

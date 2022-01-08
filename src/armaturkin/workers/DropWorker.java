@@ -1,8 +1,8 @@
 package armaturkin.workers;
 
 import armaturkin.controller.Controller;
-import armaturkin.view.LabelWrapper;
 import armaturkin.core.Main;
+import armaturkin.view.LabelWrapper;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -23,27 +23,27 @@ public class DropWorker {
 			label = controller.getLowerDropSpaceLabel();
 		}
 		if (fileList.size() != 1) {
-			label.setText(Main.properties.getProperty("drop_worker_notification_1"));
+			label.setText(Main.app.getProperty("drop_worker_notification_1"));
 		} else {
 			if (isExcelFile(fileList.get(0).getName()) && fileList.get(0).isFile()) {
-				label.setText(Main.properties.getProperty("drop_worker_file_accepted"));
+				label.setText(Main.app.getProperty("drop_worker_file_accepted"));
 				File file = fileList.get(0);
 				if (i == 0) {
-					Main.config.setPathToProductFile(file.getAbsolutePath());
-					Main.log.add(Main.properties.getProperty("drop_worker_drop_space_file_accepted_1").formatted(
-							DropWorker.class, Main.config.getPathToProductFile())
+					Main.app.getConfig().setPathToProductFile(file.getAbsolutePath());
+					Main.app.log(Main.app.getProperty("drop_worker_drop_space_file_accepted_1").formatted(
+							DropWorker.class, Main.app.getConfig().getPathToProductFile())
 					);
-					Main.loadProduct();
+					Main.app.getFirstHarvestingService().loadProductFile();
 				}
 				if (i == 1) {
-					Main.config.setPathToCalculatingFile(file.getAbsolutePath());
-					Main.log.add(Main.properties.getProperty("drop_worker_drop_space_file_accepted_2").formatted(
-							DropWorker.class, Main.config.getPathToCalculatingFile())
+					Main.app.getConfig().setPathToCalculatingFile(file.getAbsolutePath());
+					Main.app.log(Main.app.getProperty("drop_worker_drop_space_file_accepted_2").formatted(
+							DropWorker.class, Main.app.getConfig().getPathToCalculatingFile())
 					);
-					Main.loadCalculatingFile();
+					Main.app.getFirstHarvestingService().loadCalculatingFile();
 				}
 			} else {
-				label.setText(Main.properties.getProperty("drop_worker_notification_2"));
+				label.setText(Main.app.getProperty("drop_worker_notification_2"));
 			}
 		}
 	}
@@ -57,20 +57,21 @@ public class DropWorker {
 				verifiedFileList.add(x.getAbsolutePath());
 			}
 		});
+		var summaryPaths = Main.app.getSummaryModel().getSummaryPaths();
 		if (!verifiedFileList.isEmpty()) {
-			if (Main.summaryPaths.isEmpty()) {
-				Main.config.setPathToSummaryCalculatingFile(verifiedFileList.get(0));
+			if (summaryPaths.isEmpty()) {
+				Main.app.getConfig().setPathToSummaryCalculatingFile(verifiedFileList.get(0));
 			}
-			if (Main.summaryPaths.containsKey(i)) {
-				Main.summaryPaths.get(i).addAll(verifiedFileList);
+			if (summaryPaths.containsKey(i)) {
+				summaryPaths.get(i).addAll(verifiedFileList);
 			} else {
-				Main.summaryPaths.put(i, verifiedFileList);
+				summaryPaths.put(i, verifiedFileList);
 			}
 			for (String string : verifiedFileList) {
-				Main.log.add(Main.properties.getProperty("drop_worker_summary_drop_space_file_accepted").formatted(DropWorker.class, i, string));
+				Main.app.log(Main.app.getProperty("drop_worker_summary_drop_space_file_accepted").formatted(DropWorker.class, i, string));
 			}
 			labelWrapper.setText(labelWrapper.getDefaultText() + "\n" +
-					Main.properties.getProperty("summary_label_default_third_line").formatted(Main.summaryPaths.get(i).size())
+					Main.app.getProperty("summary_label_default_third_line").formatted(summaryPaths.get(i).size())
 			);
 		}
 	}
@@ -79,24 +80,15 @@ public class DropWorker {
 		List<File> fileList = getDroppedFile(dragEvent);
 		Label label = controller.getFavoriteDropSpaceLabel();
 		if (fileList.size() != 1) {
-			label.setText(Main.properties.getProperty("drop_worker_favorite_notification_1"));
+			label.setText(Main.app.getProperty("drop_worker_favorite_notification_1"));
 		} else {
 			if (!fileList.get(0).isDirectory()) {
-				label.setText(Main.properties.getProperty("drop_worker_favorite_notification_2"));
+				label.setText(Main.app.getProperty("drop_worker_favorite_notification_2"));
 			} else {
-				Main.config.setFavoritePath(fileList.get(0).getAbsolutePath());
-				label.setText(Main.properties.getProperty("favorite_is_on").formatted(Main.config.getFavoritePath()));
+				Main.app.getConfig().setFavoritePath(fileList.get(0).getAbsolutePath());
+				label.setText(Main.app.getProperty("favorite_is_on").formatted(Main.app.getConfig().getFavoritePath()));
 			}
 		}
-	}
-
-	static List<File> getDroppedFile(DragEvent dragEvent) {
-		Dragboard db = dragEvent.getDragboard();
-		List<File> fileList = new ArrayList<>();
-		if (db.hasFiles()) {
-			fileList = db.getFiles();
-		}
-		return fileList;
 	}
 
 	public static void dragOver(DragEvent dragEvent) {
@@ -106,7 +98,20 @@ public class DropWorker {
 		dragEvent.consume();
 	}
 
-	static boolean isExcelFile(String fileName) {
+	private static List<File> getDroppedFile(DragEvent dragEvent) {
+		Dragboard db = dragEvent.getDragboard();
+		List<File> fileList = new ArrayList<>();
+		if (db.hasFiles()) {
+			fileList = db.getFiles();
+		}
+		return fileList;
+	}
+
+	private static boolean isExcelFile(String fileName) {
 		return fileName.endsWith(".xls") || fileName.endsWith(".xlsx");
+	}
+
+	private static boolean isSummaryBuilderFile(String fileName) {
+		return fileName.endsWith(".summary_builder");
 	}
 }

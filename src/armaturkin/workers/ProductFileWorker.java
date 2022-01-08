@@ -1,11 +1,6 @@
 package armaturkin.workers;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-
-import armaturkin.core.*;
+import armaturkin.core.Main;
 import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.ParseInt;
 import armaturkin.interfaces.RowEmptyChecker;
@@ -13,8 +8,16 @@ import armaturkin.reinforcement.ProductReinforcementChecker;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import utools.stopwatch.Stopwatch;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 
 public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, ParseInt {
 
@@ -40,12 +43,12 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
-		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
-		Main.log.add(Main.properties.getProperty("thread_file").formatted(getClass(), path));
+		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
+		Main.app.log(Main.app.getProperty("thread_file").formatted(getClass(), path));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 		} catch (IOException e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 		sheet = workbook.getSheetAt(0);
 		rowInt = 2;
@@ -53,8 +56,8 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowInt++;
 		}
-		Main.addNotification(Main.properties.getProperty("file_successfully_read_1").formatted(rowInt));
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+		Main.app.addNotification(Main.app.getProperty("file_successfully_read_1").formatted(rowInt));
+		Main.app.log(Main.app.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void readRow() {
@@ -71,48 +74,48 @@ public class ProductFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		checkLength();
 		checkMass();
 		reinforcementProductHashMap.put(position, checker.getReinforcementProduct());
-		Main.log.add(Main.properties.getProperty("current_row").formatted(getClass(), rowInt));
-		Main.log.add(reinforcementProductHashMap.get(position).toString());
+		Main.app.log(Main.app.getProperty("current_row").formatted(getClass(), rowInt));
+		Main.app.log(reinforcementProductHashMap.get(position).toString());
 	}
 
 	private void checkPosition(int position) {
 		if (reinforcementProductHashMap.containsKey(position)) {
-			Main.addNotification(Main.properties.getProperty("position_notification_1").formatted((rowInt + 1), position));
+			Main.app.addNotification(Main.app.getProperty("position_notification_1").formatted((rowInt + 1), position));
 		}
 		if (StandardsRepository.contains(StandardsRepository.reservedPositions, position)) {
-			Main.addNotification(Main.properties.getProperty("position_notification_2").formatted((rowInt + 1), position));
+			Main.app.addNotification(Main.app.getProperty("position_notification_2").formatted((rowInt + 1), position));
 		}
 		if (position <= 0) {
-			Main.addNotification(Main.properties.getProperty("position_notification_3").formatted((rowInt + 1), position));
+			Main.app.addNotification(Main.app.getProperty("position_notification_3").formatted((rowInt + 1), position));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			Main.addNotification(Main.properties.getProperty("position_notification_4").formatted((rowInt + 1), position));
+			Main.app.addNotification(Main.app.getProperty("position_notification_4").formatted((rowInt + 1), position));
 		}
 	}
 
 	private void checkDiameter() {
 		checker.checkDiameter();
 		if (!checker.isCorrectDiameter()) {
-			Main.addNotification(Main.properties.getProperty("diameter_notification").formatted((rowInt + 1), diameter));
+			Main.app.addNotification(Main.app.getProperty("diameter_notification").formatted((rowInt + 1), diameter));
 		}
 	}
 
 	private void checkRFClass() {
 		if (!checker.isCorrectRFClass()) {
-			Main.addNotification(Main.properties.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass));
+			Main.app.addNotification(Main.app.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass));
 		}
 	}
 
 	private void checkLength() {
 		if (!checker.isCorrectLength()) {
-			Main.addNotification(Main.properties.getProperty("length_notification").formatted((rowInt + 1), length));
+			Main.app.addNotification(Main.app.getProperty("length_notification").formatted((rowInt + 1), length));
 		}
 	}
 
 	private void checkMass() {
 		checker.checkMass(mass);
 		if (!checker.isCorrectMass()) {
-			Main.addNotification(Main.properties.getProperty("mass_notification").formatted((rowInt + 1), mass, checker.getCorrectMass()));
+			Main.app.addNotification(Main.app.getProperty("mass_notification").formatted((rowInt + 1), mass, checker.getCorrectMass()));
 		}
 	}
 }

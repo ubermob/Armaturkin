@@ -1,7 +1,10 @@
 package armaturkin.workers;
 
-import armaturkin.core.*;
-import armaturkin.interfaces.*;
+import armaturkin.core.Log;
+import armaturkin.core.Main;
+import armaturkin.interfaces.CellEmptyChecker;
+import armaturkin.interfaces.FileHashCode;
+import armaturkin.interfaces.RowEmptyChecker;
 import armaturkin.reinforcement.*;
 import armaturkin.summaryoutput.SummaryThreadPool;
 import armaturkin.utils.MassCounter;
@@ -67,7 +70,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	public void run() {
 		stopwatch = new Stopwatch();
 		fileHashCode = getFileHashCode(path);
-		log.add(Main.properties.getProperty("summary_thread_start").formatted(getClass(), labelID, path, fileHashCode));
+		log.add(Main.app.getProperty("summary_thread_start").formatted(getClass(), labelID, path, fileHashCode));
 		try {
 			workbook = WorkbookFactory.create(Files.newInputStream(Path.of(path)));
 			sheet = workbook.getSheetAt(0);
@@ -88,15 +91,15 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		if (set == SummaryThreadPool.RAW) {
 			productMass = sheet.getRow(4).getCell(productMassColumn).getNumericCellValue();
 			if (Math.abs(massCounter.getValue() - productMass) >= 0.01) {
-				Main.addNotification(Main.properties.getProperty("product_mass_multiply_notification").formatted(
+				Main.app.addNotification(Main.app.getProperty("product_mass_multiply_notification").formatted(
 						path,
 						productMass,
 						massCounter.getValue()
 				));
 			}
 		}
-		Main.addNotification(Main.properties.getProperty("file_successfully_read_3").formatted(path, rowInt));
-		log.add(Main.properties.getProperty("summary_thread_complete").formatted(
+		Main.app.addNotification(Main.app.getProperty("file_successfully_read_3").formatted(path, rowInt));
+		log.add(Main.app.getProperty("summary_thread_complete").formatted(
 				getClass(), stopwatch.getElapsedTime(), labelID, path, fileHashCode));
 	}
 
@@ -134,62 +137,62 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 				hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
 			}
 		}
-		log.add(Main.properties.getProperty("summary_thread_read_row").formatted(
+		log.add(Main.app.getProperty("summary_thread_read_row").formatted(
 				getClass(), labelID, fileHashCode, rowInt, hashMap.get(hashCode).toString())
 		);
 	}
 
 	private void checkMajorNumber(int number) {
 		if (number <= 0) {
-			Main.addNotification(Main.properties.getProperty("product_major_number_notification").formatted(path));
+			Main.app.addNotification(Main.app.getProperty("product_major_number_notification").formatted(path));
 		}
 	}
 
 	private void checkPosition() {
 		if (position <= 0) {
-			notification = Main.properties.getProperty("position_notification_3").formatted((rowInt + 1), position);
-			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
+			notification = Main.app.getProperty("position_notification_3").formatted((rowInt + 1), position);
+			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			notification = Main.properties.getProperty("position_notification_4").formatted((rowInt + 1), position);
-			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
+			notification = Main.app.getProperty("position_notification_4").formatted((rowInt + 1), position);
+			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkDiameter() {
 		checker.checkDiameter();
 		if (!checker.isCorrectDiameter()) {
-			notification = Main.properties.getProperty("diameter_notification").formatted((rowInt + 1), diameter);
-			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
+			notification = Main.app.getProperty("diameter_notification").formatted((rowInt + 1), diameter);
+			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkRFClass() {
 		if (!checker.isCorrectRFClass()) {
-			notification = Main.properties.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass);
-			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
+			notification = Main.app.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass);
+			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkSingleLength() {
 		if (!checker.isCorrectLength()) {
-			notification = Main.properties.getProperty("length_notification").formatted((rowInt + 1), length);
-			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
+			notification = Main.app.getProperty("length_notification").formatted((rowInt + 1), length);
+			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkSingleMass() {
 		checker.checkMass(singleMass);
 		if (!checker.isCorrectMass()) {
-			notification = Main.properties.getProperty("mass_notification").formatted((rowInt + 1), singleMass
+			notification = Main.app.getProperty("mass_notification").formatted((rowInt + 1), singleMass
 					, checker.getCorrectMass());
-			Main.addNotification(Main.properties.getProperty("summary_file_name_notification").formatted(path, notification));
+			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkMultiply() {
 		if ((Math.abs(length / 1000.0 * minorNumber) - totalLength) >= 0.01) {
-			Main.addNotification(Main.properties.getProperty("length_multiply_notification").formatted(
+			Main.app.addNotification(Main.app.getProperty("length_multiply_notification").formatted(
 					path,
 					(rowInt + 1),
 					totalLength,
@@ -206,7 +209,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		checker2.checkDiameter();
 		checker2.checkMass(mass);
 		if (!checker2.isCorrectMass()) {
-			Main.addNotification(Main.properties.getProperty("mass_multiply_notification").formatted(
+			Main.app.addNotification(Main.app.getProperty("mass_multiply_notification").formatted(
 					path,
 					(rowInt + 1),
 					mass,

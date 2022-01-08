@@ -34,7 +34,7 @@ public class SteelComponentRepository {
 			fillSheetThicknessList();
 			fillSheetWidthList();
 		} catch (IOException e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class SteelComponentRepository {
 		if (type == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
 			sheet = unequalLegAnglesSheet;
 			header = DesignCode.getProperty("hot_rolled_steel_unequal_leg_angles") + "\n" +
-					Main.getProperty("design_code_attention_1");
+					Main.app.getProperty("design_code_attention_1");
 		}
 		Iterator<Cell> iteratorHeader = sheet.getRow(0).iterator();
 		Iterator<Cell> iteratorElement = sheet.getRow(image.getRowNumber()).iterator();

@@ -36,12 +36,12 @@ public class Log {
 	}
 
 	public void merge(Log log) {
-		ArrayList<String> list = log.getList();
+		List<String> list = log.getList();
 		this.log.addAll(list);
 	}
 
-	public ArrayList<String> getList() {
-		return (ArrayList<String>) log;
+	public List<String> getList() {
+		return log;
 	}
 
 	// S T A T I C
@@ -60,15 +60,8 @@ public class Log {
 									StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("log_storage_directory")) + 1)
 					)
 			);
-			Writer.write(Root.programRootPath + Root.getProperty("log_file_name"), Main.log.getList());
+			Writer.write(Root.programRootPath + Root.getProperty("log_file_name")
+					, (ArrayList<String>) Main.app.getLogService().getList());
 		}
-	}
-
-	public static synchronized void log(String string) {
-		Main.log.add(string);
-	}
-
-	public static synchronized void log(Exception exception) {
-		Main.log.add(exception);
 	}
 }

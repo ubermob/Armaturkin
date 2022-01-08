@@ -23,7 +23,7 @@ public class DesignCode {
 				properties = UtfProperties.getInternalUtfProperties("/" + FILE_NAME);
 			}
 		} catch (IOException e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 

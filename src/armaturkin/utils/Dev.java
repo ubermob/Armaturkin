@@ -9,16 +9,17 @@ public class Dev {
 
 	// TODO: complete method
 	public static void printVariableStates() {
-		Main.log.add(buildVariableStates());
+		Main.app.log(buildVariableStates());
 	}
 
 	public static String buildVariableStates() {
 		return "=== Var state ===" +
-				"Main.notification: {" + Main.getNotification() + "}" +
-				"Main.notification.size: " + Main.getNotification().length() +
-				"Main.manuallySummaryEntries size: " + Main.manuallySummaryEntries.size() +
-				"Main.backgroundReinforcementManuallyEntries size: " + Main.backgroundReinforcementManuallyEntries.size() +
-				"Specification load from \"Update data\": " + DesignCode.isUpdate() +
+				"Actual notification: {" + Main.app.getActualNotification() + "}" +
+				"Actual notification size: " + Main.app.getActualNotification().length() +
+				"var 'manuallySummaryEntries' size: " + Main.app.getManuallyEntryModel().getManuallySummaryEntries().size() +
+				"var 'backgroundReinforcementManuallyEntries' size: "
+				+ Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries().size() +
+				"Specification load from 'Update data': " + DesignCode.isUpdate() +
 				"=================";
 	}
 }

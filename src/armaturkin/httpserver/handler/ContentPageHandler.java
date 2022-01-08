@@ -16,7 +16,6 @@ public class ContentPageHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		// TODO: realize cache
 		String string = HttpServerUtil.getString(getClass().getResourceAsStream("/http/html_template.txt"));
 		StringBuilder builder = new StringBuilder();
 		builder.append("<table border=\"solid\">");

@@ -30,7 +30,7 @@ public class SheetDynamicHashCode {
 			deleteDuplicates();
 			sort();
 		} else {
-			Main.log.add(Main.getProperty("empty_dynamic_hash_code_list"));
+			Main.app.log(Main.app.getProperty("empty_dynamic_hash_code_list"));
 		}
 		while (sortedCurrentSheetList.size() < validMaxSize) {
 			sortedCurrentSheetList.add(null);
@@ -77,16 +77,16 @@ public class SheetDynamicHashCode {
 		sortedCurrentSheetList = nonDuplicates;
 		effectiveSize = sortedCurrentSheetList.size();
 		if (effectiveSize > validMaxSize) {
-			Main.log.add(Main.getProperty("invalid_size_of_dynamic_hash_code_list")
+			Main.app.log(Main.app.getProperty("invalid_size_of_dynamic_hash_code_list")
 					.formatted(effectiveSize, validMaxSize));
 		}
-		Main.log.add(Main.getProperty("dynamic_non_duplicated_hash_code_list")
+		Main.app.log(Main.app.getProperty("dynamic_non_duplicated_hash_code_list")
 				.formatted(effectiveSize, buildString()));
 	}
 
 	private static void sort() {
 		sortedCurrentSheetList.sort(Image::compareTo);
-		Main.log.add(Main.getProperty("dynamic_sorted_hash_code_list")
+		Main.app.log(Main.app.getProperty("dynamic_sorted_hash_code_list")
 				.formatted(effectiveSize, buildString()));
 	}
 

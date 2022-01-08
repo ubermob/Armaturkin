@@ -2,7 +2,6 @@ package armaturkin.view;
 
 import armaturkin.core.Main;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 
@@ -16,11 +15,12 @@ public class AddonViews {
 	public static Line arrowLine2;
 	public static Arrow arrow;
 
-	public static void loadArrowLines(URL url) throws IOException {
+	public static void loadArrowLines() throws IOException {
+		URL url = AddonViews.class.getResource("/fxml/Arrow_lines.fxml");
 		var ap = (AnchorPane) new FXMLLoader(url).load();
 		redirectLine = (Line) ap.getChildren().get(0);
 		arrowLine1 = (Line) ap.getChildren().get(1);
 		arrowLine2 = (Line) ap.getChildren().get(2);
-		Main.controller.addArrowLines();
+		Main.app.getController().addArrowLines();
 	}
 }

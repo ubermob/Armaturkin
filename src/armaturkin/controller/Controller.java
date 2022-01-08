@@ -1,12 +1,18 @@
 package armaturkin.controller;
 
-import armaturkin.core.Main;
+import armaturkin.core.App;
+import armaturkin.core.Configuration;
 import armaturkin.core.Root;
 import armaturkin.core.StorageCleaner;
 import armaturkin.manuallyentry.ManuallyEntry;
+import armaturkin.model.FirstHarvestingModel;
+import armaturkin.model.ManuallyEntryModel;
+import armaturkin.model.SummaryModel;
 import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.service.FirstHarvestingService;
+import armaturkin.service.SummaryService;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
@@ -29,13 +35,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static armaturkin.core.Main.getProperty;
 import static javafx.collections.FXCollections.observableArrayList;
 import static javafx.collections.FXCollections.observableList;
 
@@ -83,14 +87,38 @@ public class Controller {
 	@FXML
 	private ChoiceBox<Number> mSummaryChoiceBox6, mSummaryChoiceBox7;
 
-	private Label[] allLabels;
-	private Label[] borderModifiedLabels;
+	private Label[] allLabels, borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
 	private Button[] boldTextModifiedButtons;
-	private Text[] largeSizeText;
-	private Text[] littleSizeText;
+	private Text[] largeSizeText, littleSizeText;
 	private TextWrapper settingsTextWrapper2, settingsTextWrapper3, settingsTextWrapper5, settingsTextWrapper6;
 	private ChoiceBoxWrapper choiceBoxWrapper1, choiceBoxWrapper2, choiceBoxWrapper3;
+
+	private App app;
+	private Configuration config;
+	private FirstHarvestingService firstHarvestingService;
+	private FirstHarvestingModel firstHarvestingModel;
+	private SummaryService summaryService;
+	private SummaryModel summaryModel;
+	private ManuallyEntryModel manuallyEntryModel;
+
+	public void injection(
+			App app
+			, Configuration config
+			, FirstHarvestingService firstHarvestingService
+			, FirstHarvestingModel firstHarvestingModel
+			, SummaryService summaryService
+			, SummaryModel summaryModel
+			, ManuallyEntryModel manuallyEntryModel
+	) {
+		this.app = app;
+		this.config = config;
+		this.firstHarvestingService = firstHarvestingService;
+		this.firstHarvestingModel = firstHarvestingModel;
+		this.summaryService = summaryService;
+		this.summaryModel = summaryModel;
+		this.manuallyEntryModel = manuallyEntryModel;
+	}
 
 	public void startSetup() {
 		if (!Dev.isDevMode) {
@@ -101,8 +129,8 @@ public class Controller {
 		setBackgroundColor();
 		setupTextColor();
 		setupFont();
-		if (Main.config.isResultLabelFontSizeNotNull()) {
-			setResultLabelFont(Main.config.getResultLabelFontSize());
+		if (config.isResultLabelFontSizeNotNull()) {
+			setResultLabelFont(config.getResultLabelFontSize());
 		}
 		setNotificationOpacity(0);
 		setRedirectLineOpacity(0);
@@ -137,18 +165,18 @@ public class Controller {
 	@FXML
 	private void setBackgroundColor(MouseEvent mouseEvent) {
 		Circle circle = (Circle) mouseEvent.getSource();
-		Main.config.setBackgroundColor(getColorHexCode(circle.getFill()));
+		config.setBackgroundColor(getColorHexCode(circle.getFill()));
 		setBackgroundColor();
 	}
 
 	private void setBackgroundColor() {
-		Stages.primary.getScene().getRoot().setStyle("-fx-background-color: " + Main.config.getBackgroundColor() + ";");
+		Stages.primary.getScene().getRoot().setStyle("-fx-background-color: " + config.getBackgroundColor() + ";");
 	}
 
 	@FXML
 	private void setTextColor(MouseEvent mouseEvent) {
 		Circle circle = (Circle) mouseEvent.getSource();
-		Main.config.setTextColor(getColorHexCode(circle.getFill()));
+		config.setTextColor(getColorHexCode(circle.getFill()));
 		setupTextColor();
 	}
 
@@ -158,13 +186,13 @@ public class Controller {
 
 	private void setupTextColor() {
 		for (var text : largeSizeText) {
-			text.setFill(Paint.valueOf(Main.config.getTextColor()));
+			text.setFill(Paint.valueOf(config.getTextColor()));
 		}
 		for (var text : littleSizeText) {
-			text.setFill(Paint.valueOf(Main.config.getTextColor()));
+			text.setFill(Paint.valueOf(config.getTextColor()));
 		}
 		for (var label : allLabels) {
-			label.setTextFill(Paint.valueOf(Main.config.getTextColor()));
+			label.setTextFill(Paint.valueOf(config.getTextColor()));
 		}
 	}
 
@@ -215,25 +243,25 @@ public class Controller {
 
 	@FXML
 	private void downloadFile() {
-		Main.downloadCalculatedFile();
+		firstHarvestingService.downloadCalculatedFile();
 	}
 
 	@FXML
 	private void clearResultLabel() {
-		Main.clearNotification();
+		app.getNotificationService().clearNotification();
 	}
 
 	@FXML
 	private void clearUpperDropSpace() {
-		Main.config.setPathToProductFile(null);
-		Main.reinforcementProductHashMap.clear();
+		config.setPathToProductFile(null);
+		firstHarvestingModel.getReinforcementProductHashMap().clear();
 		setUpperDropSpaceText(getProperty("upper_label_default_text"));
 	}
 
 	@FXML
 	private void clearLowerDropSpace() {
-		Main.config.setPathToCalculatingFile(null);
-		Main.reinforcementHashMap.clear();
+		config.setPathToCalculatingFile(null);
+		firstHarvestingModel.getReinforcementHashMap().clear();
 		setLowerDropSpaceText(getProperty("lower_label_default_text"));
 	}
 
@@ -261,9 +289,9 @@ public class Controller {
 	@FXML
 	private void downloadResultLabel() {
 		try {
-			Main.saveNotification();
+			app.getNotificationService().saveNotification();
 		} catch (Exception e) {
-			Main.log.add(e);
+			app.log(e);
 		}
 	}
 
@@ -324,7 +352,7 @@ public class Controller {
 
 	@FXML
 	private void downloadSummaryFile() {
-		Main.downloadSummaryFile();
+		summaryService.downloadSummaryFile();
 	}
 
 	@FXML
@@ -375,8 +403,9 @@ public class Controller {
 	}
 
 	private void clearSummaryDropSpace(int i) {
-		if (Main.summaryPaths.get(i) != null) {
-			Main.summaryPaths.get(i).clear();
+		var summaryPaths = summaryModel.getSummaryPaths();
+		if (summaryPaths.get(i) != null) {
+			summaryPaths.get(i).clear();
 			getSummaryLabelWrapper(i).resetTextToDefault();
 		}
 	}
@@ -402,37 +431,38 @@ public class Controller {
 	}
 
 	private void checkSummaryDropSpace(int i) throws InterruptedException {
-		if (Main.summaryPaths.get(i) != null) {
-			Main.checkSummaryDropSpace(i);
+		var summaryPaths = summaryModel.getSummaryPaths();
+		if (summaryPaths.get(i) != null) {
+			summaryService.checkSummaryDropSpace(i);
 		}
 	}
 
 	@FXML
 	private void setBorderColor(MouseEvent mouseEvent) {
 		Circle circle = (Circle) mouseEvent.getSource();
-		Main.config.setBorderColor(getColorHexCode(circle.getFill()));
+		config.setBorderColor(getColorHexCode(circle.getFill()));
 		setupBorderColor();
 	}
 
 	private void setupBorderColor() {
 		for (var label : borderModifiedLabels) {
 			label.setStyle("-fx-border-color: %s; -fx-border-width: %d;"
-					.formatted(Main.config.getBorderColor(), 5));
+					.formatted(config.getBorderColor(), 5));
 		}
 	}
 
 	@FXML
 	private void toggleBoldText() {
-		Main.config.toggleBoldText();
+		config.toggleBoldText();
 		setupFont();
 	}
 
 	private void setupFont() {
-		if (Main.config.getBoldText()) {
+		if (config.getBoldText()) {
 			String font = "System Bold";
 			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
 		}
-		if (!Main.config.getBoldText()) {
+		if (!config.getBoldText()) {
 			String font = "System";
 			setFont(new Font(font, 14), new Font(font, 16), new Font(font, 20));
 		}
@@ -456,31 +486,31 @@ public class Controller {
 	}
 
 	public void setCheckBox() {
-		logCheckBox.setSelected(Main.config.getWriteLog());
-		notificationCheckBox.setSelected(Main.config.getWriteNotification());
-		autoParseProductListCheckBox.setSelected(Main.config.getAutoParseProductList());
+		logCheckBox.setSelected(config.getWriteLog());
+		notificationCheckBox.setSelected(config.getWriteNotification());
+		autoParseProductListCheckBox.setSelected(config.getAutoParseProductList());
 	}
 
 	@FXML
 	private void toggleWriteLog() {
-		Main.config.toggleWriteLog();
+		config.toggleWriteLog();
 	}
 
 	@FXML
 	private void toggleWriteNotification() {
-		Main.config.toggleWriteNotification();
+		config.toggleWriteNotification();
 	}
 
 	private void setText() {
 		try {
-			settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(Main.config.getLogStorageLimit()));
+			settingsTextWrapper2.setText(settingsTextWrapper2.getDefaultText().formatted(config.getLogStorageLimit()));
 			settingsTextWrapper3.setText(
 					settingsTextWrapper3.getDefaultText().formatted(
 							StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("log_storage_directory")),
 							new LongWrapper(StorageCleaner.getSize(Root.programRootPath + Root.getProperty("log_storage_directory"))).toString()
 					)
 			);
-			settingsTextWrapper5.setText(settingsTextWrapper5.getDefaultText().formatted(Main.config.getNotificationStorageLimit()));
+			settingsTextWrapper5.setText(settingsTextWrapper5.getDefaultText().formatted(config.getNotificationStorageLimit()));
 			settingsTextWrapper6.setText(
 					settingsTextWrapper6.getDefaultText().formatted(
 							StorageCleaner.getStorageSize(Root.programRootPath + Root.getProperty("notification_storage_directory")),
@@ -488,34 +518,53 @@ public class Controller {
 					)
 			);
 		} catch (Exception e) {
-			Main.log.add(e);
+			app.log(e);
 		}
 	}
 
 	@FXML
 	private void deleteLogs() {
-		Main.deleteStorage(Root.programRootPath + Root.getProperty("log_storage_directory"));
+		app.getStorageService().deleteStorage(Root.programRootPath + Root.getProperty("log_storage_directory"));
 		setText();
 	}
 
 	@FXML
 	private void deleteNotifications() {
-		Main.deleteStorage(Root.programRootPath + Root.getProperty("notification_storage_directory"));
+		app.getStorageService().deleteStorage(Root.programRootPath + Root.getProperty("notification_storage_directory"));
 		setText();
 	}
 
 	@FXML
 	private void visitSettingsTab() {
-		Main.parseTextField(0, logLimit.getText());
-		Main.parseTextField(1, notificationLimit.getText());
+		parseTextField(0, logLimit.getText());
+		parseTextField(1, notificationLimit.getText());
 		logLimit.clear();
 		notificationLimit.clear();
 		setText();
 	}
 
+	private void parseTextField(int i, String string) {
+		if (string.length() > 0) {
+			int parsed;
+			try {
+				parsed = Integer.parseInt(string);
+				if (0 <= parsed && parsed <= 5000) {
+					if (i == 0) {
+						config.setLogStorageLimit(parsed);
+					}
+					if (i == 1) {
+						config.setNotificationStorageLimit(parsed);
+					}
+				}
+			} catch (Exception e) {
+				app.log(e);
+			}
+		}
+	}
+
 	@FXML
 	private void forgetFavorite() {
-		Main.config.setFavoritePath(null);
+		config.setFavoritePath(null);
 		setFavoriteDropSpaceText(getProperty("favorite_is_off"));
 	}
 
@@ -539,7 +588,7 @@ public class Controller {
 
 	@FXML
 	private void toggleAutoParseProductList() {
-		Main.config.toggleAutoParseProductList();
+		config.toggleAutoParseProductList();
 	}
 
 	@FXML
@@ -570,7 +619,7 @@ public class Controller {
 	private void setResultLabelFont(int i) {
 		Font font = new Font(resultLabel.getFont().getName(), i);
 		resultLabel.setFont(font);
-		Main.config.setResultLabelFontSize(i);
+		config.setResultLabelFontSize(i);
 	}
 
 	@FXML
@@ -852,16 +901,6 @@ public class Controller {
 		Stages.showReinforcementLinearMassList();
 	}
 
-	@Deprecated
-	public Background getBackgroundSample() {
-		return notificationLabel.getBackground();
-	}
-
-	@Deprecated
-	public TextAlignment getTextAlignmentSample() {
-		return notificationLabel.getTextAlignment();
-	}
-
 	public void mSummaryHBoxAdd(Label label) {
 		mSummaryHBox.getChildren().add(label);
 	}
@@ -890,7 +929,7 @@ public class Controller {
 	 */
 	public Background getUserBackgroundColor() {
 		return new Background(new BackgroundFill(
-				Color.valueOf(Main.config.getBackgroundColor()),
+				Color.valueOf(config.getBackgroundColor()),
 				CornerRadii.EMPTY,
 				Insets.EMPTY
 		));
@@ -899,6 +938,10 @@ public class Controller {
 	@FXML
 	private void showHotRolledSteelCode() throws IOException {
 		HotRolledSteelCodeController.show();
+	}
+
+	private String getProperty(String key) {
+		return app.getProperty(key);
 	}
 
 	@FXML
@@ -916,17 +959,5 @@ public class Controller {
 	}
 
 	private void localTest() throws Exception {
-		/*System.out.println("test start");
-		var v = (AnchorPane) new FXMLLoader(getClass().getResource("/armaturkin/fxml/Arrow_lines.fxml")).load();
-		System.out.println(v);
-		System.out.println(v.getChildren());
-		var v1 = (Line) v.getChildren().get(0);
-		var v2 = (Line) v.getChildren().get(1);
-		var v3 = (Line) v.getChildren().get(2);
-		anchorPane1.getChildren().add(v1);
-		anchorPane1.getChildren().add(v2);
-		anchorPane1.getChildren().add(v3);
-		System.out.println(v1.getId());
-		System.out.println("test end");*/
 	}
 }

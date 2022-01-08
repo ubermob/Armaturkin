@@ -1,11 +1,10 @@
 package armaturkin.summaryoutput;
 
+import armaturkin.core.Main;
 import armaturkin.interfaces.LightInfo;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import armaturkin.steelcomponent.Image;
-
-import static armaturkin.core.Main.getProperty;
 
 public class ContentHeadEntry {
 
@@ -18,7 +17,7 @@ public class ContentHeadEntry {
 	public String getPrettyString() {
 		if (entry instanceof ReinforcementLiteInfo) {
 			ReinforcementLiteInfo entry = (ReinforcementLiteInfo) this.entry;
-			return getProperty("content_head_pretty_string_reinforcement").formatted(entry.getDiameter(), entry.getRfClass());
+			return Main.app.getProperty("content_head_pretty_string_reinforcement").formatted(entry.getDiameter(), entry.getRfClass());
 		} else {
 			// instanceof Image
 			Image entry = (Image) this.entry;

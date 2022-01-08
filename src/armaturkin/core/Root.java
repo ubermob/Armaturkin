@@ -19,7 +19,7 @@ public class Root {
 		try (InputStream resource = Main.class.getResourceAsStream("/Root_structure.xml")) {
 			PROPERTIES.loadFromXML(resource);
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 		if (os == Os.WINDOWS) {
 			programRootPath = getProperty("program_root_path_windows");

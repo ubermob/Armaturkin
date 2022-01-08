@@ -9,7 +9,7 @@ import java.net.InetAddress;
 public class PcInformation {
 	public static String getInformation() {
 		try {
-			return Main.properties.getProperty("pc_information").formatted(
+			return Main.app.getProperty("pc_information").formatted(
 					System.getProperty("user.name"),
 					InetAddress.getLocalHost().getHostName(),
 					System.getProperty("os.name"),
@@ -23,7 +23,7 @@ public class PcInformation {
 					Runtime.getRuntime().maxMemory() / 1024 / 1024
 			);
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 			return "no PC information";
 		}
 	}

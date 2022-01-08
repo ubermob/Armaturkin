@@ -10,7 +10,7 @@ public interface FileNameCreator {
 	default String createFileName(String fileName) {
 		if (fileName.length() == 0) {
 			LocalDateTime localDateTime = LocalDateTime.now();
-			fileName = localDateTime.format(DateTimeFormatter.ofPattern(Main.properties.getProperty("date_time_pattern"))) + ".xlsx";
+			fileName = localDateTime.format(DateTimeFormatter.ofPattern(Main.app.getProperty("date_time_pattern"))) + ".xlsx";
 		} else {
 			fileName += ".xlsx";
 		}

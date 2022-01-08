@@ -99,13 +99,13 @@ public class Image implements LightInfo, AddMass, Comparable {
 	public String toString() {
 		String sign;
 		if (type == HotRolledSteelType.EQUAL_LEG_ANGLE) {
-			sign = Main.getProperty("angle_sign");
+			sign = Main.app.getProperty("angle_sign");
 			return sign + a + "x" + b;
 		} else if (type == HotRolledSteelType.UNEQUAL_LEG_ANGLE) {
-			sign = Main.getProperty("angle_sign");
+			sign = Main.app.getProperty("angle_sign");
 			return sign + a + "x" + b + "x" + c;
 		} else if (type == HotRolledSteelType.SHEET) {
-			sign = Main.getProperty("sheet_sign");
+			sign = Main.app.getProperty("sheet_sign");
 			return sign + b + "x" + c;
 		}
 		return "RAW(type, a, b, c, rowNumber):" + type + "_" + a + "_" + b + "_" + c + "_" + rowNumber;

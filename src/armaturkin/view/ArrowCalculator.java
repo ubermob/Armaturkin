@@ -7,8 +7,8 @@ public class ArrowCalculator {
 	private final double coordinateX;
 	private final double coordinateY;
 	private final double angle;
-	private final double angleGap = Integer.parseInt(Main.properties.getProperty("angle_gap"));
-	private final double lineLength = Integer.parseInt(Main.properties.getProperty("line_length"));
+	private final double angleGap = Integer.parseInt(Main.app.getProperty("angle_gap"));
+	private final double lineLength = Integer.parseInt(Main.app.getProperty("line_length"));
 	private double endX1;
 	private double endY1;
 	private double endX2;

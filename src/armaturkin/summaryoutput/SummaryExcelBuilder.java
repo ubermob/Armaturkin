@@ -17,8 +17,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static armaturkin.core.Main.getProperty;
-
 public class SummaryExcelBuilder implements Runnable {
 
 	private final ContentContainer contentContainer;
@@ -47,7 +45,7 @@ public class SummaryExcelBuilder implements Runnable {
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
-		Main.log.add(getProperty("thread_start").formatted(getClass()));
+		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
 		initWorkbook();
 		createCellStyle();
 		boolean[] headBlockFullness = contentContainer.getHeadBlockFullness();
@@ -71,20 +69,20 @@ public class SummaryExcelBuilder implements Runnable {
 		buildLeftColumn(rowStrings);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
-			Main.addNotification(getProperty("file_successfully_download").formatted(fileName));
-			Main.log.add(getProperty("file_download").formatted(getClass(), fileName, path));
+			Main.app.addNotification(Main.app.getProperty("file_successfully_download").formatted(fileName));
+			Main.app.log(Main.app.getProperty("file_download").formatted(getClass(), fileName, path));
 		} catch (Exception e) {
-			Main.addNotification(getProperty("excel_creation_exception").formatted(fileName));
-			Main.log.add(e);
+			Main.app.addNotification(Main.app.getProperty("excel_creation_exception").formatted(fileName));
+			Main.app.log(e);
 		}
-		Main.log.add(getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+		Main.app.log(Main.app.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void buildBlock(SummaryBlock block) {
 		boolean isInstanceOfAngle = isInstanceOfAngle(block);
 		boolean isInstanceOfSheet = isInstanceOfSheet(block);
 		int startBlockColumn = columnInt;
-		Main.log.add(block.toString());
+		Main.app.log(block.toString());
 		for (int j = 0; j < block.getBodyWidth(); j++) {
 			rowInt = baseRowInt;
 			for (int k = 0; k < block.getBodyHeight(); k++) {
@@ -98,7 +96,7 @@ public class SummaryExcelBuilder implements Runnable {
 				columnName = ((HotRolledSteelSummaryBlock) block).getImage(j).toString();
 			} else {
 				// Reinforcement
-				columnName = getProperty("column_name_1") + block.getDiameter(j);
+				columnName = Main.app.getProperty("column_name_1") + block.getDiameter(j);
 			}
 			fillCell(5, columnInt, columnName);
 			// Next column
@@ -111,7 +109,7 @@ public class SummaryExcelBuilder implements Runnable {
 		}
 		writeCell(sheet.getRow(rowInt).createCell(columnInt), block.getBlockSummaryMass());
 		// Write vertical summary mass column name
-		fillCell(5, columnInt, getProperty("column_name_2"));
+		fillCell(5, columnInt, Main.app.getProperty("column_name_2"));
 		// Write design code
 		String designCode = DesignCode.getProperty("reinforcing_rolled");
 		if (isInstanceOfAngle || isInstanceOfSheet) {
@@ -134,10 +132,10 @@ public class SummaryExcelBuilder implements Runnable {
 		// Write reinforcement class or hot rolled steel type
 		String rfClassOrHrst = RFClass.toString(block.getRFClass());
 		if (isInstanceOfAngle) {
-			rfClassOrHrst = getProperty("table_head_3");
+			rfClassOrHrst = Main.app.getProperty("table_head_3");
 		}
 		if (isInstanceOfSheet) {
-			rfClassOrHrst = getProperty("table_head_4");
+			rfClassOrHrst = Main.app.getProperty("table_head_4");
 		}
 		fillCell(3, startBlockColumn, rfClassOrHrst);
 		// Merge cells
@@ -219,7 +217,7 @@ public class SummaryExcelBuilder implements Runnable {
 			writeCell(sheet.getRow(rowInt++).createCell(columnInt), d);
 		}
 		// Write column name
-		fillCell(5, columnInt, getProperty("column_name_3"));
+		fillCell(5, columnInt, Main.app.getProperty("column_name_3"));
 		// Empty cells above last column name
 		for (int i = 1; i <= 4; i++) {
 			createEmptyCell(i, columnInt);
@@ -238,12 +236,12 @@ public class SummaryExcelBuilder implements Runnable {
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, columnInt));
 		boolean isReinforcementBlocksExist = lastReinforcementBlockColumn - baseColumnInt > 0;
 		if (isReinforcementBlocksExist) {
-			fillCell(1, 1, getProperty("table_head_1"));
+			fillCell(1, 1, Main.app.getProperty("table_head_1"));
 			for (int i = 2; i <= columnInt; i++) {
 				createEmptyCell(1, i);
 			}
 			sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, lastReinforcementBlockColumn));
-			fillCell(2, 1, getProperty("table_head_2"));
+			fillCell(2, 1, Main.app.getProperty("table_head_2"));
 			for (int i = 2; i <= columnInt; i++) {
 				createEmptyCell(2, i);
 			}
@@ -256,7 +254,7 @@ public class SummaryExcelBuilder implements Runnable {
 			if (!isReinforcementBlocksExist) {
 				startColumn = lastReinforcementBlockColumn;
 			}
-			fillCell(1, startColumn, getProperty("table_head_5"));
+			fillCell(1, startColumn, Main.app.getProperty("table_head_5"));
 			createEmptyCell(2, startColumn);
 			for (int i = 1; i <= 2; i++) {
 				for (int j = (startColumn + 1); j < columnInt; j++) {
@@ -280,13 +278,13 @@ public class SummaryExcelBuilder implements Runnable {
 	}
 
 	private void buildLeftColumn(String[] rowStrings) {
-		fillCell(1, 0, getProperty("left_string_head"));
+		fillCell(1, 0, Main.app.getProperty("left_string_head"));
 		sheet.addMergedRegion(new CellRangeAddress(1, 5, 0, 0));
 		rowInt = baseRowInt;
 		for (var string : rowStrings) {
 			fillCell(rowInt++, 0, string);
 		}
-		fillCell(rowInt, 0, getProperty("left_string_last"));
+		fillCell(rowInt, 0, Main.app.getProperty("left_string_last"));
 	}
 
 	private void fillCell(int row, int column, String text) {
@@ -301,11 +299,11 @@ public class SummaryExcelBuilder implements Runnable {
 
 	private void initWorkbook() {
 		workbook = new XSSFWorkbook();
-		sheet = workbook.createSheet(getProperty("default_list_name"));
-		sheet.setZoom(Integer.parseInt(getProperty("sheet_zoom_1")));
+		sheet = workbook.createSheet(Main.app.getProperty("default_list_name"));
+		sheet.setZoom(Integer.parseInt(Main.app.getProperty("sheet_zoom_1")));
 		var coreProperties = workbook.getProperties().getCoreProperties();
 		coreProperties.setCreator(Main.getAppNameAndVersion());
-		coreProperties.setDescription(Main.getProperty("summary_excel_builder_commentary")
+		coreProperties.setDescription(Main.app.getProperty("summary_excel_builder_commentary")
 				.formatted(Main.getAppNameAndVersion()));
 	}
 }

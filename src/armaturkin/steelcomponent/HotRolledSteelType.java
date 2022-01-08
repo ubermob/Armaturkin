@@ -26,22 +26,22 @@ public enum HotRolledSteelType {
 
 	public static List<String> getAsStrings() {
 		String[] strings = new String[]{
-				Main.getProperty("hot_rolled_steel_type_ru_0"),
-				Main.getProperty("hot_rolled_steel_type_ru_1"),
-				Main.getProperty("hot_rolled_steel_type_ru_2")};
+				Main.app.getProperty("hot_rolled_steel_type_ru_0"),
+				Main.app.getProperty("hot_rolled_steel_type_ru_1"),
+				Main.app.getProperty("hot_rolled_steel_type_ru_2")};
 		List<String> list = new ArrayList<>(strings.length);
 		list.addAll(Arrays.asList(strings));
 		return list;
 	}
 
 	public static HotRolledSteelType parseHotRolledSteelType(String string) {
-		if (Main.getProperty("hot_rolled_steel_type_ru_0").equals(string)) {
+		if (Main.app.getProperty("hot_rolled_steel_type_ru_0").equals(string)) {
 			return EQUAL_LEG_ANGLE;
 		}
-		if (Main.getProperty("hot_rolled_steel_type_ru_1").equals(string)) {
+		if (Main.app.getProperty("hot_rolled_steel_type_ru_1").equals(string)) {
 			return UNEQUAL_LEG_ANGLE;
 		}
-		if (Main.getProperty("hot_rolled_steel_type_ru_2").equals(string)) {
+		if (Main.app.getProperty("hot_rolled_steel_type_ru_2").equals(string)) {
 			return SHEET;
 		}
 		return null;

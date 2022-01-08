@@ -45,7 +45,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
-		Main.log.add(Main.properties.getProperty("thread_start").formatted(getClass()));
+		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
 		// todo: initWorkbook method
 		buildTableHead();
 		addBackgroundReinforcement();
@@ -53,13 +53,13 @@ public class FileWorker implements Runnable, FileNameCreator {
 		fileName = createFileName(fileName);
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
-			Main.addNotification(Main.properties.getProperty("file_successfully_download").formatted(fileName));
-			Main.log.add(Main.properties.getProperty("file_download").formatted(getClass(), fileName, path));
+			Main.app.addNotification(Main.app.getProperty("file_successfully_download").formatted(fileName));
+			Main.app.log(Main.app.getProperty("file_download").formatted(getClass(), fileName, path));
 		} catch (Exception e) {
-			Main.addNotification(Main.properties.getProperty("excel_creation_exception").formatted(fileName));
-			Main.log.add(e);
+			Main.app.addNotification(Main.app.getProperty("excel_creation_exception").formatted(fileName));
+			Main.app.log(e);
 		}
-		Main.log.add(Main.properties.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
+		Main.app.log(Main.app.getProperty("thread_complete").formatted(getClass(), stopwatch.getElapsedTime()));
 	}
 
 	private void fillTable() {
@@ -105,7 +105,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 							reinforcement.getLength() / 1000.0,
 							reinforcement.getMass()
 					);
-					Main.log.add(formatter.toString());
+					Main.app.log(formatter.toString());
 				}
 				if (!reinforcement.isLinear()) {
 					cell = row.getCell(0);
@@ -137,7 +137,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 							reinforcement.getMass(),
 							reinforcement.getMass() * reinforcement.getNumber()
 					);
-					Main.log.add(formatter.toString());
+					Main.app.log(formatter.toString());
 				}
 				rowInt++;
 			}
@@ -145,18 +145,18 @@ public class FileWorker implements Runnable, FileNameCreator {
 	}
 
 	private void addBackgroundReinforcement() {
-		for (var entry : Main.backgroundReinforcementManuallyEntries) {
+		for (var entry : Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries()) {
 			int diameter = entry.getDiameter();
 			double length = entry.getParsedValue();
 			int lengthInt = (int) (length * 1000);
 			RFClass rfClass = entry.getRfClass();
-			Main.log.add(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
+			Main.app.log(getClass() + " parse background reinforcement: [diameter: " + diameter + "]" +
 					",[length: " + length + "],[lengthInt: " + lengthInt + "]"
 			);
 			int reservedDiameterIndex = StandardsRepository.getReservedDiameterIndex(diameter);
 			if (reservedDiameterIndex == -1) {
-				Main.log.add(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
-				Main.addNotification("Указанного диаметра: " + diameter +
+				Main.app.log(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
+				Main.app.addNotification("Указанного диаметра: " + diameter +
 						" нет в зарезервированном списке диаметров (class Pattern)"
 				);
 			} else {
@@ -186,7 +186,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 							StandardsRepository.getMass(diameter) * lengthInt / 1000
 					));
 				}
-				Main.log.add(reinforcementHashMap.get(position).toString());
+				Main.app.log(reinforcementHashMap.get(position).toString());
 			}
 		}
 	}
@@ -194,7 +194,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 	private void buildTableHead() {
 		workbook = new XSSFWorkbook();
 		cellStyleRepository = new CellStyleRepository(workbook);
-		sheet = workbook.createSheet(Main.properties.getProperty("default_list_name"));
+		sheet = workbook.createSheet(Main.app.getProperty("default_list_name"));
 
 		sheet.setColumnWidth(0, 1792); // Width values read from sample
 		sheet.setColumnWidth(1, 4827);
@@ -217,25 +217,25 @@ public class FileWorker implements Runnable, FileNameCreator {
 		row = sheet.createRow(1);
 		row.setHeight((short) 450);
 		cell = row.createCell(0);
-		cell.setCellValue(Main.properties.getProperty("column_name_4"));
+		cell.setCellValue(Main.app.getProperty("column_name_4"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(1);
-		cell.setCellValue(Main.properties.getProperty("column_name_5"));
+		cell.setCellValue(Main.app.getProperty("column_name_5"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(2);
-		cell.setCellValue(Main.properties.getProperty("column_name_6"));
+		cell.setCellValue(Main.app.getProperty("column_name_6"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(3);
-		cell.setCellValue(Main.properties.getProperty("column_name_7"));
+		cell.setCellValue(Main.app.getProperty("column_name_7"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(4);
-		cell.setCellValue(Main.properties.getProperty("column_name_8"));
+		cell.setCellValue(Main.app.getProperty("column_name_8"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(5);
-		cell.setCellValue(Main.properties.getProperty("column_name_9"));
+		cell.setCellValue(Main.app.getProperty("column_name_9"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(6);
-		cell.setCellValue(Main.properties.getProperty("column_name_10"));
+		cell.setCellValue(Main.app.getProperty("column_name_10"));
 		cell.setCellStyle(cellStyle);
 		cell = row.createCell(7);
 		cell.setCellStyle(cellStyle);
@@ -243,10 +243,10 @@ public class FileWorker implements Runnable, FileNameCreator {
 		row = sheet.createRow(2);
 		row.setHeight((short) 450);
 		cell = row.createCell(6);
-		cell.setCellValue(Main.properties.getProperty("column_name_11"));
+		cell.setCellValue(Main.app.getProperty("column_name_11"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		cell = row.createCell(7);
-		cell.setCellValue(Main.properties.getProperty("column_name_12"));
+		cell.setCellValue(Main.app.getProperty("column_name_12"));
 		cell.setCellStyle(cellStyleWithTextWrap);
 		for (int i = 0; i < 6; i++) {
 			cell = row.createCell(i);

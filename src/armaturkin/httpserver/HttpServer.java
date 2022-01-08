@@ -30,7 +30,7 @@ public class HttpServer implements Runnable {
 	@Override
 	public void run() {
 		server.start();
-		Main.log.add("HTTP Server start, hostname: " + hostname + ", port: " + port);
+		Main.app.log("HTTP Server start, hostname: " + hostname + ", port: " + port);
 	}
 
 	public void stop() {

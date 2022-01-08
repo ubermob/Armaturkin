@@ -27,7 +27,7 @@ public class Content {
 				table[labelID - 1][column] += mass;
 			}
 		} catch (Exception e) {
-			Main.log.add(e);
+			Main.app.log(e);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class Content {
 					table[to][j] += table[from][j];
 					table[from][j] = null;
 				} catch (Exception e) {
-					Main.log.add(e);
+					Main.app.log(e);
 				}
 			}
 		}
