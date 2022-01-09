@@ -28,7 +28,7 @@ import java.util.Locale;
 
 public class Main extends Application {
 
-	public static final String version = "0.6.0b3";
+	public static final String version = "0.6.1";
 	public static App app;
 
 	@Override
