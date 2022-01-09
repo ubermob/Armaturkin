@@ -50,7 +50,7 @@ public class Controller {
 	@FXML
 	private Label upperDropSpace, lowerDropSpace, resultLabel, notificationLabel, notificationLabel2,
 			summaryDropSpace1, summaryDropSpace2, summaryDropSpace3, summaryDropSpace4, summaryDropSpace5,
-			summaryDropSpace6, summaryDropSpace7, summaryDropSpace8, favoriteDropSpace;
+			summaryDropSpace6, summaryDropSpace7, summaryDropSpace8, favoriteDropSpace, summaryBuilderFileDropSpace;
 	@FXML
 	private Button downloadFileButton, clearResultLabelButton, lowerDropSpaceButton, clearUpperDropSpaceButton,
 			showInfoButton, downloadResultLabelButton, downloadSummaryFileButton, clearAllSummaryDropSpaceButton,
@@ -58,7 +58,7 @@ public class Controller {
 			checkSummaryDropSpaceButton7, boldTextButton, deleteLogs, deleteNotifications, forgetFavorite,
 			font12Button, font14Button, font16Button, font18Button, font20Button, mSummaryAddButton, mSummaryAddButton2,
 			restoreWindowSizeButton, showReinforcementLinearMassListButton, backgroundReinforcementAddButton,
-			showHotRolledSteelCodeButton, testButton, varStateButton;
+			showHotRolledSteelCodeButton, testButton, varStateButton, clearSummaryBuilderDropSpaceButton;
 	@FXML
 	private TextField tableHead, fileName, summaryFileName, summaryTableHead, logLimit,
 			notificationLimit, mSummaryTextField, mBackgroundTextField, mSummaryTextField2;
@@ -89,6 +89,7 @@ public class Controller {
 
 	private Label[] allLabels, borderModifiedLabels;
 	private LabelWrapper[] allSummaryLabelWrappers;
+	private LabelWrapper summaryBuilderLabelWrapper;
 	private Button[] boldTextModifiedButtons;
 	private Text[] largeSizeText, littleSizeText;
 	private TextWrapper settingsTextWrapper2, settingsTextWrapper3, settingsTextWrapper5, settingsTextWrapper6;
@@ -149,6 +150,8 @@ public class Controller {
 		setSummaryDropSpaceText(6, getProperty("summary_label_default_first_line_6").formatted(secondLine));
 		setSummaryDropSpaceText(7, getProperty("summary_label_default_first_line_7").formatted(secondLine));
 		setSummaryDropSpaceText(8, getProperty("summary_label_default_first_line_8").formatted(secondLine));
+		summaryBuilderLabelWrapper = new LabelWrapper(summaryBuilderFileDropSpace, getProperty("summary_builder_label_default"));
+		summaryBuilderLabelWrapper.resetTextToDefault();
 
 		setFavoriteDropSpaceText(getProperty("favorite_is_off"));
 
@@ -348,6 +351,35 @@ public class Controller {
 	@FXML
 	private void summaryDragDropped8(DragEvent dragEvent) {
 		DropWorker.summaryDragDropped(dragEvent, 8, this);
+	}
+
+	@FXML
+	private void summaryBuilderDragDropped(DragEvent dragEvent) throws IOException {
+		DropWorker.summaryBuilderDragDropped(dragEvent, this);
+		for (var v : allSummaryLabelWrappers) {
+			v.setBackground(getBackground("#9F2B00"));
+		}
+		setupMSummaryContentRowChoiceBox(
+				summaryModel.getUserContentRowList()
+				, mSummaryChoiceBox1
+				, mSummaryChoiceBox8
+		);
+	}
+
+	@FXML
+	private void clearSummaryBuilderDropSpace() {
+		if (summaryModel.isSummaryBuilderListNotNull()) {
+			summaryModel.removeSummaryBuilderList();
+			for (var v : allSummaryLabelWrappers) {
+				v.setBackground(null);
+			}
+			defaultSetupMSummaryContentRowChoiceBox();
+			app.log(getProperty("summary_builder_remove"));
+		}
+	}
+
+	public Label getSummaryBuilderFileDropSpaceLabel() {
+		return summaryBuilderFileDropSpace;
 	}
 
 	@FXML
@@ -708,7 +740,8 @@ public class Controller {
 				summaryDropSpace6,
 				summaryDropSpace7,
 				summaryDropSpace8,
-				favoriteDropSpace
+				favoriteDropSpace,
+				summaryBuilderFileDropSpace
 		};
 		borderModifiedLabels = new Label[]{
 				upperDropSpace,
@@ -721,7 +754,8 @@ public class Controller {
 				summaryDropSpace6,
 				summaryDropSpace7,
 				summaryDropSpace8,
-				favoriteDropSpace
+				favoriteDropSpace,
+				summaryBuilderFileDropSpace
 		};
 		allSummaryLabelWrappers = new LabelWrapper[]{
 				new LabelWrapper(summaryDropSpace1),
@@ -760,7 +794,8 @@ public class Controller {
 				showReinforcementLinearMassListButton,
 				backgroundReinforcementAddButton,
 				showHotRolledSteelCodeButton,
-				mSummaryAddButton2
+				mSummaryAddButton2,
+				clearSummaryBuilderDropSpaceButton
 		};
 		largeSizeText = new Text[]{
 				appearanceText1,
@@ -798,12 +833,24 @@ public class Controller {
 		return "#" + paint.toString().substring(2, 8);
 	}
 
+	@SafeVarargs
+	private void setupMSummaryContentRowChoiceBox(List<String> list, ChoiceBox<String>... choiceBoxes) {
+		for (var v : choiceBoxes) {
+			v.setItems(observableList(list));
+			v.setValue(list.get(0));
+		}
+	}
+
+	private void defaultSetupMSummaryContentRowChoiceBox() {
+		setupMSummaryContentRowChoiceBox(
+				Arrays.asList(getProperty("default_content_row").split("-"))
+				, mSummaryChoiceBox1
+				, mSummaryChoiceBox8
+		);
+	}
+
 	private void setupMSummaryChoiceBox() {
-		List<String> list = Arrays.asList(getProperty("content_row").split("-"));
-		mSummaryChoiceBox1.setItems(observableArrayList(list));
-		mSummaryChoiceBox8.setItems(observableArrayList(list));
-		mSummaryChoiceBox1.setValue(list.get(0));
-		mSummaryChoiceBox8.setValue(list.get(0));
+		defaultSetupMSummaryContentRowChoiceBox();
 		mSummaryChoiceBox2.setItems(observableList(StandardsRepository.getDiametersAsList()));
 		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[2]);
 		mSummaryChoiceBox3.setItems(observableArrayList(
@@ -930,6 +977,14 @@ public class Controller {
 	public Background getUserBackgroundColor() {
 		return new Background(new BackgroundFill(
 				Color.valueOf(config.getBackgroundColor()),
+				CornerRadii.EMPTY,
+				Insets.EMPTY
+		));
+	}
+
+	private Background getBackground(String color) {
+		return new Background(new BackgroundFill(
+				Paint.valueOf(color),
 				CornerRadii.EMPTY,
 				Insets.EMPTY
 		));

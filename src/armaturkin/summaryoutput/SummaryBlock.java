@@ -72,7 +72,7 @@ public class SummaryBlock {
 		result += "Block summary mass: " + blockSummaryMass + "\n";
 		result += "Diameters: " + Arrays.toString(diameters) + "\n";
 		result += "RFClass: " + rfClass + "\n";
-		result += "----------------------";
+		result += "---------------------";
 		return result;
 	}
 

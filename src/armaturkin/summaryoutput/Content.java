@@ -13,9 +13,9 @@ public class Content {
 	private Double[][] table;
 	private final List<Integer> hashes;
 
-	public Content(List<Integer> hashes) {
+	public Content(List<Integer> hashes, int rows) {
 		this.hashes = hashes;
-		table = new Double[8][this.hashes.size()];
+		table = new Double[rows][this.hashes.size()];
 	}
 
 	public void put(int labelID, int hashCode, double mass) {

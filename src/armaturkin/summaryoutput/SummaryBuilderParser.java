@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -32,10 +33,36 @@ public class SummaryBuilderParser {
 				}
 				current = parseBlock(block);
 				summaryBuilderList.add(current);
-				Main.app.log(SummaryBuilderParser.class + " parse: " + current.toString());
+				Main.app.log(
+						Main.app.getProperty("summary_builder_successfully_parsed_1")
+								.formatted(SummaryBuilderParser.class, current.toString())
+				);
 			}
 		}
+		Main.app.log(Main.app.getProperty("summary_builder_successfully_parsed_2"));
+		Main.app.addNotification(
+				Main.app.getProperty("summary_builder_successfully_parsed_3").formatted(summaryBuilderList.size())
+		);
 		return summaryBuilderList;
+	}
+
+	public static void realize(List<SummaryBuilder> list) {
+		for (int i = 0; i < list.size(); i++) {
+			SummaryBuilder currentElement = list.get(i);
+			HashMap<Integer, List<String>> summaryPaths = Main.app.getSummaryModel().getSummaryPaths();
+			summaryPaths.put(i + 1, new ArrayList<>());
+			String pathToSummaryBuilderFile = Main.app.getSummaryModel().getPathToSummaryBuilderFile();
+			Path path = Path.of(pathToSummaryBuilderFile).getParent();
+			for (int j = 0; j < currentElement.getRepeat(); j++) {
+				for (var v : currentElement.getPathToFiles()) {
+					path = path.resolve(v);
+					summaryPaths.get(i + 1).add(path.toString());
+				}
+				for (var v : currentElement.getPathToDirectories()) {
+					// TODO work in progress
+				}
+			}
+		}
 	}
 
 	private static SummaryBuilder parseBlock(List<String> list) {

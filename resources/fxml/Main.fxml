@@ -283,6 +283,12 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
+                  <Label fx:id="summaryBuilderFileDropSpace" layoutX="108.0" layoutY="594.0" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="77.0" prefWidth="139.0" style="-fx-background-color: RED;" text="Label" />
+                  <Button fx:id="clearSummaryBuilderDropSpaceButton" layoutX="254.0" layoutY="633.0" mnemonicParsing="false" onAction="#clearSummaryBuilderDropSpace" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
         </content>

@@ -9,6 +9,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +88,20 @@ public class DropWorker {
 			} else {
 				Main.app.getConfig().setFavoritePath(fileList.get(0).getAbsolutePath());
 				label.setText(Main.app.getProperty("favorite_is_on").formatted(Main.app.getConfig().getFavoritePath()));
+			}
+		}
+	}
+
+	public static void summaryBuilderDragDropped(DragEvent dragEvent, Controller controller) throws IOException {
+		List<File> fileList = getDroppedFile(dragEvent);
+		Label label = controller.getSummaryBuilderFileDropSpaceLabel();
+		if (fileList.size() != 1) {
+			label.setText(Main.app.getProperty("drop_worker_notification_1"));
+		} else {
+			if (isSummaryBuilderFile(fileList.get(0).getName())) {
+				Main.app.getSummaryService().consumeSummaryBuilderFile(fileList.get(0).getAbsolutePath());
+			} else {
+				label.setText(Main.app.getProperty("drop_worker_notification_3"));
 			}
 		}
 	}

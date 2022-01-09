@@ -41,7 +41,7 @@ public class HotRolledSteelSummaryBlock extends SummaryBlock {
 		result += "Block summary mass: " + super.getBlockSummaryMass() + "\n";
 		result += "Image: " + images + "\n";
 		result += "Hot rolled steel type: " + hotRolledSteelType + "\n";
-		result += "----------------------";
+		result += "---------------------";
 		return result;
 	}
 }

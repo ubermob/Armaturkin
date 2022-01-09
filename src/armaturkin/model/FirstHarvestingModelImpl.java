@@ -13,8 +13,8 @@ import java.util.HashMap;
  */
 public class FirstHarvestingModelImpl implements FirstHarvestingModel {
 
-	private volatile HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
-	private volatile HashMap<Integer, Reinforcement> reinforcementHashMap;
+	private final HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
+	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
 
 	public FirstHarvestingModelImpl() {
 		reinforcementProductHashMap = new HashMap<>();

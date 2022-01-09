@@ -11,10 +11,14 @@ public class ContentRow {
 
 	public ContentRow() {
 		try {
-			list = Arrays.asList(Main.app.getProperty("content_row").split("-"));
+			list = Arrays.asList(Main.app.getProperty("default_content_row").split("-"));
 		} catch (Exception e) {
 			Main.app.log(e);
 		}
+	}
+
+	public ContentRow(List<String> list) {
+		this.list = list;
 	}
 
 	public String get(int index) {
@@ -36,5 +40,9 @@ public class ContentRow {
 			result[i] = list.get(i);
 		}
 		return result;
+	}
+
+	public int getSize() {
+		return list.size();
 	}
 }

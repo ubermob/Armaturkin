@@ -9,10 +9,7 @@ import armaturkin.reinforcement.*;
 import armaturkin.summaryoutput.SummaryThreadPool;
 import armaturkin.utils.MassCounter;
 import armaturkin.utils.RegEx;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
@@ -43,7 +40,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private double singleMass;
 	private int minorNumber;
 	private double totalLength;
-	private int rowInt = 4;
+	private int rowInt;
 	private int diameterAndRfClassColumn;
 	private int massColumn;
 	private double productMass;
@@ -77,6 +74,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		} catch (IOException e) {
 			log.add(e);
 		}
+		findStartRow();
 		if (set == SummaryThreadPool.RAW) {
 			majorNumber = RegEx.parseNumberOfElements(sheet.getRow(4).getCell(0).getStringCellValue());
 			checkMajorNumber(majorNumber);
@@ -242,6 +240,34 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			minorNumberColumn = 4;
 			totalLengthColumn = 5;
 			productMassColumn = 8;
+		}
+	}
+
+	private void findStartRow() {
+		int startRow = 2;
+		boolean isMatch = false;
+		while (!isMatch) {
+			try {
+				CellType cellType0 = sheet.getRow(startRow).getCell(0).getCellType();
+				CellType cellType1 = sheet.getRow(startRow).getCell(1).getCellType();
+				CellType cellType2 = sheet.getRow(startRow).getCell(2).getCellType();
+				CellType goal = CellType.NUMERIC;
+				if (cellType0 == goal && cellType1 == goal && cellType2 == goal) {
+					// in default head table pattern this must be
+					// 1
+					double numericCellValue0 = sheet.getRow(startRow).getCell(0).getNumericCellValue();
+					// 2
+					double numericCellValue1 = sheet.getRow(startRow).getCell(1).getNumericCellValue();
+					// 3
+					double numericCellValue2 = sheet.getRow(startRow).getCell(2).getNumericCellValue();
+					if (numericCellValue0 == 1 && numericCellValue1 == 2 && numericCellValue2 == 3) {
+						rowInt = ++startRow;
+						isMatch = true;
+					}
+				}
+			} catch (Exception ignored) {
+			}
+			startRow++;
 		}
 	}
 }

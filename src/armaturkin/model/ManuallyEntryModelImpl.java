@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class ManuallyEntryModelImpl implements ManuallyEntryModel {
 
-	private List<ManuallyEntry> manuallySummaryEntries;
-	private List<ManuallyEntry> backgroundReinforcementManuallyEntries;
+	private final List<ManuallyEntry> manuallySummaryEntries;
+	private final List<ManuallyEntry> backgroundReinforcementManuallyEntries;
 
 	public ManuallyEntryModelImpl() {
 		manuallySummaryEntries = new ArrayList<>();

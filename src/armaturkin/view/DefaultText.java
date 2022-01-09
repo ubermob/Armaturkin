@@ -2,7 +2,7 @@ package armaturkin.view;
 
 public abstract class DefaultText {
 
-	private String defaultText;
+	protected String defaultText;
 
 	public DefaultText() {
 	}

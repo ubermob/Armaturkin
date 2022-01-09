@@ -41,6 +41,12 @@ public class SummaryThreadPool {
 		createThreads();
 	}
 
+	public SummaryThreadPool(int id, int set) throws InterruptedException {
+		this.id = id;
+		this.set = set;
+		createThreads();
+	}
+
 	public HashMap<Integer, ReinforcementLiteInfo> getHashMap() {
 		return hashMap;
 	}

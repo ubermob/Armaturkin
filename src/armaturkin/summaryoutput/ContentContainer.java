@@ -14,15 +14,22 @@ public class ContentContainer {
 	private static String[][] contentAsArray;
 
 	private final ContentHeadPlacement contentHeadPlacement;
-	private final Content content;
 	private final ContentHead contentHead;
 	private final ContentRow contentRow;
+	private final Content content;
 
 	public ContentContainer(ArrayList<Image> sortedSheets) throws Exception {
 		contentHeadPlacement = new ContentHeadPlacement();
-		content = new Content(contentHeadPlacement.getHashes());
 		contentHead = new ContentHead(contentHeadPlacement.getBlocks(), contentHeadPlacement.getHashes().size(), sortedSheets);
 		contentRow = new ContentRow();
+		content = new Content(contentHeadPlacement.getHashes(), contentRow.getSize());
+	}
+
+	public ContentContainer(ArrayList<Image> sortedSheets, List<String> rowList) throws Exception {
+		contentHeadPlacement = new ContentHeadPlacement();
+		contentHead = new ContentHead(contentHeadPlacement.getBlocks(), contentHeadPlacement.getHashes().size(), sortedSheets);
+		contentRow = new ContentRow(rowList);
+		content = new Content(contentHeadPlacement.getHashes(), contentRow.getSize());
 	}
 
 	public void put(int labelID, int hashCode, double mass) {

@@ -1,6 +1,7 @@
 package armaturkin.view;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
 
 public class LabelWrapper extends DefaultText {
 
@@ -10,16 +11,13 @@ public class LabelWrapper extends DefaultText {
 		this.label = label;
 	}
 
+	public LabelWrapper(Label label, String defaultText) {
+		super(defaultText);
+		this.label = label;
+	}
+
 	public Label getLabel() {
 		return label;
-	}
-
-	public String getDefaultText() {
-		return super.getDefaultText();
-	}
-
-	public void setDefaultText(String defaultText) {
-		super.setDefaultText(defaultText);
 	}
 
 	public void setText(String text) {
@@ -27,6 +25,10 @@ public class LabelWrapper extends DefaultText {
 	}
 
 	public void resetTextToDefault() {
-		label.setText(super.getDefaultText());
+		label.setText(defaultText);
+	}
+
+	public void setBackground(Background background) {
+		label.setBackground(background);
 	}
 }

@@ -247,11 +247,18 @@ public class ManuallyEntry {
 
 	/**
 	 * @param summaryLabel {@link java.lang.String} from TextField
-	 * @return {@code int} value from 1 to 8 corresponding {@code summaryDropSpace#}.
+	 * @return for default values: {@code int} value from 1 to 8 corresponding {@code summaryDropSpace#}.
+	 * Value from 1 for user summary builder rows.
 	 * -1 for invalid {@code summaryDropSpace#}.
 	 */
 	private int parseSummaryLabel(String summaryLabel) {
-		String[] labels = Main.app.getProperty("content_row").split("-");
+		String[] labels;
+		if (Main.app.getSummaryModel().isSummaryBuilderListNotNull()) {
+			labels = (String[]) Main.app.getSummaryModel().getUserContentRowList().toArray();
+		} else {
+			// default value
+			labels = Main.app.getProperty("default_content_row").split("-");
+		}
 		if (type != Type.BACKGROUND_REINFORCEMENT) {
 			for (int i = 0; i < labels.length; i++) {
 				if (summaryLabel.equals(labels[i])) {

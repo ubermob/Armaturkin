@@ -3,10 +3,12 @@ package armaturkin.service;
 import armaturkin.core.Log;
 import armaturkin.model.ManuallyEntryModel;
 import armaturkin.model.SummaryModel;
+import armaturkin.summaryoutput.SummaryBuilderParser;
 import armaturkin.summaryoutput.SummaryHub;
 import armaturkin.summaryoutput.SummaryThreadPool;
 import armaturkin.utils.UnacceptableSymbolReplacer;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class SummaryServiceImpl extends AbstractService implements SummaryServic
 	public void downloadSummaryFile() {
 		var summaryPaths = summaryModel.getSummaryPaths();
 		var manuallySummaryEntries = manuallyEntryModel.getManuallySummaryEntries();
-		if (!summaryPaths.isEmpty() || !manuallySummaryEntries.isEmpty()) {
+		if (!summaryPaths.isEmpty() || !manuallySummaryEntries.isEmpty() || summaryModel.isSummaryBuilderListNotNull()) {
 			String path;
 			if (config.isFavoritePathNotNull()) {
 				path = config.getFavoritePath();
@@ -58,8 +60,9 @@ public class SummaryServiceImpl extends AbstractService implements SummaryServic
 	}
 
 	@Override
-	public void consumeSummaryBuilderFile() {
-
+	public void consumeSummaryBuilderFile(String path) throws IOException {
+		summaryModel.setSummaryBuilderList(SummaryBuilderParser.parse(path));
+		summaryModel.setPathToSummaryBuilderFile(path);
 	}
 
 	public void setSummaryModel(SummaryModel summaryModel) {

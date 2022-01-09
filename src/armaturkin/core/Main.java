@@ -142,6 +142,7 @@ public class Main extends Application {
 						throw new IOException("Absolute path: \"" + absolutePath + "\" do not exist");
 					}
 					Root.absolutePath = absolutePath;
+					tempLog.add(arg);
 				}
 				if (isMatchComplexCommands(arg, sampleArgCommands[5])) {
 					String[] splitted = arg.split("=");
@@ -157,6 +158,7 @@ public class Main extends Application {
 						}
 					}
 					serverWrapper.setServer(new HttpServer(hostname, port));
+					tempLog.add(arg);
 				}
 			}
 			return true;

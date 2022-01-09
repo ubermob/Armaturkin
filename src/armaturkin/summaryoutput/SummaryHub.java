@@ -4,6 +4,7 @@ import armaturkin.core.Log;
 import armaturkin.core.Main;
 import armaturkin.interfaces.FileNameCreator;
 import armaturkin.manuallyentry.ManuallyEntry;
+import armaturkin.model.SummaryModel;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import utools.stopwatch.Stopwatch;
 
@@ -19,6 +20,8 @@ public class SummaryHub implements Runnable, FileNameCreator {
 	private final String tableHead;
 	private final HashMap<Integer, HashMap<Integer, ReinforcementLiteInfo>> targetHashMap;
 	private final List<Log> summaryLog;
+	private final boolean isDefaultSummaryRowList;
+	private final int summaryPathsKeyCounters;
 	private ContentContainer contentContainer;
 	private Stopwatch stopwatch;
 
@@ -32,16 +35,28 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		this.tableHead = tableHead;
 		targetHashMap = new HashMap<>();
 		summaryLog = new ArrayList<>();
+		isDefaultSummaryRowList = !Main.app.getSummaryModel().isSummaryBuilderListNotNull();
+		summaryPathsKeyCounters = Main.app.getSummaryModel().getSummaryPathsKeyCounters();
 	}
 
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
 		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
-		for (int i = 1; i <= 8; i++) {
+		SummaryModel summaryModel = Main.app.getSummaryModel();
+		if (!isDefaultSummaryRowList) {
+			summaryModel.getSummaryPaths().clear();
+			SummaryBuilderParser.realize(Main.app.getSummaryModel().getSummaryBuilderList());
+		}
+		for (int i = 1; i <= summaryPathsKeyCounters; i++) {
 			SummaryThreadPool summaryThreadPool = null;
 			try {
-				summaryThreadPool = new SummaryThreadPool(i);
+				if (isDefaultSummaryRowList) {
+					summaryThreadPool = new SummaryThreadPool(i);
+				} else {
+					int type = summaryModel.getSummaryBuilderList().get(i - 1).getType();
+					summaryThreadPool = new SummaryThreadPool(i, type);
+				}
 			} catch (InterruptedException e) {
 				Main.app.log(e);
 			}
@@ -68,10 +83,19 @@ public class SummaryHub implements Runnable, FileNameCreator {
 	}
 
 	private void buildContent() throws Exception {
-		contentContainer = new ContentContainer(SheetDynamicHashCode.sortAndGetSortedCurrentSheetList(manuallySummaryEntries));
+		if (isDefaultSummaryRowList) {
+			contentContainer = new ContentContainer(
+					SheetDynamicHashCode.sortAndGetSortedCurrentSheetList(manuallySummaryEntries)
+			);
+		} else {
+			contentContainer = new ContentContainer(
+					SheetDynamicHashCode.sortAndGetSortedCurrentSheetList(manuallySummaryEntries)
+					, Main.app.getSummaryModel().getUserContentRowList()
+			);
+		}
 		Main.app.log(Main.app.getProperty("target_hash_map"));
 		// Filling auto tab entries
-		for (int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= summaryPathsKeyCounters; i++) {
 			if (targetHashMap.containsKey(i)) {
 				HashMap<Integer, ReinforcementLiteInfo> subMap = targetHashMap.get(i);
 				Main.app.log(Main.app.getProperty("summary_drop_space").formatted(i));

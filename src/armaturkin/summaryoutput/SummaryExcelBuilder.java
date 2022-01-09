@@ -130,14 +130,17 @@ public class SummaryExcelBuilder implements Runnable {
 		}
 		sheet.addMergedRegion(new CellRangeAddress(4, 4, startBlockColumn, columnInt));
 		// Write reinforcement class or hot rolled steel type
-		String rfClassOrHrst = RFClass.toString(block.getRFClass());
+		String rfClassOrHotRolledSteelType = "";
+		if (isInstanceOfReinforcement(block)) {
+			rfClassOrHotRolledSteelType = RFClass.toString(block.getRFClass());
+		}
 		if (isInstanceOfAngle) {
-			rfClassOrHrst = Main.app.getProperty("table_head_3");
+			rfClassOrHotRolledSteelType = Main.app.getProperty("table_head_3");
 		}
 		if (isInstanceOfSheet) {
-			rfClassOrHrst = Main.app.getProperty("table_head_4");
+			rfClassOrHotRolledSteelType = Main.app.getProperty("table_head_4");
 		}
-		fillCell(3, startBlockColumn, rfClassOrHrst);
+		fillCell(3, startBlockColumn, rfClassOrHotRolledSteelType);
 		// Merge cells
 		for (int j = (startBlockColumn + 1); j <= columnInt; j++) {
 			createEmptyCell(3, j);
@@ -157,6 +160,10 @@ public class SummaryExcelBuilder implements Runnable {
 		}
 		// Next column
 		columnInt++;
+	}
+
+	private boolean isInstanceOfReinforcement(SummaryBlock block) {
+		return block.getRFClass() != null;
 	}
 
 	private boolean isInstanceOfAngle(SummaryBlock block) {
@@ -266,13 +273,11 @@ public class SummaryExcelBuilder implements Runnable {
 	}
 
 	private void buildAngleCellRangeAddress() {
-		if (angleCellRanges.size() > 1) {
-			// Expected size == 2 and 0 index element placed before 1 index element
+		if (angleCellRanges.size() == 2) {
 			int first = angleCellRanges.get(0).getFirstColumn();
 			int last = angleCellRanges.get(1).getLastColumn();
 			sheet.addMergedRegion(new CellRangeAddress(3, 3, first, last));
-		} else {
-			// Expected size == 1
+		} else if (angleCellRanges.size() == 1) {
 			sheet.addMergedRegion(angleCellRanges.get(0));
 		}
 	}
