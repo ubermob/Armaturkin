@@ -8,6 +8,7 @@ import armaturkin.model.SummaryModel;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
 import utools.stopwatch.Stopwatch;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,11 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		SummaryModel summaryModel = Main.app.getSummaryModel();
 		if (!isDefaultSummaryRowList) {
 			summaryModel.getSummaryPaths().clear();
-			SummaryBuilderParser.realize(Main.app.getSummaryModel().getSummaryBuilderList());
+			try {
+				SummaryBuilderParser.realize(Main.app.getSummaryModel().getSummaryBuilderList());
+			} catch (IOException e) {
+				Main.app.log(e);
+			}
 		}
 		for (int i = 1; i <= summaryPathsKeyCounters; i++) {
 			SummaryThreadPool summaryThreadPool = null;

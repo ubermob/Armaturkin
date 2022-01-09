@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Andrey Korneychuk on 05-Jan-22
@@ -46,7 +47,7 @@ public class SummaryBuilderParser {
 		return summaryBuilderList;
 	}
 
-	public static void realize(List<SummaryBuilder> list) {
+	public static void realize(List<SummaryBuilder> list) throws IOException {
 		for (int i = 0; i < list.size(); i++) {
 			SummaryBuilder currentElement = list.get(i);
 			HashMap<Integer, List<String>> summaryPaths = Main.app.getSummaryModel().getSummaryPaths();
@@ -59,7 +60,11 @@ public class SummaryBuilderParser {
 					summaryPaths.get(i + 1).add(path.toString());
 				}
 				for (var v : currentElement.getPathToDirectories()) {
-					// TODO work in progress
+					path = path.resolve(v);
+					List<Path> files = Files.list(path).collect(Collectors.toList());
+					for (var vFile : files) {
+						summaryPaths.get(i + 1).add(vFile.toString());
+					}
 				}
 			}
 		}
