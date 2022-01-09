@@ -1,16 +1,20 @@
 package armaturkin.utils.test;
 
-import armaturkin.summaryoutput.SummaryBuilderParser;
-
-import java.io.IOException;
+import armaturkin.utils.PythonProvider;
+import utools.stopwatch.Stopwatch;
 
 public class Test {
 
 	public static void test() throws Exception {
-		localTest8();
+		localTest11();
 	}
 
-	private static void localTest8() throws IOException {
-		SummaryBuilderParser.parse("C:\\Users\\uber\\IdeaProjects\\Armaturkin\\stuff\\Big summary builder.txt");
+	private static void localTest11() throws Exception {
+		Stopwatch stopwatch = new Stopwatch();
+		stopwatch.appendBefore("python in ");
+		PythonProvider pythonProvider = new PythonProvider();
+		String string = pythonProvider.executePythonUtil("J:/p.xlsx");
+		System.out.println(string);
+		stopwatch.print();
 	}
 }
