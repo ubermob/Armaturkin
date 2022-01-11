@@ -1,5 +1,6 @@
 package armaturkin.utils;
 
+import armaturkin.core.Main;
 import armaturkin.core.Root;
 
 import java.io.IOException;
@@ -24,7 +25,8 @@ public class PythonProvider {
 	}
 
 	public String executePythonUtil(String pathToExcelFile) throws Exception {
-		if (isHavePythonAndOpenpyxlLibrary()) {
+		boolean isRunnable = checkPythonAndLibraries();
+		if (isRunnable) {
 			InputStream resourceAsStream = getClass().getResourceAsStream("/python/Steel_framework_parser.py");
 			byte[] bytes = resourceAsStream.readAllBytes();
 			Path path = Path.of(Root.programRootPath, "tmp_parser.py");
@@ -33,27 +35,36 @@ public class PythonProvider {
 			Files.delete(path);
 			return string;
 		}
-		return "";
+		return "Something wrong";
 	}
 
 	public String executePythonUtil(String pathToPythonFile, String pathToExcelFile) throws Exception {
-		PythonProvider pythonProvider = new PythonProvider();
-		return pythonProvider.execute(
+		return execute(
 				"python"
 				, pathToPythonFile
 				, pathToExcelFile
+				, "true"
 		);
 	}
 
-	private boolean isHavePythonAndOpenpyxlLibrary() throws Exception {
-		PythonProvider pythonProvider = new PythonProvider();
-//		String string = pythonProvider.execute("python");
-/*		if (!string.startsWith("Python 3.")) {
-			throw new Exception("You do not have installed Python");
-		}*/
-		String string = pythonProvider.execute("pip", "list");
-		if (!string.contains("openpyxl")) {
-			throw new Exception("You do not have installed 'openpyxl' library\nType 'pip install openpyxl'");
+	public boolean checkPythonAndLibraries() throws Exception {
+		boolean pythonInterpreter = Main.app.getConfig().getPythonInterpreter();
+		if (pythonInterpreter) {
+			return true;
+		} else {
+			String string = "";
+			string = execute("python", "--version");
+			if (!string.contains("Python 3.")) {
+				throw new Exception("You do not have Python 3");
+			}
+			string = execute("pip", "list");
+			if (!string.contains("openpyxl")) {
+				throw new Exception("You do not have installed 'openpyxl' library\nType 'pip install openpyxl'");
+			}
+			if (!string.contains("transliterate")) {
+				throw new Exception("You do not have installed 'transliterate' library\nType 'pip install transliterate'");
+			}
+			Main.app.getConfig().setPythonInterpreter(true);
 		}
 		return true;
 	}

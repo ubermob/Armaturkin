@@ -22,6 +22,7 @@
     <entry key="log_storage_limit">20</entry>
     <entry key="notification_storage_limit">20</entry>
     <entry key="auto_parse_product_list">true</entry>
+    <entry key="python_interpreter">false</entry>
 
     <!-- Stages -->
     <entry key="info_stage_name">Информация</entry>

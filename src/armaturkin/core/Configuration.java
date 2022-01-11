@@ -13,6 +13,7 @@ public class Configuration {
 
 	private final String path;
 	private final Properties properties;
+	private final App app;
 	private String backgroundColor;
 	private String textColor;
 	private String pathToProductFile;
@@ -27,10 +28,12 @@ public class Configuration {
 	private String favoritePath;
 	private Boolean autoParseProductList;
 	private Integer resultLabelFontSize;
+	private Boolean pythonInterpreter;
 
-	public Configuration(String path, Properties properties) throws IOException {
+	public Configuration(String path, Properties properties, App app) throws IOException {
 		this.path = path;
 		this.properties = properties;
+		this.app = app;
 		defaultValues();
 		loadConfigFile();
 		setupLog();
@@ -64,8 +67,9 @@ public class Configuration {
 				if (!load.get(13).equals("null")) {
 					resultLabelFontSize = Integer.parseInt(load.get(13));
 				}
+				pythonInterpreter = Boolean.parseBoolean(load.get(14));
 			} catch (Exception e) {
-				Main.app.log(e);
+				app.log(e);
 			}
 		}
 		if (Files.notExists(Path.of(path))) {
@@ -89,7 +93,8 @@ public class Configuration {
 				String.valueOf(notificationStorageLimit),
 				favoritePath,
 				String.valueOf(autoParseProductList),
-				String.valueOf(resultLabelFontSize)
+				String.valueOf(resultLabelFontSize),
+				String.valueOf(pythonInterpreter)
 		};
 		Writer.write(Root.programRootPath + Root.getProperty("config_file_name"), configList);
 	}
@@ -224,6 +229,14 @@ public class Configuration {
 		return resultLabelFontSize != null;
 	}
 
+	public Boolean getPythonInterpreter() {
+		return pythonInterpreter;
+	}
+
+	public void setPythonInterpreter(Boolean pythonInterpreter) {
+		this.pythonInterpreter = pythonInterpreter;
+	}
+
 	private void defaultValues() {
 		backgroundColor = properties.getProperty("background_color");
 		textColor = properties.getProperty("text_color");
@@ -234,6 +247,7 @@ public class Configuration {
 		logStorageLimit = Integer.parseInt(properties.getProperty("log_storage_limit"));
 		notificationStorageLimit = Integer.parseInt(properties.getProperty("notification_storage_limit"));
 		autoParseProductList = Boolean.parseBoolean(properties.getProperty("auto_parse_product_list"));
+		pythonInterpreter = Boolean.parseBoolean(properties.getProperty("python_interpreter"));
 	}
 
 	private void setupLog() {

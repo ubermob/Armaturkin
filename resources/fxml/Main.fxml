@@ -21,10 +21,15 @@
       <content>
         <AnchorPane fx:id="anchorPane1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" layoutX="194.0" layoutY="163.0" style="-fx-spacing: 45;">
+                  <VBox alignment="CENTER" layoutX="88.0" layoutY="163.0" style="-fx-spacing: 45;">
                      <children>
                         <HBox alignment="CENTER" style="-fx-spacing: 100;">
                            <children>
+                              <Button disable="true" layoutX="510.0" layoutY="80.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="112.0" style="-fx-opacity: 0%;" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
                               <Label fx:id="upperDropSpace" alignment="CENTER" onDragDropped="#upperDragDropped" onDragOver="#upperDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="upperLabel" textAlignment="CENTER" wrapText="true">
                                  <opaqueInsets>
                                     <Insets />
@@ -42,6 +47,11 @@
                         </HBox>
                         <HBox alignment="CENTER" style="-fx-spacing: 100;">
                            <children>
+                              <Button disable="true" mnemonicParsing="false" prefHeight="60.0" prefWidth="112.0" style="-fx-opacity: 0%;" text="Очистить&#10;Drop Space" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
                               <Label fx:id="lowerDropSpace" alignment="CENTER" onDragDropped="#lowerDragDropped" onDragOver="#lowerDragOver" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="lowerLabel" textAlignment="CENTER" wrapText="true">
                                  <opaqueInsets>
                                     <Insets />
@@ -283,8 +293,8 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="summaryBuilderFileDropSpace" layoutX="108.0" layoutY="594.0" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="77.0" prefWidth="139.0" style="-fx-background-color: RED;" text="Label" />
-                  <Button fx:id="clearSummaryBuilderDropSpaceButton" layoutX="254.0" layoutY="633.0" mnemonicParsing="false" onAction="#clearSummaryBuilderDropSpace" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                  <Label fx:id="summaryBuilderFileDropSpace" layoutX="108.0" layoutY="594.0" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="106.0" prefWidth="368.0" style="-fx-background-color: RED;" text="Label" />
+                  <Button fx:id="clearSummaryBuilderDropSpaceButton" layoutX="515.0" layoutY="633.0" mnemonicParsing="false" onAction="#clearSummaryBuilderDropSpace" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -636,21 +646,36 @@
         <content>
           <AnchorPane fx:id="utilAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="showReinforcementLinearMassListButton" layoutX="34.0" layoutY="38.0" mnemonicParsing="false" onAction="#showReinforcementLinearMassList" prefHeight="37.0" prefWidth="226.0" text="Таблица погонной массы" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font></Button>
+                  <VBox layoutX="40.0" layoutY="40.0" style="-fx-spacing: 20;" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+                     <children>
+                        <Button fx:id="showReinforcementLinearMassListButton" mnemonicParsing="false" onAction="#showReinforcementLinearMassList" prefHeight="37.0" prefWidth="226.0" text="Таблица погонной массы">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="showHotRolledSteelCodeButton" mnemonicParsing="false" onAction="#showHotRolledSteelCode" prefHeight="37.0" prefWidth="240.0" text="Таблица стальных изделий">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="startNodeSeekerUtilButton" mnemonicParsing="false" onAction="#startNodeSeekerUtil" prefHeight="37.0" prefWidth="120.0" text="NodeSeeker">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="startPythonSteelFrameworkUtilButton" layoutX="10.0" layoutY="124.0" mnemonicParsing="false" onAction="#startPythonSteelFrameworkUtil" prefHeight="37.0" prefWidth="230.0" text="Python сборщик каркасов">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
                   <Button fx:id="testButton" layoutX="40.0" layoutY="490.0" mnemonicParsing="false" onAction="#doTest" prefHeight="37.0" prefWidth="60.0" text="Test" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
                   <Button fx:id="varStateButton" layoutX="92.0" layoutY="520.0" mnemonicParsing="false" onAction="#printVarState" prefHeight="37.0" prefWidth="100.0" text="Var state" AnchorPane.bottomAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="showHotRolledSteelCodeButton" layoutX="40.0" layoutY="108.0" mnemonicParsing="false" onAction="#showHotRolledSteelCode" prefHeight="37.0" prefWidth="245.0" text="Таблица стальных изделий">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

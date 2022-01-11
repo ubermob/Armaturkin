@@ -46,7 +46,7 @@ public class App {
 		Root.checkDirectories();
 		DesignCode.loadProperties();
 		config = new Configuration(Root.programRootPath + Root.getProperty("config_file_name")
-				, properties);
+				, properties, this);
 		firstHarvestingModel = new FirstHarvestingModelImpl();
 		summaryModel = new SummaryModelImpl();
 		manuallyEntryModel = new ManuallyEntryModelImpl();

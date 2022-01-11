@@ -1,23 +1,35 @@
 """
 Simple excel parse util.
-Requied boot parameter: path to .xlsx file
+Requied boot parameter:
+- path to .xlsx file
+- boolean value: True for translit rus -> eng
 
 author: Andrey Korneychuk on 05-Jan-22
-version: 1.1
+version: 1.2
 """
 import openpyxl
 import sys
 import collections
 from pathlib import Path
+from transliterate import translit
 
 
 def print_head():
-    print("I look on cells")
-    # print(f"A column: {sheet.cell(1, 1).value} - число таких выносок")
-    print(f"A column: {sheet.cell(1, 1).value}")
-    # print(f"E column: {sheet.cell(1, 5).value} - число каркасов в одной выноске")
-    print(f"E column: {sheet.cell(1, 5).value}")
-    print(f"G column: {sheet.cell(1, 7).value}")
+    print("Parsing columns")
+    string = f"A: {sheet.cell(1, 1).value} - число таких выносок"
+    if is_translitable:
+        string = translit(string, language_code="ru", reversed=True)
+    print(string)
+
+    string = f"E: {sheet.cell(1, 5).value} - число каркасов в одной выноске"
+    if is_translitable:
+        string = translit(string, language_code="ru", reversed=True)
+    print(string)
+
+    string = f"G: {sheet.cell(1, 7).value}"
+    if is_translitable:
+        string = translit(string, language_code="ru", reversed=True)
+    print(string)
 
 
 def contain_key(value, dictionary):
@@ -46,12 +58,23 @@ def sum_of_list(list):
     return sum
 
 
-excel_file = Path(sys.argv[1])
+def parse_string_to_bool(s: str):
+    return s.lower() in ["true"]
+
+
+path_to_file = sys.argv[1]
+try:
+    is_translitable = parse_string_to_bool(sys.argv[2])
+except Exception:
+    is_translitable = False
+
+excel_file = Path(path_to_file)
 sheet = openpyxl.load_workbook(excel_file).active
 print_head()
 dictionary = {}
 row_counter = 1
 head_row = True
+
 for row in sheet.iter_rows():
     if head_row:
         head_row = False
@@ -64,7 +87,7 @@ for row in sheet.iter_rows():
         dictionary[steel_frame_mark].append(number)
     else:
         dictionary[steel_frame_mark] = [number]
-    print(f"row: {row_counter} OK, ADD ({steel_frame_mark}: {number})")
+    print(f"row: {row_counter}, OK, ADD ({steel_frame_mark}: {number})")
     row_counter += 1
 
 dictionary = collections.OrderedDict(sorted(dictionary.items()))

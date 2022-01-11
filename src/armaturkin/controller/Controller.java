@@ -18,6 +18,7 @@ import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.SummaryRedirectManager;
 import armaturkin.utils.Dev;
+import armaturkin.utils.PythonProvider;
 import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
@@ -35,6 +36,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import nodeseeker.NodeSeeker;
+import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -58,7 +61,8 @@ public class Controller {
 			checkSummaryDropSpaceButton7, boldTextButton, deleteLogs, deleteNotifications, forgetFavorite,
 			font12Button, font14Button, font16Button, font18Button, font20Button, mSummaryAddButton, mSummaryAddButton2,
 			restoreWindowSizeButton, showReinforcementLinearMassListButton, backgroundReinforcementAddButton,
-			showHotRolledSteelCodeButton, testButton, varStateButton, clearSummaryBuilderDropSpaceButton;
+			showHotRolledSteelCodeButton, testButton, varStateButton, clearSummaryBuilderDropSpaceButton,
+			startNodeSeekerUtilButton, startPythonSteelFrameworkUtilButton;
 	@FXML
 	private TextField tableHead, fileName, summaryFileName, summaryTableHead, logLimit,
 			notificationLimit, mSummaryTextField, mBackgroundTextField, mSummaryTextField2;
@@ -795,7 +799,9 @@ public class Controller {
 				backgroundReinforcementAddButton,
 				showHotRolledSteelCodeButton,
 				mSummaryAddButton2,
-				clearSummaryBuilderDropSpaceButton
+				clearSummaryBuilderDropSpaceButton,
+				startNodeSeekerUtilButton,
+				startPythonSteelFrameworkUtilButton
 		};
 		largeSizeText = new Text[]{
 				appearanceText1,
@@ -997,6 +1003,27 @@ public class Controller {
 
 	private String getProperty(String key) {
 		return app.getProperty(key);
+	}
+
+	@FXML
+	private void startNodeSeekerUtil() {
+		NodeSeeker nodeSeeker = new NodeSeeker();
+	}
+
+	@FXML
+	private void startPythonSteelFrameworkUtil() {
+		Stopwatch stopwatch = new Stopwatch();
+		stopwatch.appendBefore("Python util completed in ");
+		PythonProvider pythonProvider = new PythonProvider();
+		try {
+			String string = pythonProvider.executePythonUtil(
+					"I:\\PROG STORAGE\\Python каркасы из Excel\\test\\new.xlsx"
+			);
+			app.log(string);
+		} catch (Exception e) {
+			app.log(e);
+		}
+		app.log(stopwatch.getPrettyString());
 	}
 
 	@FXML

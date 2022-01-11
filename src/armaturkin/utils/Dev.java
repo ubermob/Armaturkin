@@ -13,13 +13,14 @@ public class Dev {
 	}
 
 	public static String buildVariableStates() {
-		return "=== Var state ===" +
-				"Actual notification: {" + Main.app.getActualNotification() + "}" +
-				"Actual notification size: " + Main.app.getActualNotification().length() +
-				"var 'manuallySummaryEntries' size: " + Main.app.getManuallyEntryModel().getManuallySummaryEntries().size() +
+		return "=== Var state ===\n" +
+				"Actual notification: {" + Main.app.getActualNotification() + "}\n" +
+				"Actual notification size: " + Main.app.getActualNotification().length() + "\n" +
+				"var 'manuallySummaryEntries' size: "
+				+ Main.app.getManuallyEntryModel().getManuallySummaryEntries().size() + "\n" +
 				"var 'backgroundReinforcementManuallyEntries' size: "
-				+ Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries().size() +
-				"Specification load from 'Update data': " + DesignCode.isUpdate() +
+				+ Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries().size() + "\n" +
+				"Specification load from 'Update data': " + DesignCode.isUpdate() + "\n" +
 				"=================";
 	}
 }
