@@ -6,7 +6,6 @@ import utools.stopwatch.Stopwatch;
 public class Test {
 
 	public static void test() throws Exception {
-		localTest11();
 	}
 
 	private static void localTest11() throws Exception {

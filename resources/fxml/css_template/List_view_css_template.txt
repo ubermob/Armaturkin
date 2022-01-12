@@ -1,0 +1,6 @@
+.list-cell {
+    -fx-background-color: %s;
+    -fx-text-fill: %s;
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 20px;
+}

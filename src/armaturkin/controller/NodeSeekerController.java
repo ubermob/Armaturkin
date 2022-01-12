@@ -2,6 +2,7 @@ package armaturkin.controller;
 
 import armaturkin.core.Main;
 import armaturkin.service.LogService;
+import armaturkin.utils.FxCss;
 import armaturkin.view.Stages;
 import armaturkin.workers.DropWorker;
 import javafx.application.Platform;
@@ -18,6 +19,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import nodeseeker.NodeSeeker;
 import nodeseeker.listener.NodeSeekerListener;
+import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
 
@@ -46,33 +48,42 @@ public class NodeSeekerController {
 			controller.listView.setItems(controller.reportList);
 			stage.setTitle(Main.app.getProperty("node_seeker_stage_name"));
 			stage.getScene().getRoot().setStyle("-fx-background-color: " + Main.app.getConfig().getBackgroundColor() + ";");
+			controller.dropSpace.setFont(Main.app.getController().getFont());
 			controller.dropSpace.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
 			controller.dropSpace.setStyle(
 					"-fx-border-color: %s; -fx-border-width: %d;".formatted(Main.app.getConfig().getBorderColor(), 5)
 			);
 			controller.listView.setBackground(Main.app.getController().getUserBackgroundColor());
+			FxCss.setCss(stage.getScene());
 			stage.getIcons().add(new Image(Main.class.getResourceAsStream("/Icon_ns.png")));
 			Stages.nodeSeekerStage = stage;
 		}
 		Stages.nodeSeekerStage.show();
 	}
 
-	public void dragDropped(DragEvent dragEvent) {
+	@FXML
+	private void dragDropped(DragEvent dragEvent) {
+		Stopwatch stopwatch = new Stopwatch();
+		stopwatch.appendBefore("Total elapsed time: ");
 		try {
 			NodeSeeker nodeSeeker = new NodeSeeker(
 					new NodeSeekerListenerImpl(Main.app.getLogService(), controller.reportList)
 			);
 			nodeSeeker.consumeFile(DropWorker.nodeSeekerDragDropped(dragEvent, dropSpace));
 			reportList.clear();
-			reportList.add("Started");
 			Main.app.log(Main.app.getProperty("node_seeker_stage_name") + " started");
 			nodeSeeker.start();
 		} catch (Exception e) {
 			Main.app.log(e);
 		}
+		String prettyString = stopwatch.getPrettyString();
+		//reportList.add(prettyString);  <- this way put prettyString before adding in NodeSeekerListenerImpl
+		Platform.runLater(() -> reportList.add(prettyString));
+		Main.app.log(prettyString);
 	}
 
-	public void dragOver(DragEvent dragEvent) {
+	@FXML
+	private void dragOver(DragEvent dragEvent) {
 		DropWorker.dragOver(dragEvent);
 	}
 

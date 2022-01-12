@@ -16,4 +16,6 @@
     <entry key="numbered_log_file_name">log%d.txt</entry>
     <entry key="notification_file_name">notification.txt</entry>
     <entry key="numbered_notification_file_name">notification%d.txt</entry>
+    <entry key="fx_css_file_name">fx_style.css</entry>
+    <entry key="python_file_name">tmp_python.py</entry>
 </properties>

@@ -29,7 +29,7 @@ public class PythonProvider {
 		if (isRunnable) {
 			InputStream resourceAsStream = getClass().getResourceAsStream("/python/Steel_framework_parser.py");
 			byte[] bytes = resourceAsStream.readAllBytes();
-			Path path = Path.of(Root.programRootPath, "tmp_parser.py");
+			Path path = Path.of(Root.programRootPath, Root.getProperty("python_file_name"));
 			Files.write(path, bytes);
 			String string = executePythonUtil(path.toString(), pathToExcelFile);
 			Files.delete(path);

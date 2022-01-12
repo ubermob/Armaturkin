@@ -10,7 +10,7 @@
    <children>
       <VBox alignment="CENTER" layoutX="14.0" layoutY="14.0" style="-fx-spacing: 20;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Label fx:id="dropSpace" alignment="TOP_LEFT" onDragDropped="#dragDropped" onDragOver="#dragOver" prefHeight="100.0" prefWidth="2000.0" style="-fx-border-color: BLACK; -fx-border-width: 5; -fx-alignment: center;" text="Перетащи сюда .xls или .inp файл" textAlignment="CENTER">
+            <Label fx:id="dropSpace" alignment="CENTER" contentDisplay="TOP" onDragDropped="#dragDropped" onDragOver="#dragOver" prefHeight="100.0" prefWidth="2000.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="Перетащи сюда .xls или .inp файл" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
