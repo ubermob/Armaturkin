@@ -36,7 +36,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import nodeseeker.NodeSeeker;
 import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
@@ -1006,8 +1005,8 @@ public class Controller {
 	}
 
 	@FXML
-	private void startNodeSeekerUtil() {
-		NodeSeeker nodeSeeker = new NodeSeeker();
+	private void startNodeSeekerUtil() throws IOException {
+		NodeSeekerController.show();
 	}
 
 	@FXML
@@ -1016,6 +1015,7 @@ public class Controller {
 		stopwatch.appendBefore("Python util completed in ");
 		PythonProvider pythonProvider = new PythonProvider();
 		try {
+			// TODO
 			String string = pythonProvider.executePythonUtil(
 					"I:\\PROG STORAGE\\Python каркасы из Excel\\test\\new.xlsx"
 			);

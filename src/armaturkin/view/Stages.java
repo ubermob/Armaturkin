@@ -20,6 +20,7 @@ public class Stages {
 	public static Stage infoStage;
 	public static Stage reinforcementLinearMassListStage;
 	public static Stage hotRolledSteelCodeViewStage;
+	public static Stage nodeSeekerStage;
 	public static double defaultHeight;
 	public static double defaultWidth;
 
@@ -27,6 +28,7 @@ public class Stages {
 		primary = stage;
 		defaultHeight = stage.getHeight();
 		defaultWidth = stage.getWidth();
+		primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 	}
 
 	public static void showInfoStage() throws IOException {
@@ -71,6 +73,9 @@ public class Stages {
 		}
 		if (hotRolledSteelCodeViewStage != null) {
 			hotRolledSteelCodeViewStage.close();
+		}
+		if (nodeSeekerStage != null) {
+			nodeSeekerStage.close();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 """
 Simple excel parse util.
-Requied boot parameter:
+Required boot parameter:
 - path to .xlsx file
 - boolean value: True for translit rus -> eng
 

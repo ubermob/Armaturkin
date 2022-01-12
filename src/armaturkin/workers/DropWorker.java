@@ -106,6 +106,16 @@ public class DropWorker {
 		}
 	}
 
+	public static String nodeSeekerDragDropped(DragEvent dragEvent, Label label) {
+		List<File> fileList = getDroppedFile(dragEvent);
+		if (fileList.size() != 1) {
+			label.setText(Main.app.getProperty("drop_worker_notification_1"));
+		} else {
+			return fileList.get(0).getAbsolutePath();
+		}
+		return null;
+	}
+
 	public static void dragOver(DragEvent dragEvent) {
 		if (dragEvent.getDragboard().hasFiles()) {
 			dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);

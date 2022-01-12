@@ -11,6 +11,7 @@
     <entry key="application_name">Арматуркин</entry>
     <entry key="application_main_line">Application: %s&#10;Date: %s&#10;Time: %s</entry>
     <entry key="pc_information">User: %s, System name: %s, OS: %s, OS ver: %s, OS arch: %s&#10;Java vendor: %s, Java ver: %s, Processors: %d, RAM: %d Mb / %d Mb (free / total), JVM max memory: %d Mb&#10;</entry>
+    <entry key="http_server_start">HTTP Server started, hostname: %s, port: %d&#10;</entry>
 
     <!-- Default config values -->
     <entry key="background_color">#444444</entry>
@@ -28,6 +29,7 @@
     <entry key="info_stage_name">Информация</entry>
     <entry key="reinforcement_linear_mass_list_stage_name">Масса арматуры</entry>
     <entry key="hot_rolled_steel_stage_name">Изделия из прокатной стали</entry>
+    <entry key="node_seeker_stage_name">NodeSeeker</entry>
 
     <!-- Default redirect arrow properties -->
     <entry key="angle_gap">30</entry>

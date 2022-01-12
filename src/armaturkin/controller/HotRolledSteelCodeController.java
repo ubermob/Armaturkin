@@ -33,6 +33,7 @@ public class HotRolledSteelCodeController {
 	@FXML
 	private Label label;
 	@FXML
+	// TODO: add images
 	private ImageView imageView;
 
 	public static void show() throws IOException {
@@ -48,7 +49,6 @@ public class HotRolledSteelCodeController {
 			stage.getScene().getRoot().setStyle("-fx-background-color: " + Main.app.getConfig().getBackgroundColor() + ";");
 			controller.label.setFont(Main.app.getController().getFont());
 			controller.label.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
-			Stages.primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 			Stages.hotRolledSteelCodeViewStage = stage;
 		}
 		Stages.hotRolledSteelCodeViewStage.show();
