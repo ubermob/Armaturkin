@@ -1006,24 +1006,12 @@ public class Controller {
 
 	@FXML
 	private void startNodeSeekerUtil() throws IOException {
-		NodeSeekerController.show();
+		NodeSeekerControllerWrapper.getInstance().show();
 	}
 
 	@FXML
-	private void startPythonSteelFrameworkUtil() {
-		Stopwatch stopwatch = new Stopwatch();
-		stopwatch.appendBefore("Python util completed in ");
-		PythonProvider pythonProvider = new PythonProvider();
-		try {
-			// TODO
-			String string = pythonProvider.executePythonUtil(
-					"I:\\PROG STORAGE\\Python каркасы из Excel\\test\\new.xlsx"
-			);
-			app.log(string);
-		} catch (Exception e) {
-			app.log(e);
-		}
-		app.log(stopwatch.getPrettyString());
+	private void startPythonSteelFrameworkUtil() throws IOException {
+		PythonSteelFrameworkParserControllerWrapper.getInstance().show();
 	}
 
 	@FXML

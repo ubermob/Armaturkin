@@ -15,7 +15,7 @@ public class FaviconHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		InputStream resource = getClass().getResourceAsStream("/Icon.png");
+		InputStream resource = getClass().getResourceAsStream("/icons/Icon.png");
 		HttpServerUtil.exchangeWorker(exchange, resource.readAllBytes());
 	}
 }

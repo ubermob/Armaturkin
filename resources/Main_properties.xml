@@ -30,6 +30,7 @@
     <entry key="reinforcement_linear_mass_list_stage_name">Масса арматуры</entry>
     <entry key="hot_rolled_steel_stage_name">Изделия из прокатной стали</entry>
     <entry key="node_seeker_stage_name">NodeSeeker</entry>
+    <entry key="python_util_stage_name_1">Python сборщик каркасов</entry>
 
     <!-- Default redirect arrow properties -->
     <entry key="angle_gap">30</entry>
@@ -42,6 +43,7 @@
     <entry key="drop_worker_notification_1">Мне нужен только один файл</entry>
     <entry key="drop_worker_notification_2">Это не Excel файл (мне нужен файл с расширением .xls или .xlsx)</entry>
     <entry key="drop_worker_notification_3">Это не Summary_builder файл (мне нужен файл с расширением .summary_builder)</entry>
+    <entry key="drop_worker_notification_4">Файл с неправильным расширением</entry>
     <entry key="drop_worker_drop_space_file_accepted_1">%s product list DropSpace accepted file: %s</entry>
     <entry key="drop_worker_drop_space_file_accepted_2">%s calculating list DropSpace accepted file: %s</entry>
     <entry key="drop_worker_summary_drop_space_file_accepted">%s [SummaryDropSpaceID: %d] accepted file: %s</entry>
@@ -174,6 +176,10 @@
     <entry key="hot_rolled_steel_title">Стальной&#10;прокат</entry>
     <entry key="last_field_name_mass">Масса</entry>
     <entry key="last_field_name_length">Длина</entry>
+
+    <!-- Design code properties -->
+    <entry key="node_seeker_drop_space_text">Перетащи сюда .xls или .inp файл</entry>
+    <entry key="python_util_drop_space_text_1">Перетащи сюда .xlsx файл</entry>
 
     <!-- Design code properties -->
     <entry key="design_code_attention_1">(Уголки, отмеченные звездочкой, изготовляют по требованию потребителя)</entry>

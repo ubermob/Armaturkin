@@ -44,7 +44,7 @@ public class Main extends Application {
 		app.log(app.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		app.log(PcInformation.getInformation());
 		app.startHttpServer();
-		try (InputStream resource = getClass().getResourceAsStream("/Icon.png")) {
+		try (InputStream resource = getClass().getResourceAsStream("/icons/Icon.png")) {
 			primaryStage.getIcons().add(new Image(resource));
 		} catch (Exception e) {
 			app.log(e);

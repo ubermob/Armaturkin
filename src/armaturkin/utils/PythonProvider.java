@@ -35,7 +35,7 @@ public class PythonProvider {
 			Files.delete(path);
 			return string;
 		}
-		return "Something wrong";
+		return null;
 	}
 
 	public String executePythonUtil(String pathToPythonFile, String pathToExcelFile) throws Exception {

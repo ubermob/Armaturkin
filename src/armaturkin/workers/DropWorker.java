@@ -1,6 +1,7 @@
 package armaturkin.workers;
 
 import armaturkin.controller.Controller;
+import armaturkin.controller.TinyController;
 import armaturkin.core.Main;
 import armaturkin.view.LabelWrapper;
 import javafx.scene.control.Label;
@@ -106,12 +107,30 @@ public class DropWorker {
 		}
 	}
 
-	public static String nodeSeekerDragDropped(DragEvent dragEvent, Label label) {
+	public static String nodeSeekerDragDropped(DragEvent dragEvent, TinyController controller) {
 		List<File> fileList = getDroppedFile(dragEvent);
 		if (fileList.size() != 1) {
-			label.setText(Main.app.getProperty("drop_worker_notification_1"));
+			controller.setDropSpaceText(Main.app.getProperty("drop_worker_notification_1"));
 		} else {
-			return fileList.get(0).getAbsolutePath();
+			if (isXlsFile(fileList.get(0).getName()) || isInpFile(fileList.get(0).getName())) {
+				return fileList.get(0).getAbsolutePath();
+			} else {
+				controller.appendDropSpaceText(Main.app.getProperty("drop_worker_notification_4"));
+			}
+		}
+		return null;
+	}
+
+	public static String pythonUtil(DragEvent dragEvent, TinyController controller) {
+		List<File> fileList = getDroppedFile(dragEvent);
+		if (fileList.size() != 1) {
+			controller.setDropSpaceText(Main.app.getProperty("drop_worker_notification_1"));
+		} else {
+			if (isXlsxFile(fileList.get(0).getName())) {
+				return fileList.get(0).getAbsolutePath();
+			} else {
+				controller.appendDropSpaceText(Main.app.getProperty("drop_worker_notification_4"));
+			}
 		}
 		return null;
 	}
@@ -138,5 +157,17 @@ public class DropWorker {
 
 	private static boolean isSummaryBuilderFile(String fileName) {
 		return fileName.endsWith(".summary_builder");
+	}
+
+	private static boolean isXlsxFile(String fileName) {
+		return fileName.endsWith(".xlsx");
+	}
+
+	private static boolean isInpFile(String fileName) {
+		return fileName.endsWith(".inp");
+	}
+
+	private static boolean isXlsFile(String fileName) {
+		return fileName.endsWith(".xls");
 	}
 }

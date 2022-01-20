@@ -20,7 +20,7 @@ public class Stages {
 	public static Stage infoStage;
 	public static Stage reinforcementLinearMassListStage;
 	public static Stage hotRolledSteelCodeViewStage;
-	public static Stage nodeSeekerStage;
+	public static Stage tinyStage;
 	public static double defaultHeight;
 	public static double defaultWidth;
 
@@ -74,8 +74,8 @@ public class Stages {
 		if (hotRolledSteelCodeViewStage != null) {
 			hotRolledSteelCodeViewStage.close();
 		}
-		if (nodeSeekerStage != null) {
-			nodeSeekerStage.close();
+		if (tinyStage != null) {
+			tinyStage.close();
 		}
 	}
 }
