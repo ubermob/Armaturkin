@@ -69,9 +69,9 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER" layoutX="142.0" layoutY="670.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="25.0">
+                  <HBox alignment="CENTER" layoutX="125.0" layoutY="671.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="25.0">
                      <children>
-                        <Button fx:id="showInfoButton" mnemonicParsing="false" onAction="#showInfoStage" prefHeight="37.0" prefWidth="67.0" text="Инфо">
+                        <Button fx:id="showInfoButton" mnemonicParsing="false" onAction="#showInfoStage" prefHeight="37.0" prefWidth="100.0" text="Инфо">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -152,153 +152,243 @@
         <content>
           <AnchorPane fx:id="anchorPane3" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="summaryDropSpace1" alignment="CENTER" layoutX="10.0" layoutY="32.0" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="clearAllSummaryDropSpaceButton" layoutX="14.0" layoutY="520.0" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="downloadSummaryFileButton" layoutX="686.0" layoutY="520.0" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="100.0" text="Скачать" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <TextField fx:id="summaryFileName" layoutX="200.0" layoutY="542.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                  <VBox alignment="CENTER" layoutX="106.0" layoutY="42.0" style="-fx-spacing: 6;">
+                     <children>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Label fx:id="summaryDropSpace1" alignment="CENTER" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="clearSummaryDropSpaceButton1" mnemonicParsing="false" onAction="#clearSummaryDropSpace1" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-40.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Label fx:id="summaryDropSpace2" alignment="CENTER" onDragDropped="#summaryDragDropped2" onDragOver="#summaryDragOver" onMouseClicked="#click2" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel2" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="clearSummaryDropSpaceButton2" mnemonicParsing="false" onAction="#clearSummaryDropSpace2" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-40.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Label fx:id="summaryDropSpace3" alignment="CENTER" onDragDropped="#summaryDragDropped3" onDragOver="#summaryDragOver" onMouseClicked="#click3" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel3" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="clearSummaryDropSpaceButton3" mnemonicParsing="false" onAction="#clearSummaryDropSpace3" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-40.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Label fx:id="summaryDropSpace4" alignment="CENTER" onDragDropped="#summaryDragDropped4" onDragOver="#summaryDragOver" onMouseClicked="#click4" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel4" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="checkSummaryDropSpaceButton4" mnemonicParsing="false" onAction="#checkSummaryDropSpace4" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-78.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="clearSummaryDropSpaceButton4" mnemonicParsing="false" onAction="#clearSummaryDropSpace4" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Label fx:id="summaryDropSpace5" alignment="CENTER" onDragDropped="#summaryDragDropped5" onDragOver="#summaryDragOver" onMouseClicked="#click5" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel5" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="clearSummaryDropSpaceButton5" mnemonicParsing="false" onAction="#clearSummaryDropSpace5" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-40.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Label fx:id="summaryDropSpace6" alignment="CENTER" onDragDropped="#summaryDragDropped6" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel6" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="checkSummaryDropSpaceButton6" mnemonicParsing="false" onAction="#checkSummaryDropSpace6" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-78.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="clearSummaryDropSpaceButton6" mnemonicParsing="false" onAction="#clearSummaryDropSpace6" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Label fx:id="summaryDropSpace7" alignment="CENTER" onDragDropped="#summaryDragDropped7" onDragOver="#summaryDragOver" onMouseClicked="#click7" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel7" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="checkSummaryDropSpaceButton7" mnemonicParsing="false" onAction="#checkSummaryDropSpace7" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-78.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="clearSummaryDropSpaceButton7" mnemonicParsing="false" onAction="#clearSummaryDropSpace7" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Label fx:id="summaryDropSpace8" alignment="CENTER" onDragDropped="#summaryDragDropped8" onDragOver="#summaryDragOver" onMouseClicked="#click8" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel8" textAlignment="CENTER">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="30.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="checkSummaryDropSpaceButton8" mnemonicParsing="false" onAction="#checkSummaryDropSpace8" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-78.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="clearSummaryDropSpaceButton8" mnemonicParsing="false" onAction="#clearSummaryDropSpace8" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="2.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Label fx:id="summaryBuilderFileDropSpace" alignment="CENTER" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryBuilderLabel">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="clearSummaryBuilderDropSpaceButton" mnemonicParsing="false" onAction="#clearSummaryBuilderDropSpace" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="6.0" left="-40.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" layoutX="99.0" layoutY="672.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="24.0">
+                     <children>
+                        <Button fx:id="clearAllSummaryDropSpaceButton" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <VBox style="-fx-spacing: 25;">
+                           <children>
+                              <TextField fx:id="summaryTableHead" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет стандартное название)" />
+                              <TextField fx:id="summaryFileName" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
+                           </children>
+                        </VBox>
+                        <Button fx:id="downloadSummaryFileButton" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="126.0" text="Скачать">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                   <Label fx:id="notificationLabel2" alignment="CENTER" layoutX="162.0" layoutY="5.0" prefHeight="22.0" prefWidth="85.0" style="-fx-background-color: #4097f5;" text="↑ Новое ↑" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="summaryDropSpace2" alignment="CENTER" layoutX="405.0" layoutY="32.0" onDragDropped="#summaryDragDropped2" onDragOver="#summaryDragOver" onMouseClicked="#click2" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel2" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="summaryDropSpace3" alignment="CENTER" layoutX="10.0" layoutY="152.0" onDragDropped="#summaryDragDropped3" onDragOver="#summaryDragOver" onMouseClicked="#click3" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel3" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="summaryDropSpace5" alignment="CENTER" layoutX="10.0" layoutY="272.0" onDragDropped="#summaryDragDropped5" onDragOver="#summaryDragOver" onMouseClicked="#click5" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel5" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="summaryDropSpace7" alignment="CENTER" layoutX="10.0" layoutY="392.0" onDragDropped="#summaryDragDropped7" onDragOver="#summaryDragOver" onMouseClicked="#click7" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel7" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="summaryDropSpace4" alignment="CENTER" layoutX="405.0" layoutY="152.0" onDragDropped="#summaryDragDropped4" onDragOver="#summaryDragOver" onMouseClicked="#click4" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel4" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="summaryDropSpace6" alignment="CENTER" layoutX="405.0" layoutY="272.0" onDragDropped="#summaryDragDropped6" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel6" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="summaryDropSpace8" alignment="CENTER" layoutX="405.0" layoutY="392.0" onDragDropped="#summaryDragDropped8" onDragOver="#summaryDragOver" onMouseClicked="#click8" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel8" textAlignment="CENTER">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="clearSummaryDropSpaceButton1" layoutX="353.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace1" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton3" layoutX="353.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace3" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton2" layoutX="748.0" layoutY="102.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace2" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton5" layoutX="353.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace5" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton7" layoutX="353.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace7" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton4" layoutX="748.0" layoutY="222.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace4" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton6" layoutX="748.0" layoutY="342.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace6" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="clearSummaryDropSpaceButton8" layoutX="748.0" layoutY="462.0" mnemonicParsing="false" onAction="#clearSummaryDropSpace8" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <TextField fx:id="summaryTableHead" layoutX="200.0" layoutY="511.0" prefHeight="25.0" prefWidth="400.0" promptText="Введите шапку таблицы (по-умолчанию будет стандартное название)" />
-                  <Button fx:id="checkSummaryDropSpaceButton4" layoutX="412.0" layoutY="222.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace4" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="checkSummaryDropSpaceButton6" layoutX="412.0" layoutY="342.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace6" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="checkSummaryDropSpaceButton8" layoutX="412.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace8" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="checkSummaryDropSpaceButton7" layoutX="17.0" layoutY="462.0" mnemonicParsing="false" onAction="#checkSummaryDropSpace7" prefHeight="37.0" prefWidth="35.0" text="П" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="summaryBuilderFileDropSpace" layoutX="108.0" layoutY="594.0" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="106.0" prefWidth="368.0" style="-fx-background-color: RED;" text="Label" />
-                  <Button fx:id="clearSummaryBuilderDropSpaceButton" layoutX="515.0" layoutY="633.0" mnemonicParsing="false" onAction="#clearSummaryBuilderDropSpace" prefHeight="37.0" prefWidth="34.0" text="🗑" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
                </children>
             </AnchorPane>
         </content>
