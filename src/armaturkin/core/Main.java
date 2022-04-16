@@ -28,7 +28,7 @@ import java.util.Locale;
 
 public class Main extends Application {
 
-	public static final String version = "0.6.2";
+	public static final String version = "0.6.3b1";
 	public static App app;
 
 	@Override
@@ -38,8 +38,6 @@ public class Main extends Application {
 		Controller controller = loader.getController();
 		app.setController(controller);
 		AddonViews.loadArrowLines();
-		Stages.doingPrimaryStage(primaryStage);
-		controller.startSetup();
 		primaryStage.setTitle(getAppNameAndVersion());
 		app.log(app.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		app.log(PcInformation.getInformation());
@@ -52,6 +50,8 @@ public class Main extends Application {
 		app.getStorageService().checkFavoriteDirectory();
 		app.getFirstHarvestingService().preloadUpperDropSpace();
 		primaryStage.show();
+		Stages.doingPrimaryStage(primaryStage);
+		controller.startSetup();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 			controller.setResultLabelText(app.getActualNotification());
 			controller.setCheckBox();
