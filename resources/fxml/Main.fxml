@@ -156,7 +156,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label fx:id="summaryDropSpace1" alignment="CENTER" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace1" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -289,7 +289,7 @@
                         </HBox>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label fx:id="summaryDropSpace7" alignment="CENTER" onDragDropped="#summaryDragDropped7" onDragOver="#summaryDragOver" onMouseClicked="#click7" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel7" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace7" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped7" onDragOver="#summaryDragOver" onMouseClicked="#click7" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel7" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -364,7 +364,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER" layoutX="99.0" layoutY="672.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="24.0">
+                  <HBox alignment="CENTER" layoutX="106.0" layoutY="671.0" prefHeight="75.0" prefWidth="788.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="25.0">
                      <children>
                         <Button fx:id="clearAllSummaryDropSpaceButton" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
                            <font>

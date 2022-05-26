@@ -32,6 +32,8 @@ public class StorageServiceImpl extends AbstractService implements StorageServic
 					);
 				}
 			}
+		} else {
+			controller.setFavoriteDropSpaceText(app.getProperty("favorite_is_off"));
 		}
 	}
 

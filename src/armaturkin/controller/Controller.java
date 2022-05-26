@@ -18,7 +18,6 @@ import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
 import armaturkin.summaryoutput.SummaryRedirectManager;
 import armaturkin.utils.Dev;
-import armaturkin.utils.PythonProvider;
 import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
@@ -36,7 +35,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -155,8 +153,6 @@ public class Controller {
 		setSummaryDropSpaceText(8, getProperty("summary_label_default_first_line_8").formatted(secondLine));
 		summaryBuilderLabelWrapper = new LabelWrapper(summaryBuilderFileDropSpace, getProperty("summary_builder_label_default"));
 		summaryBuilderLabelWrapper.resetTextToDefault();
-
-		setFavoriteDropSpaceText(getProperty("favorite_is_off"));
 
 		settingsTextWrapper2 = new TextWrapper(settingsText2);
 		settingsTextWrapper3 = new TextWrapper(settingsText3);
