@@ -2,6 +2,7 @@ package armaturkin.utils;
 
 import armaturkin.core.DesignCode;
 import armaturkin.core.Main;
+import armaturkin.summaryoutput.SummaryRedirectManager;
 
 public class Dev {
 
@@ -14,13 +15,12 @@ public class Dev {
 
 	public static String buildVariableStates() {
 		return "=== Var state ===\n" +
-				"Actual notification: {" + Main.app.getActualNotification() + "}\n" +
-				"Actual notification size: " + Main.app.getActualNotification().length() + "\n" +
-				"var 'manuallySummaryEntries' size: "
-				+ Main.app.getManuallyEntryModel().getManuallySummaryEntries().size() + "\n" +
-				"var 'backgroundReinforcementManuallyEntries' size: "
-				+ Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries().size() + "\n" +
-				"Specification load from 'Update data': " + DesignCode.isUpdate() + "\n" +
+				"Actual notification: {%s}\n".formatted(Main.app.getActualNotification()) +
+				"Actual notification size: %d\n".formatted(Main.app.getActualNotification().length()) +
+				"var 'manuallySummaryEntries' size: %d\n".formatted(Main.app.getManuallyEntryModel().getManuallySummaryEntries().size()) +
+				"var 'backgroundReinforcementManuallyEntries' size: %d\n".formatted(Main.app.getManuallyEntryModel().getBackgroundReinforcementManuallyEntries().size()) +
+				"Specification load from 'Update data': %b\n".formatted(DesignCode.isUpdate()) +
+				"Redirect to %d\n".formatted(SummaryRedirectManager.getRedirectTo()) +
 				"=================";
 	}
 }

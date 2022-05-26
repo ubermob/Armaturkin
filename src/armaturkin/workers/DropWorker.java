@@ -156,7 +156,7 @@ public class DropWorker {
 	}
 
 	private static boolean isSummaryBuilderFile(String fileName) {
-		return fileName.endsWith(".summary_builder");
+		return fileName.endsWith(".sb");
 	}
 
 	private static boolean isXlsxFile(String fileName) {

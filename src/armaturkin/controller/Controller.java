@@ -135,9 +135,6 @@ public class Controller {
 			setResultLabelFont(config.getResultLabelFontSize());
 		}
 		setNotificationOpacity(0);
-		setRedirectLineOpacity(0);
-		AddonViews.arrow = new Arrow(AddonViews.arrowLine1, AddonViews.arrowLine2);
-		setArrowOpacity(0);
 		setupBorderColor();
 		setUpperDropSpaceText(getProperty("upper_label_default_text"));
 		setLowerDropSpaceText(getProperty("lower_label_default_text"));
@@ -656,49 +653,49 @@ public class Controller {
 	@FXML
 	private void click1(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(1);
+			SummaryRedirectManager.setRedirectTo(1, (Label) mouseEvent.getSource());
 		}
 	}
 
 	@FXML
 	private void click2(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(2);
+			SummaryRedirectManager.setRedirectTo(2, (Label) mouseEvent.getSource());
 		}
 	}
 
 	@FXML
 	private void click3(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(3);
+			SummaryRedirectManager.setRedirectTo(3, (Label) mouseEvent.getSource());
 		}
 	}
 
 	@FXML
 	private void click4(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(4);
+			SummaryRedirectManager.setRedirectTo(4, (Label) mouseEvent.getSource());
 		}
 	}
 
 	@FXML
 	private void click5(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(5);
+			SummaryRedirectManager.setRedirectTo(5, (Label) mouseEvent.getSource());
 		}
 	}
 
 	@FXML
 	private void click7(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(7);
+			SummaryRedirectManager.setRedirectTo(7, (Label) mouseEvent.getSource());
 		}
 	}
 
 	@FXML
 	private void click8(MouseEvent mouseEvent) {
 		if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-			SummaryRedirectManager.setRedirectTo(8);
+			SummaryRedirectManager.setRedirectTo(8, (Label) mouseEvent.getSource());
 		}
 	}
 
@@ -708,14 +705,6 @@ public class Controller {
 			labels[i] = allSummaryLabelWrappers[i].getLabel();
 		}
 		return labels;
-	}
-
-	public void setRedirectLineOpacity(int i) {
-		AddonViews.redirectLine.setOpacity(i);
-	}
-
-	public void setArrowOpacity(int i) {
-		AddonViews.arrow.setOpacity(i);
 	}
 
 	private void setupChoiceBoxWrapper() {
@@ -959,13 +948,6 @@ public class Controller {
 
 	public double getMSummaryHBoxPrefHeight() {
 		return mSummaryHBox.getPrefHeight();
-	}
-
-	public void addArrowLines() {
-		ObservableList<Node> children = anchorPane3.getChildren();
-		children.add(0, AddonViews.redirectLine);
-		children.add(1, AddonViews.arrowLine1);
-		children.add(2, AddonViews.arrowLine2);
 	}
 
 	public Font getFont() {

@@ -5,7 +5,6 @@ import armaturkin.httpserver.HttpServer;
 import armaturkin.httpserver.HttpServerWrapper;
 import armaturkin.utils.Dev;
 import armaturkin.utils.PcInformation;
-import armaturkin.view.AddonViews;
 import armaturkin.view.Stages;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -37,7 +36,6 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(loader.load()));
 		Controller controller = loader.getController();
 		app.setController(controller);
-		AddonViews.loadArrowLines();
 		primaryStage.setTitle(getAppNameAndVersion());
 		app.log(app.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		app.log(PcInformation.getInformation());

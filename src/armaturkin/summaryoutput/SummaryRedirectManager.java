@@ -1,35 +1,33 @@
 package armaturkin.summaryoutput;
 
-import armaturkin.core.Main;
-import armaturkin.view.AddonViews;
 import javafx.scene.control.Label;
-import javafx.scene.shape.Line;
 
 public class SummaryRedirectManager {
 
-	static final int DEFAULT_VALUE = 6;
-	static int redirectTo = DEFAULT_VALUE;
-	static Label[] labels = Main.app.getController().getSummaryLabels();
+	static final byte DEFAULT_VALUE = 6;
+	static byte redirectTo = DEFAULT_VALUE;
+	private static Label currentRedirectLabel; // it is dashed
+	private static String previousStyle;
 
-	public static void setRedirectTo(int i) {
+	public static void setRedirectTo(int i, Label label) {
 		if (redirectTo != i) {
-			redirectTo = i;
-			setLine(i);
-			Main.app.getController().setRedirectLineOpacity(1);
-			Main.app.getController().setArrowOpacity(1);
+			// Different label
+			redirectTo = (byte) i;
+			if (currentRedirectLabel != null) {
+				currentRedirectLabel.setStyle(previousStyle);
+			}
+			previousStyle = label.getStyle();
+			label.setStyle(previousStyle + "-fx-border-style: dashed;");
+			currentRedirectLabel = label;
 		} else {
+			// Same label
 			redirectTo = DEFAULT_VALUE;
-			Main.app.getController().setRedirectLineOpacity(0);
-			Main.app.getController().setArrowOpacity(0);
+			currentRedirectLabel.setStyle(previousStyle);
+			currentRedirectLabel = null;
 		}
 	}
 
-	static void setLine(int i) {
-		Line line = AddonViews.redirectLine;
-		line.setStartX(labels[5].getLayoutX() + labels[5].getWidth() / 2);
-		line.setStartY(labels[5].getLayoutY() + labels[5].getHeight() / 2);
-		line.setEndX(labels[i - 1].getLayoutX() + labels[i - 1].getWidth() / 2);
-		line.setEndY(labels[i - 1].getLayoutY() + labels[i - 1].getHeight() / 2);
-		AddonViews.arrow.refresh(line);
+	public static byte getRedirectTo() {
+		return redirectTo;
 	}
 }

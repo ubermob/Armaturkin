@@ -42,7 +42,7 @@
     <entry key="drop_worker_file_accepted">Файл принят</entry>
     <entry key="drop_worker_notification_1">Мне нужен только один файл</entry>
     <entry key="drop_worker_notification_2">Это не Excel файл (мне нужен файл с расширением .xls или .xlsx)</entry>
-    <entry key="drop_worker_notification_3">Это не Summary_builder файл (мне нужен файл с расширением .summary_builder)</entry>
+    <entry key="drop_worker_notification_3">Это не .sb файл (мне нужен файл с расширением .sb)</entry>
     <entry key="drop_worker_notification_4">Файл с неправильным расширением</entry>
     <entry key="drop_worker_drop_space_file_accepted_1">%s product list DropSpace accepted file: %s</entry>
     <entry key="drop_worker_drop_space_file_accepted_2">%s calculating list DropSpace accepted file: %s</entry>
@@ -68,11 +68,11 @@
     <entry key="summary_label_default_second_line">Перетащи сюда файл(ы)</entry>
     <entry key="summary_label_default_third_line">Файлов: %d</entry>
     <entry key="default_content_row">Фундамент-Перекрытия-Покрытие-Балки-Стены-Каркасы-Колонны-Лестницы</entry>
-    <entry key="summary_builder_label_default">Перетащи сюда Summary builder файл&#10;для персональной сборки</entry>
+    <entry key="summary_builder_label_default">Перетащи сюда .sb файл&#10;для персональной сборки</entry>
     <entry key="summary_builder_successfully_parsed_1">%s parse: %s</entry>
     <entry key="summary_builder_successfully_parsed_2">Successfully parsed</entry>
-    <entry key="summary_builder_successfully_parsed_3">Summary builder файл прочитан. Блоков: %d</entry>
-    <entry key="summary_builder_remove">Summary builder file has been removed</entry>
+    <entry key="summary_builder_successfully_parsed_3">sb файл прочитан. Блоков: %d</entry>
+    <entry key="summary_builder_remove">sb file has been removed</entry>
 
     <entry key="thread_start">%s: Thread start</entry>
     <entry key="thread_file">%s work with file: %s</entry>
