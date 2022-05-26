@@ -12,11 +12,15 @@ import java.util.List;
 
 public class Reader {
 
-	public static List<String> read(String path) throws IOException {
+	public static List<String> readFromExternalSource(String path) throws IOException {
 		return Files.readAllLines(Path.of(path));
 	}
 
-	public static List<String> read(InputStream inputStream) throws IOException {
+	public static List<String> readFromInternalSource(String path) throws IOException {
+		return readFromExternalSource(Reader.class.getResourceAsStream(path));
+	}
+
+	private static List<String> readFromExternalSource(InputStream inputStream) throws IOException {
 		InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 		List<String> result = new ArrayList<>();

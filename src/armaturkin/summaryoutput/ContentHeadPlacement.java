@@ -16,7 +16,7 @@ public class ContentHeadPlacement {
 
 	public ContentHeadPlacement() {
 		try {
-			for (var line : Reader.read(this.getClass().getResourceAsStream("/RF_hash_code_list.txt"))) {
+			for (var line : Reader.readFromInternalSource("/RF_hash_code_list.txt")) {
 				if (line.length() != 0 && !line.startsWith("//")) {
 					if (!line.startsWith("[") && !line.startsWith("from")) {
 						hashes.add(Integer.parseInt(line));

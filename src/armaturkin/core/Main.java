@@ -4,6 +4,7 @@ import armaturkin.controller.Controller;
 import armaturkin.httpserver.HttpServer;
 import armaturkin.httpserver.HttpServerWrapper;
 import armaturkin.utils.Dev;
+import armaturkin.utils.InAppHelpArray;
 import armaturkin.utils.PcInformation;
 import armaturkin.view.Stages;
 import javafx.animation.Animation;
@@ -47,6 +48,7 @@ public class Main extends Application {
 		}
 		app.getStorageService().checkFavoriteDirectory();
 		app.getFirstHarvestingService().preloadUpperDropSpace();
+		InAppHelpArray.load();
 		primaryStage.show();
 		Stages.doingPrimaryStage(primaryStage);
 		controller.startSetup();
@@ -108,7 +110,7 @@ public class Main extends Application {
 			for (var arg : args) {
 				if (isMatchCommands(arg, sampleArgCommands[0])) {
 					System.out.println("Version " + version);
-					for (var line : Reader.read(Main.class.getResourceAsStream("/Run_arguments.txt"))) {
+					for (var line : Reader.readFromInternalSource("/Run_arguments.txt")) {
 						System.out.println(line);
 					}
 					return false;

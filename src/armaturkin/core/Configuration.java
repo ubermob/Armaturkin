@@ -42,7 +42,7 @@ public class Configuration {
 	public void loadConfigFile() throws IOException {
 		if (Files.exists(Path.of(path))) {
 			try {
-				List<String> load = Reader.read(path);
+				List<String> load = Reader.readFromExternalSource(path);
 				backgroundColor = load.get(0);
 				textColor = load.get(1);
 				if (!load.get(2).equals("null")) {

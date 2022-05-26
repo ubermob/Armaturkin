@@ -21,10 +21,8 @@ import armaturkin.utils.Dev;
 import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
@@ -53,13 +51,14 @@ public class Controller {
 			summaryDropSpace6, summaryDropSpace7, summaryDropSpace8, favoriteDropSpace, summaryBuilderFileDropSpace;
 	@FXML
 	private Button downloadFileButton, clearResultLabelButton, lowerDropSpaceButton, clearUpperDropSpaceButton,
-			showInfoButton, downloadResultLabelButton, downloadSummaryFileButton, clearAllSummaryDropSpaceButton,
+			showInfoButton1, downloadResultLabelButton, downloadSummaryFileButton, clearAllSummaryDropSpaceButton,
 			checkSummaryDropSpaceButton4, checkSummaryDropSpaceButton6, checkSummaryDropSpaceButton8,
 			checkSummaryDropSpaceButton7, boldTextButton, deleteLogs, deleteNotifications, forgetFavorite,
 			font12Button, font14Button, font16Button, font18Button, font20Button, mSummaryAddButton, mSummaryAddButton2,
 			restoreWindowSizeButton, showReinforcementLinearMassListButton, backgroundReinforcementAddButton,
 			showHotRolledSteelCodeButton, testButton, varStateButton, clearSummaryBuilderDropSpaceButton,
-			startNodeSeekerUtilButton, startPythonSteelFrameworkUtilButton;
+			startNodeSeekerUtilButton, startPythonSteelFrameworkUtilButton, showInfoButton2, showInfoButton3,
+			showInfoButton4;
 	@FXML
 	private TextField tableHead, fileName, summaryFileName, summaryTableHead, logLimit,
 			notificationLimit, mSummaryTextField, mBackgroundTextField, mSummaryTextField2;
@@ -265,8 +264,23 @@ public class Controller {
 	}
 
 	@FXML
-	private void showInfoStage() throws IOException {
-		Stages.showInfoStage();
+	private void showInfoStage1() throws IOException {
+		Stages.showDifferentInfoStage(1);
+	}
+
+	@FXML
+	private void showInfoStage2() throws IOException {
+		Stages.showDifferentInfoStage(2);
+	}
+
+	@FXML
+	private void showInfoStage3() throws IOException {
+		Stages.showDifferentInfoStage(3);
+	}
+
+	@FXML
+	private void showInfoStage4() throws IOException {
+		Stages.showDifferentInfoStage(4);
 	}
 
 	public String getTableHead() {
@@ -760,7 +774,7 @@ public class Controller {
 				clearResultLabelButton,
 				lowerDropSpaceButton,
 				clearUpperDropSpaceButton,
-				showInfoButton,
+				showInfoButton1,
 				downloadResultLabelButton,
 				downloadSummaryFileButton,
 				clearAllSummaryDropSpaceButton,
@@ -785,7 +799,10 @@ public class Controller {
 				mSummaryAddButton2,
 				clearSummaryBuilderDropSpaceButton,
 				startNodeSeekerUtilButton,
-				startPythonSteelFrameworkUtilButton
+				startPythonSteelFrameworkUtilButton,
+				showInfoButton2,
+				showInfoButton3,
+				showInfoButton4
 		};
 		largeSizeText = new Text[]{
 				appearanceText1,

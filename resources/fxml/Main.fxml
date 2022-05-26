@@ -71,7 +71,7 @@
                   </VBox>
                   <HBox alignment="CENTER" layoutX="125.0" layoutY="671.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="25.0">
                      <children>
-                        <Button fx:id="showInfoButton" mnemonicParsing="false" onAction="#showInfoStage" prefHeight="37.0" prefWidth="100.0" text="Инфо">
+                        <Button fx:id="showInfoButton1" mnemonicParsing="false" onAction="#showInfoStage1" prefHeight="37.0" prefWidth="100.0" text="Инфо">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -152,7 +152,7 @@
         <content>
           <AnchorPane fx:id="anchorPane3" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" layoutX="106.0" layoutY="42.0" style="-fx-spacing: 6;">
+                  <VBox alignment="CENTER" layoutX="100.0" layoutY="42.0" prefWidth="800.0" style="-fx-spacing: 6;">
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
@@ -364,9 +364,9 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox alignment="CENTER" layoutX="106.0" layoutY="671.0" prefHeight="75.0" prefWidth="788.0" style="-fx-spacing: 75;" AnchorPane.bottomAnchor="25.0">
+                  <HBox alignment="CENTER" layoutX="25.0" layoutY="672.0" prefHeight="75.0" prefWidth="950.0" style="-fx-spacing: 70;" AnchorPane.bottomAnchor="24.0">
                      <children>
-                        <Button fx:id="clearAllSummaryDropSpaceButton" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="126.0" text="Очистить всё" textAlignment="CENTER">
+                        <Button fx:id="clearAllSummaryDropSpaceButton" mnemonicParsing="false" onAction="#clearAllSummaryDropSpace" prefHeight="37.0" prefWidth="138.0" text="Очистить всё" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -377,7 +377,7 @@
                               <TextField fx:id="summaryFileName" prefHeight="25.0" prefWidth="400.0" promptText="Введите название файла (по-умолч. будет дата и время создания)" />
                            </children>
                         </VBox>
-                        <Button fx:id="downloadSummaryFileButton" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="126.0" text="Скачать">
+                        <Button fx:id="downloadSummaryFileButton" mnemonicParsing="false" onAction="#downloadSummaryFile" prefHeight="37.0" prefWidth="138.0" text="Скачать">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -389,6 +389,16 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
+                  <Button fx:id="showInfoButton3" layoutX="93.0" layoutY="633.0" mnemonicParsing="false" onAction="#showInfoStage3" prefHeight="37.0" prefWidth="138.0" text="Инфо (.sb)">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="showInfoButton2" layoutX="93.0" layoutY="575.0" mnemonicParsing="false" onAction="#showInfoStage2" prefHeight="37.0" prefWidth="138.0" text="Инфо">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
         </content>
@@ -572,6 +582,11 @@
                                  </children>
                               </HBox>
                               <Button fx:id="mSummaryAddButton2" mnemonicParsing="false" onAction="#addManuallySummaryEntry2" prefHeight="37.0" prefWidth="280.0" text="Добавить в сводную ведомость">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="showInfoButton4" mnemonicParsing="false" onAction="#showInfoStage4" prefHeight="37.0" prefWidth="100.0" text="Инфо">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>

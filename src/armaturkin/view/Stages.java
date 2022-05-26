@@ -2,6 +2,7 @@ package armaturkin.view;
 
 import armaturkin.controller.Controller;
 import armaturkin.core.Main;
+import armaturkin.utils.InAppHelpArray;
 import armaturkin.utils.ReinforcementLinearMassInfo;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -23,6 +24,7 @@ public class Stages {
 	public static Stage tinyStage;
 	public static double defaultHeight;
 	public static double defaultWidth;
+	private static Label helpLabel;
 
 	public static void doingPrimaryStage(Stage stage) {
 		primary = stage;
@@ -31,18 +33,22 @@ public class Stages {
 		primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 	}
 
+	public static void showDifferentInfoStage(int i) throws IOException {
+		showInfoStage();
+		helpLabel.setText(InAppHelpArray.getString(i));
+	}
+
 	public static void showInfoStage() throws IOException {
 		if (infoStage == null) {
 			Controller controller = Main.app.getController();
 			infoStage = new Stage();
-			Label label = new FXMLLoader(Main.class.getResource("/fxml/Info_label.fxml")).load();
-			label.setBackground(controller.getUserBackgroundColor());
-			label.setFont(controller.getFont());
-			label.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
-			infoStage.setScene(new Scene(label));
+			helpLabel = new FXMLLoader(Main.class.getResource("/fxml/Info_label.fxml")).load();
+			helpLabel.setBackground(controller.getUserBackgroundColor());
+			helpLabel.setFont(controller.getFont());
+			helpLabel.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
+			infoStage.setScene(new Scene(helpLabel));
 			infoStage.setTitle(Main.app.getProperty("info_stage_name"));
 			infoStage.initStyle(StageStyle.UTILITY);
-			primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 		}
 		infoStage.show();
 	}
@@ -58,7 +64,6 @@ public class Stages {
 			stage.setScene(new Scene(label));
 			stage.setTitle(Main.app.getProperty("reinforcement_linear_mass_list_stage_name"));
 			stage.initStyle(StageStyle.UTILITY);
-			primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 			reinforcementLinearMassListStage = stage;
 		}
 		reinforcementLinearMassListStage.show();

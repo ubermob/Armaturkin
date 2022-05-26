@@ -167,9 +167,9 @@ public class SteelComponentRepository {
 
 	private static void fillSheetThicknessList() throws IOException {
 		sheetThicknessList = new ArrayList<>();
-		List<String> list = Reader.read(Main.class.getResourceAsStream(
+		List<String> list = Reader.readFromInternalSource(
 				"/design_codes/%s.txt".formatted(DesignCode.getProperty("hot_rolled_steel_sheets"))
-		));
+		);
 		// Parse list
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).equals("[width]")) {
