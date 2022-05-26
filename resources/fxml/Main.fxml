@@ -156,7 +156,7 @@
                      <children>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label fx:id="summaryDropSpace1" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1">
+                              <Label fx:id="summaryDropSpace1" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -172,7 +172,7 @@
                                     <Insets bottom="6.0" left="-40.0" />
                                  </HBox.margin>
                               </Button>
-                              <Label fx:id="summaryDropSpace2" alignment="CENTER" onDragDropped="#summaryDragDropped2" onDragOver="#summaryDragOver" onMouseClicked="#click2" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel2" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace2" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped2" onDragOver="#summaryDragOver" onMouseClicked="#click2" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel2" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -195,7 +195,7 @@
                         </HBox>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label fx:id="summaryDropSpace3" alignment="CENTER" onDragDropped="#summaryDragDropped3" onDragOver="#summaryDragOver" onMouseClicked="#click3" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel3" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace3" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped3" onDragOver="#summaryDragOver" onMouseClicked="#click3" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel3" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -211,7 +211,7 @@
                                     <Insets bottom="6.0" left="-40.0" />
                                  </HBox.margin>
                               </Button>
-                              <Label fx:id="summaryDropSpace4" alignment="CENTER" onDragDropped="#summaryDragDropped4" onDragOver="#summaryDragOver" onMouseClicked="#click4" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel4" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace4" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped4" onDragOver="#summaryDragOver" onMouseClicked="#click4" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel4" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -242,7 +242,7 @@
                         </HBox>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label fx:id="summaryDropSpace5" alignment="CENTER" onDragDropped="#summaryDragDropped5" onDragOver="#summaryDragOver" onMouseClicked="#click5" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel5" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace5" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped5" onDragOver="#summaryDragOver" onMouseClicked="#click5" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel5" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -258,7 +258,7 @@
                                     <Insets bottom="6.0" left="-40.0" />
                                  </HBox.margin>
                               </Button>
-                              <Label fx:id="summaryDropSpace6" alignment="CENTER" onDragDropped="#summaryDragDropped6" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel6" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace6" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped6" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel6" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -313,7 +313,7 @@
                                     <Insets bottom="6.0" left="2.0" />
                                  </HBox.margin>
                               </Button>
-                              <Label fx:id="summaryDropSpace8" alignment="CENTER" onDragDropped="#summaryDragDropped8" onDragOver="#summaryDragOver" onMouseClicked="#click8" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel8" textAlignment="CENTER">
+                              <Label fx:id="summaryDropSpace8" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped8" onDragOver="#summaryDragOver" onMouseClicked="#click8" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel8" textAlignment="CENTER">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -344,7 +344,7 @@
                         </HBox>
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
-                              <Label fx:id="summaryBuilderFileDropSpace" alignment="CENTER" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryBuilderLabel">
+                              <Label fx:id="summaryBuilderFileDropSpace" alignment="TOP_CENTER" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryBuilderLabel" textAlignment="CENTER">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
