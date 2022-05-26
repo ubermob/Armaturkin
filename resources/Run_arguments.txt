@@ -11,3 +11,5 @@ Run arguments:
 "-http" (example: -http or -http=127.0.0.1:8080)
     // Enable simple HTTP Server for additional features
     "=http" implement default server address: localhost:8080
+
+"-version" (example: -version) // Print version

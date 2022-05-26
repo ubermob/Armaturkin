@@ -104,7 +104,8 @@ public class Main extends Application {
 					"-dev",      // 2
 					"-linux",    // 3
 					"-abs_path", // 4
-					"-http"      // 5
+					"-http",     // 5
+					"-version"   // 6
 			};
 			for (var arg : args) {
 				if (isMatchCommands(arg, sampleArgCommands[0])) {
@@ -159,6 +160,10 @@ public class Main extends Application {
 					}
 					serverWrapper.setServer(new HttpServer(hostname, port));
 					tempLog.add(arg);
+				}
+				if (isMatchCommands(arg, sampleArgCommands[6])) {
+					System.out.println("Version " + version);
+					return false;
 				}
 			}
 			return true;
