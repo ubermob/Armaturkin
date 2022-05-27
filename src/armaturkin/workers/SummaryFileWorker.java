@@ -6,7 +6,9 @@ import armaturkin.interfaces.CellEmptyChecker;
 import armaturkin.interfaces.FileHashCode;
 import armaturkin.interfaces.RowEmptyChecker;
 import armaturkin.reinforcement.*;
+import armaturkin.summaryoutput.ReportBundle;
 import armaturkin.summaryoutput.SummaryThreadPool;
+import armaturkin.summaryoutput.TableHeaderResult;
 import armaturkin.utils.MassCounter;
 import armaturkin.utils.RegEx;
 import org.apache.poi.ss.usermodel.*;
@@ -40,7 +42,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private double singleMass;
 	private int minorNumber;
 	private double totalLength;
-	private int rowInt;
+	private int rowIndex;
 	private int diameterAndRfClassColumn;
 	private int massColumn;
 	private double productMass;
@@ -53,6 +55,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private String notification;
 	private MassCounter massCounter;
 	private Stopwatch stopwatch;
+	private ReportBundle reportBundle;
 
 	public SummaryFileWorker(String path, HashMap<Integer, ReinforcementLiteInfo> hashMap, int labelID, Log log, int set) {
 		this.path = path;
@@ -60,6 +63,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		this.hashMap = hashMap;
 		this.log = log;
 		this.set = set;
+		reportBundle = new ReportBundle();
 		setup();
 	}
 
@@ -80,11 +84,11 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			checkMajorNumber(majorNumber);
 			massCounter = new MassCounter();
 		}
-		while (!isRowEmpty(sheet.getRow(rowInt)) &&
-				!isCellEmpty(sheet.getRow(rowInt).getCell(diameterAndRfClassColumn)) &&
-				!isCellEmpty(sheet.getRow(rowInt).getCell(massColumn))) {
+		while (!isRowEmpty(sheet.getRow(rowIndex)) &&
+				!isCellEmpty(sheet.getRow(rowIndex).getCell(diameterAndRfClassColumn)) &&
+				!isCellEmpty(sheet.getRow(rowIndex).getCell(massColumn))) {
 			readRow();
-			rowInt++;
+			rowIndex++;
 		}
 		if (set == SummaryThreadPool.RAW) {
 			productMass = sheet.getRow(4).getCell(productMassColumn).getNumericCellValue();
@@ -96,13 +100,30 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 				));
 			}
 		}
-		Main.app.addNotification(Main.app.getProperty("file_successfully_read_3").formatted(path, rowInt));
+		Main.app.addNotification(Main.app.getProperty("file_successfully_read_3").formatted(
+				path
+				, reportBundle.getParsedRange().rangeAsExcelRowNumbers()
+		));
+		String cellValueListAsString = reportBundle.getTableHeaderResult().getCellValueListAsString();
+		if (!reportBundle.getTableHeaderResult().isSince1()) {
+			Main.app.addNotification(Main.app.getProperty("summary_head_numeric_line_warning").formatted(
+					cellValueListAsString
+			));
+		}
 		log.add(Main.app.getProperty("summary_thread_complete").formatted(
-				getClass(), stopwatch.getElapsedTime(), labelID, path, fileHashCode));
+				getClass()
+				, stopwatch.getElapsedTime()
+				, labelID
+				, path
+				, fileHashCode
+				, cellValueListAsString
+				, reportBundle.getParsedRange().rangeAsIndexes()
+		));
 	}
 
 	private void readRow() {
-		row = sheet.getRow(rowInt);
+		row = sheet.getRow(rowIndex);
+		reportBundle.getParsedRange().write(row.getRowNum());
 		String[] parsedString = row.getCell(diameterAndRfClassColumn).getStringCellValue().split(" ");
 		diameter = Integer.parseInt(parsedString[0].split("%%C")[1]);
 		rfClassString = parsedString[1];
@@ -136,7 +157,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			}
 		}
 		log.add(Main.app.getProperty("summary_thread_read_row").formatted(
-				getClass(), labelID, fileHashCode, rowInt, hashMap.get(hashCode).toString())
+				getClass(), labelID, fileHashCode, rowIndex, hashMap.get(hashCode).toString())
 		);
 	}
 
@@ -148,11 +169,11 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 
 	private void checkPosition() {
 		if (position <= 0) {
-			notification = Main.app.getProperty("position_notification_3").formatted((rowInt + 1), position);
+			notification = Main.app.getProperty("position_notification_3").formatted((rowIndex + 1), position);
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 		if (position > StandardsRepository.maxPosition) {
-			notification = Main.app.getProperty("position_notification_4").formatted((rowInt + 1), position);
+			notification = Main.app.getProperty("position_notification_4").formatted((rowIndex + 1), position);
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
@@ -160,21 +181,21 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private void checkDiameter() {
 		checker.checkDiameter();
 		if (!checker.isCorrectDiameter()) {
-			notification = Main.app.getProperty("diameter_notification").formatted((rowInt + 1), diameter);
+			notification = Main.app.getProperty("diameter_notification").formatted((rowIndex + 1), diameter);
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkRFClass() {
 		if (!checker.isCorrectRFClass()) {
-			notification = Main.app.getProperty("rf_class_notification").formatted((rowInt + 1), rfClass);
+			notification = Main.app.getProperty("rf_class_notification").formatted((rowIndex + 1), rfClass);
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
 
 	private void checkSingleLength() {
 		if (!checker.isCorrectLength()) {
-			notification = Main.app.getProperty("length_notification").formatted((rowInt + 1), length);
+			notification = Main.app.getProperty("length_notification").formatted((rowIndex + 1), length);
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
 	}
@@ -182,7 +203,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	private void checkSingleMass() {
 		checker.checkMass(singleMass);
 		if (!checker.isCorrectMass()) {
-			notification = Main.app.getProperty("mass_notification").formatted((rowInt + 1), singleMass
+			notification = Main.app.getProperty("mass_notification").formatted((rowIndex + 1), singleMass
 					, checker.getCorrectMass());
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
@@ -192,7 +213,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		if ((Math.abs(length / 1000.0 * minorNumber) - totalLength) >= 0.01) {
 			Main.app.addNotification(Main.app.getProperty("length_multiply_notification").formatted(
 					path,
-					(rowInt + 1),
+					(rowIndex + 1),
 					totalLength,
 					(length / 1000.0 * minorNumber)
 			));
@@ -209,7 +230,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		if (!checker2.isCorrectMass()) {
 			Main.app.addNotification(Main.app.getProperty("mass_multiply_notification").formatted(
 					path,
-					(rowInt + 1),
+					(rowIndex + 1),
 					mass,
 					checker2.getCorrectMass()
 			));
@@ -244,30 +265,65 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private void findStartRow() {
-		int startRow = 2;
-		boolean isMatch = false;
-		while (!isMatch) {
-			try {
-				CellType cellType0 = sheet.getRow(startRow).getCell(0).getCellType();
-				CellType cellType1 = sheet.getRow(startRow).getCell(1).getCellType();
-				CellType cellType2 = sheet.getRow(startRow).getCell(2).getCellType();
-				CellType goal = CellType.NUMERIC;
-				if (cellType0 == goal && cellType1 == goal && cellType2 == goal) {
-					// in default head table pattern this must be
-					// 1
-					double numericCellValue0 = sheet.getRow(startRow).getCell(0).getNumericCellValue();
-					// 2
-					double numericCellValue1 = sheet.getRow(startRow).getCell(1).getNumericCellValue();
-					// 3
-					double numericCellValue2 = sheet.getRow(startRow).getCell(2).getNumericCellValue();
-					if (numericCellValue0 == 1 && numericCellValue1 == 2 && numericCellValue2 == 3) {
-						rowInt = ++startRow;
-						isMatch = true;
-					}
-				}
-			} catch (Exception ignored) {
+		rowIndex = findStartRow(sheet) + 1;
+	}
+
+	private int findStartRow(Sheet sheet) {
+		log.add("Finding start row");
+		for (Row row : sheet) {
+			TableHeaderResult result = rowValueIsStandart(row);
+			reportBundle.setTableHeaderResult(result);
+			if (result.isSince1()) {
+				log.add("Standart style: CORRECT");
 			}
-			startRow++;
+			if (result.isSince2()) {
+				log.add("Novosibirsk style: INCORRECT");
+			}
+			if (result.isNumeric() && !result.isSince1() && !result.isSince2()) {
+				log.add("Other style %s: INCORRECT".formatted(result.getCellValueListAsString()));
+			}
+			if (result.isNumeric() && result.isSince1()) {
+				return row.getRowNum();
+			}
+			if (result.isNumeric() && result.isSince2()) {
+				return row.getRowNum();
+			}
 		}
+		return 0;
+	}
+
+	private TableHeaderResult rowValueIsStandart(Row row) {
+		TableHeaderResult result = new TableHeaderResult();
+		for (int i = 0; i < 5; i++) {
+			try {
+				if (row.getCell(i).getCellType() != CellType.NUMERIC) {
+					result.setNumeric(false);
+				}
+			} catch (Exception e) {
+				result.setNumeric(false);
+			}
+			try {
+				// Sample: [1, 2, 3, 4, ...]
+				if ((int) row.getCell(i).getNumericCellValue() != (i + 1)) {
+					result.setSince1(false);
+				}
+			} catch (Exception e) {
+				result.setSince1(false);
+			}
+			try {
+				// Sample: [2, 3, 4, 5, ...]
+				if ((int) row.getCell(i).getNumericCellValue() != (i + 2)) {
+					result.setSince2(false);
+				}
+			} catch (Exception e) {
+				result.setSince2(false);
+			}
+		}
+		if (result.isNumeric()) {
+			for (Cell v : row) {
+				result.addCellValueToList(v.getNumericCellValue());
+			}
+		}
+		return result;
 	}
 }

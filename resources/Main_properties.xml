@@ -79,8 +79,9 @@
     <entry key="thread_complete">%s: Thread complete in %d ms</entry>
     <entry key="current_row">%s: [CurrentRow: %d]</entry>
     <entry key="summary_thread_start">&#09;%s: Thread start. [SummaryDropSpace ID: %d], [File: %s], [FileNameHashCode: %s]</entry>
-    <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s]</entry>
+    <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s], [TableHeaderResult: %s], [ParsedRange: %s]</entry>
     <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d], [FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
+    <entry key="summary_head_numeric_line_warning">Ошибка в строке с нумерацией: %s</entry>
 
     <!-- Sheet dynamic hash code -->
     <entry key="dynamic_non_duplicated_hash_code_list">Dynamic non duplicated hash code list (size=%d): %s</entry>
@@ -116,7 +117,7 @@
     <entry key="length_notification">В строке %d длина изделия: %d</entry>
     <entry key="mass_notification">В строке %d масса изделия: %.3f. Я думаю, должно быть: %.3f</entry>
 
-    <entry key="file_successfully_read_3">☻ Файл «%s» прочитан до строки с номером: %d (включительно)</entry>
+    <entry key="file_successfully_read_3">☻ Файл «%s» прочитан по строкам %s (включительно)</entry>
     <entry key="summary_file_name_notification">Файл «%s». %s</entry>
     <entry key="product_major_number_notification">Файл «%s». Не могу определить число в столбце A (возможно оно отсутствует или отрицательно)</entry>
     <entry key="length_multiply_notification">Файл «%s». В строке %d общая длина элемента: %.3f. Я думаю, должно быть: %.3f</entry>
