@@ -48,7 +48,8 @@ public class Controller {
 	@FXML
 	private Label upperDropSpace, lowerDropSpace, resultLabel, notificationLabel, notificationLabel2,
 			summaryDropSpace1, summaryDropSpace2, summaryDropSpace3, summaryDropSpace4, summaryDropSpace5,
-			summaryDropSpace6, summaryDropSpace7, summaryDropSpace8, favoriteDropSpace, summaryBuilderFileDropSpace;
+			summaryDropSpace6, summaryDropSpace7, summaryDropSpace8, favoriteDropSpace, summaryBuilderFileDropSpace,
+			summaryBuilderFileCreatorDropSpace;
 	@FXML
 	private Button downloadFileButton, clearResultLabelButton, lowerDropSpaceButton, clearUpperDropSpaceButton,
 			showInfoButton1, downloadResultLabelButton, downloadSummaryFileButton, clearAllSummaryDropSpaceButton,
@@ -149,6 +150,7 @@ public class Controller {
 		setSummaryDropSpaceText(8, getProperty("summary_label_default_first_line_8").formatted(secondLine));
 		summaryBuilderLabelWrapper = new LabelWrapper(summaryBuilderFileDropSpace, getProperty("summary_builder_label_default"));
 		summaryBuilderLabelWrapper.resetTextToDefault();
+		summaryBuilderFileCreatorDropSpace.setText(getProperty("summary_builder_file_creator_drop_space_text"));
 
 		settingsTextWrapper2 = new TextWrapper(settingsText2);
 		settingsTextWrapper3 = new TextWrapper(settingsText3);
@@ -374,6 +376,11 @@ public class Controller {
 				, mSummaryChoiceBox1
 				, mSummaryChoiceBox8
 		);
+	}
+
+	@FXML
+	private void summaryBuilderFileCreatorDragDropped(DragEvent dragEvent) throws IOException {
+		DropWorker.summaryBuilderFileCreatorDragDropped(dragEvent);
 	}
 
 	@FXML
@@ -743,7 +750,8 @@ public class Controller {
 				summaryDropSpace7,
 				summaryDropSpace8,
 				favoriteDropSpace,
-				summaryBuilderFileDropSpace
+				summaryBuilderFileDropSpace,
+				summaryBuilderFileCreatorDropSpace
 		};
 		borderModifiedLabels = new Label[]{
 				upperDropSpace,
@@ -757,7 +765,8 @@ public class Controller {
 				summaryDropSpace7,
 				summaryDropSpace8,
 				favoriteDropSpace,
-				summaryBuilderFileDropSpace
+				summaryBuilderFileDropSpace,
+				summaryBuilderFileCreatorDropSpace
 		};
 		allSummaryLabelWrappers = new LabelWrapper[]{
 				new LabelWrapper(summaryDropSpace1),
@@ -946,8 +955,8 @@ public class Controller {
 
 	@FXML
 	private void restoreWindowSize() {
-		Stages.primary.setHeight(Stages.defaultHeight);
-		Stages.primary.setWidth(Stages.defaultWidth);
+		Stages.primary.setHeight(Stages.mainStageDefaultHeight);
+		Stages.primary.setWidth(Stages.mainStageDefaultWidth);
 	}
 
 	@FXML

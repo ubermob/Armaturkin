@@ -19,36 +19,49 @@ public class Stages {
 
 	public static Stage primary;
 	public static Stage infoStage;
+	private static Label infoLabel;
 	public static Stage reinforcementLinearMassListStage;
 	public static Stage hotRolledSteelCodeViewStage;
 	public static Stage tinyStage;
-	public static double defaultHeight;
-	public static double defaultWidth;
-	private static Label helpLabel;
+	public static double mainStageDefaultHeight;
+	public static double mainStageDefaultWidth;
 
 	public static void doingPrimaryStage(Stage stage) {
 		primary = stage;
-		defaultHeight = stage.getHeight();
-		defaultWidth = stage.getWidth();
+		mainStageDefaultHeight = stage.getHeight();
+		mainStageDefaultWidth = stage.getWidth();
 		primary.setOnCloseRequest(windowEvent -> Stages.closeAll());
 	}
 
 	public static void showDifferentInfoStage(int i) throws IOException {
 		showInfoStage();
-		helpLabel.setText(InAppHelpArray.getString(i));
+		infoLabel.setText(InAppHelpArray.getString(i));
 	}
 
 	public static void showInfoStage() throws IOException {
 		if (infoStage == null) {
 			Controller controller = Main.app.getController();
 			infoStage = new Stage();
-			helpLabel = new FXMLLoader(Main.class.getResource("/fxml/Info_label.fxml")).load();
-			helpLabel.setBackground(controller.getUserBackgroundColor());
-			helpLabel.setFont(controller.getFont());
-			helpLabel.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
-			infoStage.setScene(new Scene(helpLabel));
+			Main.setIconToStage(infoStage, "/icons/Icon_i.png");
+			infoLabel = new FXMLLoader(Main.class.getResource("/fxml/Info_label.fxml")).load();
+			infoLabel.setBackground(controller.getUserBackgroundColor());
+			infoLabel.setFont(controller.getFont());
+			infoLabel.setTextFill(Paint.valueOf(Main.app.getConfig().getTextColor()));
+			infoStage.setScene(new Scene(infoLabel));
 			infoStage.setTitle(Main.app.getProperty("info_stage_name"));
-			infoStage.initStyle(StageStyle.UTILITY);
+			try {
+				infoStage.setHeight(Main.app.getConfig().getInfoStageHeight());
+				infoStage.setWidth(Main.app.getConfig().getInfoStageWidth());
+			} catch (NullPointerException ignored) {
+			}
+			infoStage.setOnCloseRequest(x -> {
+				double height = infoStage.getHeight();
+				double width = infoStage.getWidth();
+				infoStage.setHeight(height);
+				infoStage.setWidth(width);
+				Main.app.getConfig().setInfoStageHeight(height);
+				Main.app.getConfig().setInfoStageWidth(width);
+			});
 		}
 		infoStage.show();
 	}

@@ -41,11 +41,7 @@ public class Main extends Application {
 		app.log(app.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		app.log(PcInformation.getInformation());
 		app.startHttpServer();
-		try (InputStream resource = getClass().getResourceAsStream("/icons/Icon.png")) {
-			primaryStage.getIcons().add(new Image(resource));
-		} catch (Exception e) {
-			app.log(e);
-		}
+		setIconToStage(primaryStage, "/icons/Icon.png");
 		app.getStorageService().checkFavoriteDirectory();
 		app.getFirstHarvestingService().preloadUpperDropSpace();
 		InAppHelpArray.load();
@@ -77,6 +73,14 @@ public class Main extends Application {
 			// https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
 			Platform.exit();
 			System.exit(0);
+		}
+	}
+
+	public static void setIconToStage(Stage stage, String iconPath) {
+		try (InputStream resource = Main.class.getResourceAsStream(iconPath)) {
+			stage.getIcons().add(new Image(resource));
+		} catch (Exception e) {
+			app.log(e);
 		}
 	}
 

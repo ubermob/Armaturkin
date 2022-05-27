@@ -14,7 +14,7 @@ public class StringUtil {
 	 * @param input target {@link String}
 	 * @return replaced {@link String}
 	 */
-	public synchronized static String replaceNewLine(String input) {
+	public static String replaceNewLine(String input) {
 		while (input.endsWith("\n")) {
 			input = cutEnd(input, 1);
 		}
@@ -32,7 +32,7 @@ public class StringUtil {
 	 * @throws IllegalArgumentException        if number less or equal zero
 	 * @throws StringIndexOutOfBoundsException if number greater than string length
 	 */
-	public synchronized static String cutEnd(String input, int number) throws IllegalArgumentException {
+	public static String cutEnd(String input, int number) throws IllegalArgumentException {
 		if (number < 0) {
 			throw new IllegalArgumentException("number: \'" + number + "\' less than zero");
 		}
@@ -46,7 +46,7 @@ public class StringUtil {
 	 * @param c     foreign char
 	 * @return cutting string
 	 */
-	public synchronized static String cutEndIfLastCharIs(String input, char c) {
+	public static String cutEndIfLastCharIs(String input, char c) {
 		if (input.charAt(input.length() - 1) == c) {
 			return cutEnd(input, 1);
 		}

@@ -178,6 +178,11 @@
     <entry key="last_field_name_mass">Масса</entry>
     <entry key="last_field_name_length">Длина</entry>
 
+    <!-- Summary builder file creator properties -->
+    <entry key="summary_builder_file_creator_drop_space_text">Перетащи сюда папку с файлами для расчёта</entry>
+    <entry key="summary_builder_file_creator_log">created .sb file: [Input path: %s], [Relative: %s], [Save to: %s] in %d ms</entry>
+    <entry key="summary_builder_file_creator_notification">Файл .sb создан «%s»</entry>
+
     <!-- Design code properties -->
     <entry key="node_seeker_drop_space_text">Перетащи сюда .xls или .inp файл</entry>
     <entry key="python_util_drop_space_text_1">Перетащи сюда .xlsx файл</entry>

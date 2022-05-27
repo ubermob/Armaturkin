@@ -139,7 +139,7 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(
 				contentContainer,
 				path,
-				createFileName(fileName),
+				createFileName(fileName, ".xlsx"),
 				tableHead
 		);
 		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);

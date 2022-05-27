@@ -50,7 +50,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 		buildTableHead();
 		addBackgroundReinforcement();
 		fillTable();
-		fileName = createFileName(fileName);
+		fileName = createFileName(fileName, ".xlsx");
 		try (OutputStream outputStream = Files.newOutputStream(Path.of(path, fileName))) {
 			workbook.write(outputStream);
 			Main.app.addNotification(Main.app.getProperty("file_successfully_download").formatted(fileName));

@@ -29,6 +29,8 @@ public class Configuration {
 	private Boolean autoParseProductList;
 	private Integer resultLabelFontSize;
 	private Boolean pythonInterpreter;
+	private Double infoStageHeight;
+	private Double infoStageWidth;
 
 	public Configuration(String path, Properties properties, App app) throws IOException {
 		this.path = path;
@@ -68,6 +70,8 @@ public class Configuration {
 					resultLabelFontSize = Integer.parseInt(load.get(13));
 				}
 				pythonInterpreter = Boolean.parseBoolean(load.get(14));
+				infoStageHeight = Double.parseDouble(load.get(15));
+				infoStageWidth = Double.parseDouble(load.get(16));
 			} catch (Exception e) {
 				app.log(e);
 			}
@@ -94,7 +98,9 @@ public class Configuration {
 				favoritePath,
 				String.valueOf(autoParseProductList),
 				String.valueOf(resultLabelFontSize),
-				String.valueOf(pythonInterpreter)
+				String.valueOf(pythonInterpreter),
+				String.valueOf(infoStageHeight),
+				String.valueOf(infoStageWidth)
 		};
 		Writer.write(Root.programRootPath + Root.getProperty("config_file_name"), configList);
 	}
@@ -235,6 +241,22 @@ public class Configuration {
 
 	public void setPythonInterpreter(Boolean pythonInterpreter) {
 		this.pythonInterpreter = pythonInterpreter;
+	}
+
+	public Double getInfoStageHeight() {
+		return infoStageHeight;
+	}
+
+	public void setInfoStageHeight(Double infoStageHeight) {
+		this.infoStageHeight = infoStageHeight;
+	}
+
+	public Double getInfoStageWidth() {
+		return infoStageWidth;
+	}
+
+	public void setInfoStageWidth(Double infoStageWidth) {
+		this.infoStageWidth = infoStageWidth;
 	}
 
 	private void defaultValues() {

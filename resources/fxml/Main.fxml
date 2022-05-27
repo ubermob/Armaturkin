@@ -154,7 +154,7 @@
                <children>
                   <VBox alignment="CENTER" layoutX="100.0" layoutY="42.0" prefWidth="800.0" style="-fx-spacing: 6;">
                      <children>
-                        <HBox alignment="BOTTOM_CENTER">
+                        <HBox alignment="BOTTOM_CENTER" prefHeight="115.0">
                            <children>
                               <Label fx:id="summaryDropSpace1" alignment="TOP_CENTER" onDragDropped="#summaryDragDropped1" onDragOver="#summaryDragOver" onMouseClicked="#click1" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryLabel1" textAlignment="CENTER">
                                  <opaqueInsets>
@@ -342,7 +342,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="BOTTOM_CENTER">
+                        <HBox alignment="BOTTOM_RIGHT" style="-fx-spacing: 35;">
                            <children>
                               <Label fx:id="summaryBuilderFileDropSpace" alignment="TOP_CENTER" onDragDropped="#summaryBuilderDragDropped" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="385.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryBuilderLabel" textAlignment="CENTER">
                                  <font>
@@ -357,9 +357,17 @@
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets bottom="6.0" left="-40.0" />
+                                    <Insets bottom="6.0" left="-75.0" />
                                  </HBox.margin>
                               </Button>
+                              <Label fx:id="summaryBuilderFileCreatorDropSpace" alignment="TOP_CENTER" onDragDropped="#summaryBuilderFileCreatorDragDropped" onDragOver="#summaryDragOver" prefHeight="115.0" prefWidth="225.0" style="-fx-border-color: BLACK; -fx-border-width: 5;" text="summaryBuilderFileCreatorLabel" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
                            </children>
                         </HBox>
                      </children>

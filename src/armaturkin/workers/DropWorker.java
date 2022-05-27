@@ -3,6 +3,8 @@ package armaturkin.workers;
 import armaturkin.controller.Controller;
 import armaturkin.controller.TinyController;
 import armaturkin.core.Main;
+import armaturkin.interfaces.FileNameCreatorImpl;
+import armaturkin.summaryoutput.SummaryBuilderFileCreator;
 import armaturkin.view.LabelWrapper;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
@@ -11,6 +13,7 @@ import javafx.scene.input.TransferMode;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +108,19 @@ public class DropWorker {
 				label.setText(Main.app.getProperty("drop_worker_notification_3"));
 			}
 		}
+	}
+
+	public static void summaryBuilderFileCreatorDragDropped(DragEvent dragEvent) {
+		Path inputPath = Path.of(dragEvent.getDragboard().getFiles().get(0).getAbsolutePath());
+		String fileName = new FileNameCreatorImpl().createFileName("", ".sb");
+		Path destinationPath;
+		if (Main.app.getConfig().isFavoritePathNotNull()) {
+			destinationPath = Path.of(Main.app.getConfig().getFavoritePath(), fileName);
+		} else {
+			Path parent = inputPath.getParent();
+			destinationPath = Path.of(parent.toString(), fileName);
+		}
+		new SummaryBuilderFileCreator().create(inputPath, "rel", "Имя блока", destinationPath);
 	}
 
 	public static String nodeSeekerDragDropped(DragEvent dragEvent, TinyController controller) {
