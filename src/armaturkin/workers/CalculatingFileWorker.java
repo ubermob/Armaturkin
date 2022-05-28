@@ -8,6 +8,7 @@ import armaturkin.interfaces.RowEmptyChecker;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
 import armaturkin.reinforcement.StandardsRepository;
+import armaturkin.utils.ParsedRange;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -25,6 +26,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
 	private final HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap;
+	private final ParsedRange parsedRange;
 	private Workbook workbook;
 	private Sheet sheet;
 	private Row row;
@@ -42,11 +44,12 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private int positionColumn = -1;
 	private int position;
 
-	public CalculatingFileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap,
-	                             HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap) {
+	public CalculatingFileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap
+			, HashMap<Integer, ReinforcementProduct> reinforcementProductHashMap, ParsedRange parsedRange) {
 		this.path = path;
 		this.reinforcementHashMap = reinforcementHashMap;
 		this.reinforcementProductHashMap = reinforcementProductHashMap;
+		this.parsedRange = parsedRange;
 	}
 
 	@Override
@@ -113,6 +116,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 		} else {
 			insertPosition();
 		}
+		parsedRange.write(position);
 	}
 
 	private void editPosition() {
@@ -189,9 +193,6 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	private void checkPosition() {
 		if (position <= 0) {
 			Main.app.addNotification(Main.app.getProperty("position_notification_3").formatted((currentRow + 1), position));
-		}
-		if (position > StandardsRepository.maxPosition) {
-			Main.app.addNotification(Main.app.getProperty("position_notification_4").formatted((currentRow + 1), position));
 		}
 	}
 

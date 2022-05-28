@@ -21,6 +21,7 @@ import armaturkin.utils.Dev;
 import armaturkin.utils.test.Test;
 import armaturkin.view.*;
 import armaturkin.workers.DropWorker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -54,7 +55,7 @@ public class Controller {
 	private Button downloadFileButton, clearResultLabelButton, lowerDropSpaceButton, clearUpperDropSpaceButton,
 			showInfoButton1, downloadResultLabelButton, downloadSummaryFileButton, clearAllSummaryDropSpaceButton,
 			checkSummaryDropSpaceButton4, checkSummaryDropSpaceButton6, checkSummaryDropSpaceButton8,
-			checkSummaryDropSpaceButton7, boldTextButton, deleteLogs, deleteNotifications, forgetFavorite,
+			checkSummaryDropSpaceButton7, boldTextButton, deleteLogs, deleteNotifications, forgetFavorite, font10Button,
 			font12Button, font14Button, font16Button, font18Button, font20Button, mSummaryAddButton, mSummaryAddButton2,
 			restoreWindowSizeButton, showReinforcementLinearMassListButton, backgroundReinforcementAddButton,
 			showHotRolledSteelCodeButton, testButton, varStateButton, clearSummaryBuilderDropSpaceButton,
@@ -641,28 +642,14 @@ public class Controller {
 	}
 
 	@FXML
-	private void setResultLabelFont12() {
-		setResultLabelFont(12);
-	}
-
-	@FXML
-	private void setResultLabelFont14() {
-		setResultLabelFont(14);
-	}
-
-	@FXML
-	private void setResultLabelFont16() {
-		setResultLabelFont(16);
-	}
-
-	@FXML
-	private void setResultLabelFont18() {
-		setResultLabelFont(18);
-	}
-
-	@FXML
-	private void setResultLabelFont20() {
-		setResultLabelFont(20);
+	private void setResultLabelFont(ActionEvent actionEvent) {
+		int fontSize = 20;
+		try {
+			String text = ((Button) actionEvent.getSource()).getText();
+			fontSize = Integer.parseInt(text);
+		} catch (NumberFormatException ignored) {
+		}
+		setResultLabelFont(fontSize);
 	}
 
 	private void setResultLabelFont(int i) {
@@ -795,6 +782,7 @@ public class Controller {
 				deleteLogs,
 				deleteNotifications,
 				forgetFavorite,
+				font10Button,
 				font12Button,
 				font14Button,
 				font16Button,

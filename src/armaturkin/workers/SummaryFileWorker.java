@@ -172,10 +172,6 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			notification = Main.app.getProperty("position_notification_3").formatted((rowIndex + 1), position);
 			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
 		}
-		if (position > StandardsRepository.maxPosition) {
-			notification = Main.app.getProperty("position_notification_4").formatted((rowIndex + 1), position);
-			Main.app.addNotification(Main.app.getProperty("summary_file_name_notification").formatted(path, notification));
-		}
 	}
 
 	private void checkDiameter() {

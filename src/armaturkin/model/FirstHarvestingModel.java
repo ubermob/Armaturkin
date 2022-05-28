@@ -2,6 +2,7 @@ package armaturkin.model;
 
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.ReinforcementProduct;
+import armaturkin.utils.ParsedRange;
 
 import java.util.HashMap;
 
@@ -14,4 +15,14 @@ public interface FirstHarvestingModel {
 	HashMap<Integer, ReinforcementProduct> getReinforcementProductHashMap();
 
 	HashMap<Integer, Reinforcement> getReinforcementHashMap();
+
+	ParsedRange getReinforcementProductParsedRange();
+
+	ParsedRange getReinforcementParsedRange();
+
+	void resetForReinforcementProduct();
+
+	void resetForReinforcement();
+
+	boolean isReadyForDownload();
 }

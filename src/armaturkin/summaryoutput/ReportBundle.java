@@ -1,5 +1,7 @@
 package armaturkin.summaryoutput;
 
+import armaturkin.utils.ParsedRange;
+
 /**
  * @author Andrey Korneychuk on 26-May-22
  * @version 1.0
@@ -7,7 +9,7 @@ package armaturkin.summaryoutput;
 public class ReportBundle {
 
 	private TableHeaderResult tableHeaderResult;
-	private ParsedRange parsedRange;
+	private final ParsedRange parsedRange;
 
 	public ReportBundle() {
 		tableHeaderResult = new TableHeaderResult();
@@ -24,9 +26,5 @@ public class ReportBundle {
 
 	public ParsedRange getParsedRange() {
 		return parsedRange;
-	}
-
-	public void setParsedRange(ParsedRange parsedRange) {
-		this.parsedRange = parsedRange;
 	}
 }

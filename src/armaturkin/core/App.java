@@ -50,7 +50,6 @@ public class App {
 		firstHarvestingModel = new FirstHarvestingModelImpl();
 		summaryModel = new SummaryModelImpl();
 		manuallyEntryModel = new ManuallyEntryModelImpl();
-		StandardsRepository.createPairs();
 		SteelComponentRepository.load();
 		configInjection();
 		appInjection();

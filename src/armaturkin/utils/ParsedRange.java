@@ -1,4 +1,4 @@
-package armaturkin.summaryoutput;
+package armaturkin.utils;
 
 /**
  * @author Andrey Korneychuk on 27-May-22
@@ -16,7 +16,7 @@ public class ParsedRange {
 		lastValue = value;
 	}
 
-	public Integer getStartValue() {
+	public int getStartValue() {
 		return startValue;
 	}
 

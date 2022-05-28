@@ -379,13 +379,13 @@ public class ManuallyEntry {
 		buildLabel(labelText, labelColorCode);
 	}
 
-	// TODO: Do create a fxml card?
 	private void buildLabel(String labelText, String labelColorCode) {
 		label = new Label(labelText);
 		label.setPrefWidth(100);
 		label.setPrefHeight(Main.app.getController().getMSummaryHBoxPrefHeight());
-		label.setBackground(new Background(new BackgroundFill(Paint.valueOf(labelColorCode),
-				CornerRadii.EMPTY, Insets.EMPTY)));
+		label.setBackground(new Background(new BackgroundFill(
+				Paint.valueOf(labelColorCode), CornerRadii.EMPTY, Insets.EMPTY
+		)));
 		label.setTextAlignment(TextAlignment.CENTER);
 		label.setAlignment(Pos.CENTER);
 		label.setFont(new Font("System bold", 13));

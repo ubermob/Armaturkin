@@ -32,10 +32,6 @@
     <entry key="node_seeker_stage_name">NodeSeeker</entry>
     <entry key="python_util_stage_name_1">Python сборщик каркасов</entry>
 
-    <!-- Default redirect arrow properties -->
-    <entry key="angle_gap">30</entry>
-    <entry key="line_length">40</entry>
-
     <entry key="upper_label_default_text">Перетащи сюда список изделий</entry>
     <entry key="lower_label_default_text">Перетащи сюда файл,&#10;который надо посчитать</entry>
     <entry key="upper_label_text_with_file">Я использую предыдущий файл&#10;«%s»&#10;Но ты можешь обновить его</entry>
@@ -111,7 +107,6 @@
     <entry key="position_notification_1">В строке %d продублированна позиция: %d</entry>
     <entry key="position_notification_2">В строке %d позиция из зарезервированного списка: %d</entry>
     <entry key="position_notification_3">В строке %d позиция: %d</entry>
-    <entry key="position_notification_4">В строке %d большой номер позиции для меня: %d</entry>
     <entry key="diameter_notification">В строке %d диаметр равен: %d</entry>
     <entry key="rf_class_notification">В строке %d класс арматуры: %s</entry>
     <entry key="length_notification">В строке %d длина изделия: %d</entry>

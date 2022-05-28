@@ -6,26 +6,26 @@ import java.util.Arrays;
 // Class contains organization standards for publish documentation
 public class StandardsRepository {
 
-	public static int[] diameters = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40}; // Size == 14
-	static String[] rfClass240 = {
+	public static final int[] diameters = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40}; // Size == 14
+	static final String[] rfClass240 = {
 			"а240", // Russian letter
 			"а 240", // Russian letter
 			"a240", // English letter
 			"a 240" // English letter
 	};
-	static String[] rfClass400 = {
+	static final String[] rfClass400 = {
 			"а400", // Russian letter
 			"а 400", // Russian letter
 			"a400", // English letter
 			"a 400" // English letter
 	};
-	static String[] rfClass500 = {
+	static final String[] rfClass500 = {
 			"а500", // Russian letter
 			"а 500", // Russian letter
 			"a500", // English letter
 			"a 500" // English letter
 	};
-	static String[] rfClass500S = {
+	static final String[] rfClass500S = {
 			"а500с", // Russian letter
 			"а 500с", // Russian letter
 			"а500 с", // Russian letter
@@ -46,22 +46,21 @@ public class StandardsRepository {
 			"а500 c", // Russian + English letter
 			"а 500 c" // Russian + English letter
 	};
-	static String[] rfClass600 = {
+	static final String[] rfClass600 = {
 			"а600", // Russian letter
 			"а 600", // Russian letter
 			"a600", // English letter
 			"a 600" // English letter
 	};
-	public static int maxLength = 11_700;
-	public static int maxPosition = 3_000;
+	public static final short maxLength = 11_700;
 
-	public static double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853, 4.834, 6.313, 7.990, 9.865};
-	public static double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85, 4.83, 6.31, 7.99, 9.87}; // implements math rules
-	public static double[] mass2Digit2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86, 4.84, 6.32, 8.00, 9.86}; // alternative version
+	public static final double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853, 4.834, 6.313, 7.990, 9.865};
+	public static final double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85, 4.83, 6.31, 7.99, 9.87}; // implements math rules
+	public static final double[] mass2Digit2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86, 4.84, 6.32, 8.00, 9.86}; // alternative version
 
-	public static int[] reservedPositions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}; // Size == 18
-	public static int[] reservedDiameters = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14}; // Size == 18
-	public static PairDR[] pairs;
+	public static final int[] reservedPositions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}; // Size == 18
+	public static final int[] reservedDiameters = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14}; // Size == 18
+	public static final PairDR[] pairs;
 
 	public static byte[][] rgb = {
 			{(byte) 255, (byte) 0, (byte) 255}, // d6
@@ -79,6 +78,13 @@ public class StandardsRepository {
 			{(byte) 153, (byte) 153, (byte) 0}, // d36
 			{(byte) 0, (byte) 127, (byte) 63}, // d40
 	};
+
+	static {
+		pairs = new PairDR[reservedDiameters.length];
+		for (int i = 0; i < reservedDiameters.length; i++) {
+			pairs[i] = new PairDR(reservedDiameters[i], getReservedRFClass(reservedPositions[i]));
+		}
+	}
 
 	public static int getReservedPositionIndex(int position) {
 		for (int i = 0; i < reservedPositions.length; i++) {
@@ -138,13 +144,6 @@ public class StandardsRepository {
 			list.add(i);
 		}
 		return list;
-	}
-
-	public static void createPairs() {
-		pairs = new PairDR[reservedDiameters.length];
-		for (int i = 0; i < reservedDiameters.length; i++) {
-			pairs[i] = new PairDR(reservedDiameters[i], getReservedRFClass(reservedPositions[i]));
-		}
 	}
 
 	public static ArrayList<PairDR> getPairsAsList() {

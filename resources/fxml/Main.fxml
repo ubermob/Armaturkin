@@ -115,36 +115,48 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="font12Button" layoutX="98.0" layoutY="519.0" mnemonicParsing="false" onAction="#setResultLabelFont12" prefHeight="37.0" prefWidth="41.0" text="12" AnchorPane.bottomAnchor="15.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="font14Button" layoutX="153.0" layoutY="520.0" mnemonicParsing="false" onAction="#setResultLabelFont14" prefHeight="37.0" prefWidth="41.0" text="14" AnchorPane.bottomAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="font16Button" layoutX="208.0" layoutY="520.0" mnemonicParsing="false" onAction="#setResultLabelFont16" prefHeight="37.0" prefWidth="41.0" text="16" AnchorPane.bottomAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="font18Button" layoutX="263.0" layoutY="520.0" mnemonicParsing="false" onAction="#setResultLabelFont18" prefHeight="37.0" prefWidth="41.0" text="18" AnchorPane.bottomAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="font20Button" layoutX="318.0" layoutY="520.0" mnemonicParsing="false" onAction="#setResultLabelFont20" prefHeight="37.0" prefWidth="41.0" text="20" AnchorPane.bottomAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Button>
-                  <Text fx:id="notificationText" layoutX="14.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Шрифт" wrappingWidth="79.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="14.0">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Text>
+                  <HBox layoutX="25.0" layoutY="652.0" style="-fx-spacing: 10;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0">
+                     <children>
+                        <Text fx:id="notificationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Шрифт" wrappingWidth="79.0">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="3.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Button fx:id="font10Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="10">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="font12Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="12">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="font14Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="14">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="font16Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="16">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="font18Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="18">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="font20Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="20">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                </children></AnchorPane>
       </content>
     </Tab>

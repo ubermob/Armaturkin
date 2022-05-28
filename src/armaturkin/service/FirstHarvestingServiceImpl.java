@@ -19,11 +19,11 @@ public class FirstHarvestingServiceImpl extends AbstractService implements First
 
 	@Override
 	public void loadProductFile() {
-		var reinforcementProductHashMap = model.getReinforcementProductHashMap();
-		reinforcementProductHashMap.clear();
+		model.resetForReinforcementProduct();
 		ProductFileWorker productFileWorker = new ProductFileWorker(
-				config.getPathToProductFile(),
-				reinforcementProductHashMap
+				config.getPathToProductFile()
+				, model.getReinforcementProductHashMap()
+				, model.getReinforcementProductParsedRange()
 		);
 		Thread productFileWorkerThread = new Thread(productFileWorker);
 		productFileWorkerThread.start();
@@ -31,13 +31,12 @@ public class FirstHarvestingServiceImpl extends AbstractService implements First
 
 	@Override
 	public void loadCalculatingFile() {
-		var reinforcementHashMap = model.getReinforcementHashMap();
-		var reinforcementProductHashMap = model.getReinforcementProductHashMap();
-		reinforcementHashMap.clear();
+		model.resetForReinforcement();
 		CalculatingFileWorker calculatingFileWorker = new CalculatingFileWorker(
-				config.getPathToCalculatingFile(),
-				reinforcementHashMap,
-				reinforcementProductHashMap
+				config.getPathToCalculatingFile()
+				, model.getReinforcementHashMap()
+				, model.getReinforcementProductHashMap()
+				, model.getReinforcementParsedRange()
 		);
 		Thread calculatingFileWorkerThread = new Thread(calculatingFileWorker);
 		calculatingFileWorkerThread.start();
@@ -45,9 +44,7 @@ public class FirstHarvestingServiceImpl extends AbstractService implements First
 
 	@Override
 	public void downloadCalculatedFile() {
-		var reinforcementHashMap = model.getReinforcementHashMap();
-		var reinforcementProductHashMap = model.getReinforcementProductHashMap();
-		if (!reinforcementHashMap.isEmpty() && !reinforcementProductHashMap.isEmpty()) {
+		if (model.isReadyForDownload()) {
 			String path;
 			if (config.isFavoritePathNotNull()) {
 				path = config.getFavoritePath();
@@ -55,10 +52,11 @@ public class FirstHarvestingServiceImpl extends AbstractService implements First
 				path = Path.of(config.getPathToCalculatingFile()).getParent().toString();
 			}
 			FileWorker fileWorker = new FileWorker(
-					path,
-					reinforcementHashMap,
-					controller.getTableHead(),
-					UnacceptableSymbolReplacer.replace(controller.getFileName())
+					path
+					, model.getReinforcementHashMap()
+					, model.getReinforcementParsedRange()
+					, controller.getTableHead()
+					, UnacceptableSymbolReplacer.replace(controller.getFileName())
 			);
 			Thread fileWorkerThread = new Thread(fileWorker);
 			fileWorkerThread.start();

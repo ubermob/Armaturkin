@@ -6,6 +6,7 @@ import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.Reinforcement;
 import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.utils.CellStyleRepository;
+import armaturkin.utils.ParsedRange;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -24,20 +25,22 @@ public class FileWorker implements Runnable, FileNameCreator {
 
 	private final String path;
 	private final HashMap<Integer, Reinforcement> reinforcementHashMap;
+	private final ParsedRange parsedRange;
 	private final String downloadFileTableHead;
 	private String fileName;
 	private XSSFWorkbook workbook;
 	private XSSFSheet sheet;
 	private XSSFRow row;
 	private XSSFCell cell;
-	private int rowInt;
+	private int rowIndex;
 	private CellStyleRepository cellStyleRepository;
 	private Stopwatch stopwatch;
 
 	public FileWorker(String path, HashMap<Integer, Reinforcement> reinforcementHashMap
-			, String downloadFileTableHead, String fileName) {
+			, ParsedRange parsedRange, String downloadFileTableHead, String fileName) {
 		this.path = path;
 		this.reinforcementHashMap = reinforcementHashMap;
+		this.parsedRange = parsedRange;
 		this.downloadFileTableHead = downloadFileTableHead;
 		this.fileName = fileName;
 	}
@@ -46,7 +49,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 	public void run() {
 		stopwatch = new Stopwatch();
 		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
-		// todo: initWorkbook method
+		initWorkbook();
 		buildTableHead();
 		addBackgroundReinforcement();
 		fillTable();
@@ -63,11 +66,11 @@ public class FileWorker implements Runnable, FileNameCreator {
 	}
 
 	private void fillTable() {
-		rowInt = 4;
-		for (int i = 1; i <= StandardsRepository.maxPosition; i++) {
+		rowIndex = 4;
+		for (int i = parsedRange.getStartValue(); i <= parsedRange.getLastValue(); i++) {
 			if (reinforcementHashMap.containsKey(i)) {
 				Reinforcement reinforcement = reinforcementHashMap.get(i);
-				row = sheet.createRow(rowInt);
+				row = sheet.createRow(rowIndex);
 				row.setHeight((short) 675);
 				for (int j = 0; j < 8; j++) {
 					cell = row.createCell(j);
@@ -139,7 +142,9 @@ public class FileWorker implements Runnable, FileNameCreator {
 					);
 					Main.app.log(formatter.toString());
 				}
-				rowInt++;
+				rowIndex++;
+			} else {
+				Main.app.log("Reinforcement hash map do not contain key: " + i);
 			}
 		}
 	}
@@ -155,9 +160,9 @@ public class FileWorker implements Runnable, FileNameCreator {
 			);
 			int reservedDiameterIndex = StandardsRepository.getReservedDiameterIndex(diameter);
 			if (reservedDiameterIndex == -1) {
-				Main.app.log(getClass() + " do not found [diameter: " + diameter + "] in Pattern");
+				Main.app.log(getClass() + " do not found [diameter: " + diameter + "] in Repository");
 				Main.app.addNotification("Указанного диаметра: " + diameter +
-						" нет в зарезервированном списке диаметров (class Pattern)"
+						" нет в зарезервированном списке диаметров (class Repository)"
 				);
 			} else {
 				int position = StandardsRepository.reservedPositions[reservedDiameterIndex];
@@ -192,9 +197,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 	}
 
 	private void buildTableHead() {
-		workbook = new XSSFWorkbook();
 		cellStyleRepository = new CellStyleRepository(workbook);
-		sheet = workbook.createSheet(Main.app.getProperty("default_list_name"));
 
 		sheet.setColumnWidth(0, 1792); // Width values read from sample
 		sheet.setColumnWidth(1, 4827);
@@ -267,5 +270,15 @@ public class FileWorker implements Runnable, FileNameCreator {
 			cell.setCellValue(i + 1);
 			cell.setCellStyle(cellStyle);
 		}
+	}
+
+	private void initWorkbook() {
+		workbook = new XSSFWorkbook();
+		sheet = workbook.createSheet(Main.app.getProperty("default_list_name"));
+		sheet.setZoom(Integer.parseInt(Main.app.getProperty("sheet_zoom_1")));
+		var coreProperties = workbook.getProperties().getCoreProperties();
+		coreProperties.setCreator(Main.getAppNameAndVersion());
+		coreProperties.setDescription(Main.app.getProperty("summary_excel_builder_commentary")
+				.formatted(Main.getAppNameAndVersion()));
 	}
 }
