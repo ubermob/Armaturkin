@@ -53,14 +53,14 @@ public class SummaryBuilderParser {
 			HashMap<Integer, List<String>> summaryPaths = Main.app.getSummaryModel().getSummaryPaths();
 			summaryPaths.put(i + 1, new ArrayList<>());
 			String pathToSummaryBuilderFile = Main.app.getSummaryModel().getPathToSummaryBuilderFile();
-			Path path = Path.of(pathToSummaryBuilderFile).getParent();
+			Path parent = Path.of(pathToSummaryBuilderFile).getParent();
 			for (int j = 0; j < currentElement.getRepeat(); j++) {
 				for (var v : currentElement.getPathToFiles()) {
-					path = path.resolve(v);
+					Path path = Path.of(parent.toString(), v);
 					summaryPaths.get(i + 1).add(path.toString());
 				}
 				for (var v : currentElement.getPathToDirectories()) {
-					path = path.resolve(v);
+					Path path = Path.of(parent.toString(), v);
 					List<Path> files = Files.list(path).collect(Collectors.toList());
 					for (var vFile : files) {
 						summaryPaths.get(i + 1).add(vFile.toString());

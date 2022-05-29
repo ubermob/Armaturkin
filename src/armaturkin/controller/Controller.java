@@ -380,7 +380,7 @@ public class Controller {
 	}
 
 	@FXML
-	private void summaryBuilderFileCreatorDragDropped(DragEvent dragEvent) throws IOException {
+	private void summaryBuilderFileCreatorDragDropped(DragEvent dragEvent) {
 		DropWorker.summaryBuilderFileCreatorDragDropped(dragEvent);
 	}
 
@@ -410,6 +410,7 @@ public class Controller {
 		for (int i = 1; i < 9; i++) {
 			clearSummaryDropSpace(i);
 		}
+		clearSummaryBuilderDropSpace();
 	}
 
 	@FXML

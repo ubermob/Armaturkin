@@ -20,7 +20,9 @@ public class InAppHelpArray {
 			sb.append(v).append("\n");
 		}
 		sb.deleteCharAt(sb.length() - 1); // delete last char '\n'
-		help = sb.toString().split("<<>>");
+
+		String delimiter = "<<--==-->>";
+		help = sb.toString().split(delimiter);
 
 		for (int i = 0; i < help.length; i++) {
 			if (help[i].charAt(0) == '\n') {

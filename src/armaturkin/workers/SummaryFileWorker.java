@@ -265,18 +265,18 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private int findStartRow(Sheet sheet) {
-		log.add("Finding start row");
+		log.add("\tFinding start row");
 		for (Row row : sheet) {
 			TableHeaderResult result = rowValueIsStandart(row);
 			reportBundle.setTableHeaderResult(result);
 			if (result.isSince1()) {
-				log.add("Standart style: CORRECT");
+				log.add("\tStandart style: CORRECT");
 			}
 			if (result.isSince2()) {
-				log.add("Novosibirsk style: INCORRECT");
+				log.add("\tNovosibirsk style: INCORRECT");
 			}
 			if (result.isNumeric() && !result.isSince1() && !result.isSince2()) {
-				log.add("Other style %s: INCORRECT".formatted(result.getCellValueListAsString()));
+				log.add("\tOther style %s: INCORRECT".formatted(result.getCellValueListAsString()));
 			}
 			if (result.isNumeric() && result.isSince1()) {
 				return row.getRowNum();
