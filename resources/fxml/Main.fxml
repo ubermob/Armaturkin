@@ -125,7 +125,7 @@
                               <Insets top="3.0" />
                            </HBox.margin>
                         </Text>
-                        <Button fx:id="font10Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="10">
+                        <Button fx:id="font11Button" mnemonicParsing="false" onAction="#setResultLabelFont" prefHeight="37.0" prefWidth="41.0" text="11">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
