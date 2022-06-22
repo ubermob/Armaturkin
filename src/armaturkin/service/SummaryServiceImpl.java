@@ -5,8 +5,9 @@ import armaturkin.model.ManuallyEntryModel;
 import armaturkin.model.SummaryModel;
 import armaturkin.summaryoutput.SummaryBuilderParser;
 import armaturkin.summaryoutput.SummaryHub;
-import armaturkin.summaryoutput.SummaryThreadPool;
+import armaturkin.summaryoutput.SummaryPool;
 import armaturkin.utils.UnacceptableSymbolReplacer;
+import armaturkin.workers.WorkerException;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -48,13 +49,20 @@ public class SummaryServiceImpl extends AbstractService implements SummaryServic
 	}
 
 	@Override
-	public void checkSummaryDropSpace(int i) throws InterruptedException {
+	public void checkSummaryDropSpace(int i) {
 		var summaryPaths = summaryModel.getSummaryPaths();
 		if (!summaryPaths.get(i).isEmpty()) {
-			SummaryThreadPool summaryThreadPool = new SummaryThreadPool(i);
-			List<Log> logList = summaryThreadPool.getLogList();
-			for (Log threadLog : logList) {
-				app.getLogService().merge(threadLog);
+			SummaryPool summaryPool = null;
+			try {
+				summaryPool = new SummaryPool(i);
+				summaryPool.runSummaryFileWorkers();
+			} catch (WorkerException e) {
+				e.printStackTrace();
+			}
+			assert summaryPool != null;
+			List<Log> logList = summaryPool.getLogList();
+			for (Log log : logList) {
+				app.getLogService().merge(log);
 			}
 		}
 	}

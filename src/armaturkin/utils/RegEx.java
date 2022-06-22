@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegEx {
-	public static synchronized int parseNumberOfElements(String input) {
+	public static int parseNumberOfElements(String input) {
 		try {
 			Pattern pattern = Pattern.compile("\\(\\d++ шт\\.\\)", Pattern.UNICODE_CASE);
 			Matcher matcher = pattern.matcher(input);

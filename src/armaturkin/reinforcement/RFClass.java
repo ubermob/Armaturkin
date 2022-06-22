@@ -19,7 +19,7 @@ public enum RFClass {
 		};
 	}
 
-	public static synchronized int getIntegerValue(RFClass rfClass) {
+	public static int getIntegerValue(RFClass rfClass) {
 		return switch (rfClass) {
 			case A240 -> 50;
 			case A400 -> 100;
@@ -30,7 +30,7 @@ public enum RFClass {
 		};
 	}
 
-	public static synchronized RFClass parseRFClass(String string) {
+	public static RFClass parseRFClass(String string) {
 		// Sorted by often use
 		for (int i = 0; i < StandardsRepository.rfClass500S.length; i++) {
 			if (string.equalsIgnoreCase(StandardsRepository.rfClass500S[i])) {

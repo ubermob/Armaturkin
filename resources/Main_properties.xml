@@ -78,6 +78,7 @@
     <entry key="summary_thread_complete">&#09;%s: Thread complete in %d ms. [SummaryDropSpace ID: %d], [File: %s], [FileHashCode: %s], [TableHeaderResult: %s], [ParsedRange: %s]</entry>
     <entry key="summary_thread_read_row">&#09;%s [SummaryDropSpace ID: %d], [FileHashCode: %s], [RowInt: %d], current Hash Map volume: %s</entry>
     <entry key="summary_head_numeric_line_warning">Ошибка в строке с нумерацией: %s</entry>
+    <entry key="summary_head_numeric_line_do_not_exist">Строка с нумерацией не существует</entry>
 
     <!-- Sheet dynamic hash code -->
     <entry key="dynamic_non_duplicated_hash_code_list">Dynamic non duplicated hash code list (size=%d): %s</entry>
@@ -120,6 +121,12 @@
     <entry key="product_mass_multiply_notification">Файл «%s». Масса всего изделия: %.3f. Я думаю, должно быть: %.3f</entry>
 
     <entry key="redirect">%s: redirect %d to %d</entry>
+
+    <!-- Worker exception -->
+    <entry key="worker_exception_1">Worker exception 1: IOException "%s"</entry>
+    <entry key="worker_exception_2">Worker exception 2: 'diameterAndRfClassColumn' variable is invalid "%s" in excel row %d in file "%s"</entry>
+    <entry key="worker_exception_3">Worker exception 3: RFClass is unknown in excel row %d in file "%s"</entry>
+    <entry key="worker_exception_4">Worker exception 4: Mass column is invalid in excel row %d in file "%s"</entry>
 
     <!-- Hot rolled steel type russian -->
     <entry key="hot_rolled_steel_type_ru_0">Равнополочный уголок</entry>

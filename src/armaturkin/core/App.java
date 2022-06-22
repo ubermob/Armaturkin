@@ -3,7 +3,6 @@ package armaturkin.core;
 import armaturkin.controller.Controller;
 import armaturkin.httpserver.HttpServer;
 import armaturkin.model.*;
-import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.service.*;
 import armaturkin.steelcomponent.SteelComponentRepository;
 
@@ -29,8 +28,7 @@ public class App {
 	private final SummaryModel summaryModel;
 	private final ManuallyEntryModel manuallyEntryModel;
 	private HttpServer server;
-	// Serial or Parallel Summary Running
-	private final boolean isSerialSummaryRunning;
+	private String workerExceptionMessage;
 
 	public App() throws IOException {
 		notificationService = new NotificationServiceImpl();
@@ -39,7 +37,6 @@ public class App {
 		firstHarvestingService = new FirstHarvestingServiceImpl();
 		summaryService = new SummaryServiceImpl();
 		server = null;
-		isSerialSummaryRunning = true;
 		properties = new Properties();
 		loadMainProperties();
 		Root.loadProperties();
@@ -61,7 +58,7 @@ public class App {
 			server.stop();
 		}
 		config.saveConfigFile();
-		Log.saveLog();
+		LogManager.saveLog();
 		notificationService.saveAllNotifications();
 	}
 
@@ -117,6 +114,22 @@ public class App {
 		return manuallyEntryModel;
 	}
 
+	public boolean hasWorkerException() {
+		return workerExceptionMessage != null;
+	}
+
+	public String getWorkerExceptionMessage() {
+		return workerExceptionMessage;
+	}
+
+	public void setWorkerExceptionMessage(String message) {
+		workerExceptionMessage = message;
+	}
+
+	public void offWorkerException() {
+		workerExceptionMessage = null;
+	}
+
 	public void setController(Controller controller) {
 		this.controller = controller;
 		controller.injection(
@@ -151,10 +164,6 @@ public class App {
 			Thread serverThread = new Thread(server);
 			serverThread.start();
 		}
-	}
-
-	public boolean isSerialSummaryRunning() {
-		return isSerialSummaryRunning;
 	}
 
 	private void loadMainProperties() {

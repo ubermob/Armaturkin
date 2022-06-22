@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Writer {
 
@@ -21,7 +22,7 @@ public class Writer {
 		write(path, list);
 	}
 
-	public static void write(String path, ArrayList<String> inputList) throws IOException {
+	public static void write(String path, List<String> inputList) throws IOException {
 		Files.write(Path.of(path), inputList);
 	}
 }

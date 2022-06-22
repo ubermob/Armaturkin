@@ -52,6 +52,7 @@ public class StandardsRepository {
 			"a600", // English letter
 			"a 600" // English letter
 	};
+
 	public static final short maxLength = 11_700;
 
 	public static final double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853, 4.834, 6.313, 7.990, 9.865};
@@ -63,20 +64,20 @@ public class StandardsRepository {
 	public static final PairDR[] pairs;
 
 	public static byte[][] rgb = {
-			{(byte) 255, (byte) 0, (byte) 255}, // d6
-			{(byte) 127, (byte) 127, (byte) 0}, // d8
-			{(byte) 127, (byte) 102, (byte) 204}, // d10
-			{(byte) 255, (byte) 127, (byte) 0}, // d12
-			{(byte) 223, (byte) 127, (byte) 255}, // d14
-			{(byte) 0, (byte) 191, (byte) 255}, // d16
-			{(byte) 204, (byte) 0, (byte) 204}, // d18
-			{(byte) 38, (byte) 153, (byte) 0}, // d20
-			{(byte) 255, (byte) 0, (byte) 0}, // d22
-			{(byte) 0, (byte) 0, (byte) 0}, // d25
-			{(byte) 127, (byte) 0, (byte) 0}, // d28
-			{(byte) 102, (byte) 153, (byte) 204}, // d32
-			{(byte) 153, (byte) 153, (byte) 0}, // d36
-			{(byte) 0, (byte) 127, (byte) 63}, // d40
+			{(byte) 255, (byte) 0, (byte) 255},     // d6
+			{(byte) 127, (byte) 127, (byte) 0},     // d8
+			{(byte) 127, (byte) 102, (byte) 204},   // d10
+			{(byte) 255, (byte) 127, (byte) 0},     // d12
+			{(byte) 223, (byte) 127, (byte) 255},   // d14
+			{(byte) 0, (byte) 191, (byte) 255},     // d16
+			{(byte) 204, (byte) 0, (byte) 204},     // d18
+			{(byte) 38, (byte) 153, (byte) 0},      // d20
+			{(byte) 255, (byte) 0, (byte) 0},       // d22
+			{(byte) 0, (byte) 0, (byte) 0},         // d25
+			{(byte) 127, (byte) 0, (byte) 0},       // d28
+			{(byte) 102, (byte) 153, (byte) 204},   // d32
+			{(byte) 153, (byte) 153, (byte) 0},     // d36
+			{(byte) 0, (byte) 127, (byte) 63},      // d40
 	};
 
 	static {
@@ -112,8 +113,8 @@ public class StandardsRepository {
 	}
 
 	public static double getMass(int diameter) {
-		for (int i = 0; i < StandardsRepository.diameters.length; i++) {
-			if (diameter == StandardsRepository.diameters[i]) {
+		for (int i = 0; i < diameters.length; i++) {
+			if (diameter == diameters[i]) {
 				return mass3Digit[i];
 			}
 		}
@@ -130,8 +131,8 @@ public class StandardsRepository {
 	}
 
 	public static byte[] getRgb(int diameter) {
-		for (int i = 0; i < StandardsRepository.diameters.length; i++) {
-			if (diameter == StandardsRepository.diameters[i]) {
+		for (int i = 0; i < diameters.length; i++) {
+			if (diameter == diameters[i]) {
 				return rgb[i];
 			}
 		}
@@ -148,5 +149,56 @@ public class StandardsRepository {
 
 	public static ArrayList<PairDR> getPairsAsList() {
 		return new ArrayList<>(Arrays.asList(pairs));
+	}
+
+	/**
+	 * @author Andrey Korneychuk on 10-Jun-22
+	 * @version 1.0
+	 */
+	public static class NotifiableReinforcementList {
+
+		public static short[] list;
+
+		static {
+			list = new short[]{
+					(short) RfHashCode.getHashCode(8, RFClass.A400)
+					, (short) RfHashCode.getHashCode(8, RFClass.A500)
+					, (short) RfHashCode.getHashCode(8, RFClass.A500S)
+					, (short) RfHashCode.getHashCode(8, RFClass.A600)
+					, (short) RfHashCode.getHashCode(10, RFClass.A400)
+					, (short) RfHashCode.getHashCode(10, RFClass.A500)
+					, (short) RfHashCode.getHashCode(10, RFClass.A500S)
+					, (short) RfHashCode.getHashCode(10, RFClass.A600)
+					, (short) RfHashCode.getHashCode(12, RFClass.A240)
+					, (short) RfHashCode.getHashCode(14, RFClass.A240)
+					, (short) RfHashCode.getHashCode(16, RFClass.A240)
+					, (short) RfHashCode.getHashCode(18, RFClass.A240)
+					, (short) RfHashCode.getHashCode(20, RFClass.A240)
+					, (short) RfHashCode.getHashCode(22, RFClass.A240)
+					, (short) RfHashCode.getHashCode(25, RFClass.A240)
+					, (short) RfHashCode.getHashCode(28, RFClass.A240)
+					, (short) RfHashCode.getHashCode(32, RFClass.A240)
+					// Any 36 and 40
+					, (short) RfHashCode.getHashCode(36, RFClass.A240)
+					, (short) RfHashCode.getHashCode(36, RFClass.A400)
+					, (short) RfHashCode.getHashCode(36, RFClass.A500)
+					, (short) RfHashCode.getHashCode(36, RFClass.A500S)
+					, (short) RfHashCode.getHashCode(36, RFClass.A600)
+					, (short) RfHashCode.getHashCode(40, RFClass.A240)
+					, (short) RfHashCode.getHashCode(40, RFClass.A400)
+					, (short) RfHashCode.getHashCode(40, RFClass.A500)
+					, (short) RfHashCode.getHashCode(40, RFClass.A500S)
+					, (short) RfHashCode.getHashCode(40, RFClass.A600)
+			};
+		}
+
+		public static boolean isContain(int rfHashCode) {
+			for (short s : list) {
+				if (s == rfHashCode) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 }

@@ -14,12 +14,10 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -28,7 +26,7 @@ import java.util.Locale;
 
 public class Main extends Application {
 
-	public static final String version = "0.6.3";
+	public static final String version = "0.6.4";
 	public static App app;
 
 	@Override
@@ -41,7 +39,7 @@ public class Main extends Application {
 		app.log(app.getProperty("application_main_line").formatted(primaryStage.getTitle(), getDate(), getTime()));
 		app.log(PcInformation.getInformation());
 		app.startHttpServer();
-		setIconToStage(primaryStage, "/icons/Icon.png");
+		Stages.setIconToStage(primaryStage, "/icons/Icon.png");
 		app.getStorageService().checkFavoriteDirectory();
 		app.getFirstHarvestingService().preloadUpperDropSpace();
 		InAppHelpArray.load();
@@ -51,6 +49,10 @@ public class Main extends Application {
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 			controller.setResultLabelText(app.getActualNotification());
 			controller.setCheckBox();
+			if (app.hasWorkerException()) {
+				Stages.showExceptionStage(app.getWorkerExceptionMessage());
+				app.offWorkerException();
+			}
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
@@ -73,14 +75,6 @@ public class Main extends Application {
 			// https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
 			Platform.exit();
 			System.exit(0);
-		}
-	}
-
-	public static void setIconToStage(Stage stage, String iconPath) {
-		try (InputStream resource = Main.class.getResourceAsStream(iconPath)) {
-			stage.getIcons().add(new Image(resource));
-		} catch (Exception e) {
-			app.log(e);
 		}
 	}
 

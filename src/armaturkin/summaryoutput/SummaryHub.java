@@ -6,6 +6,7 @@ import armaturkin.interfaces.FileNameCreator;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.model.SummaryModel;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
+import armaturkin.workers.WorkerException;
 import utools.stopwatch.Stopwatch;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class SummaryHub implements Runnable, FileNameCreator {
 	@Override
 	public void run() {
 		stopwatch = new Stopwatch();
+		boolean isRunAfterSummaryPool = true;
 		Main.app.log(Main.app.getProperty("thread_start").formatted(getClass()));
 		SummaryModel summaryModel = Main.app.getSummaryModel();
 		if (!isDefaultSummaryRowList) {
@@ -54,23 +56,28 @@ public class SummaryHub implements Runnable, FileNameCreator {
 			}
 		}
 		for (int i = 1; i <= summaryPathsKeyCounters; i++) {
-			SummaryThreadPool summaryThreadPool = null;
+			SummaryPool summaryPool;
 			try {
 				if (isDefaultSummaryRowList) {
-					summaryThreadPool = new SummaryThreadPool(i);
+					summaryPool = new SummaryPool(i);
 				} else {
 					int type = summaryModel.getSummaryBuilderList().get(i - 1).getType();
-					summaryThreadPool = new SummaryThreadPool(i, type);
+					summaryPool = new SummaryPool(i, type);
 				}
-			} catch (InterruptedException e) {
-				Main.app.log(e);
+				summaryPool.runSummaryFileWorkers();
+			} catch (WorkerException we) {
+				isRunAfterSummaryPool = false;
+				Main.app.log(we);
+				Main.app.setWorkerExceptionMessage(we.getMessage());
+				break;
 			}
-			if (summaryThreadPool.isNotNull()) {
-				targetHashMap.put(i, summaryThreadPool.getHashMap());
-				List<Log> logList = summaryThreadPool.getLogList();
+			if (summaryPool.isNotNull()) {
+				targetHashMap.put(i, summaryPool.getHashMap());
+				List<Log> logList = summaryPool.getLogList();
 				summaryLog.addAll(logList);
 			}
 		}
+		assert isRunAfterSummaryPool;
 		mergeLog();
 		try {
 			buildContent();
@@ -135,7 +142,7 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		Main.app.log(contentContainer.contentToString());
 	}
 
-	private void buildExcel() {
+	private void buildExcel() throws InterruptedException {
 		SummaryExcelBuilder summaryExcelBuilder = new SummaryExcelBuilder(
 				contentContainer,
 				path,
@@ -144,5 +151,6 @@ public class SummaryHub implements Runnable, FileNameCreator {
 		);
 		Thread summaryExcelBuilderThread = new Thread(summaryExcelBuilder);
 		summaryExcelBuilderThread.start();
+		summaryExcelBuilderThread.join();
 	}
 }

@@ -19,7 +19,7 @@ public class SummaryBuilder {
 		this.title = title;
 		pathToFiles = new ArrayList<>();
 		pathToDirectories = new ArrayList<>();
-		type = SummaryThreadPool.PRETTY;
+		type = SummaryPool.PRETTY;
 		repeat = 1;
 	}
 

@@ -23,6 +23,7 @@ public class HttpServer implements Runnable {
 		server.createContext("/", new MainPageHandler());
 		server.createContext("/note", new NotePageHandler());
 		server.createContext("/content", new ContentPageHandler());
+		server.createContext("/log", new LogPageHandler());
 		server.createContext("/favicon.png", new FaviconHandler());
 		server.createContext("/style.css", new StyleHandler());
 	}

@@ -33,6 +33,6 @@ public class LogServiceImpl implements LogService {
 
 	@Override
 	public void merge(Log log) {
-		log.merge(log);
+		this.log.merge(log);
 	}
 }

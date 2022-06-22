@@ -274,7 +274,7 @@ public class Configuration {
 
 	private void setupLog() {
 		if (writeLog) {
-			Log.enable();
+			LogManager.enable();
 		}
 	}
 }

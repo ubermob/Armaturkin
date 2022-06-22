@@ -15,7 +15,6 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import static javafx.collections.FXCollections.observableList;
 
@@ -43,7 +42,7 @@ public class HotRolledSteelCodeController {
 					"/fxml/Hot_rolled_steel_code_view.fxml"
 			));
 			Stage stage = new Stage();
-			Main.setIconToStage(stage, "/icons/Icon.png");
+			Stages.setIconToStage(stage, "/icons/Icon.png");
 			stage.setScene(new Scene(fxmlLoader.load()));
 			controller = fxmlLoader.getController();
 			controller.setChoiceBox();

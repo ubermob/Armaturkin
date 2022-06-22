@@ -43,6 +43,9 @@ public class TableHeaderResult {
 	}
 
 	public String getCellValueListAsString() {
+		if (cellValueList.size() == 0) {
+			return "do not exist";
+		}
 		String result = "[ %s ]";
 		StringBuilder sb = new StringBuilder();
 		for (var v : cellValueList) {
@@ -50,5 +53,9 @@ public class TableHeaderResult {
 		}
 		sb.delete(sb.length() - 3, sb.length()); // delete 3 last chars
 		return result.formatted(sb.toString());
+	}
+
+	public boolean notExist() {
+		return cellValueList.size() == 0;
 	}
 }

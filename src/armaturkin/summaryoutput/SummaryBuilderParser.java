@@ -78,7 +78,7 @@ public class SummaryBuilderParser {
 				continue;
 			} else if (line.contains("type = ")) {
 				String type = line.split("type = ")[1];
-				summaryBuilder.setType(SummaryThreadPool.getSet(type));
+				summaryBuilder.setType(SummaryPool.getSet(type));
 			} else if (line.contains("repeat = ")) {
 				String repeat = line.split("repeat = ")[1];
 				summaryBuilder.setRepeat(Integer.parseInt(repeat));

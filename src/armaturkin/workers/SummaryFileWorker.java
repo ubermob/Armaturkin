@@ -7,7 +7,7 @@ import armaturkin.interfaces.FileHashCode;
 import armaturkin.interfaces.RowEmptyChecker;
 import armaturkin.reinforcement.*;
 import armaturkin.summaryoutput.ReportBundle;
-import armaturkin.summaryoutput.SummaryThreadPool;
+import armaturkin.summaryoutput.SummaryPool;
 import armaturkin.summaryoutput.TableHeaderResult;
 import armaturkin.utils.MassCounter;
 import armaturkin.utils.RegEx;
@@ -19,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyChecker, FileHashCode {
+public class SummaryFileWorker extends AbstractWorker implements CellEmptyChecker, RowEmptyChecker, FileHashCode {
 
 	private final String path;
 	private final HashMap<Integer, ReinforcementLiteInfo> hashMap;
@@ -68,7 +68,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	@Override
-	public void run() {
+	public void run() throws WorkerException {
 		stopwatch = new Stopwatch();
 		fileHashCode = getFileHashCode(path);
 		log.add(Main.app.getProperty("summary_thread_start").formatted(getClass(), labelID, path, fileHashCode));
@@ -77,9 +77,10 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			sheet = workbook.getSheetAt(0);
 		} catch (IOException e) {
 			log.add(e);
+			throw new WorkerException(Main.app.getProperty("worker_exception_1").formatted(path));
 		}
 		findStartRow();
-		if (set == SummaryThreadPool.RAW) {
+		if (set == SummaryPool.RAW) {
 			majorNumber = RegEx.parseNumberOfElements(sheet.getRow(4).getCell(0).getStringCellValue());
 			checkMajorNumber(majorNumber);
 			massCounter = new MassCounter();
@@ -90,7 +91,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			readRow();
 			rowIndex++;
 		}
-		if (set == SummaryThreadPool.RAW) {
+		if (set == SummaryPool.RAW) {
 			productMass = sheet.getRow(4).getCell(productMassColumn).getNumericCellValue();
 			if (Math.abs(massCounter.getValue() - productMass) >= 0.01) {
 				Main.app.addNotification(Main.app.getProperty("product_mass_multiply_notification").formatted(
@@ -106,9 +107,12 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		));
 		String cellValueListAsString = reportBundle.getTableHeaderResult().getCellValueListAsString();
 		if (!reportBundle.getTableHeaderResult().isSince1()) {
-			Main.app.addNotification(Main.app.getProperty("summary_head_numeric_line_warning").formatted(
-					cellValueListAsString
-			));
+			Main.app.addNotification(
+					Main.app.getProperty("summary_head_numeric_line_warning").formatted(cellValueListAsString)
+			);
+		}
+		if (reportBundle.getTableHeaderResult().notExist()) {
+			Main.app.addNotification(Main.app.getProperty("summary_head_numeric_line_do_not_exist"));
 		}
 		log.add(Main.app.getProperty("summary_thread_complete").formatted(
 				getClass()
@@ -121,16 +125,49 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 		));
 	}
 
-	private void readRow() {
+	private void readRow() throws WorkerException {
 		row = sheet.getRow(rowIndex);
 		reportBundle.getParsedRange().write(row.getRowNum());
-		String[] parsedString = row.getCell(diameterAndRfClassColumn).getStringCellValue().split(" ");
-		diameter = Integer.parseInt(parsedString[0].split("%%C")[1]);
-		rfClassString = parsedString[1];
-		rfClass = RFClass.parseRFClass(rfClassString);
-		mass = row.getCell(massColumn).getNumericCellValue();
+		try {
+			String[] parsedString = row.getCell(diameterAndRfClassColumn).getStringCellValue().split(" ");
+			diameter = Integer.parseInt(parsedString[0].split("%%C")[1]);
+			rfClassString = parsedString[1];
+			rfClass = RFClass.parseRFClass(rfClassString);
+		} catch (Exception e) {
+			log.add(e);
+			throw new WorkerException(Main.app.getProperty("worker_exception_2").formatted(
+					row.getCell(diameterAndRfClassColumn).toString()
+					, rowIndex + 1
+					, path
+			));
+		}
+		if (rfClass == RFClass.UNKNOWN) {
+			throw new WorkerException(Main.app.getProperty("worker_exception_3").formatted(rowIndex + 1, path));
+		}
+		try {
+			Cell cell = row.getCell(massColumn);
+			CellType cellType = cell.getCellType();
+			if (cellType == CellType.NUMERIC || cellType == CellType.FORMULA) {
+				mass = cell.getNumericCellValue();
+			} else if (cellType == CellType.STRING) {
+				mass = Double.parseDouble(cell.getStringCellValue());
+			}
+		} catch (Exception e) {
+			throw new WorkerException(Main.app.getProperty("worker_exception_4").formatted(
+					rowIndex + 1
+					, path
+			));
+		}
 		hashCode = RfHashCode.getHashCode(diameter, rfClass);
-		if (set == SummaryThreadPool.RAW || set == SummaryThreadPool.RAW_STAIRWAY) {
+		if (StandardsRepository.NotifiableReinforcementList.isContain(hashCode)) {
+			log.add("\tNotify: d" + diameter + " " + rfClass);
+			Main.app.getNotificationService().addNotification(
+					"Содержит d" + diameter + " " + rfClass + " в строке: " + (rowIndex + 1)
+							+ " в файле \"%s\"".formatted(path)
+			);
+		}
+
+		if (set == SummaryPool.RAW || set == SummaryPool.RAW_STAIRWAY) {
 			position = (int) row.getCell(positionColumn).getNumericCellValue();
 			checkPosition();
 			length = (int) row.getCell(lengthColumn).getNumericCellValue();
@@ -138,24 +175,26 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			mass = row.getCell(massColumn).getNumericCellValue();
 			minorNumber = (int) row.getCell(minorNumberColumn).getNumericCellValue();
 			totalLength = row.getCell(totalLengthColumn).getNumericCellValue();
-			checker = new ProductReinforcementChecker(new ReinforcementProduct(position, diameter, rfClass, length, singleMass));
+			checker = new ProductReinforcementChecker(
+					new ReinforcementProduct(position, diameter, rfClass, length, singleMass)
+			);
 			checkDiameter();
 			checkRFClass();
 			checkSingleLength();
 			checkSingleMass();
 			checkMultiply();
 			massCounter.add(mass);
-			if (set == SummaryThreadPool.RAW) {
+			if (set == SummaryPool.RAW) {
 				mass *= majorNumber;
 			}
 		}
-		synchronized (this) {
-			if (hashMap.containsKey(hashCode)) {
-				hashMap.get(hashCode).addMass(mass);
-			} else {
-				hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
-			}
+
+		if (hashMap.containsKey(hashCode)) {
+			hashMap.get(hashCode).addMass(mass);
+		} else {
+			hashMap.put(hashCode, new ReinforcementLiteInfo(diameter, rfClass, mass));
 		}
+
 		log.add(Main.app.getProperty("summary_thread_read_row").formatted(
 				getClass(), labelID, fileHashCode, rowIndex, hashMap.get(hashCode).toString())
 		);
@@ -234,11 +273,11 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 	}
 
 	private void setup() {
-		if (set == SummaryThreadPool.PRETTY) {
+		if (set == SummaryPool.PRETTY) {
 			diameterAndRfClassColumn = 2;
 			massColumn = 7;
 		}
-		if (set == SummaryThreadPool.RAW) {
+		if (set == SummaryPool.RAW) {
 			diameterAndRfClassColumn = 3;
 			massColumn = 8;
 			positionColumn = 1;
@@ -248,7 +287,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 			totalLengthColumn = 6;
 			productMassColumn = 9;
 		}
-		if (set == SummaryThreadPool.RAW_STAIRWAY) {
+		if (set == SummaryPool.RAW_STAIRWAY) {
 			diameterAndRfClassColumn = 2;
 			massColumn = 7;
 			positionColumn = 0;
@@ -285,7 +324,7 @@ public class SummaryFileWorker implements Runnable, CellEmptyChecker, RowEmptyCh
 				return row.getRowNum();
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	private TableHeaderResult rowValueIsStandart(Row row) {
