@@ -5,6 +5,7 @@ import armaturkin.interfaces.LightInfo;
 import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
 import armaturkin.reinforcement.ReinforcementLiteInfo;
+import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
@@ -13,9 +14,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -68,7 +68,7 @@ public class ManuallyEntry {
 
 	public static void addSteelComponentEntry(String summaryLabel, Image image, String textFieldString) {
 		try {
-			double parsedValue = parseIfNotNegative(textFieldString);
+			double parsedValue = parseTextField(textFieldString);
 			ManuallyEntry entry = getNewManuallyEntryOfAngleSteel(
 					image,
 					parsedValue,
@@ -89,7 +89,7 @@ public class ManuallyEntry {
 
 	public static void addSteelSheet(String summaryLabel, Number thickness, Number width, String textFieldString) {
 		try {
-			double parsedValue = parseIfNotNegative(textFieldString);
+			double parsedValue = parseTextField(textFieldString);
 			ManuallyEntry entry = getNewManuallyEntryOfSheet(thickness, width, parsedValue, summaryLabel);
 			var manuallySummaryEntries = Main.app.getManuallyEntryModel().getManuallySummaryEntries();
 			manuallySummaryEntries.add(entry);
@@ -107,7 +107,7 @@ public class ManuallyEntry {
 	private static void add(Type type, String summaryLabel, int diameter,
 	                        RFClass rfClass, String textFieldString, List<ManuallyEntry> list) {
 		try {
-			double parsedValue = parseIfNotNegative(textFieldString);
+			double parsedValue = parseTextField(textFieldString);
 			if (type == Type.BACKGROUND_REINFORCEMENT) {
 				ManuallyEntry entry = getNewManuallyEntryOfReinforcement(
 						Type.BACKGROUND_REINFORCEMENT,
@@ -145,9 +145,9 @@ public class ManuallyEntry {
 		}
 	}
 
-	private static double parseIfNotNegative(String textFieldString) throws Exception {
+	private static double parseTextField(String textFieldString) throws Exception {
 		double parsed = Double.parseDouble(textFieldString.replace(",", "."));
-		if (parsed <= 0.0) {
+		if (!Main.app.getConfig().getAllowNegativeMassForManuallySummary() && parsed <= 0.0) {
 			throw new Exception(Main.app.getProperty("negative_number_exception").formatted(parsed));
 		}
 		return parsed;
@@ -363,7 +363,13 @@ public class ManuallyEntry {
 				lastFieldName,
 				parsedValue
 		);
-		buildLabel(labelText, labelColorCode);
+		Label label = buildLabel(labelText, labelColorCode);
+		label.setBorder(new Border(new BorderStroke(
+				getColor(diameter)
+				, BorderStrokeStyle.SOLID
+				, CornerRadii.EMPTY
+				, new BorderWidths(0, 0, 0, 5)
+		)));
 	}
 
 	private void buildLabelHotRolledSteel(Image image, double length, String summaryLabel) {
@@ -379,7 +385,7 @@ public class ManuallyEntry {
 		buildLabel(labelText, labelColorCode);
 	}
 
-	private void buildLabel(String labelText, String labelColorCode) {
+	private Label buildLabel(String labelText, String labelColorCode) {
 		label = new Label(labelText);
 		label.setPrefWidth(100);
 		label.setPrefHeight(Main.app.getController().getMSummaryHBoxPrefHeight());
@@ -397,6 +403,20 @@ public class ManuallyEntry {
 			}
 		});
 		Main.app.getController().mSummaryHBoxAdd(label);
+		return label;
+	}
+
+	private Color getColor(int diameter) {
+		byte[] rgb = StandardsRepository.getRgb(diameter);
+		int[] irgb = new int[rgb.length];
+		for (int i = 0; i < rgb.length; i++) {
+			if (rgb[i] < 0) {
+				irgb[i] = 256 + rgb[i];
+			} else {
+				irgb[i] = rgb[i];
+			}
+		}
+		return Color.rgb(irgb[0], irgb[1], irgb[2]);
 	}
 
 	private enum Type {

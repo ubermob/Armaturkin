@@ -14,7 +14,13 @@ public class Log {
 	}
 
 	public synchronized void add(String string) {
-		log.add(string);
+		add(string, true);
+	}
+
+	public synchronized void add(String string, boolean isLoggable) {
+		if (isLoggable) {
+			log.add(string);
+		}
 		System.out.println(string);
 	}
 
@@ -23,12 +29,13 @@ public class Log {
 	}
 
 	public synchronized void add(Exception exception) {
-		// https://stackoverflow.com/questions/10120709/difference-between-printstacktrace-and-tostring
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		PrintStream printStream = new PrintStream(byteArrayOutputStream);
-		exception.printStackTrace(printStream);
-		printStream.close();
-		log.add(byteArrayOutputStream.toString());
+		add(exception, true);
+	}
+
+	public synchronized void add(Exception exception, boolean isLoggable) {
+		if (isLoggable) {
+			log.add(exceptionToString(exception));
+		}
 		exception.printStackTrace();
 	}
 
@@ -38,5 +45,14 @@ public class Log {
 
 	public synchronized List<String> getList() {
 		return log;
+	}
+
+	private String exceptionToString(Exception exception) {
+		// https://stackoverflow.com/questions/10120709/difference-between-printstacktrace-and-tostring
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		PrintStream printStream = new PrintStream(byteArrayOutputStream);
+		exception.printStackTrace(printStream);
+		printStream.close();
+		return byteArrayOutputStream.toString();
 	}
 }

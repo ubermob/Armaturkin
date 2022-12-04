@@ -7,7 +7,7 @@ import armaturkin.reinforcement.StandardsRepository;
 import armaturkin.steelcomponent.HotRolledSteelType;
 import armaturkin.steelcomponent.Image;
 import armaturkin.steelcomponent.SteelComponentRepository;
-import armaturkin.utils.StringUtil;
+import utools.stringtools.StringTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ContentHead {
 		RFClass[] rfClasses = RFClass.values();
 		// exclude "UNKNOWN" value
 		for (int j = 0; j < (rfClasses.length - 1); j++) {
-			for (int i : StandardsRepository.diameters) {
+			for (int i : StandardsRepository.DIAMETERS) {
 				list.add(new ContentHeadEntry(new ReinforcementLiteInfo(i, rfClasses[j])));
 			}
 		}
@@ -67,10 +67,10 @@ public class ContentHead {
 		int nullCounter = SheetDynamicHashCode.getNullFillingNumber();
 		if (nullCounter != 0) {
 			result += Main.app.getProperty("content_head_pretty_string").formatted("-");
-			result = StringUtil.cutEndIfLastCharIs(result, ',');
+			result = StringTool.cutEndIfLastCharIs(result, ',');
 			result += "x" + nullCounter;
 		} else {
-			result = StringUtil.cutEndIfLastCharIs(result, ',');
+			result = StringTool.cutEndIfLastCharIs(result, ',');
 		}
 		return result;
 	}

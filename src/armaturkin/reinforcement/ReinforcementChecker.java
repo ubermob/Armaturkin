@@ -9,8 +9,8 @@ public abstract class ReinforcementChecker {
 	}
 
 	public int getDiameterIndex() {
-		for (int i = 0; i < StandardsRepository.diameters.length; i++) {
-			if (reinforcementProduct.getDiameter() == StandardsRepository.diameters[i]) {
+		for (int i = 0; i < StandardsRepository.DIAMETERS.length; i++) {
+			if (reinforcementProduct.getDiameter() == StandardsRepository.DIAMETERS[i]) {
 				return i;
 			}
 		}
@@ -23,7 +23,7 @@ public abstract class ReinforcementChecker {
 
 	public boolean isCorrectLength() {
 		int length = reinforcementProduct.getLength();
-		return 0 < length && length <= StandardsRepository.maxLength;
+		return 0 < length && length <= StandardsRepository.MAX_LENGTH;
 	}
 
 	public ReinforcementProduct getReinforcementProduct() {

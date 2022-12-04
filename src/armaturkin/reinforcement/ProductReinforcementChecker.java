@@ -27,9 +27,9 @@ public class ProductReinforcementChecker extends ReinforcementChecker {
 	public void checkMass(double mass) {
 		if (realDiameter) {
 			int length = getReinforcementProduct().getLength();
-			mass1 = length / 1000.0 * StandardsRepository.mass3Digit[diameterIndex];
-			double mass2 = length / 1000.0 * StandardsRepository.mass2Digit1[diameterIndex];
-			double mass3 = length / 1000.0 * StandardsRepository.mass2Digit2[diameterIndex];
+			mass1 = length / 1000.0 * StandardsRepository.MASS_3_DIGIT[diameterIndex];
+			double mass2 = length / 1000.0 * StandardsRepository.MASS_2_DIGIT_1[diameterIndex];
+			double mass3 = length / 1000.0 * StandardsRepository.MASS_2_DIGIT_2[diameterIndex];
 			boolean match1 = Math.abs(mass1 - mass) < 0.01;
 			boolean match2 = Math.abs(mass2 - mass) < 0.01;
 			boolean match3 = Math.abs(mass3 - mass) < 0.01;

@@ -6,7 +6,6 @@ import armaturkin.core.Root;
 import armaturkin.core.StorageCleaner;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.model.FirstHarvestingModel;
-import armaturkin.model.ManuallyEntryModel;
 import armaturkin.model.SummaryModel;
 import armaturkin.reinforcement.PairDR;
 import armaturkin.reinforcement.RFClass;
@@ -45,7 +44,7 @@ import static javafx.collections.FXCollections.observableList;
 public class Controller {
 
 	@FXML
-	private AnchorPane anchorPane3, utilAnchorPane;
+	private AnchorPane utilAnchorPane;
 	@FXML
 	private Label upperDropSpace, lowerDropSpace, resultLabel, notificationLabel, notificationLabel2,
 			summaryDropSpace1, summaryDropSpace2, summaryDropSpace3, summaryDropSpace4, summaryDropSpace5,
@@ -66,14 +65,19 @@ public class Controller {
 			notificationLimit, mSummaryTextField, mBackgroundTextField, mSummaryTextField2;
 	@FXML
 	private Text appearanceText1, appearanceText2, appearanceText3, settingsText1, settingsText2, settingsText3,
-			settingsText4, settingsText5, settingsText6, settingsText7, mSummaryEntryText1, mSummaryEntryText2,
+			settingsText4, settingsText5, settingsText6, settingsText7,
+			settingsText8, settingsText9, settingsText10, settingsText11, mSummaryEntryText1, mSummaryEntryText2,
 			mSummaryEntryText3, notificationText, mSummaryHelpingText1, mSummaryHelpingText2, mSummaryHelpingText3,
 			mSummaryHelpingText4, mSummaryHelpingText5, mSummaryHelpingText6, mSummaryHelpingText7, mSummaryHelpingText8,
 			mSummaryHelpingText9, mSummaryHelpingText10, mSummaryHelpingText11, mSummaryHelpingText12;
 	@FXML
-	private CheckBox logCheckBox, notificationCheckBox, autoParseProductListCheckBox;
+	private CheckBox logCheckBox, notificationCheckBox, autoParseProductListCheckBox,
+			contentContainerCheckBox1, contentContainerCheckBox2, contentContainerCheckBox3,
+			allowNegativeMassForManuallySummaryCheckBox;
 	@FXML
 	private HBox mSummaryHBox;
+	@FXML
+	private ScrollPane mSummaryScrollPane;
 	@FXML
 	private ChoiceBox<String> mSummaryChoiceBox1, mSummaryChoiceBox8;
 	@FXML
@@ -103,7 +107,6 @@ public class Controller {
 	private FirstHarvestingModel firstHarvestingModel;
 	private SummaryService summaryService;
 	private SummaryModel summaryModel;
-	private ManuallyEntryModel manuallyEntryModel;
 
 	public void injection(
 			App app
@@ -112,7 +115,6 @@ public class Controller {
 			, FirstHarvestingModel firstHarvestingModel
 			, SummaryService summaryService
 			, SummaryModel summaryModel
-			, ManuallyEntryModel manuallyEntryModel
 	) {
 		this.app = app;
 		this.config = config;
@@ -120,7 +122,6 @@ public class Controller {
 		this.firstHarvestingModel = firstHarvestingModel;
 		this.summaryService = summaryService;
 		this.summaryModel = summaryModel;
-		this.manuallyEntryModel = manuallyEntryModel;
 	}
 
 	public void startSetup() {
@@ -171,7 +172,12 @@ public class Controller {
 	}
 
 	private void setBackgroundColor() {
-		Stages.primary.getScene().getRoot().setStyle("-fx-background-color: " + config.getBackgroundColor() + ";");
+		Stages.primary.getScene().getRoot().setStyle(
+				"-fx-background-color: %s;".formatted(config.getBackgroundColor())
+		);
+		mSummaryScrollPane.setStyle(
+				"-fx-background-color: transparent; -fx-background: %s;".formatted(config.getBackgroundColor())
+		);
 	}
 
 	@FXML
@@ -536,10 +542,14 @@ public class Controller {
 		}
 	}
 
-	public void setCheckBox() {
+	public void setCheckBoxes() {
 		logCheckBox.setSelected(config.getWriteLog());
 		notificationCheckBox.setSelected(config.getWriteNotification());
 		autoParseProductListCheckBox.setSelected(config.getAutoParseProductList());
+		contentContainerCheckBox1.setSelected(config.getContentContainerBorderLoggable());
+		contentContainerCheckBox2.setSelected(config.getContentContainerLoggable());
+		contentContainerCheckBox3.setSelected(config.getContentContainerCompactLoggable());
+		allowNegativeMassForManuallySummaryCheckBox.setSelected(config.getAllowNegativeMassForManuallySummary());
 	}
 
 	@FXML
@@ -550,6 +560,31 @@ public class Controller {
 	@FXML
 	private void toggleWriteNotification() {
 		config.toggleWriteNotification();
+	}
+
+	@FXML
+	private void toggleAutoParseProductList() {
+		config.toggleAutoParseProductList();
+	}
+
+	@FXML
+	private void toggleContentContainerCheckBox1() {
+		config.toggleContentContainerBorderLoggable();
+	}
+
+	@FXML
+	private void toggleContentContainerCheckBox2() {
+		config.toggleContentContainerLoggable();
+	}
+
+	@FXML
+	private void toggleContentContainerCheckBox3() {
+		config.toggleContentContainerCompactLoggable();
+	}
+
+	@FXML
+	private void toggleAllowNegativeMassForManuallySummary() {
+		config.toggleAllowNegativeMassForManuallySummary();
 	}
 
 	private void setText() {
@@ -587,25 +622,20 @@ public class Controller {
 
 	@FXML
 	private void visitSettingsTab() {
-		parseTextField(0, logLimit.getText());
-		parseTextField(1, notificationLimit.getText());
+		parseTextField(logLimit.getText(), x -> config.setLogStorageLimit(x));
+		parseTextField(notificationLimit.getText(), x -> config.setNotificationStorageLimit(x));
 		logLimit.clear();
 		notificationLimit.clear();
 		setText();
 	}
 
-	private void parseTextField(int i, String string) {
+	private void parseTextField(String string, ParseTextField parseTextField) {
 		if (string.length() > 0) {
 			int parsed;
 			try {
 				parsed = Integer.parseInt(string);
 				if (0 <= parsed && parsed <= 5000) {
-					if (i == 0) {
-						config.setLogStorageLimit(parsed);
-					}
-					if (i == 1) {
-						config.setNotificationStorageLimit(parsed);
-					}
+					parseTextField.parseTextField(parsed);
 				}
 			} catch (Exception e) {
 				app.log(e);
@@ -635,11 +665,6 @@ public class Controller {
 
 	public void setFavoriteDropSpaceText(String string) {
 		favoriteDropSpace.setText(string);
-	}
-
-	@FXML
-	private void toggleAutoParseProductList() {
-		config.toggleAutoParseProductList();
 	}
 
 	@FXML
@@ -813,6 +838,10 @@ public class Controller {
 				settingsText5,
 				settingsText6,
 				settingsText7,
+				settingsText8,
+				settingsText9,
+				settingsText10,
+				settingsText11,
 				mSummaryEntryText1,
 				mSummaryEntryText2,
 				mSummaryEntryText3,
@@ -857,7 +886,7 @@ public class Controller {
 	private void setupMSummaryChoiceBox() {
 		defaultSetupMSummaryContentRowChoiceBox();
 		mSummaryChoiceBox2.setItems(observableList(StandardsRepository.getDiametersAsList()));
-		mSummaryChoiceBox2.setValue(StandardsRepository.diameters[2]);
+		mSummaryChoiceBox2.setValue(StandardsRepository.DIAMETERS[2]);
 		mSummaryChoiceBox3.setItems(observableArrayList(
 				RFClass.A240,
 				RFClass.A400,
@@ -903,7 +932,7 @@ public class Controller {
 
 	private void setupMBackgroundChoiceBox() {
 		mBackgroundChoiceBox.setItems(observableList(StandardsRepository.getPairsAsList()));
-		mBackgroundChoiceBox.setValue(StandardsRepository.pairs[1]);
+		mBackgroundChoiceBox.setValue(StandardsRepository.PAIRS[1]);
 	}
 
 	@FXML
@@ -1022,5 +1051,10 @@ public class Controller {
 	}
 
 	private void localTest() throws Exception {
+	}
+
+	private interface ParseTextField {
+
+		void parseTextField(int i);
 	}
 }

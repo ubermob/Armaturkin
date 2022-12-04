@@ -3,7 +3,7 @@ package armaturkin.summaryoutput;
 import armaturkin.core.Main;
 import armaturkin.manuallyentry.ManuallyEntry;
 import armaturkin.steelcomponent.Image;
-import armaturkin.utils.StringUtil;
+import utools.stringtools.StringTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +96,6 @@ public class SheetDynamicHashCode {
 			builder.append(sortedCurrentSheetList.get(i).toString());
 			builder.append(", ");
 		}
-		return StringUtil.cutEnd(builder.toString(), 2);
+		return StringTool.cutEnd(builder.toString(), 2);
 	}
 }

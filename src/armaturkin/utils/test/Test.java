@@ -1,23 +1,11 @@
 package armaturkin.utils.test;
 
-import armaturkin.core.Log;
 import armaturkin.core.Main;
-import armaturkin.utils.PythonProvider;
-import utools.stopwatch.Stopwatch;
 
 public class Test {
 
 	public static void test() throws Exception {
-		localTest13();
-	}
-
-	private static void localTest11() throws Exception {
-		Stopwatch stopwatch = new Stopwatch();
-		stopwatch.appendBefore("python in ");
-		PythonProvider pythonProvider = new PythonProvider();
-		String string = pythonProvider.executePythonUtil("T:/p.xlsx");
-		System.out.println(string);
-		stopwatch.print();
+		localTest12();
 	}
 
 	private static void localTest12() {
@@ -36,8 +24,5 @@ public class Test {
 	}
 
 	private static void localTest13() {
-		Log log = new Log();
-		log.add("localTest13");
-		Main.app.getLogService().merge(log);
 	}
 }

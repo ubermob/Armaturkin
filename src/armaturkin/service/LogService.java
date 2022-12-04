@@ -12,7 +12,11 @@ public interface LogService {
 
 	void add(String string);
 
+	void add(String string, boolean isLoggable);
+
 	void add(Exception exception);
+
+	void add(Exception exception, boolean isLoggable);
 
 	List<String> getList();
 

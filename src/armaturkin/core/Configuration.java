@@ -31,6 +31,10 @@ public class Configuration {
 	private Boolean pythonInterpreter;
 	private Double infoStageHeight;
 	private Double infoStageWidth;
+	private Boolean isContentContainerBorderLoggable;
+	private Boolean isContentContainerLoggable;
+	private Boolean isContentContainerCompactLoggable;
+	private Boolean isAllowNegativeMassForManuallySummary;
 
 	public Configuration(String path, Properties properties, App app) throws IOException {
 		this.path = path;
@@ -47,31 +51,28 @@ public class Configuration {
 				List<String> load = Reader.readFromExternalSource(path);
 				backgroundColor = load.get(0);
 				textColor = load.get(1);
-				if (!load.get(2).equals("null")) {
-					pathToProductFile = load.get(2);
-				}
-				if (!load.get(3).equals("null")) {
-					pathToCalculatingFile = load.get(3);
-				}
-				if (!load.get(4).equals("null")) {
-					pathToSummaryCalculatingFile = load.get(4);
-				}
+				pathToProductFile = parseStringIfNotNull(load.get(2));
+				pathToCalculatingFile = parseStringIfNotNull(load.get(3));
+				pathToSummaryCalculatingFile = parseStringIfNotNull(load.get(4));
 				borderColor = load.get(5);
 				boldText = Boolean.parseBoolean(load.get(6));
 				writeLog = Boolean.parseBoolean(load.get(7));
 				writeNotification = Boolean.parseBoolean(load.get(8));
 				logStorageLimit = Integer.parseInt(load.get(9));
 				notificationStorageLimit = Integer.parseInt(load.get(10));
-				if (!load.get(11).equals("null")) {
-					favoritePath = load.get(11);
-				}
+				favoritePath = parseStringIfNotNull(load.get(11));
 				autoParseProductList = Boolean.parseBoolean(load.get(12));
-				if (!load.get(13).equals("null")) {
-					resultLabelFontSize = Integer.parseInt(load.get(13));
-				}
+				resultLabelFontSize = parseIntegerIfNotNull(load.get(13));
 				pythonInterpreter = Boolean.parseBoolean(load.get(14));
-				infoStageHeight = Double.parseDouble(load.get(15));
-				infoStageWidth = Double.parseDouble(load.get(16));
+				infoStageHeight = parseDoubleIfNotNull(load.get(15));
+				infoStageWidth = parseDoubleIfNotNull(load.get(16));
+				isContentContainerBorderLoggable = Boolean.parseBoolean(load.get(17));
+				isContentContainerLoggable = Boolean.parseBoolean(load.get(18));
+				isContentContainerCompactLoggable = Boolean.parseBoolean(load.get(19));
+				isAllowNegativeMassForManuallySummary = Boolean.parseBoolean(load.get(20));
+			} catch (IndexOutOfBoundsException e) {
+				app.log("IndexOutOfBoundsException possible reason: extends config in new application version");
+				app.log(e);
 			} catch (Exception e) {
 				app.log(e);
 			}
@@ -100,7 +101,11 @@ public class Configuration {
 				String.valueOf(resultLabelFontSize),
 				String.valueOf(pythonInterpreter),
 				String.valueOf(infoStageHeight),
-				String.valueOf(infoStageWidth)
+				String.valueOf(infoStageWidth),
+				String.valueOf(isContentContainerBorderLoggable),
+				String.valueOf(isContentContainerLoggable),
+				String.valueOf(isContentContainerCompactLoggable),
+				String.valueOf(isAllowNegativeMassForManuallySummary)
 		};
 		Writer.write(Root.programRootPath + Root.getProperty("config_file_name"), configList);
 	}
@@ -259,6 +264,38 @@ public class Configuration {
 		this.infoStageWidth = infoStageWidth;
 	}
 
+	public Boolean getContentContainerBorderLoggable() {
+		return isContentContainerBorderLoggable;
+	}
+
+	public void toggleContentContainerBorderLoggable() {
+		isContentContainerBorderLoggable = !isContentContainerBorderLoggable;
+	}
+
+	public Boolean getContentContainerLoggable() {
+		return isContentContainerLoggable;
+	}
+
+	public void toggleContentContainerLoggable() {
+		isContentContainerLoggable = !isContentContainerLoggable;
+	}
+
+	public Boolean getContentContainerCompactLoggable() {
+		return isContentContainerCompactLoggable;
+	}
+
+	public void toggleContentContainerCompactLoggable() {
+		isContentContainerCompactLoggable = !isContentContainerCompactLoggable;
+	}
+
+	public Boolean getAllowNegativeMassForManuallySummary() {
+		return isAllowNegativeMassForManuallySummary;
+	}
+
+	public void toggleAllowNegativeMassForManuallySummary() {
+		isAllowNegativeMassForManuallySummary = !isAllowNegativeMassForManuallySummary;
+	}
+
 	private void defaultValues() {
 		backgroundColor = properties.getProperty("background_color");
 		textColor = properties.getProperty("text_color");
@@ -270,11 +307,30 @@ public class Configuration {
 		notificationStorageLimit = Integer.parseInt(properties.getProperty("notification_storage_limit"));
 		autoParseProductList = Boolean.parseBoolean(properties.getProperty("auto_parse_product_list"));
 		pythonInterpreter = Boolean.parseBoolean(properties.getProperty("python_interpreter"));
+		boolean ccl = Boolean.parseBoolean(properties.getProperty("content_container_loggable"));
+		isContentContainerBorderLoggable = ccl;
+		isContentContainerLoggable = ccl;
+		isContentContainerCompactLoggable = ccl;
+		isAllowNegativeMassForManuallySummary = Boolean.parseBoolean(
+				properties.getProperty("allow_negative_mass_for_manually_summary")
+		);
 	}
 
 	private void setupLog() {
 		if (writeLog) {
 			LogManager.enable();
 		}
+	}
+
+	private String parseStringIfNotNull(String string) {
+		return string.equals("null") ? null : string;
+	}
+
+	private Integer parseIntegerIfNotNull(String string) {
+		return string.equals("null") ? null : Integer.parseInt(string);
+	}
+
+	private Double parseDoubleIfNotNull(String string) {
+		return string.equals("null") ? null : Double.parseDouble(string);
 	}
 }

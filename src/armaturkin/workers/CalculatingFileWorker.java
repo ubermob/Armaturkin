@@ -197,7 +197,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void compareDiameter(int reservedPositionIndex) {
-		int productDiameter = StandardsRepository.reservedDiameters[reservedPositionIndex];
+		int productDiameter = StandardsRepository.RESERVED_DIAMETERS[reservedPositionIndex];
 		if (diameter != productDiameter) {
 			Main.app.addNotification("В строке " + (currentRow + 1) + " не совпадает диаметр: " + diameter +
 					" (в зарезервированных позициях: " + productDiameter + ")");
@@ -213,7 +213,7 @@ public class CalculatingFileWorker implements Runnable, CellEmptyChecker, RowEmp
 	}
 
 	private void compareMaxLength() {
-		if (length > StandardsRepository.maxLength) {
+		if (length > StandardsRepository.MAX_LENGTH) {
 			Main.app.addNotification("В строке " + (currentRow + 1) + " длина изделия/стержня: " + length);
 		}
 	}

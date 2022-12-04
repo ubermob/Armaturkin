@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -429,11 +430,14 @@
                <children>
                   <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" style="-fx-spacing: 35;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                      <children>
-                        <HBox fx:id="mSummaryHBox" prefHeight="120.0" prefWidth="772.0" style="-fx-spacing: 14;">
+                        <ScrollPane fx:id="mSummaryScrollPane" prefHeight="135.0" prefWidth="972.0" style="-fx-background-color: transparent; -fx-background: navy;">
                            <VBox.margin>
-                              <Insets bottom="35.0" />
+                              <Insets bottom="14.0" />
                            </VBox.margin>
-                        </HBox>
+                           <content>
+                              <HBox fx:id="mSummaryHBox" prefHeight="119.0" style="-fx-spacing: 14;" />
+                           </content>
+                        </ScrollPane>
                         <VBox alignment="CENTER" style="-fx-spacing: 14;">
                            <children>
                               <Text fx:id="mSummaryEntryText2" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Добавление фоновой арматуры в спецификацию" textAlignment="CENTER" wrappingWidth="777.0">
@@ -623,6 +627,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
+                  <CheckBox fx:id="autoParseProductListCheckBox" layoutX="33.0" layoutY="267.0" mnemonicParsing="false" onAction="#toggleAutoParseProductList" />
                   <CheckBox fx:id="logCheckBox" layoutX="33.0" layoutY="316.0" mnemonicParsing="false" onAction="#toggleWriteLog" />
                   <CheckBox fx:id="notificationCheckBox" layoutX="33.0" layoutY="421.0" mnemonicParsing="false" onAction="#toggleWriteNotification" />
                   <Text fx:id="settingsText1" layoutX="60.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Сохранять лог" wrappingWidth="180.0">
@@ -638,7 +643,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Text fx:id="settingsText4" layoutX="58.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Сохранять уведомления" wrappingWidth="250.0">
+                  <Text fx:id="settingsText4" layoutX="60.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Сохранять уведомления" wrappingWidth="250.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
@@ -685,7 +690,30 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Text>
-                  <CheckBox fx:id="autoParseProductListCheckBox" layoutX="33.0" layoutY="267.0" mnemonicParsing="false" onAction="#toggleAutoParseProductList" />
+                  <CheckBox fx:id="contentContainerCheckBox1" layoutX="33.0" layoutY="528.0" mnemonicParsing="false" onAction="#toggleContentContainerCheckBox1" />
+                  <Text fx:id="settingsText8" layoutX="60.0" layoutY="545.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Записывать в лог Content Container Border" wrappingWidth="733.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <CheckBox fx:id="contentContainerCheckBox2" layoutX="33.0" layoutY="563.0" mnemonicParsing="false" onAction="#toggleContentContainerCheckBox2" />
+                  <Text fx:id="settingsText9" layoutX="60.0" layoutY="580.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Записывать в лог Content Container" wrappingWidth="733.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <CheckBox fx:id="contentContainerCheckBox3" layoutX="33.0" layoutY="598.0" mnemonicParsing="false" onAction="#toggleContentContainerCheckBox3" />
+                  <Text fx:id="settingsText10" layoutX="60.0" layoutY="615.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Записывать в лог Content Container Compact" wrappingWidth="733.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <CheckBox fx:id="allowNegativeMassForManuallySummaryCheckBox" layoutX="33.0" layoutY="633.0" mnemonicParsing="false" onAction="#toggleAllowNegativeMassForManuallySummary" />
+                  <Text fx:id="settingsText11" layoutX="60.0" layoutY="650.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Разрешить отрицательную массу в ручном вводе изделий" wrappingWidth="733.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
         </content>

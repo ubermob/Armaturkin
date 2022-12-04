@@ -19,9 +19,9 @@ public class ReinforcementLinearMassInfo {
 		assert read != null && read.size() == 4;
 		String string = read.get(0) + "\n";
 		String pattern = read.get(1);
-		int range = StandardsRepository.diameters.length;
+		int range = StandardsRepository.DIAMETERS.length;
 		for (int i = 0; i < range; i++) {
-			string += fill(StandardsRepository.diameters[i], StandardsRepository.mass3Digit[i], pattern) + "\n";
+			string += fill(StandardsRepository.DIAMETERS[i], StandardsRepository.MASS_3_DIGIT[i], pattern) + "\n";
 			if (i != range - 1) {
 				string += read.get(2) + "\n";
 			}

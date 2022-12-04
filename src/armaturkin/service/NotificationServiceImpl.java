@@ -2,7 +2,7 @@ package armaturkin.service;
 
 import armaturkin.controller.Controller;
 import armaturkin.core.*;
-import armaturkin.utils.StringUtil;
+import utools.stringtools.StringTool;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -60,7 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public void saveNotification() throws IOException {
-		saveNotificationToFile(StringUtil.replaceNewLine(notificationString));
+		saveNotificationToFile(StringTool.replaceNewLine(notificationString));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
 		for (var v : notificationLog.getList()) {
 			builder.append(v);
 		}
-		builder.append(StringUtil.replaceNewLine(notificationString));
+		builder.append(StringTool.replaceNewLine(notificationString));
 		saveNotificationToFile(builder.toString());
 	}
 

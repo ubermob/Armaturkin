@@ -139,7 +139,6 @@ public class App {
 				, firstHarvestingModel
 				, summaryService
 				, summaryModel
-				, manuallyEntryModel
 		);
 		((NotificationServiceImpl) notificationService).setController(controller);
 		((StorageServiceImpl) storageService).setController(controller);

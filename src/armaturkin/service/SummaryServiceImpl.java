@@ -6,8 +6,8 @@ import armaturkin.model.SummaryModel;
 import armaturkin.summaryoutput.SummaryBuilderParser;
 import armaturkin.summaryoutput.SummaryHub;
 import armaturkin.summaryoutput.SummaryPool;
-import armaturkin.utils.UnacceptableSymbolReplacer;
 import armaturkin.workers.WorkerException;
+import utools.stringtools.UnacceptableSymbolReplacer;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -40,7 +40,7 @@ public class SummaryServiceImpl extends AbstractService implements SummaryServic
 			SummaryHub summaryHub = new SummaryHub(
 					manuallySummaryEntries,
 					path,
-					UnacceptableSymbolReplacer.replace(controller.getSummaryFileName()),
+					UnacceptableSymbolReplacer.getWindowsFileName().replace(controller.getSummaryFileName()),
 					summaryTableHead
 			);
 			Thread summaryHubThread = new Thread(summaryHub);

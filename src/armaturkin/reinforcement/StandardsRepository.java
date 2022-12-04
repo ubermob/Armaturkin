@@ -6,7 +6,7 @@ import java.util.Arrays;
 // Class contains organization standards for publish documentation
 public class StandardsRepository {
 
-	public static final int[] diameters = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40}; // Size == 14
+	public static final int[] DIAMETERS = {6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40}; // Size == 14
 	static final String[] rfClass240 = {
 			"а240", // Russian letter
 			"а 240", // Russian letter
@@ -53,17 +53,17 @@ public class StandardsRepository {
 			"a 600" // English letter
 	};
 
-	public static final short maxLength = 11_700;
+	public static final short MAX_LENGTH = 11_700;
 
-	public static final double[] mass3Digit = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853, 4.834, 6.313, 7.990, 9.865};
-	public static final double[] mass2Digit1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85, 4.83, 6.31, 7.99, 9.87}; // implements math rules
-	public static final double[] mass2Digit2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86, 4.84, 6.32, 8.00, 9.86}; // alternative version
+	public static final double[] MASS_3_DIGIT = {0.222, 0.395, 0.617, 0.888, 1.208, 1.578, 1.998, 2.466, 2.984, 3.853, 4.834, 6.313, 7.990, 9.865};
+	public static final double[] MASS_2_DIGIT_1 = {0.22, 0.40, 0.62, 0.89, 1.21, 1.58, 2.00, 2.47, 2.98, 3.85, 4.83, 6.31, 7.99, 9.87}; // implements math rules
+	public static final double[] MASS_2_DIGIT_2 = {0.23, 0.39, 0.61, 0.88, 1.20, 1.57, 1.99, 2.46, 2.99, 3.86, 4.84, 6.32, 8.00, 9.86}; // alternative version
 
-	public static final int[] reservedPositions = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}; // Size == 18
-	public static final int[] reservedDiameters = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14}; // Size == 18
-	public static final PairDR[] pairs;
+	public static final int[] RESERVED_POSITIONS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}; // Size == 18
+	public static final int[] RESERVED_DIAMETERS = {8, 10, 12, 14, 16, 18, 20, 22, 25, 28, 32, 36, 40, 6, 8, 10, 12, 14}; // Size == 18
+	public static final PairDR[] PAIRS;
 
-	public static byte[][] rgb = {
+	public static final byte[][] DIAMETERS_COLORS_RGB = {
 			{(byte) 255, (byte) 0, (byte) 255},     // d6
 			{(byte) 127, (byte) 127, (byte) 0},     // d8
 			{(byte) 127, (byte) 102, (byte) 204},   // d10
@@ -81,15 +81,15 @@ public class StandardsRepository {
 	};
 
 	static {
-		pairs = new PairDR[reservedDiameters.length];
-		for (int i = 0; i < reservedDiameters.length; i++) {
-			pairs[i] = new PairDR(reservedDiameters[i], getReservedRFClass(reservedPositions[i]));
+		PAIRS = new PairDR[RESERVED_DIAMETERS.length];
+		for (int i = 0; i < RESERVED_DIAMETERS.length; i++) {
+			PAIRS[i] = new PairDR(RESERVED_DIAMETERS[i], getReservedRFClass(RESERVED_POSITIONS[i]));
 		}
 	}
 
 	public static int getReservedPositionIndex(int position) {
-		for (int i = 0; i < reservedPositions.length; i++) {
-			if (position == reservedPositions[i]) {
+		for (int i = 0; i < RESERVED_POSITIONS.length; i++) {
+			if (position == RESERVED_POSITIONS[i]) {
 				return i;
 			}
 		}
@@ -97,8 +97,8 @@ public class StandardsRepository {
 	}
 
 	public static int getReservedDiameterIndex(int diameter) {
-		for (int i = 0; i < reservedDiameters.length; i++) {
-			if (diameter == reservedDiameters[i]) {
+		for (int i = 0; i < RESERVED_DIAMETERS.length; i++) {
+			if (diameter == RESERVED_DIAMETERS[i]) {
 				return i;
 			}
 		}
@@ -113,9 +113,9 @@ public class StandardsRepository {
 	}
 
 	public static double getMass(int diameter) {
-		for (int i = 0; i < diameters.length; i++) {
-			if (diameter == diameters[i]) {
-				return mass3Digit[i];
+		for (int i = 0; i < DIAMETERS.length; i++) {
+			if (diameter == DIAMETERS[i]) {
+				return MASS_3_DIGIT[i];
 			}
 		}
 		return 0.0;
@@ -131,24 +131,24 @@ public class StandardsRepository {
 	}
 
 	public static byte[] getRgb(int diameter) {
-		for (int i = 0; i < diameters.length; i++) {
-			if (diameter == diameters[i]) {
-				return rgb[i];
+		for (int i = 0; i < DIAMETERS.length; i++) {
+			if (diameter == DIAMETERS[i]) {
+				return DIAMETERS_COLORS_RGB[i];
 			}
 		}
-		return rgb[9]; // Black color
+		return DIAMETERS_COLORS_RGB[9]; // Black color
 	}
 
 	public static ArrayList<Integer> getDiametersAsList() {
 		ArrayList<Integer> list = new ArrayList<>();
-		for (int i : diameters) {
+		for (int i : DIAMETERS) {
 			list.add(i);
 		}
 		return list;
 	}
 
 	public static ArrayList<PairDR> getPairsAsList() {
-		return new ArrayList<>(Arrays.asList(pairs));
+		return new ArrayList<>(Arrays.asList(PAIRS));
 	}
 
 	/**

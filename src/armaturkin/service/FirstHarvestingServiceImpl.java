@@ -1,10 +1,10 @@
 package armaturkin.service;
 
 import armaturkin.model.FirstHarvestingModel;
-import armaturkin.utils.UnacceptableSymbolReplacer;
 import armaturkin.workers.CalculatingFileWorker;
 import armaturkin.workers.FileWorker;
 import armaturkin.workers.ProductFileWorker;
+import utools.stringtools.UnacceptableSymbolReplacer;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,7 +56,7 @@ public class FirstHarvestingServiceImpl extends AbstractService implements First
 					, model.getReinforcementHashMap()
 					, model.getReinforcementParsedRange()
 					, controller.getTableHead()
-					, UnacceptableSymbolReplacer.replace(controller.getFileName())
+					, UnacceptableSymbolReplacer.getWindowsFileName().replace(controller.getFileName())
 			);
 			Thread fileWorkerThread = new Thread(fileWorker);
 			fileWorkerThread.start();

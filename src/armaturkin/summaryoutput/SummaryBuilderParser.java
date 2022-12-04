@@ -1,7 +1,7 @@
 package armaturkin.summaryoutput;
 
 import armaturkin.core.Main;
-import armaturkin.utils.StringUtil;
+import utools.stringtools.StringTool;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -71,7 +71,7 @@ public class SummaryBuilderParser {
 	}
 
 	private static SummaryBuilder parseBlock(List<String> list) {
-		SummaryBuilder summaryBuilder = new SummaryBuilder(StringUtil.cutEnd(list.get(0), 2));
+		SummaryBuilder summaryBuilder = new SummaryBuilder(StringTool.cutEnd(list.get(0), 2));
 		for (String line : list) {
 			if (line.endsWith(" {")) {
 				// skip open bracket

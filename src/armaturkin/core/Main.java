@@ -16,8 +16,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utools.updateannouncer.AnnounceAction;
+import utools.updateannouncer.AsyncAnnouncer;
+import utools.updateannouncer.Connection;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -26,7 +31,7 @@ import java.util.Locale;
 
 public class Main extends Application {
 
-	public static final String version = "0.6.4";
+	public static final String VERSION = "0.6.5";
 	public static App app;
 
 	@Override
@@ -48,7 +53,7 @@ public class Main extends Application {
 		controller.startSetup();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000 / 60.0), actionEvent -> {
 			controller.setResultLabelText(app.getActualNotification());
-			controller.setCheckBox();
+			controller.setCheckBoxes();
 			if (app.hasWorkerException()) {
 				Stages.showExceptionStage(app.getWorkerExceptionMessage());
 				app.offWorkerException();
@@ -56,6 +61,13 @@ public class Main extends Application {
 		}));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
+		if (ArgConfiguration.checkForUpdate && ArgConfiguration.checkResultForLog != null) {
+			app.log(ArgConfiguration.checkResultForLog);
+			app.addNotification(ArgConfiguration.checkResultForNotification);
+			if (Dev.isDevMode) {
+				controller.setNotificationOpacity(0);
+			}
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -64,6 +76,7 @@ public class Main extends Application {
 		HttpServerWrapper serverWrapper = new HttpServerWrapper();
 		boolean isRunnable = ArgParser.parse(args, tempLog, serverWrapper);
 		if (isRunnable) {
+			checkForUpdate();
 			app = new App();
 			app.getLogService().merge(tempLog);
 			app.setHttpServer(serverWrapper.getServer());
@@ -74,12 +87,46 @@ public class Main extends Application {
 		} else {
 			// https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
 			Platform.exit();
-			System.exit(0);
+			System.exit(1);
 		}
 	}
 
 	public static String getAppNameAndVersion() {
-		return app.getProperty("application_name") + " ver " + version;
+		return app.getProperty("application_name") + " ver " + VERSION;
+	}
+
+	private static void checkForUpdate() {
+		new AsyncAnnouncer(
+				new AnnounceAction() {
+					@Override
+					public void announceForUpdate(String currentVersion, String newVersion) {
+						ArgConfiguration.checkResultForLog = "New version: %s is available".formatted(newVersion);
+						ArgConfiguration.checkResultForNotification = "Доступна новая версия: %s".formatted(newVersion);
+					}
+
+					@Override
+					public void announceForLastVersion(String currentVersion, String newVersion) {
+					}
+				},
+				new Connection() {
+					@Override
+					public String connect() throws IOException {
+						URL url = new URL(ArgConfiguration.checkForUpdateHost);
+						URLConnection urlConnection = url.openConnection();
+						urlConnection.setConnectTimeout(1500);
+						urlConnection.connect();
+						return new String(urlConnection.getInputStream().readAllBytes());
+					}
+
+					@Override
+					public void connectionException(IOException e) {
+						ArgConfiguration.checkResultForLog = "Connection error to (%s)".formatted(
+								ArgConfiguration.checkForUpdateHost
+						);
+					}
+				}
+				, Main.VERSION
+		);
 	}
 
 	private static String getDate() {
@@ -103,11 +150,13 @@ public class Main extends Application {
 					"-linux",    // 3
 					"-abs_path", // 4
 					"-http",     // 5
-					"-version"   // 6
+					"-version",  // 6
+					"-no_update_checker",  // 7
+					"-update_checker_host" // 8
 			};
 			for (var arg : args) {
 				if (isMatchCommands(arg, sampleArgCommands[0])) {
-					System.out.println("Version " + version);
+					System.out.println("Version " + VERSION);
 					for (var line : Reader.readFromInternalSource("/Run_arguments.txt")) {
 						System.out.println(line);
 					}
@@ -160,8 +209,17 @@ public class Main extends Application {
 					tempLog.add(arg);
 				}
 				if (isMatchCommands(arg, sampleArgCommands[6])) {
-					System.out.println("Version " + version);
+					System.out.println("Version " + VERSION);
 					return false;
+				}
+				if (isMatchCommands(arg, sampleArgCommands[7])) {
+					ArgConfiguration.checkForUpdate = false;
+				}
+				if (isMatchComplexCommands(arg, sampleArgCommands[8])) {
+					String[] splitted = arg.split("=");
+					if (splitted.length == 2) {
+						ArgConfiguration.checkForUpdateHost = splitted[1];
+					}
 				}
 			}
 			return true;

@@ -132,9 +132,12 @@ public class SummaryHub implements Runnable, FileNameCreator {
 			));
 		}
 		Main.app.log(Main.app.getProperty("full_content"));
-		Main.app.log(contentContainer.borderToString());
-		Main.app.log(contentContainer.contentToString());
-		Main.app.log(contentContainer.compactContentToString());
+		Main.app.getLogService().add(contentContainer.borderToString()
+				, Main.app.getConfig().getContentContainerBorderLoggable());
+		Main.app.getLogService().add(contentContainer.contentToString()
+				, Main.app.getConfig().getContentContainerLoggable());
+		Main.app.getLogService().add(contentContainer.compactContentToString()
+				, Main.app.getConfig().getContentContainerCompactLoggable());
 		contentContainer.storeFullContentAsArray();
 		contentContainer.compress();
 		Main.app.log(Main.app.getProperty("compressed_content"));

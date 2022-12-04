@@ -22,8 +22,18 @@ public class LogServiceImpl implements LogService {
 	}
 
 	@Override
+	public void add(String string, boolean isLoggable) {
+		log.add(string, isLoggable);
+	}
+
+	@Override
 	public void add(Exception exception) {
 		log.add(exception);
+	}
+
+	@Override
+	public void add(Exception exception, boolean isLoggable) {
+		log.add(exception, isLoggable);
 	}
 
 	@Override

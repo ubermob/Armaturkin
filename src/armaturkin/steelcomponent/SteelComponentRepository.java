@@ -3,9 +3,9 @@ package armaturkin.steelcomponent;
 import armaturkin.core.DesignCode;
 import armaturkin.core.Main;
 import armaturkin.core.Reader;
-import armaturkin.utils.StringUtil;
-import armaturkin.utils.WholeNumber;
 import org.apache.poi.ss.usermodel.*;
+import utools.numbertools.IntegerNumber;
+import utools.stringtools.StringTool;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class SteelComponentRepository {
 				}
 				Number thickness;
 				double thicknessCandidate = next.getCell(2).getNumericCellValue();
-				if (WholeNumber.isAWholeNumber(thicknessCandidate)) {
+				if (IntegerNumber.isIntegerNumber(thicknessCandidate)) {
 					thickness = (int) thicknessCandidate;
 				} else {
 					thickness = thicknessCandidate;
@@ -86,7 +86,7 @@ public class SteelComponentRepository {
 				}
 				Number thickness;
 				double thicknessCandidate = next.getCell(3).getNumericCellValue();
-				if (WholeNumber.isAWholeNumber(thicknessCandidate)) {
+				if (IntegerNumber.isIntegerNumber(thicknessCandidate)) {
 					thickness = (int) thicknessCandidate;
 				} else {
 					thickness = thicknessCandidate;
@@ -121,7 +121,7 @@ public class SteelComponentRepository {
 		while (iteratorHeader.hasNext()) {
 			result += getCellAsString(iteratorHeader.next()) + ": " + getCellAsString(iteratorElement.next()) + "\n";
 		}
-		return StringUtil.replaceNewLine(result);
+		return StringTool.replaceNewLine(result);
 	}
 
 	public static String getCellAsString(Cell cell) {
@@ -129,7 +129,7 @@ public class SteelComponentRepository {
 			return cell.getStringCellValue();
 		}
 		if (cell.getCellType() == CellType.NUMERIC) {
-			if (WholeNumber.isAWholeNumber(cell.getNumericCellValue())) {
+			if (IntegerNumber.isIntegerNumber(cell.getNumericCellValue())) {
 				return "" + (int) cell.getNumericCellValue();
 			}
 			return "" + cell.getNumericCellValue();
@@ -177,7 +177,7 @@ public class SteelComponentRepository {
 				for (int j = 1; j < i; j++) {
 					Number thickness;
 					double thicknessCandidate = Double.parseDouble(list.get(j));
-					if (WholeNumber.isAWholeNumber(thicknessCandidate)) {
+					if (IntegerNumber.isIntegerNumber(thicknessCandidate)) {
 						thickness = (int) thicknessCandidate;
 					} else {
 						thickness = thicknessCandidate;

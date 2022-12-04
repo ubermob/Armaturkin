@@ -165,7 +165,7 @@ public class FileWorker implements Runnable, FileNameCreator {
 						" нет в зарезервированном списке диаметров (class Repository)"
 				);
 			} else {
-				int position = StandardsRepository.reservedPositions[reservedDiameterIndex];
+				int position = StandardsRepository.RESERVED_POSITIONS[reservedDiameterIndex];
 				if (reinforcementHashMap.containsKey(position)) {
 					Reinforcement calculatedReinforcement = reinforcementHashMap.get(position);
 					Reinforcement currentReinforcement = new Reinforcement(

@@ -24,6 +24,8 @@
     <entry key="notification_storage_limit">20</entry>
     <entry key="auto_parse_product_list">true</entry>
     <entry key="python_interpreter">false</entry>
+    <entry key="content_container_loggable">true</entry>
+    <entry key="allow_negative_mass_for_manually_summary">false</entry>
 
     <!-- Stages -->
     <entry key="info_stage_name">Информация</entry>
